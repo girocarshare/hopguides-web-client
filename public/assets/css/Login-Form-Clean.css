@@ -1,0 +1,436 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import url(https://fonts.googleapis.com/css?family=Roboto:300);
+
+.login-page {
+
+  padding: 3% 0 0;
+  margin: auto;
+  z-index:-1;
+}
+
+.login-page2 {
+
+  max-width: 400px;
+  padding: 3% 0 0;
+  margin: auto;
+  z-index:-1;
+}
+
+.form {
+  position: relative;
+  z-index: 1;
+  background: #FFFFFF;
+  max-width: 1200px;
+  margin: 0 auto 100px;
+  padding: 45px;
+  text-align: center;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+
+img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
+
+.home-box {
+
+  font-family: monospace;
+  position: relative;
+  z-index: 1;
+  background: #f7f5f5;
+  max-width: 1200px;
+  margin: 50px auto 50px;
+  padding: 45px;
+  text-align: center;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+
+.paragraph-box {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0px auto 0px;
+  padding: 45px;
+  text-align: center;
+
+}
+
+
+
+.image-box {
+  position: relative;
+  z-index: 1;
+  max-width: 400px;
+  margin: 0px auto 0px;
+  padding: 45px;
+  text-align: center;
+
+}
+
+.menu-box {
+  position: relative;
+  z-index: 1;
+  max-width: 700px;
+  margin: 0px auto 0px;
+  padding: 45px;
+  text-align: center;
+
+}
+
+ul {
+  text-align: center;
+  list-style-position: inside;
+}
+.paragraph-box2 {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 20px auto 0px;
+  text-align: center;
+
+}
+.button-login {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0px auto 0px;
+  text-align: right;
+
+}
+
+.ul-box2 {
+  position: relative;
+  z-index: 1;
+  margin: 20px auto 0px;
+  text-align: center;
+
+}
+
+
+div:target {
+  border: 5px solid rgb(247, 0, 41);
+}
+.contact-box {
+  position: relative;
+  z-index: 1;
+  max-width: 1400px;
+  margin: 0px auto 0px;
+  padding: 0px;
+  text-align: center;
+
+}
+
+.hotelcontact-box {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0px auto 0px;
+
+}
+
+.button-p {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0px auto 0px;
+  padding: 45px;
+  text-align: center;
+
+}
+a:link, a:visited {
+  background-color: white;
+  z-index: 1;
+  color: black;
+  border: 2px solid rgb(131, 145, 250);
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+
+a:hover, a:active {
+  background-color: rgb(131, 145, 250);
+  color: white;
+}
+
+
+.abutton {
+
+  outline: 0;
+  background: #5e90f6;
+  border: 0;
+  color: #ffffff;
+  font-size: 14px;
+  -webkit-transition: all 0.3 ease;
+  transition: all 0.3 ease;
+  cursor: pointer;
+  margin-top: 30px
+
+}
+
+.header2 {
+
+  font-family: monospace;
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0px auto 0px;
+  padding: 20px;
+  text-align: center;
+  
+  background: #abd2ff;
+
+}
+
+.form-modal {
+  position: relative;
+  z-index: 1;
+  background: #FFFFFF;
+  max-width: 1200px;
+  margin: 0 auto 0;
+  padding: 45px;
+  text-align: center;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+
+.form input {
+  font-family: "Roboto", sans-serif;
+  outline: 0;
+  background: #f2f2f2;
+  width: 100%;
+  border: 0;
+  margin: 0 0 15px;
+  padding: 15px;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+.form button {
+  font-family: "Roboto", sans-serif;
+  text-transform: uppercase;
+  outline: 0;
+  background: #5e90f6;
+  width: 100%;
+  border: 0;
+  padding: 15px;
+  color: #ffffff;
+  font-size: 14px;
+  -webkit-transition: all 0.3 ease;
+  transition: all 0.3 ease;
+  cursor: pointer;
+}
+
+#button {
+
+  font-family: "Roboto", sans-serif;
+  text-transform: uppercase;
+  outline: 0;
+  background: #5e90f6;
+  width: 100%;
+  border: 0;
+  color: #ffffff;
+  font-size: 14px;
+  -webkit-transition: all 0.3 ease;
+  transition: all 0.3 ease;
+  cursor: pointer;
+
+}
+
+#kayitol:hover {
+  background-color: #9da5ff;
+  box-shadow: 0 0 10px #0099ff;
+  font-weight: bold;
+}
+
+
+.form button:hover,
+.form button:active,
+.form button:focus {
+  background: #9da5ff;
+}
+
+.form .message {
+  margin: 15px 0 0;
+  color: #b3b3b3;
+  font-size: 12px;
+}
+
+.form .message a {
+  color: #5e90f6;
+  text-decoration: none;
+}
+
+.form .register-form {
+  display: none;
+}
+
+.containerModal {
+  position: center;
+  z-index: 1;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+
+.container {
+  position: relative;
+  z-index: 1;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.container:before,
+.container:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+.container .info {
+  margin: 50px auto;
+  text-align: center;
+}
+
+.container .info h1 {
+  margin: 0 0 15px;
+  padding: 0;
+  font-size: 36px;
+  font-weight: 300;
+  color: #1a1a1a;
+}
+
+.container .info span {
+  color: #4d4d4d;
+  font-size: 12px;
+}
+
+.container .info span a {
+  color: #000000;
+  text-decoration: none;
+}
+
+.container .info span .fa {
+  color: #EF3B3A;
+}
+
+html,
+body,
+#root,
+.App {
+  height: 100%;
+}
+
+body {
+  background: #e0e0e1;
+  /* fallback for old browsers */
+  font-family: "Roboto", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  width: 100%;
+  height: 100%;
+
+}
+
+.body-login {
+  background: #3861b3;
+  /* fallback for old browsers */
+  background: rgb(44, 64, 142);
+  background: linear-gradient(90deg, rgb(45, 123, 187) 0%, rgb(40, 108, 180) 50%);
+  font-family: "Roboto", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  width: 100%;
+  height: 100%;
+
+}
+
+
+
+.image-div {
+  display: flex;
+  justify-content: center;
+}
+
+.custom-select {
+  position: relative;
+  font-family: Arial;
+}
+
+.custom-select select {
+  display: none;
+  /*hide original SELECT element: */
+}
+
+.select-selected {
+  background-color: DodgerBlue;
+}
+.parent {
+  background: mediumpurple;
+  padding: 3rem;
+}
+.child {
+  border: 1px solid indigo;
+  padding: 0.5rem;
+  border-radius: 10px;
+  width: 120px;
+}
+
+.inline-block-child {
+  display: inline-block;
+}
+
+.float-left-child {
+  float: right;
+}
+
+/* Style the arrow inside the select element: */
+.select-selected:after {
+  position: absolute;
+  content: "";
+  top: 14px;
+  right: 10px;
+  width: 0;
+  height: 0;
+  border: 6px solid transparent;
+  border-color: #fff transparent transparent transparent;
+}
+
+/* Point the arrow upwards when the select box is open (active): */
+.select-selected.select-arrow-active:after {
+  border-color: transparent transparent #fff transparent;
+  top: 7px;
+}
+
+/* style the items (options), including the selected item: */
+.select-items div,
+.select-selected {
+  color: #ffffff;
+  padding: 8px 16px;
+  border: 1px solid transparent;
+  border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent;
+  cursor: pointer;
+}
+
+/* Style items (options): */
+.select-items {
+  position: absolute;
+  background-color: DodgerBlue;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 99;
+}
+
+/* Hide the items when the select box is closed: */
+.select-hide {
+  display: none;
+}
+
+.select-items div:hover,
+.same-as-selected {
+  background-color: rgba(0, 0, 0, 0.1);
+}
