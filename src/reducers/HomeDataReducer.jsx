@@ -376,6 +376,33 @@ export const homeDataReducer = (state, action) => {
 
 			};
 
+			case homeDataConstants.PARTNER_SUBMIT_SUCCESS:
+
+			return {
+				...state,
+
+				modalData: {
+					success: true,
+					failure: false,
+					text: "You have successfully added new partner.",
+				},
+
+			};
+
+			case homeDataConstants.PARTNER_SUBMIT_FAILURE:
+
+			return {
+				...state,
+
+				modalData: {
+					success: false,
+					failure: true,
+					text: "Error while adding new partner. Please try again later.",
+				},
+
+			};
+
+
 		case homeDataConstants.TOUR_UPDATE_SUCCESS:
 
 		/*	var array = []
@@ -607,6 +634,26 @@ export const homeDataReducer = (state, action) => {
 
 			return prodCpy;
 
+
+			case homeDataConstants.SHOW_ADD_PARTNER_MODAL:
+				
+				return {
+					...state,
+					showAddPartnerModal: {
+						show:true,
+						id: action.id}
+	
+				};
+
+				case homeDataConstants.HIDE_ADD_PARTNER_MODAL:
+					return {
+						...state,
+						showAddPartnerModal: {
+							show:false,
+							id: ""}
+		
+					};
+	
 		default:
 			return state;
 	}

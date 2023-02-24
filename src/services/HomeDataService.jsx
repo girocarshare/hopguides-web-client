@@ -9,6 +9,7 @@ export const homeDataService = {
 	getToursAndPointsData,
 	getPreviousMonthsData,
 	addTour,
+	addPartner,
 	updateTour,
 	getQrCode,
 	updatePoint
@@ -52,6 +53,46 @@ function addTour(tour, dispatch) {
 	function failure(error) {
 		
 		return { type: homeDataConstants.TOUR_SUBMIT_FAILURE, error };
+	}
+}
+
+
+function addPartner(tour, dispatch) {
+
+	dispatch(request());
+	
+	
+
+	var token = authHeader()
+	Axios.post(`${url}api/pnl/tour/addPartners`, tour, {
+		headers: {
+		  Authorization: token 
+		}},{ validateStatus: () => true })
+		.then((res) => {
+			if (res.status === 200) {
+				dispatch(success());
+				window.location.reload()
+			} else if (res.status === 215) {
+				dispatch(failure(res.data.response));
+			}else{
+				
+				dispatch(failure(res.data.error));
+			}
+		})
+		.catch((err) =>{		
+				dispatch(failure(err));
+			})
+
+	function request() {
+		
+		return { type: homeDataConstants.PARTNER_SUBMIT_REQUEST };
+	}
+	function success() {
+		return { type: homeDataConstants.PARTNER_SUBMIT_SUCCESS };
+	}
+	function failure(error) {
+		
+		return { type: homeDataConstants.PARTNER_SUBMIT_FAILURE, error };
 	}
 }
 

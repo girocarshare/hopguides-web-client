@@ -172,6 +172,11 @@ const HomeData = forwardRef((props, ref) => {
 
     dispatch({ type: homeDataConstants.SHOW_ADD_MODAL });
   };
+  const addNewPartner = (e, id) => {
+
+    console.log(id)
+    dispatch({ type: homeDataConstants.SHOW_ADD_PARTNER_MODAL, id: id });
+  };
 
 
   const onUpdatePoint = (oldData, newData) => {
@@ -398,7 +403,30 @@ const HomeData = forwardRef((props, ref) => {
 
           <MaterialTable
             stickyHeader
-
+            components={{
+              Toolbar: (props) => (
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "flex-end",
+                    alignItems: "center"
+                  }}
+                >
+                  {admin && <Button
+                    style={{ height: "fit-content" }}
+                    color="primary"
+                    variant="contained"
+                    onClick={(e) => addNewPartner(e, tour.tourId)}
+                  >
+                    Add partner
+                  </Button>}
+                  <div style={{ width: "13rem" }}>
+                    <MTableToolbar {...props} />
+                  </div>
+                </div>
+              ),
+              Container: (props) => <Paper {...props} elevation={8} />
+            }}
             style={{
               tableLayout: "fixed",
               marginLeft: 38,
@@ -508,6 +536,7 @@ const HomeData = forwardRef((props, ref) => {
                 }),
 
             }}
+
             data={tour.points}
             title={tour.tourName}
           />

@@ -22,6 +22,11 @@ const HomeDataContextProvider = (props) => {
 		
 		showEditMenuModal: false,
 
+		showAddPartnerModal: {
+			show: false,
+			id: ""
+		},
+
 		id: "",
 		tours: {
 			tours: null
