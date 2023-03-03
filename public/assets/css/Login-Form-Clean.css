@@ -434,3 +434,24 @@ body {
 .same-as-selected {
   background-color: rgba(0, 0, 0, 0.1);
 }
+
+thead th:nth-child(1) {
+  width: 30%;
+}
+
+thead th:nth-child(2) {
+  width: 20%;
+}
+
+thead th:nth-child(3) {
+  width: 15%;
+}
+
+thead th:nth-child(4) {
+  width: 35%;
+}
+
+th,
+td {
+  padding: 20px;
+}

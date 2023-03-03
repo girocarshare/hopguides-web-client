@@ -247,7 +247,7 @@ export const homeDataReducer = (state, action) => {
 			array.push(item2)
 
 			var arrReports = []
-			for (var report of action.data) { 
+			for (var report of action.data) {
 				if (report.from.length == 5) {
 					var monthNum = report.from.charAt(0)
 					monthNum = parseInt(monthNum) + 1
@@ -301,7 +301,9 @@ export const homeDataReducer = (state, action) => {
 			return {
 				...state,
 				previousReports: {
-					showModal: false
+					showModal: false,
+					reports: [],
+					id: "",
 				}
 
 
@@ -363,7 +365,7 @@ export const homeDataReducer = (state, action) => {
 
 			};
 
-			case homeDataConstants.TOUR_SUBMIT_FAILURE:
+		case homeDataConstants.TOUR_SUBMIT_FAILURE:
 
 			return {
 				...state,
@@ -376,7 +378,7 @@ export const homeDataReducer = (state, action) => {
 
 			};
 
-			case homeDataConstants.PARTNER_SUBMIT_SUCCESS:
+		case homeDataConstants.PARTNER_SUBMIT_SUCCESS:
 
 			return {
 				...state,
@@ -389,7 +391,7 @@ export const homeDataReducer = (state, action) => {
 
 			};
 
-			case homeDataConstants.PARTNER_SUBMIT_FAILURE:
+		case homeDataConstants.PARTNER_SUBMIT_FAILURE:
 
 			return {
 				...state,
@@ -405,24 +407,24 @@ export const homeDataReducer = (state, action) => {
 
 		case homeDataConstants.TOUR_UPDATE_SUCCESS:
 
-		/*	var array = []
-			var tour = {
-				tourId: "446a706b-baa6-4feb-bc0b-0bcd9b2d2e0b",
-				tourName: "Blablaaaaaaa",
-				tourPrice: "49€ withouth tax",
-				noOfRidesAMonth: 2
-			}
-			var tour2 = {
-				tourId: "446a706b-baa6-4feb-bc0b-0bcd9b2d2e0a",
-				tourName: "Blablaaaaddfsdfsdfsffaaa",
-				tourPrice: "62€ withouth tax",
-				noOfRidesAMonth: 5
-			}
-
-			array.push(tour)
-			array.push(tour2)
-
-*/
+			/*	var array = []
+				var tour = {
+					tourId: "446a706b-baa6-4feb-bc0b-0bcd9b2d2e0b",
+					tourName: "Blablaaaaaaa",
+					tourPrice: "49€ withouth tax",
+					noOfRidesAMonth: 2
+				}
+				var tour2 = {
+					tourId: "446a706b-baa6-4feb-bc0b-0bcd9b2d2e0a",
+					tourName: "Blablaaaaddfsdfsdfsffaaa",
+					tourPrice: "62€ withouth tax",
+					noOfRidesAMonth: 5
+				}
+	
+				array.push(tour)
+				array.push(tour2)
+	
+	*/
 
 			prodCpy = { ...state };
 
@@ -435,45 +437,45 @@ export const homeDataReducer = (state, action) => {
 		case homeDataConstants.TOUR_UPDATE_FAILURE:
 
 
-		return {
-			...state,
+			return {
+				...state,
 
-			modalData: {
-				success: false,
-				failure: true,
-				text: "Error while updating tour. Please try again later.",
-			},
+				modalData: {
+					success: false,
+					failure: true,
+					text: "Error while updating tour. Please try again later.",
+				},
 
-		};
+			};
 
 		case homeDataConstants.UPDATE_MENU_PHOTO_SUCCESS:
 
 
-		//console.log(action.data)
-		return {
-			...state,
+			//console.log(action.data)
+			return {
+				...state,
 
-			modalData: {
-				success: true,
-				failure: false,
-				text: "You have successfully updated menu photo.",
-			},
+				modalData: {
+					success: true,
+					failure: false,
+					text: "You have successfully updated menu photo.",
+				},
 
-		};
+			};
 
 		case homeDataConstants.UPDATE_MENU_PHOTO_FAILURE:
 
 
-		return {
-			...state,
+			return {
+				...state,
 
-			modalData: {
-				success: false,
-				failure: true,
-				text: "Error while updating menu photo. Please try again later.",
-			},
+				modalData: {
+					success: false,
+					failure: true,
+					text: "Error while updating menu photo. Please try again later.",
+				},
 
-		};
+			};
 
 		case homeDataConstants.POI_UPDATE_SUCCESS:
 
@@ -629,31 +631,33 @@ export const homeDataReducer = (state, action) => {
 			prodCpy = { ...state };
 
 			prodCpy.modalData.success = false;
-				prodCpy.modalData.failure = false;
-				prodCpy.modalData.text = "";
+			prodCpy.modalData.failure = false;
+			prodCpy.modalData.text = "";
 
 			return prodCpy;
 
 
-			case homeDataConstants.SHOW_ADD_PARTNER_MODAL:
-				
-				return {
-					...state,
-					showAddPartnerModal: {
-						show:true,
-						id: action.id}
-	
-				};
+		case homeDataConstants.SHOW_ADD_PARTNER_MODAL:
 
-				case homeDataConstants.HIDE_ADD_PARTNER_MODAL:
-					return {
-						...state,
-						showAddPartnerModal: {
-							show:false,
-							id: ""}
-		
-					};
-	
+			return {
+				...state,
+				showAddPartnerModal: {
+					show: true,
+					id: action.id
+				}
+
+			};
+
+		case homeDataConstants.HIDE_ADD_PARTNER_MODAL:
+			return {
+				...state,
+				showAddPartnerModal: {
+					show: false,
+					id: ""
+				}
+
+			};
+
 		default:
 			return state;
 	}

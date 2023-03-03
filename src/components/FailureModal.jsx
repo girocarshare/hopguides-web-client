@@ -1,13 +1,8 @@
 import React, { useContext, useState, useEffect, useRef } from "react";
 
 import { Modal } from "react-bootstrap";
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 import { homeDataConstants } from "../constants/HomeDataConstants";
 import { HomeDataContext } from "../contexts/HomeDataContext";
-import Paper from "@material-ui/core/Paper";
-import Axios from "axios";
-import { reportService } from "../services/ReportService";
 
 
 var url = process.env.REACT_APP_URL || "http://localhost:3000/";

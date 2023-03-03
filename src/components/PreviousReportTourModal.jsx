@@ -10,6 +10,7 @@ const PreviousReportTourModal = () => {
 	
 	const { homeDataState, dispatch } = useContext(HomeDataContext);
 	const handleModalClose = () => {
+		console.log("lalal")
 		dispatch({ type: homeDataConstants.HIDE_MODAL});
 	};
  
