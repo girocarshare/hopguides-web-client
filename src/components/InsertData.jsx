@@ -36,10 +36,12 @@ const InsertData = (props) => {
   const [offerName, setOfferName] = useState("");
   const [duration, setDuration] = useState("");
   const [length, setLength] = useState("");
+  const [imagePreview, setImagePreview] = useState("");
   const [highestPoint, setHighestPoint] = useState("");
 
   const [location, setLocation] = useState("");
   const [phone, setPhone] = useState("");
+  const [hotelId, setHotelId] = useState("");
   const [ymaps, setYmaps] = useState(null);
   const [email, setEmail] = useState("");
   const [responsiblePerson, setResponsiblePerson] = useState("");
@@ -76,11 +78,16 @@ const InsertData = (props) => {
   const [add, setAdd] = useState(false);
   const [file, setFile] = useState(null);
   const [audio, setAudio] = useState();
+  const [audio2, setAudio2] = useState();
+  const [audios, setAudios] = useState([]);
   const uploadRef = React.useRef();
   const statusRef = React.useRef();
   const progressRef = React.useRef();
 
-  const [selectedFiles, setSelectedFiles] = useState(undefined);
+  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [files, setFiles] = useState([]);
+  const [categories, setCategories] = useState(["HISTORY","DRINKS", "NATURE", "EATS", "BRIDGE", "MUSEUMS", "EXPERIENCE" ]);
+  const [category, setCategory] = useState("");
   const [imagePreviews, setImagePreviews] = useState([]);
   const [progressInfos, setProgressInfos] = useState({ val: [] });
   const [message, setMessage] = useState([]);
@@ -101,9 +108,10 @@ const InsertData = (props) => {
       images.push(URL.createObjectURL(event.target.files[i]));
       var new_file = new File([event.target.files[i]], 'partner' + titlePoint + "---"+ [event.target.files[i].name]);
       fs.push(new_file)
+      
     }
 
-    setSelectedFiles(fs);
+    setSelectedFiles(selectedFiles.concat(fs))
     setImagePreviews(images);
     setProgressInfos({ val: [] });
     setMessage([]);}
@@ -158,7 +166,8 @@ const InsertData = (props) => {
         points: points,
         duration: duration,
         length: length,
-        highestPoint: highestPoint
+        highestPoint: highestPoint,
+        bpartnerId: hotelId
 
 
       }
@@ -167,9 +176,14 @@ const InsertData = (props) => {
 
       formData.append('file', file);
       formData.append('file', audio);
-      for(var f of selectedFiles){
+      formData.append('file', audio2);
+      for(var f of files){
 
         formData.append('file', f);
+      }
+      for(var a of audios){
+
+        formData.append('file', a);
       }
       //formData.append('audio', audio);
       formData.append('tour', JSON.stringify(tour));
@@ -192,10 +206,7 @@ const InsertData = (props) => {
 
     }
   };
-  const handleModalClose = () => {
-    dispatch({ type: homeDataConstants.HIDE_ADD_MODAL });
-    window.location.reload()
-  };
+ 
 
   const addPoint = () => {
     setAdd(true)
@@ -204,9 +215,6 @@ const InsertData = (props) => {
 
 
   const handleAdd = (e) => {
-
-
-
 
     if (titlePoint == "" || addressInput.current.value == "" || (!mondayclosed && (mondayFrom == "" || mondayTo == "")) || (!tuesdayclosed && (tuesdayFrom == "" || tuesdayTo == "")) || (!wednesdayclosed && (wednesdayFrom == "" || wednesdayTo == "")) || (!thursdayclosed && (thursdayFrom == "" || thursdayTo == "")) || (!fridayclosed && (fridayFrom == "" || fridayTo == "")) || (!saturdayclosed && (saturdayFrom == "" || saturdayTo == "")) || (!sundayclosed && (sundayFrom == "" || sundayTo == ""))) {
 
@@ -252,6 +260,7 @@ const InsertData = (props) => {
             location: { street: street, country: country, city: city, latitude: latitude, longitude: longitude },
             workingHours: { monday: { from: mondayFrom, to: mondayTo }, tuesday: { from: tuesdayFrom, to: tuesdayTo }, wednesday: { from: wednesdayFrom, to: wednesdayTo }, thursday: { from: thursdayFrom, to: thursdayTo }, friday: { from: fridayFrom, to: fridayTo }, saturday: { from: saturdayFrom, to: saturdayTo }, sunday: { from: sundayFrom, to: sundayTo } },
 
+            category: category
           }
 
           const newData = [point, ...points];
@@ -272,9 +281,15 @@ const InsertData = (props) => {
           setSaturdayClosed(false)
           setSundayClosed(false)
           setOfferName("")
-          //setAddressInput(null)
+          setCategory("")
           setWebUrl("")
           setLocation("")
+
+          setFiles(files.concat(selectedFiles))
+          setAudios(audios.concat(audio2))
+
+          setSelectedFiles([])
+          setAudio2(null)
 
 
         });
@@ -285,12 +300,26 @@ const InsertData = (props) => {
 
   const addFile = (e) => {
     if (e.target.files[0]) {
-      setAudio(e.target.files[0]);
+      
+      var new_file = new File([e.target.files[0]], 'audio1' + titlePoint + "---"+ [e.target.files[0].name]);
+      setAudio(new_file);
+      
+    }
+  };
+
+  const addFile2 = (e) => {
+    if (e.target.files[0]) {
+      
+      var new_file = new File([e.target.files[0]], 'audio2' + titlePoint + "---"+ [e.target.files[0].name]);
+      setAudio2(new_file);
     }
   };
 
   const onFileChange = (event) => {
-    setFile(event.target.files[0]);
+    
+    var new_file = new File([event.target.files[0]], 'image' + "---"+ [event.target.files[0].name]);
+    setFile(new_file);
+   setImagePreview(URL.createObjectURL(event.target.files[0]));
   }
 
 
@@ -426,6 +455,29 @@ const InsertData = (props) => {
 
               <div className="control-group">
                 <div className="form-group controls mb-0 pb-2" style={{ color: "#6c757d", opacity: 1 }}>
+                  <label><b>Business partner id</b></label>
+                  <div class="row" >
+                    <div class="form-group col-lg-10">
+                      <input
+
+                        className={"form-control"}
+                        placeholder="Business partner id"
+                        aria-describedby="basic-addon1"
+                        id="name"
+                        type="text"
+                        style={{ backgroundColor: 'white', outline: 'none', width: "1000px" }}
+
+                        onChange={(e) => setHotelId(e.target.value)}
+                        value={hotelId}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+              <div className="control-group">
+                <div className="form-group controls mb-0 pb-2" style={{ color: "#6c757d", opacity: 1 }}>
                   <label><b>Tour duration</b></label>
                   <div class="row" >
                     <div class="form-group col-lg-10">
@@ -503,6 +555,8 @@ const InsertData = (props) => {
 
               {fileData()}
 
+              <img className="preview" src={imagePreview} alt={"image-"} />
+
               <div className="form-group text-center" style={{ color: "red", fontSize: "0.8em", marginTop: "30px", marginRight: "40px" }} hidden={!errMessage}>
                 {errMessage}
               </div>
@@ -576,6 +630,24 @@ const InsertData = (props) => {
                         </div>
                       </div>
                     </div>
+
+                    <div className="control-group">
+											<div className="form-group controls mb-0 pb-2" style={{ color: "#6c757d", opacity: 1 }}>
+												<label><b>Category</b></label>
+												<div class="row" >
+													<div class="form-group col-lg-10">
+
+														<select onChange={(e) => setCategory(e.target.value)} name="category" class="custom-select" style={{ width: "360px" }}>
+															{categories.map(item =>
+																<option key={item} value={item} >{item}</option>
+															)};
+
+														</select>
+													</div>
+												</div>
+											</div>
+										</div>
+
                     <div className="control-group">
                       <div className="form-group controls mb-0 pb-2" style={{ color: "#6c757d", opacity: 1 }}>
                         <label><b>Price</b></label>
@@ -943,7 +1015,11 @@ const InsertData = (props) => {
                       </div>
                     </div>
 
+                    <div style={{ marginTop: "15px" }}>
 
+<label><b>Mp3</b></label>
+<input type={"file"} accept={".mp3"} onChange={addFile2}/>
+</div>
 
                     <div>
       <div className="row">
