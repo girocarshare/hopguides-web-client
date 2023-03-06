@@ -271,7 +271,7 @@ a:hover, a:active {
 .containerModal {
   position: center;
   z-index: 1;
-  max-width: 500px;
+  max-width: 1000px;
   margin: 0 auto;
 }
 
@@ -455,3 +455,4 @@ th,
 td {
   padding: 20px;
 }
+

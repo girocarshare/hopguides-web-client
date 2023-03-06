@@ -2,19 +2,43 @@
 import React, { useContext, useEffect, useState, forwardRef, useRef } from "react";
 import { homeDataService } from "../services/HomeDataService";
 import { HomeDataContext } from "../contexts/HomeDataContext";
-import { Modal } from "react-bootstrap";
+import Modal from '@mui/material/Modal';
 import { homeDataConstants } from "../constants/HomeDataConstants";
 import TextField from '@mui/material/TextField';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import { YMaps, Map } from "react-yandex-maps";
-
+import Paper from "@material-ui/core/Paper";
+import Box from '@mui/material/Box';
 const mapState = {
 	center: [44, 21],
 	zoom: 8,
 	controls: [],
 };
+
+const style = {
+	position: 'absolute', 
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    // other styles...
+    width: '52%',
+    maxWidth: '600px',
+    minWidth: '270px',
+    boxShadow: 24,
+    py: 4,
+    borderRadius: 3,
+    zIndex: 100,
+    // media query @ the max height you want (my case is the 
+    // height of the viewport before the cutoff phenomenon) - 
+    // set the top to '0' and translate the previous 'y' 
+    // positioning coordinate so the top of the modal is @ the 
+    // top of the viewport
+    '@media(max-height: 890px)': {
+        top: '0',
+        transform: 'translate(-50%, 0%)'
+	}}
 var url = process.env.REACT_APP_URL || "http://localhost:3000/";
 const AddNewTourForm = (props) => {
 
@@ -199,19 +223,17 @@ const AddNewTourForm = (props) => {
 	return (
 
 		<Modal
-			show={homeDataState.showModal} aria-labelledby="contained-modal-title-vcenter" class="modal-dialog modal-lg" centered onHide={handleModalClose} size="lg">
+		open={homeDataState.showModal} aria-labelledby="contained-modal-title-vcenter" class="modal-dialog modal-lg" centered onClose={handleModalClose} size="lg" sx={{overflowY: 'scroll'}} disableScrollLock={false}>
 
-			<Modal.Header closeButton>
-				<Modal.Title id="contained-modal-title-vcenter">
-					<big>Add new tour</big>
-				</Modal.Title>
-			</Modal.Header>
-			<Modal.Body>
+			
+
+
+<Box sx={style}>
 
 
 
-
-						<div   >
+<div>
+					<Paper square>
 
 							<div className="containerModal"  >
 
@@ -907,14 +929,11 @@ const AddNewTourForm = (props) => {
 
 
 
-
+</Paper>
 
 						</div>
 
- </Modal.Body >
-			<Modal.Footer>
-			</Modal.Footer>
-
+</Box>
 		</Modal >
 
 

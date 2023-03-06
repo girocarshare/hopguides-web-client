@@ -36,6 +36,8 @@ const SuccessModal = () => {
 
 
 	return (
+
+		
 		<Modal
 		show={homeDataState.modalData.success} aria-labelledby="contained-modal-title-vcenter" class="modal-dialog modal-lg" centered onHide={handleClose} size="lg">
 

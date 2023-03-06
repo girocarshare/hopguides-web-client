@@ -310,14 +310,14 @@ const HomeData = forwardRef((props, ref) => {
           <table style={{ border: "1px solid gray", width: 1400, background: "white" }}>
             <thead>
               <tr>
-                {admin && <Button
+                <Button
                   style={{ height: "fit-content" }}
                   color="primary"
                   variant="contained"
                   onClick={(e) => addNew(e)}
                 >
                   Add tour
-                </Button>}
+                </Button>
               </tr>
 
               <tr>
