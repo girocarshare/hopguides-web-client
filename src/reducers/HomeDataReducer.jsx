@@ -310,6 +310,27 @@ export const homeDataReducer = (state, action) => {
 
 			};
 
+			case homeDataConstants.SHOW_TERMS_AND_CONDITIONS_MODAL:
+			return {
+				...state,
+				termsAndConditionsModal: {
+					show: true,
+				}
+
+			};
+
+
+		case homeDataConstants.HIDE_TERMS_AND_CONDITIONS_MODAL:
+			return {
+				...state,
+				termsAndConditionsModal: {
+					show: false,
+				}
+
+
+
+			};
+
 
 		case homeDataConstants.SHOW_ADD_MENU_MODAL:
 

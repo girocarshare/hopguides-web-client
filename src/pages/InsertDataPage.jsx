@@ -10,6 +10,7 @@ import AddNewPartnerForm from "../components/AddNewPartnerForm";
 import UpdateMenuModal from "../components/UpdateMenuModal";
 import SuccessModal from "../components/SuccessModal";
 import FailureModal from "../components/FailureModal";
+import TermsAndConditionsModal from "../components/TermsAndConditionsModal";
 const InsertDataPage = () => {
 
 	return (
@@ -17,6 +18,7 @@ const InsertDataPage = () => {
 			<HomeDataContextProvider>
 				<SuccessModal />
 				<FailureModal />
+				<TermsAndConditionsModal />
 				<InsertData />
 			</HomeDataContextProvider>
 		</div>

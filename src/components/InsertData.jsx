@@ -9,6 +9,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import { YMaps, Map } from "react-yandex-maps";
+import TermsAndConditionsModal from "./TermsAndConditionsModal";
 
 const mapState = {
   center: [44, 21],
@@ -86,37 +87,40 @@ const InsertData = (props) => {
 
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [files, setFiles] = useState([]);
-  const [categories, setCategories] = useState(["HISTORY","DRINKS", "NATURE", "EATS", "BRIDGE", "MUSEUMS", "EXPERIENCE" ]);
+  const [categories, setCategories] = useState(["HISTORY", "DRINKS", "NATURE", "EATS", "BRIDGE", "MUSEUMS", "EXPERIENCE"]);
   const [category, setCategory] = useState("");
   const [imagePreviews, setImagePreviews] = useState([]);
   const [progressInfos, setProgressInfos] = useState({ val: [] });
   const [message, setMessage] = useState([]);
   const [imageInfos, setImageInfos] = useState([]);
   const progressInfosRef = useRef(null);
+  
   const { homeDataState, dispatch } = useContext(HomeDataContext);
 
 
-   
+	const [termsAndConditions, setTermsAndConditions] = useState(homeDataState.termsAndConditionsModal.text);
+
   const selectFiles = (event) => {
     let images = [];
 
-    if(titlePoint == ""){
+    if (titlePoint == "") {
       setErrMessagePartner("Please first insert partners name")
-    }else{
-    var fs = []
-    for (let i = 0; i < event.target.files.length; i++) {
-      images.push(URL.createObjectURL(event.target.files[i]));
-      var new_file = new File([event.target.files[i]], 'partner' + titlePoint + "---"+ [event.target.files[i].name]);
-      fs.push(new_file)
-      
-    }
+    } else {
+      var fs = []
+      for (let i = 0; i < event.target.files.length; i++) {
+        images.push(URL.createObjectURL(event.target.files[i]));
+        var new_file = new File([event.target.files[i]], 'partner' + titlePoint + "---" + [event.target.files[i].name]);
+        fs.push(new_file)
 
-    setSelectedFiles(selectedFiles.concat(fs))
-    setImagePreviews(images);
-    setProgressInfos({ val: [] });
-    setMessage([]);}
+      }
+
+      setSelectedFiles(selectedFiles.concat(fs))
+      setImagePreviews(images);
+      setProgressInfos({ val: [] });
+      setMessage([]);
+    }
   };
-  
+
   const uploadImages = () => {
     const files = Array.from(selectedFiles);
 
@@ -138,7 +142,7 @@ const InsertData = (props) => {
       });
 */
     setMessage([]);
-  
+
   };
   const onYmapsLoad = (ymaps) => {
     setYmaps(ymaps)
@@ -167,7 +171,8 @@ const InsertData = (props) => {
         duration: duration,
         length: length,
         highestPoint: highestPoint,
-        bpartnerId: hotelId
+        bpartnerId: hotelId,
+        termsAndConditions: termsAndConditions
 
 
       }
@@ -177,11 +182,11 @@ const InsertData = (props) => {
       formData.append('file', file);
       formData.append('file', audio);
       formData.append('file', audio2);
-      for(var f of files){
+      for (var f of files) {
 
         formData.append('file', f);
       }
-      for(var a of audios){
+      for (var a of audios) {
 
         formData.append('file', a);
       }
@@ -206,10 +211,16 @@ const InsertData = (props) => {
 
     }
   };
- 
+
 
   const addPoint = () => {
     setAdd(true)
+
+  };
+
+  const editTermsAndConditions = () => {
+
+    dispatch({ type: homeDataConstants.SHOW_TERMS_AND_CONDITIONS_MODAL });
 
   };
 
@@ -300,26 +311,26 @@ const InsertData = (props) => {
 
   const addFile = (e) => {
     if (e.target.files[0]) {
-      
-      var new_file = new File([e.target.files[0]], 'audio1' + titlePoint + "---"+ [e.target.files[0].name]);
+
+      var new_file = new File([e.target.files[0]], 'audio1' + titlePoint + "---" + [e.target.files[0].name]);
       setAudio(new_file);
-      
+
     }
   };
 
   const addFile2 = (e) => {
     if (e.target.files[0]) {
-      
-      var new_file = new File([e.target.files[0]], 'audio2' + titlePoint + "---"+ [e.target.files[0].name]);
+
+      var new_file = new File([e.target.files[0]], 'audio2' + titlePoint + "---" + [e.target.files[0].name]);
       setAudio2(new_file);
     }
   };
 
   const onFileChange = (event) => {
-    
-    var new_file = new File([event.target.files[0]], 'image' + "---"+ [event.target.files[0].name]);
+
+    var new_file = new File([event.target.files[0]], 'image' + "---" + [event.target.files[0].name]);
     setFile(new_file);
-   setImagePreview(URL.createObjectURL(event.target.files[0]));
+    setImagePreview(URL.createObjectURL(event.target.files[0]));
   }
 
 
@@ -375,10 +386,15 @@ const InsertData = (props) => {
 
 
 
+
     <div className="containerModal"  >
 
       <div >
 
+        <TermsAndConditionsModal 
+              termsAndConditions = {termsAndConditions}
+              setTermsAndConditions = {setTermsAndConditions}
+              />
         <form id="contactForm" >
 
 
@@ -545,7 +561,7 @@ const InsertData = (props) => {
               <div style={{ marginTop: "15px" }}>
 
                 <label><b>Mp3</b></label>
-                <input type={"file"} accept={".mp3"} onChange={addFile}/>
+                <input type={"file"} accept={".mp3"} onChange={addFile} />
               </div>
               <div style={{ marginTop: "15px" }}>
                 <label><b>Background tour image</b></label>
@@ -556,6 +572,21 @@ const InsertData = (props) => {
               {fileData()}
 
               <img className="preview" src={imagePreview} alt={"image-"} />
+
+
+              <div className="form-group text-center">
+                <button
+                  style={{ background: "#1977cc", marginTop: "15px", marginRight: "55px" }}
+
+                  onClick={(e) => { editTermsAndConditions(e) }}
+                  className="btn btn-primary btn-xl"
+                  id="sendMessageButton"
+                  type="button"
+                >
+                  Edit terms and conditions
+                </button>
+              </div>
+
 
               <div className="form-group text-center" style={{ color: "red", fontSize: "0.8em", marginTop: "30px", marginRight: "40px" }} hidden={!errMessage}>
                 {errMessage}
@@ -632,21 +663,21 @@ const InsertData = (props) => {
                     </div>
 
                     <div className="control-group">
-											<div className="form-group controls mb-0 pb-2" style={{ color: "#6c757d", opacity: 1 }}>
-												<label><b>Category</b></label>
-												<div class="row" >
-													<div class="form-group col-lg-10">
+                      <div className="form-group controls mb-0 pb-2" style={{ color: "#6c757d", opacity: 1 }}>
+                        <label><b>Category</b></label>
+                        <div class="row" >
+                          <div class="form-group col-lg-10">
 
-														<select onChange={(e) => setCategory(e.target.value)} name="category" class="custom-select" style={{ width: "360px" }}>
-															{categories.map(item =>
-																<option key={item} value={item} >{item}</option>
-															)};
+                            <select onChange={(e) => setCategory(e.target.value)} name="category" class="custom-select" style={{ width: "360px" }}>
+                              {categories.map(item =>
+                                <option key={item} value={item} >{item}</option>
+                              )};
 
-														</select>
-													</div>
-												</div>
-											</div>
-										</div>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
 
                     <div className="control-group">
                       <div className="form-group controls mb-0 pb-2" style={{ color: "#6c757d", opacity: 1 }}>
@@ -1017,91 +1048,91 @@ const InsertData = (props) => {
 
                     <div style={{ marginTop: "15px" }}>
 
-<label><b>Mp3</b></label>
-<input type={"file"} accept={".mp3"} onChange={addFile2}/>
-</div>
+                      <label><b>Mp3</b></label>
+                      <input type={"file"} accept={".mp3"} onChange={addFile2} />
+                    </div>
 
                     <div>
-      <div className="row">
-        <div className="col-8">
-          <label className="btn btn-default p-0">
-            <input
-              type="file"
-              multiple
-              accept="image/*"
-              onChange={selectFiles}
-            />
-          </label>
-        </div>
+                      <div className="row">
+                        <div className="col-8">
+                          <label className="btn btn-default p-0">
+                            <input
+                              type="file"
+                              multiple
+                              accept="image/*"
+                              onChange={selectFiles}
+                            />
+                          </label>
+                        </div>
 
-        <div className="col-4">
-          <button
-            className="btn btn-success btn-sm"
-            disabled={!selectedFiles}
-            onClick={uploadImages}
-          >
-            Upload
-          </button>
-        </div>
-      </div>
+                        <div className="col-4">
+                          <button
+                            className="btn btn-success btn-sm"
+                            disabled={!selectedFiles}
+                            onClick={uploadImages}
+                          >
+                            Upload
+                          </button>
+                        </div>
+                      </div>
 
-      {progressInfos &&
-        progressInfos.val.length > 0 &&
-        progressInfos.val.map((progressInfo, index) => (
-          <div className="mb-2" key={index}>
-            <span>{progressInfo.fileName}</span>
-            <div className="progress">
-              <div
-                className="progress-bar progress-bar-info"
-                role="progressbar"
-                aria-valuenow={progressInfo.percentage}
-                aria-valuemin="0"
-                aria-valuemax="100"
-                style={{ width: progressInfo.percentage + "%" }}
-              >
-                {progressInfo.percentage}%
-              </div>
-            </div>
-          </div>
-        ))}
+                      {progressInfos &&
+                        progressInfos.val.length > 0 &&
+                        progressInfos.val.map((progressInfo, index) => (
+                          <div className="mb-2" key={index}>
+                            <span>{progressInfo.fileName}</span>
+                            <div className="progress">
+                              <div
+                                className="progress-bar progress-bar-info"
+                                role="progressbar"
+                                aria-valuenow={progressInfo.percentage}
+                                aria-valuemin="0"
+                                aria-valuemax="100"
+                                style={{ width: progressInfo.percentage + "%" }}
+                              >
+                                {progressInfo.percentage}%
+                              </div>
+                            </div>
+                          </div>
+                        ))}
 
-      {imagePreviews && (
-        <div>
-          {imagePreviews.map((img, i) => {
-            return (
-              <img className="preview" src={img} alt={"image-" + i} key={i} />
-            );
-          })}
-        </div>
-      )}
+                      {imagePreviews && (
+                        <div>
+                          {imagePreviews.map((img, i) => {
+                            return (
+                              <img className="preview" src={img} alt={"image-" + i} key={i} />
+                            );
+                          })}
+                        </div>
+                      )}
 
-      {message.length > 0 && (
-        <div className="alert alert-secondary mt-2" role="alert">
-          <ul>
-            {message.map((item, i) => {
-              return <li key={i}>{item}</li>;
-            })}
-          </ul>
-        </div>
-      )}
+                      {message.length > 0 && (
+                        <div className="alert alert-secondary mt-2" role="alert">
+                          <ul>
+                            {message.map((item, i) => {
+                              return <li key={i}>{item}</li>;
+                            })}
+                          </ul>
+                        </div>
+                      )}
 
-      {imageInfos.length > 0 && (
-        <div className="card mt-3">
-          <div className="card-header">List of Images</div>
-          <ul className="list-group list-group-flush">
-            {imageInfos &&
-              imageInfos.map((img, index) => (
-                <li className="list-group-item" key={index}>
-                  <p>
-                    <a href={img.url}>{img.name}</a>
-                  </p>
-                  <img src={img.url} alt={img.name} height="80px" />
-                </li>
-              ))}
-          </ul>
-        </div>
-      )}
-    </div>
+                      {imageInfos.length > 0 && (
+                        <div className="card mt-3">
+                          <div className="card-header">List of Images</div>
+                          <ul className="list-group list-group-flush">
+                            {imageInfos &&
+                              imageInfos.map((img, index) => (
+                                <li className="list-group-item" key={index}>
+                                  <p>
+                                    <a href={img.url}>{img.name}</a>
+                                  </p>
+                                  <img src={img.url} alt={img.name} height="80px" />
+                                </li>
+                              ))}
+                          </ul>
+                        </div>
+                      )}
+                    </div>
 
 
 
