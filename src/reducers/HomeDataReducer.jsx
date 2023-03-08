@@ -679,6 +679,24 @@ export const homeDataReducer = (state, action) => {
 
 			};
 
+			case homeDataConstants.GET_BPARTNERS_SUCCESS:
+				prodCpy = { ...state };
+
+				prodCpy.bpartners.bpartners = action.data;
+	
+				return prodCpy;
+			
+		
+
+		case homeDataConstants.GET_BPARTNERS_FAILURE:
+			return {
+				...state,
+				bpartners: {
+					bpartners: [],
+				}
+
+			};
+
 		default:
 			return state;
 	}

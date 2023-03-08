@@ -51,6 +51,11 @@ const HomeDataContextProvider = (props) => {
 			text: "",
 		},
 
+		
+		bpartners: {
+			bpartners: [],
+		},
+
 		termsAndConditionsModal: {
 			show: false,
 			text: `GoGiro global terms of service, effective as of 1.3.2023

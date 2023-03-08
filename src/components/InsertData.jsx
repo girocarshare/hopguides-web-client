@@ -18,13 +18,8 @@ const mapState = {
 };
 var url = process.env.REACT_APP_URL || "http://localhost:3000/";
 
-
 const InsertData = (props) => {
-
-
   const addressInput = React.createRef(null);
-
-
   const [title, setTitle] = useState("");
   const [shortInfo, setShortInfo] = useState("");
   const [longInfo, setLongInfo] = useState("");
@@ -47,7 +42,6 @@ const InsertData = (props) => {
   const [email, setEmail] = useState("");
   const [responsiblePerson, setResponsiblePerson] = useState("");
   const [webURL, setWebUrl] = useState("");
-
 
   const [mondayFrom, setMondayFrom] = useState("");
   const [mondayTo, setMondayTo] = useState("");
@@ -72,9 +66,9 @@ const InsertData = (props) => {
   const [saturdayclosed, setSaturdayClosed] = useState(false);
   const [sundayclosed, setSundayClosed] = useState(false);
 
-
   const [errMessagePartner, setErrMessagePartner] = useState("");
   const [errMessage, setErrMessage] = useState("");
+  const [errMessagePhoto, setErrMessagePhoto] = useState("");
   const [points, setPoints] = useState([]);
   const [add, setAdd] = useState(false);
   const [file, setFile] = useState(null);
@@ -94,17 +88,28 @@ const InsertData = (props) => {
   const [message, setMessage] = useState([]);
   const [imageInfos, setImageInfos] = useState([]);
   const progressInfosRef = useRef(null);
-  
+
   const { homeDataState, dispatch } = useContext(HomeDataContext);
 
+  const [termsAndConditions, setTermsAndConditions] = useState(homeDataState.termsAndConditionsModal.text);
+  const someFetchActionCreator = () => {
+    const getDocumentsInfoHandler = async () => {
+      await homeDataService.getBPartners(dispatch);
 
-	const [termsAndConditions, setTermsAndConditions] = useState(homeDataState.termsAndConditionsModal.text);
+
+    };
+    getDocumentsInfoHandler();
+  };
+  
+  useEffect(() => {
+      someFetchActionCreator();
+    }, [dispatch]);
 
   const selectFiles = (event) => {
     let images = [];
 
     if (titlePoint == "") {
-      setErrMessagePartner("Please first insert partners name")
+      setErrMessagePhoto("Please first insert partners name")
     } else {
       var fs = []
       for (let i = 0; i < event.target.files.length; i++) {
@@ -121,29 +126,6 @@ const InsertData = (props) => {
     }
   };
 
-  const uploadImages = () => {
-    const files = Array.from(selectedFiles);
-
-    let _progressInfos = files.map((file) => ({
-      percentage: 0,
-      fileName: "partner" + file.name,
-    }));
-
-    progressInfosRef.current = {
-      val: _progressInfos,
-    };
-
-    /*const uploadPromises = files.map((file, i) => upload(i, file));
-
-    Promise.all(uploadPromises)
-      .then(() => UploadService.getFiles())
-      .then((files) => {
-        setImageInfos(files.data);
-      });
-*/
-    setMessage([]);
-
-  };
   const onYmapsLoad = (ymaps) => {
     setYmaps(ymaps)
     new ymaps.SuggestView(addressInput.current, {
@@ -156,9 +138,9 @@ const InsertData = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (file == null || title == "") {
+    if (file == null || title == "" || audio == null) {
 
-      setErrMessage("Please fill in the tour title field")
+      setErrMessage("Please fill in the fileds marked with *")
     } else {
 
 
@@ -227,7 +209,7 @@ const InsertData = (props) => {
 
   const handleAdd = (e) => {
 
-    if (titlePoint == "" || addressInput.current.value == "" || (!mondayclosed && (mondayFrom == "" || mondayTo == "")) || (!tuesdayclosed && (tuesdayFrom == "" || tuesdayTo == "")) || (!wednesdayclosed && (wednesdayFrom == "" || wednesdayTo == "")) || (!thursdayclosed && (thursdayFrom == "" || thursdayTo == "")) || (!fridayclosed && (fridayFrom == "" || fridayTo == "")) || (!saturdayclosed && (saturdayFrom == "" || saturdayTo == "")) || (!sundayclosed && (sundayFrom == "" || sundayTo == ""))) {
+    if (titlePoint == "" || addressInput.current.value == "" || audio2 == null || selectedFiles.length == 0 || (!mondayclosed && (mondayFrom == "" || mondayTo == "")) || (!tuesdayclosed && (tuesdayFrom == "" || tuesdayTo == "")) || (!wednesdayclosed && (wednesdayFrom == "" || wednesdayTo == "")) || (!thursdayclosed && (thursdayFrom == "" || thursdayTo == "")) || (!fridayclosed && (fridayFrom == "" || fridayTo == "")) || (!saturdayclosed && (saturdayFrom == "" || saturdayTo == "")) || (!sundayclosed && (sundayFrom == "" || sundayTo == ""))) {
 
       setErrMessagePartner("Please insert mandatory fields for partner (marked with *)")
     } else {
@@ -391,19 +373,21 @@ const InsertData = (props) => {
 
       <div >
 
-        <TermsAndConditionsModal 
-              termsAndConditions = {termsAndConditions}
-              setTermsAndConditions = {setTermsAndConditions}
-              />
+        <TermsAndConditionsModal
+          termsAndConditions={termsAndConditions}
+          setTermsAndConditions={setTermsAndConditions}
+        />
         <form id="contactForm" >
 
+          <h1 class="paragraph-box" style={{ fontSize: 28 }} ><b>Add new tour</b></h1>
 
-
-          <table style={{ marginLeft: "4rem", marginBottom: "4rem" }}>
+          <table style={{ marginBottom: "4rem" }}>
             <td width="1000rem"  >
+
               <div className="control-group">
-                <div className="form-group controls mb-0 pb-2" style={{ color: "#6c757d", opacity: 1 }}>
-                  <label><b>Title</b></label>
+
+                <div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
+                  <label><b>Title*</b></label>
                   <div class="row" >
                     <div class="form-group col-lg-10">
                       <input
@@ -413,7 +397,7 @@ const InsertData = (props) => {
                         aria-describedby="basic-addon1"
                         id="name"
                         type="text"
-                        style={{ backgroundColor: 'white', outline: 'none', width: "1000px" }}
+                        style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
 
                         onChange={(e) => setTitle(e.target.value)}
                         value={title}
@@ -424,7 +408,7 @@ const InsertData = (props) => {
               </div>
 
               <div className="control-group">
-                <div className="form-group controls mb-0 pb-2" style={{ color: "#6c757d", opacity: 1 }}>
+                <div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
                   <label><b>Short description</b></label>
                   <div class="row" >
                     <div class="form-group col-lg-10">
@@ -436,7 +420,7 @@ const InsertData = (props) => {
               </div>
 
               <div className="control-group">
-                <div className="form-group controls mb-0 pb-2" style={{ color: "#6c757d", opacity: 1 }}>
+                <div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
                   <label><b>Long description</b></label>
                   <div class="row" >
                     <div class="form-group col-lg-10">
@@ -448,7 +432,7 @@ const InsertData = (props) => {
               </div>
 
               <div className="control-group">
-                <div className="form-group controls mb-0 pb-2" style={{ color: "#6c757d", opacity: 1 }}>
+                <div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
                   <label><b>Price</b></label>
                   <div class="row" >
                     <div class="form-group col-lg-10">
@@ -459,7 +443,7 @@ const InsertData = (props) => {
                         aria-describedby="basic-addon1"
                         id="name"
                         type="text"
-                        style={{ backgroundColor: 'white', outline: 'none', width: "1000px" }}
+                        style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
 
                         onChange={(e) => setPrice(e.target.value)}
                         value={price}
@@ -469,31 +453,26 @@ const InsertData = (props) => {
                 </div>
               </div>
 
+
               <div className="control-group">
-                <div className="form-group controls mb-0 pb-2" style={{ color: "#6c757d", opacity: 1 }}>
-                  <label><b>Business partner id</b></label>
-                  <div class="row" >
-                    <div class="form-group col-lg-10">
-                      <input
+                      <div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
+                        <label><b>Business partner id</b></label>
+                        <div class="row" >
+                          <div class="form-group col-lg-10">
 
-                        className={"form-control"}
-                        placeholder="Business partner id"
-                        aria-describedby="basic-addon1"
-                        id="name"
-                        type="text"
-                        style={{ backgroundColor: 'white', outline: 'none', width: "1000px" }}
+                            <select onChange={(e) => setHotelId(e.target.value)} name="category" class="custom-select" style={{ height: "50px", width: "1000px" }}>
+                              {homeDataState.bpartners.bpartners.map(item =>
+                                <option key={item.id} value={item.id} >{item.name}</option>
+                              )};
 
-                        onChange={(e) => setHotelId(e.target.value)}
-                        value={hotelId}
-                      />
+                            </select>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              </div>
-
 
               <div className="control-group">
-                <div className="form-group controls mb-0 pb-2" style={{ color: "#6c757d", opacity: 1 }}>
+                <div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
                   <label><b>Tour duration</b></label>
                   <div class="row" >
                     <div class="form-group col-lg-10">
@@ -504,7 +483,7 @@ const InsertData = (props) => {
                         aria-describedby="basic-addon1"
                         id="name"
                         type="text"
-                        style={{ backgroundColor: 'white', outline: 'none', width: "1000px" }}
+                        style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
 
                         onChange={(e) => setDuration(e.target.value)}
                         value={duration}
@@ -515,7 +494,7 @@ const InsertData = (props) => {
               </div>
 
               <div className="control-group">
-                <div className="form-group controls mb-0 pb-2" style={{ color: "#6c757d", opacity: 1 }}>
+                <div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
                   <label><b>Tour lenght (km)</b></label>
                   <div class="row" >
                     <div class="form-group col-lg-10">
@@ -526,7 +505,7 @@ const InsertData = (props) => {
                         aria-describedby="basic-addon1"
                         id="name"
                         type="text"
-                        style={{ backgroundColor: 'white', outline: 'none', width: "1000px" }}
+                        style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
 
                         onChange={(e) => setLength(e.target.value)}
                         value={length}
@@ -538,7 +517,7 @@ const InsertData = (props) => {
 
 
               <div className="control-group">
-                <div className="form-group controls mb-0 pb-2" style={{ color: "#6c757d", opacity: 1 }}>
+                <div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
                   <label><b>Highest point</b></label>
                   <div class="row" >
                     <div class="form-group col-lg-10">
@@ -549,7 +528,7 @@ const InsertData = (props) => {
                         aria-describedby="basic-addon1"
                         id="name"
                         type="text"
-                        style={{ backgroundColor: 'white', outline: 'none', width: "1000px" }}
+                        style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
 
                         onChange={(e) => setHighestPoint(e.target.value)}
                         value={highestPoint}
@@ -560,23 +539,26 @@ const InsertData = (props) => {
               </div>
               <div style={{ marginTop: "15px" }}>
 
-                <label><b>Mp3</b></label>
+                <label><b>Text to speach audio*</b></label>
+                <br />   <br />
                 <input type={"file"} accept={".mp3"} onChange={addFile} />
               </div>
               <div style={{ marginTop: "15px" }}>
-                <label><b>Background tour image</b></label>
+                <label><b>Background tour image*</b></label>
+                <br />   <br />
                 <input type="file" name="file" onChange={onFileChange} />
 
               </div>
 
               {fileData()}
 
-              <img className="preview" src={imagePreview} alt={"image-"} />
+              {imagePreview && <img className="preview" src={imagePreview} alt={"image-"} />}
 
 
+              <br />
               <div className="form-group text-center">
                 <button
-                  style={{ background: "#1977cc", marginTop: "15px", marginRight: "55px" }}
+                  style={{ background: "#f0f0f0", marginTop: "px", marginRight: "55px", border: "1px solid black", padding: "5px 15px", height: "35px" }}
 
                   onClick={(e) => { editTermsAndConditions(e) }}
                   className="btn btn-primary btn-xl"
@@ -588,15 +570,10 @@ const InsertData = (props) => {
               </div>
 
 
-              <div className="form-group text-center" style={{ color: "red", fontSize: "0.8em", marginTop: "30px", marginRight: "40px" }} hidden={!errMessage}>
-                {errMessage}
-              </div>
 
-
-              <div className="form-group text-center">
+              <div className="button-tc">
                 <button
-                  style={{ background: "#1977cc", marginTop: "15px", marginRight: "55px" }}
-
+                  style={{ background: "#0099ff", marginTop: "px", marginRight: "55px", padding: "5px 15px", height: "35px" }}
                   onClick={(e) => { addPoint(e) }}
                   className="btn btn-primary btn-xl"
                   id="sendMessageButton"
@@ -617,7 +594,7 @@ const InsertData = (props) => {
               <div>
                 {add &&
                   <div><div className="control-group">
-                    <div className="form-group controls mb-0 pb-2" style={{ color: "#6c757d", opacity: 1 }}>
+                    <div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
                       <label><b>Partner's name *</b></label>
                       <div class="row" >
                         <div class="form-group col-lg-10">
@@ -628,7 +605,7 @@ const InsertData = (props) => {
                             aria-describedby="basic-addon1"
                             id="name"
                             type="text"
-                            style={{ backgroundColor: 'white', outline: 'none', width: "1000px" }}
+                            style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
 
                             onChange={(e) => setTitlePoint(e.target.value)}
                             value={titlePoint}
@@ -639,7 +616,7 @@ const InsertData = (props) => {
                   </div>
 
                     <div className="control-group">
-                      <div className="form-group controls mb-0 pb-2" style={{ color: "#6c757d", opacity: 1 }}>
+                      <div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
                         <label><b>Short description </b></label>
                         <div class="row" >
                           <div class="form-group col-lg-10">
@@ -651,7 +628,7 @@ const InsertData = (props) => {
                     </div>
 
                     <div className="control-group">
-                      <div className="form-group controls mb-0 pb-2" style={{ color: "#6c757d", opacity: 1 }}>
+                      <div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
                         <label><b>Long description</b></label>
                         <div class="row" >
                           <div class="form-group col-lg-10">
@@ -663,12 +640,12 @@ const InsertData = (props) => {
                     </div>
 
                     <div className="control-group">
-                      <div className="form-group controls mb-0 pb-2" style={{ color: "#6c757d", opacity: 1 }}>
+                      <div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
                         <label><b>Category</b></label>
                         <div class="row" >
                           <div class="form-group col-lg-10">
 
-                            <select onChange={(e) => setCategory(e.target.value)} name="category" class="custom-select" style={{ width: "360px" }}>
+                            <select onChange={(e) => setCategory(e.target.value)} name="category" class="custom-select" style={{ height: "50px", width: "1000px" }}>
                               {categories.map(item =>
                                 <option key={item} value={item} >{item}</option>
                               )};
@@ -680,7 +657,7 @@ const InsertData = (props) => {
                     </div>
 
                     <div className="control-group">
-                      <div className="form-group controls mb-0 pb-2" style={{ color: "#6c757d", opacity: 1 }}>
+                      <div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
                         <label><b>Price</b></label>
                         <div class="row" >
                           <div class="form-group col-lg-10">
@@ -691,7 +668,7 @@ const InsertData = (props) => {
                               aria-describedby="basic-addon1"
                               id="name"
                               type="text"
-                              style={{ backgroundColor: 'white', outline: 'none', width: "1000px" }}
+                              style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
 
                               onChange={(e) => setPointPrice(e.target.value)}
                               value={pointPrice}
@@ -701,7 +678,7 @@ const InsertData = (props) => {
                       </div>
                     </div>
                     <div className="control-group">
-                      <div className="form-group controls mb-0 pb-2" style={{ color: "#6c757d", opacity: 1 }}>
+                      <div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
                         <label><b>Offer name</b></label>
                         <div class="row" >
                           <div class="form-group col-lg-10">
@@ -712,7 +689,7 @@ const InsertData = (props) => {
                               aria-describedby="basic-addon1"
                               id="name"
                               type="text"
-                              style={{ backgroundColor: 'white', outline: 'none', width: "1000px" }}
+                              style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
 
                               onChange={(e) => setOfferName(e.target.value)}
                               value={offerName}
@@ -723,11 +700,11 @@ const InsertData = (props) => {
                     </div>
 
                     <div className="control-group">
-                      <div className="form-group controls mb-0 pb-2" style={{ color: "#6c757d", opacity: 1 }}>
+                      <div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
                         <label><b>Address *</b></label>
                         <div class="row" >
                           <div class="form-group col-lg-10">
-                            <input className="form-control" id="suggest" ref={addressInput} placeholder="Address" style={{ width: "1000px" }} />
+                            <input className="form-control" id="suggest" ref={addressInput} placeholder="Address" style={{ width: "1000px", height: "50px" }} />
 
                             <YMaps
                               query={{
@@ -753,7 +730,7 @@ const InsertData = (props) => {
                     <br />
 
                     <div className="control-group">
-                      <div className="form-group controls mb-0 pb-2" style={{ color: "#6c757d", opacity: 1, marginLeft: "300px" }}>
+                      <div className="form-group controls mb-0 pb-2" style={{ opacity: 1, marginLeft: "300px" }}>
                         <label><b>Monday</b></label>
 
                         <br />
@@ -796,7 +773,7 @@ const InsertData = (props) => {
                     </div>
 
                     <div className="control-group">
-                      <div className="form-group controls mb-0 pb-2" style={{ color: "#6c757d", opacity: 1, marginLeft: "300px" }}>
+                      <div className="form-group controls mb-0 pb-2" style={{ opacity: 1, marginLeft: "300px" }}>
                         <label><b>Tuesday</b></label>
                         <br />
                         <label>
@@ -838,7 +815,7 @@ const InsertData = (props) => {
                     </div>
 
                     <div className="control-group">
-                      <div className="form-group controls mb-0 pb-2" style={{ color: "#6c757d", opacity: 1, marginLeft: "300px" }}>
+                      <div className="form-group controls mb-0 pb-2" style={{ opacity: 1, marginLeft: "300px" }}>
                         <label><b>Wednesday</b></label>
                         <br />
                         <label>
@@ -880,7 +857,7 @@ const InsertData = (props) => {
                     </div>
 
                     <div className="control-group">
-                      <div className="form-group controls mb-0 pb-2" style={{ color: "#6c757d", opacity: 1, marginLeft: "300px" }}>
+                      <div className="form-group controls mb-0 pb-2" style={{ opacity: 1, marginLeft: "300px" }}>
                         <label><b>Thursday</b></label>
                         <br />
                         <label>
@@ -922,7 +899,7 @@ const InsertData = (props) => {
                     </div>
 
                     <div className="control-group">
-                      <div className="form-group controls mb-0 pb-2" style={{ color: "#6c757d", opacity: 1, marginLeft: "300px" }}>
+                      <div className="form-group controls mb-0 pb-2" style={{ opacity: 1, marginLeft: "300px" }}>
                         <label><b>Friday</b></label>
                         <br />
                         <label>
@@ -963,7 +940,7 @@ const InsertData = (props) => {
                     </div>
 
                     <div className="control-group">
-                      <div className="form-group controls mb-0 pb-2" style={{ color: "#6c757d", opacity: 1, marginLeft: "300px" }}>
+                      <div className="form-group controls mb-0 pb-2" style={{ opacity: 1, marginLeft: "300px" }}>
                         <label><b>Saturday</b></label>
                         <br />
                         <label>
@@ -1005,7 +982,7 @@ const InsertData = (props) => {
                     </div>
 
                     <div className="control-group">
-                      <div className="form-group controls mb-0 pb-2" style={{ color: "#6c757d", opacity: 1, marginLeft: "300px" }}>
+                      <div className="form-group controls mb-0 pb-2" style={{ opacity: 1, marginLeft: "300px" }}>
                         <label><b>Sunday</b></label>
                         <br />
                         <label>
@@ -1048,11 +1025,16 @@ const InsertData = (props) => {
 
                     <div style={{ marginTop: "15px" }}>
 
-                      <label><b>Mp3</b></label>
+                      <label><b>Text to speach audio</b></label>
+                      <br /><br />
                       <input type={"file"} accept={".mp3"} onChange={addFile2} />
                     </div>
 
+                    <br />
                     <div>
+
+                      <label><b>Image gallery</b></label>
+                      <br /><br/>
                       <div className="row">
                         <div className="col-8">
                           <label className="btn btn-default p-0">
@@ -1065,15 +1047,7 @@ const InsertData = (props) => {
                           </label>
                         </div>
 
-                        <div className="col-4">
-                          <button
-                            className="btn btn-success btn-sm"
-                            disabled={!selectedFiles}
-                            onClick={uploadImages}
-                          >
-                            Upload
-                          </button>
-                        </div>
+
                       </div>
 
                       {progressInfos &&
@@ -1100,7 +1074,10 @@ const InsertData = (props) => {
                         <div>
                           {imagePreviews.map((img, i) => {
                             return (
+                              <div>
+                              <br/>
                               <img className="preview" src={img} alt={"image-" + i} key={i} />
+                              </div>
                             );
                           })}
                         </div>
@@ -1118,6 +1095,7 @@ const InsertData = (props) => {
 
                       {imageInfos.length > 0 && (
                         <div className="card mt-3">
+                          <br/>
                           <div className="card-header">List of Images</div>
                           <ul className="list-group list-group-flush">
                             {imageInfos &&
@@ -1136,14 +1114,16 @@ const InsertData = (props) => {
 
 
 
-
+                    <div className="paragraph-box2" style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }} hidden={!errMessagePhoto}>
+          {errMessagePhoto}
+        </div>
 
                     <br />
 
                     <h6><b>Contact information about partner</b></h6>
                     <br />
                     <div className="control-group">
-                      <div className="form-group controls mb-0 pb-2" style={{ color: "#6c757d", opacity: 1 }}>
+                      <div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
                         <label><b>Responsible person name</b></label>
                         <div class="row" >
                           <div class="form-group col-lg-10">
@@ -1154,7 +1134,7 @@ const InsertData = (props) => {
                               aria-describedby="basic-addon1"
                               id="name"
                               type="text"
-                              style={{ backgroundColor: 'white', outline: 'none', width: "1000px" }}
+                              style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
 
                               onChange={(e) => setResponsiblePerson(e.target.value)}
                               value={responsiblePerson}
@@ -1164,7 +1144,7 @@ const InsertData = (props) => {
                       </div>
                     </div>
                     <div className="control-group">
-                      <div className="form-group controls mb-0 pb-2" style={{ color: "#6c757d", opacity: 1 }}>
+                      <div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
                         <label><b>Phone</b></label>
                         <div class="row" >
                           <div class="form-group col-lg-10">
@@ -1175,7 +1155,7 @@ const InsertData = (props) => {
                               aria-describedby="basic-addon1"
                               id="name"
                               type="text"
-                              style={{ backgroundColor: 'white', outline: 'none', width: "1000px" }}
+                              style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
 
                               onChange={(e) => setPhone(e.target.value)}
                               value={phone}
@@ -1186,7 +1166,7 @@ const InsertData = (props) => {
                     </div>
 
                     <div className="control-group">
-                      <div className="form-group controls mb-0 pb-2" style={{ color: "#6c757d", opacity: 1 }}>
+                      <div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
                         <label><b>Email</b></label>
                         <div class="row" >
                           <div class="form-group col-lg-10">
@@ -1197,7 +1177,7 @@ const InsertData = (props) => {
                               aria-describedby="basic-addon1"
                               id="name"
                               type="email"
-                              style={{ backgroundColor: 'white', outline: 'none', width: "1000px" }}
+                              style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
 
                               onChange={(e) => setEmail(e.target.value)}
                               value={email}
@@ -1208,7 +1188,7 @@ const InsertData = (props) => {
                     </div>
 
                     <div className="control-group">
-                      <div className="form-group controls mb-0 pb-2" style={{ color: "#6c757d", opacity: 1 }}>
+                      <div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
                         <label><b>Web page</b></label>
                         <div class="row" >
                           <div class="form-group col-lg-10">
@@ -1219,7 +1199,7 @@ const InsertData = (props) => {
                               aria-describedby="basic-addon1"
                               id="name"
                               type="text"
-                              style={{ backgroundColor: 'white', outline: 'none', width: "1000px" }}
+                              style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
 
                               onChange={(e) => setWebUrl(e.target.value)}
                               value={webURL}
@@ -1232,9 +1212,9 @@ const InsertData = (props) => {
 
 
 
-                    <div className="form-group text-center">
+                    <div className="button-p">
                       <button
-                        style={{ background: "#1977cc", marginTop: "15px", marginRight: "55px" }}
+                        style={{ background: "#0099ff", marginTop: "px", marginRight: "55px", padding: "5px 15px", height: "35px" }}
 
                         onClick={(e) => { handleAdd(e) }}
                         className="btn btn-primary btn-xl"
@@ -1250,7 +1230,7 @@ const InsertData = (props) => {
 
           </table>
         </form>
-        <div className="form-group text-center" style={{ color: "red", fontSize: "0.8em", marginTop: "30px", marginRight: "40px" }} hidden={!errMessagePartner}>
+        <div className="paragraph-box2" style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }} hidden={!errMessagePartner}>
           {errMessagePartner}
         </div>
       </div>
@@ -1293,15 +1273,12 @@ const InsertData = (props) => {
           }
         </div>
       }
-
-
-
-      <div className="form-group text-center" style={{ color: "red", fontSize: "0.8em", marginTop: "30px", marginRight: "40px" }} hidden={!errMessage}>
+      <div  className="paragraph-box2" style={{ color: "red", fontSize: "0.8em", marginTop: "30px", marginRight: "40px" }} hidden={!errMessage}>
         {errMessage}
       </div>
-      <div className="form-group text-center">
+      <div className="button-p">
         <button
-          style={{ background: "#1977cc", marginTop: "15px" }}
+          style={{ background: "#0099ff", marginTop: "px", marginRight: "55px", padding: "5px 15px", height: "35px" }}
 
           onClick={(e) => { handleSubmit(e) }}
           className="btn btn-primary btn-xl"
@@ -1313,10 +1290,6 @@ const InsertData = (props) => {
       </div>
 
       <br />
-
-
-
-
 
     </div >
 

@@ -141,6 +141,16 @@ div:target {
   text-align: center;
 
 }
+
+.button-tc {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0px auto 0px;
+  padding: 10px;
+  text-align: center;
+
+}
 a:link, a:visited {
   background-color: white;
   z-index: 1;

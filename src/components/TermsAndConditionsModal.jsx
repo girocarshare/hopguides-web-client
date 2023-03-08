@@ -54,16 +54,16 @@ const TermsAndConditionsModal = (props) => {
 
 								<div class="row" >
 									<div class="form-group col-lg-10">
-										<textarea className="form-control" style={{ height: "500px", width: "1100px" }} type="textarea" required name="message" placeholder="Long description" value={props.termsAndConditions} onChange={(e) => props.setTermsAndConditions(e.target.value)}></textarea>
+										<textarea className="form-control" style={{ height: "430px", width: "1100px" }} type="textarea" required name="message" placeholder="Long description" value={props.termsAndConditions} onChange={(e) => props.setTermsAndConditions(e.target.value)}></textarea>
 
 									</div>
 								</div>
 							</div>
 						</div>
 
-						<div className="form-group text-center">
+						<div className="button-p">
 							<button
-								style={{ background: "#1977cc", marginTop: "15px", marginRight: "55px" }}
+								style={{ background: "#0099ff", marginTop: "px", marginRight: "55px", padding: "5px 15px", height: "35px" }}
 
 								onClick={handleClose}
 								className="btn btn-primary btn-xl"
