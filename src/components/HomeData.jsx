@@ -8,12 +8,11 @@ import React, {
 } from "react";
 import { HomeDataContext } from "../contexts/HomeDataContext";
 import { homeDataService } from "../services/HomeDataService";
-import { Button } from "@material-ui/core";
 import { homeDataConstants } from "../constants/HomeDataConstants";
-import EditIcon from '@mui/icons-material/Edit';
-import LaunchIcon from '@mui/icons-material/Launch';
+import { MdOutlineModeEditOutline, MdLaunch } from 'react-icons/md';
 import Axios from "axios";
 import { deleteLocalStorage, authHeader } from "../helpers/auth-header";
+import AddNewTourForm from "./AddNewTourForm";
 
 
 var url = process.env.REACT_APP_URL || "http://localhost:3000/";
@@ -230,45 +229,46 @@ const HomeData = forwardRef((props, ref) => {
 
     <div class="login-page" >
 
+{homeDataState.showModal && <div >
+  <AddNewTourForm/>
+  </div>}
       {!role &&
         <div class="button-login">
 
-          <Button
+          <button
             type="button"
-
-            style={{ color: "black" }}
+            style={{ background: "#0099ff", marginTop: "px", marginRight: "55px", padding: "5px 15px", height: "35px" }}
             onClick={handleLogin}
             class="btn btn-primary btn-lg"
           >
             Log in
-          </Button>
+          </button>
         </div>
       }
 
       {role &&
         <div class=" button-login">
-          <Button
+           <button
             type="button"
-            style={{ color: "black" }}
+            style={{ background: "#0099ff", marginTop: "px", marginRight: "55px", padding: "5px 15px", height: "35px" }}
             onClick={handleLogout}
             class="btn btn-primary btn-lg"
           >
             Log out
-          </Button>
+          </button>
         </div>
       }
       <br />
       {adminOnly &&
         <div class="button-login">
 
-          <Button
-            type="button"
-            style={{ color: "black" }}
+          <button
+            type="button" style={{ background: "#0099ff", marginTop: "px", marginRight: "55px", padding: "5px 15px", height: "35px" }}
             onClick={handleRegister}
             class="btn btn-primary btn-lg"
           >
             Register new user
-          </Button>
+          </button>
         </div>
       }
 
@@ -310,14 +310,14 @@ const HomeData = forwardRef((props, ref) => {
           <table style={{ border: "1px solid gray", width: 1400, background: "white" }}>
             <thead>
               <tr>
-                <Button
-                  style={{ height: "fit-content" }}
+                <button 
+                style={{ background: "#0099ff", marginTop: "px", marginRight: "55px", padding: "5px 15px", height: "35px" }}
                   color="primary"
                   variant="contained"
                   onClick={(e) => addNew(e)}
                 >
                   Add tour
-                </Button>
+                </button>
               </tr>
 
               <tr>
@@ -374,14 +374,14 @@ const HomeData = forwardRef((props, ref) => {
               <table style={{ border: "1px solid gray", width: 1400, background: "white" }}>
                 <thead>
                   <tr>
-                    {admin && <Button
-                      style={{ height: "fit-content" }}
+                    {admin && <button
+                       style={{ background: "#0099ff", marginTop: "px", marginRight: "55px", padding: "5px 15px", height: "35px" }}
                       color="primary"
                       variant="contained"
                       onClick={(e) => addNewPartner(e, tour.tourId)}
                     >
                       Add partner
-                    </Button>}
+                    </button>}
                   </tr>
 
                   <tr>
@@ -402,16 +402,16 @@ const HomeData = forwardRef((props, ref) => {
                 {tour.points.map((points) => (
                   <tbody>
                     <tr >
-                      <td style={{ border: "1px solid gray" }}><Button
+                      <td style={{ border: "1px solid gray" }}><button
                       color="inherit"
                       onClick={(event) => {
 
                         visitWebsite(event, points.point.id)
                       }}
                     >
-                      <LaunchIcon />
+                      <MdLaunch />
 
-                    </Button></td>
+                    </button></td>
                       <td style={{ border: "1px solid gray" }}>{points.point.title.en}</td>
                       <td style={{ border: "1px solid gray" }}>
                         <input
@@ -476,24 +476,24 @@ const HomeData = forwardRef((props, ref) => {
 
                       <td style={{ border: "1px solid gray" }}>{points.monthlyUsed}</td>
 
-                      <td style={{ border: "1px solid gray" }}>  <Button
+                      <td style={{ border: "1px solid gray" }}>  <button
                       color="inherit"
                       onClick={(event) => {
                         updateMenu(event, points.point.id)
                       }}
                     >
 
-                      <EditIcon />
-                    </Button></td>
+                      <MdOutlineModeEditOutline />
+                    </button></td>
                       <td style={{ border: "1px solid gray" }}>      
-                         <Button
+                         <button
                       color="inherit"
                       onClick={(event) => {
                         getQrCode(event, points.point.id)
                       }}
                     >
                       Get QR code
-                    </Button></td>
+                    </button></td>
                       <td style={{ border: "1px solid gray" }}><button onClick={(e) => updatePartnerPrice(e, points)} >{updatePartner}</button></td>
 
                     </tr>

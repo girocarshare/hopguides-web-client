@@ -19,7 +19,7 @@
 }
 
 .form {
-  position: relative;
+    
   z-index: 1;
   background: #FFFFFF;
   max-width: 1200px;
@@ -39,7 +39,7 @@ img {
 .home-box {
 
   font-family: monospace;
-  position: relative;
+    
   z-index: 1;
   background: #f7f5f5;
   max-width: 1200px;
@@ -50,8 +50,6 @@ img {
 }
 
 .paragraph-box {
-  position: relative;
-  z-index: 1;
   max-width: 1200px;
   margin: 0px auto 0px;
   padding: 45px;
@@ -62,7 +60,7 @@ img {
 
 
 .image-box {
-  position: relative;
+    
   z-index: 1;
   max-width: 400px;
   margin: 0px auto 0px;
@@ -72,7 +70,7 @@ img {
 }
 
 .menu-box {
-  position: relative;
+    
   z-index: 1;
   max-width: 700px;
   margin: 0px auto 0px;
@@ -86,7 +84,7 @@ ul {
   list-style-position: inside;
 }
 .paragraph-box2 {
-  position: relative;
+    
   z-index: 1;
   max-width: 1200px;
   margin: 20px auto 0px;
@@ -94,7 +92,7 @@ ul {
 
 }
 .button-login {
-  position: relative;
+    
   z-index: 1;
   max-width: 1200px;
   margin: 0px auto 0px;
@@ -103,7 +101,7 @@ ul {
 }
 
 .ul-box2 {
-  position: relative;
+    
   z-index: 1;
   margin: 20px auto 0px;
   text-align: center;
@@ -115,7 +113,7 @@ div:target {
   border: 5px solid rgb(247, 0, 41);
 }
 .contact-box {
-  position: relative;
+    
   z-index: 1;
   max-width: 1400px;
   margin: 0px auto 0px;
@@ -125,7 +123,7 @@ div:target {
 }
 
 .hotelcontact-box {
-  position: relative;
+    
   z-index: 1;
   max-width: 1200px;
   margin: 0px auto 0px;
@@ -133,7 +131,6 @@ div:target {
 }
 
 .button-p {
-  position: relative;
   z-index: 1;
   max-width: 1200px;
   margin: 0px auto 0px;
@@ -143,7 +140,6 @@ div:target {
 }
 
 .button-tc {
-  position: relative;
   z-index: 1;
   max-width: 1200px;
   margin: 0px auto 0px;
@@ -185,7 +181,7 @@ a:hover, a:active {
 .header2 {
 
   font-family: monospace;
-  position: relative;
+    
   z-index: 1;
   max-width: 1200px;
   margin: 0px auto 0px;
@@ -197,7 +193,7 @@ a:hover, a:active {
 }
 
 .form-modal {
-  position: relative;
+    
   z-index: 1;
   background: #FFFFFF;
   max-width: 1200px;
@@ -287,7 +283,7 @@ a:hover, a:active {
 
 
 .container {
-  position: relative;
+    
   z-index: 1;
   max-width: 500px;
   margin: 0 auto;
@@ -366,7 +362,6 @@ body {
 }
 
 .custom-select {
-  position: relative;
   font-family: Arial;
 }
 
@@ -465,4 +460,48 @@ th,
 td {
   padding: 20px;
 }
+.modal {
+  position: fixed; /* positioning in center of page */
+  top: 20vh;
+  left: 25vw;
+  transform: translate(-18%,-18%);
+  padding: 3vw;
+  height: 600px; /* size */
+  width: 1200px;
+  background-color: white; /* background color */
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+}
 
+/* Modal Content/Box */
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.overlay {
+  position: fixed; /* Positioning and size */
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(128,128,128,0.5); /* color */
+}

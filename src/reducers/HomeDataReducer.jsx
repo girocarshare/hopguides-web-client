@@ -311,13 +311,11 @@ export const homeDataReducer = (state, action) => {
 			};
 
 			case homeDataConstants.SHOW_TERMS_AND_CONDITIONS_MODAL:
-			return {
-				...state,
-				termsAndConditionsModal: {
-					show: true,
-				}
+				
+			prodCpy = { ...state };
 
-			};
+			prodCpy.termsAndConditionsModal.show = true;
+			return prodCpy;
 
 
 		case homeDataConstants.HIDE_TERMS_AND_CONDITIONS_MODAL:

@@ -2,7 +2,6 @@
 import React, { useContext, useEffect, useState, forwardRef, useRef } from "react";
 import { homeDataService } from "../services/HomeDataService";
 import { HomeDataContext } from "../contexts/HomeDataContext";
-import { Modal } from "react-bootstrap";
 import { homeDataConstants } from "../constants/HomeDataConstants";
 import TextField from '@mui/material/TextField';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -100,10 +99,10 @@ const InsertData = (props) => {
     };
     getDocumentsInfoHandler();
   };
-  
+
   useEffect(() => {
-      someFetchActionCreator();
-    }, [dispatch]);
+    someFetchActionCreator();
+  }, [dispatch]);
 
   const selectFiles = (event) => {
     let images = [];
@@ -373,10 +372,11 @@ const InsertData = (props) => {
 
       <div >
 
-        <TermsAndConditionsModal
-          termsAndConditions={termsAndConditions}
-          setTermsAndConditions={setTermsAndConditions}
-        />
+        {homeDataState.termsAndConditionsModal.show && <div >
+          <TermsAndConditionsModal
+            termsAndConditions={termsAndConditions}
+            setTermsAndConditions={setTermsAndConditions}
+          /></div>}
         <form id="contactForm" >
 
           <h1 class="paragraph-box" style={{ fontSize: 28 }} ><b>Add new tour</b></h1>
@@ -455,21 +455,21 @@ const InsertData = (props) => {
 
 
               <div className="control-group">
-                      <div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
-                        <label><b>Business partner id</b></label>
-                        <div class="row" >
-                          <div class="form-group col-lg-10">
+                <div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
+                  <label><b>Business partner id</b></label>
+                  <div class="row" >
+                    <div class="form-group col-lg-10">
 
-                            <select onChange={(e) => setHotelId(e.target.value)} name="category" class="custom-select" style={{ height: "50px", width: "1000px" }}>
-                              {homeDataState.bpartners.bpartners.map(item =>
-                                <option key={item.id} value={item.id} >{item.name}</option>
-                              )};
+                      <select onChange={(e) => setHotelId(e.target.value)} name="category" class="custom-select" style={{ height: "50px", width: "1000px" }}>
+                        {homeDataState.bpartners.bpartners.map(item =>
+                          <option key={item.id} value={item.id} >{item.name}</option>
+                        )};
 
-                            </select>
-                          </div>
-                        </div>
-                      </div>
+                      </select>
                     </div>
+                  </div>
+                </div>
+              </div>
 
               <div className="control-group">
                 <div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
@@ -1034,7 +1034,7 @@ const InsertData = (props) => {
                     <div>
 
                       <label><b>Image gallery</b></label>
-                      <br /><br/>
+                      <br /><br />
                       <div className="row">
                         <div className="col-8">
                           <label className="btn btn-default p-0">
@@ -1075,8 +1075,8 @@ const InsertData = (props) => {
                           {imagePreviews.map((img, i) => {
                             return (
                               <div>
-                              <br/>
-                              <img className="preview" src={img} alt={"image-" + i} key={i} />
+                                <br />
+                                <img className="preview" src={img} alt={"image-" + i} key={i} />
                               </div>
                             );
                           })}
@@ -1095,7 +1095,7 @@ const InsertData = (props) => {
 
                       {imageInfos.length > 0 && (
                         <div className="card mt-3">
-                          <br/>
+                          <br />
                           <div className="card-header">List of Images</div>
                           <ul className="list-group list-group-flush">
                             {imageInfos &&
@@ -1115,8 +1115,8 @@ const InsertData = (props) => {
 
 
                     <div className="paragraph-box2" style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }} hidden={!errMessagePhoto}>
-          {errMessagePhoto}
-        </div>
+                      {errMessagePhoto}
+                    </div>
 
                     <br />
 
@@ -1273,7 +1273,7 @@ const InsertData = (props) => {
           }
         </div>
       }
-      <div  className="paragraph-box2" style={{ color: "red", fontSize: "0.8em", marginTop: "30px", marginRight: "40px" }} hidden={!errMessage}>
+      <div className="paragraph-box2" style={{ color: "red", fontSize: "0.8em", marginTop: "30px", marginRight: "40px" }} hidden={!errMessage}>
         {errMessage}
       </div>
       <div className="button-p">
