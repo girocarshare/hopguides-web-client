@@ -3,10 +3,7 @@ import React, { useContext, useEffect, useState, forwardRef, useRef } from "reac
 import { homeDataService } from "../services/HomeDataService";
 import { HomeDataContext } from "../contexts/HomeDataContext";
 import { homeDataConstants } from "../constants/HomeDataConstants";
-import TextField from '@mui/material/TextField';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { TimePicker } from '@mui/x-date-pickers/TimePicker';
+import TimePicker from 'react-time-picker';
 import { YMaps, Map } from "react-yandex-maps";
 import TermsAndConditionsModal from "./TermsAndConditionsModal";
 
@@ -56,6 +53,8 @@ const InsertData = (props) => {
   const [saturdayTo, setSaturdayTo] = useState("");
   const [sundayFrom, setSundayFrom] = useState("");
   const [sundayTo, setSundayTo] = useState("");
+  const [partner, setPartner] = useState(false);
+  const [point, setPoint] = useState(false);
 
   const [mondayclosed, setMondayClosed] = useState(false);
   const [tuesdayclosed, setTuesdayClosed] = useState(false);
@@ -81,7 +80,7 @@ const InsertData = (props) => {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [files, setFiles] = useState([]);
   const [categories, setCategories] = useState(["HISTORY", "DRINKS", "NATURE", "EATS", "BRIDGE", "MUSEUMS", "EXPERIENCE"]);
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState(categories[0]);
   const [imagePreviews, setImagePreviews] = useState([]);
   const [progressInfos, setProgressInfos] = useState({ val: [] });
   const [message, setMessage] = useState([]);
@@ -137,7 +136,7 @@ const InsertData = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (file == null || title == "" || audio == null) {
+    if (title == "" || audio == null || shortInfo == "" || longInfo == "" || price == "" || hotelId == "" || duration == "" || length == "" || highestPoint == "") {
 
       setErrMessage("Please fill in the fileds marked with *")
     } else {
@@ -194,8 +193,17 @@ const InsertData = (props) => {
   };
 
 
+  const addPartner = () => {
+    setPartner(true)
+    setPoint(false)
+
+  };
+
+
+
   const addPoint = () => {
-    setAdd(true)
+    setPartner(false)
+    setPoint(true)
 
   };
 
@@ -208,11 +216,12 @@ const InsertData = (props) => {
 
   const handleAdd = (e) => {
 
-    if (titlePoint == "" || addressInput.current.value == "" || audio2 == null || selectedFiles.length == 0 || (!mondayclosed && (mondayFrom == "" || mondayTo == "")) || (!tuesdayclosed && (tuesdayFrom == "" || tuesdayTo == "")) || (!wednesdayclosed && (wednesdayFrom == "" || wednesdayTo == "")) || (!thursdayclosed && (thursdayFrom == "" || thursdayTo == "")) || (!fridayclosed && (fridayFrom == "" || fridayTo == "")) || (!saturdayclosed && (saturdayFrom == "" || saturdayTo == "")) || (!sundayclosed && (sundayFrom == "" || sundayTo == ""))) {
+    if (partner && (titlePoint == "" || shortInfoPoint == "" || longInfoPoint == "" || category == "" || price == "" || offerName=="" || responsiblePerson =="" || phone == "" || email=="" || webURL=="" || addressInput.current.value == "" || audio2 == null || selectedFiles.length == 0 || (!mondayclosed && (mondayFrom == "" || mondayTo == "")) || (!tuesdayclosed && (tuesdayFrom == "" || tuesdayTo == "")) || (!wednesdayclosed && (wednesdayFrom == "" || wednesdayTo == "")) || (!thursdayclosed && (thursdayFrom == "" || thursdayTo == "")) || (!fridayclosed && (fridayFrom == "" || fridayTo == "")) || (!saturdayclosed && (saturdayFrom == "" || saturdayTo == "")) || (!sundayclosed && (sundayFrom == "" || sundayTo == "")))) {
 
       setErrMessagePartner("Please insert mandatory fields for partner (marked with *)")
-    } else {
-
+    } else if(point && (titlePoint == "" || shortInfoPoint == "" || longInfoPoint == "" || category == "" || addressInput.current.value == "" || audio2 == null || selectedFiles.length == 0 )){
+      setErrMessagePartner("Please insert mandatory fields for point of interest (marked with *)")
+    }else{
       setAdd(false)
       setErrMessagePartner("")
 
@@ -286,7 +295,8 @@ const InsertData = (props) => {
 
         });
 
-    }
+    
+  }
   }
 
 
@@ -341,24 +351,52 @@ const InsertData = (props) => {
 
   const SuccessHandler = (e) => {
 
-    statusRef.current.innerHTML = "Success";
-    progressRef.current.value = 100;
-    //reportService.addMenu(true, dispatch);
+    homeDataService.insertData(true, dispatch);
 
-    dispatch({ type: homeDataConstants.UPDATE_MENU_PHOTO_SUCCESS });
+    setTitlePoint("")
+    setShortInfoPoint("")
+    setLongInfoPoint("")
+    setPointPrice("")
+    setPhone("")
+    setEmail("")
+    setResponsiblePerson("")
+    setMondayClosed(false)
+    setTuesdayClosed(false)
+    setWednesdayClosed(false)
+    setThursdayClosed(false)
+    setFridayClosed(false)
+    setSaturdayClosed(false)
+    setSundayClosed(false)
+    setOfferName("")
+    setCategory("")
+    setWebUrl("")
+    setLocation("")
+    setFiles([])
+    setAudios([])
+    setSelectedFiles([])
+    setAudio2(null)
+    setTitle("")
+    setLongInfo("")
+    setShortInfo("")
+    setPrice("")
+    setDuration("")
+    setHighestPoint("")
+    setLength("")
+
+    //dispatch({ type: homeDataConstants.UPDATE_MENU_PHOTO_SUCCESS });
   };
   const ErrorHandler = () => {
 
-    statusRef.current.innerHTML = "Upload failed";
+    //statusRef.current.innerHTML = "Upload failed";
 
-    dispatch({ type: homeDataConstants.UPDATE_MENU_PHOTO_FAILURE });
-    //reportService.addMenu(false, dispatch);
+    //dispatch({ type: homeDataConstants.UPDATE_MENU_PHOTO_FAILURE });
+    homeDataService.insertData(false, dispatch);
   };
   const AbortHandler = () => {
 
-    statusRef.current.innerHTML = "Upload aborted";
+    //statusRef.current.innerHTML = "Upload aborted";
 
-    //reportService.addMenu(false, dispatch);
+    homeDataService.insertData(false, dispatch);
   };
 
   return (
@@ -409,7 +447,7 @@ const InsertData = (props) => {
 
               <div className="control-group">
                 <div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
-                  <label><b>Short description</b></label>
+                  <label><b>Short description*</b></label>
                   <div class="row" >
                     <div class="form-group col-lg-10">
                       <textarea className="form-control" style={{ height: "100px", width: "1000px" }} type="textarea" required name="message" placeholder="Short description" value={shortInfo} onChange={(e) => setShortInfo(e.target.value)}></textarea>
@@ -421,7 +459,7 @@ const InsertData = (props) => {
 
               <div className="control-group">
                 <div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
-                  <label><b>Long description</b></label>
+                  <label><b>Long description*</b></label>
                   <div class="row" >
                     <div class="form-group col-lg-10">
                       <textarea className="form-control" style={{ height: "200px", width: "1000px" }} type="textarea" required name="message" placeholder="Long description" value={longInfo} onChange={(e) => setLongInfo(e.target.value)}></textarea>
@@ -433,7 +471,7 @@ const InsertData = (props) => {
 
               <div className="control-group">
                 <div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
-                  <label><b>Price</b></label>
+                  <label><b>Price*</b></label>
                   <div class="row" >
                     <div class="form-group col-lg-10">
                       <input
@@ -456,11 +494,13 @@ const InsertData = (props) => {
 
               <div className="control-group">
                 <div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
-                  <label><b>Business partner id</b></label>
+                  <label><b>Business partner*</b></label>
                   <div class="row" >
                     <div class="form-group col-lg-10">
 
                       <select onChange={(e) => setHotelId(e.target.value)} name="category" class="custom-select" style={{ height: "50px", width: "1000px" }}>
+                        
+                      <option key={"none"} > </option>
                         {homeDataState.bpartners.bpartners.map(item =>
                           <option key={item.id} value={item.id} >{item.name}</option>
                         )};
@@ -473,7 +513,7 @@ const InsertData = (props) => {
 
               <div className="control-group">
                 <div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
-                  <label><b>Tour duration</b></label>
+                  <label><b>Tour duration*</b></label>
                   <div class="row" >
                     <div class="form-group col-lg-10">
                       <input
@@ -495,7 +535,7 @@ const InsertData = (props) => {
 
               <div className="control-group">
                 <div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
-                  <label><b>Tour lenght (km)</b></label>
+                  <label><b>Tour lenght (km)*</b></label>
                   <div class="row" >
                     <div class="form-group col-lg-10">
                       <input
@@ -518,7 +558,7 @@ const InsertData = (props) => {
 
               <div className="control-group">
                 <div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
-                  <label><b>Highest point</b></label>
+                  <label><b>Highest point*</b></label>
                   <div class="row" >
                     <div class="form-group col-lg-10">
                       <input
@@ -544,9 +584,9 @@ const InsertData = (props) => {
                 <input type={"file"} accept={".mp3"} onChange={addFile} />
               </div>
               <div style={{ marginTop: "15px" }}>
-                <label><b>Background tour image*</b></label>
+                <label><b>Background tour image</b></label>
                 <br />   <br />
-                <input type="file" name="file" onChange={onFileChange} />
+                <input type={"file"}  name="file" onChange={onFileChange} />
 
               </div>
 
@@ -574,12 +614,22 @@ const InsertData = (props) => {
               <div className="button-tc">
                 <button
                   style={{ background: "#0099ff", marginTop: "px", marginRight: "55px", padding: "5px 15px", height: "35px" }}
-                  onClick={(e) => { addPoint(e) }}
+                  onClick={(e) => { addPartner(e) }}
                   className="btn btn-primary btn-xl"
                   id="sendMessageButton"
                   type="button"
                 >
                   Add partner
+                </button>
+
+                <button
+                  style={{ background: "#0099ff", marginTop: "px", marginRight: "55px", padding: "5px 15px", height: "35px" }}
+                  onClick={(e) => { addPoint(e) }}
+                  className="btn btn-primary btn-xl"
+                  id="sendMessageButton"
+                  type="button"
+                >
+                  Add point of interest
                 </button>
               </div>
 
@@ -592,16 +642,16 @@ const InsertData = (props) => {
 
 
               <div>
-                {add &&
+                {(partner || point) &&
                   <div><div className="control-group">
                     <div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
-                      <label><b>Partner's name *</b></label>
+                      <label><b>Name *</b></label>
                       <div class="row" >
                         <div class="form-group col-lg-10">
                           <input
 
                             className={"form-control"}
-                            placeholder="Partner's name"
+                            placeholder="Name"
                             aria-describedby="basic-addon1"
                             id="name"
                             type="text"
@@ -610,6 +660,7 @@ const InsertData = (props) => {
                             onChange={(e) => setTitlePoint(e.target.value)}
                             value={titlePoint}
                           />
+                          
                         </div>
                       </div>
                     </div>
@@ -617,7 +668,7 @@ const InsertData = (props) => {
 
                     <div className="control-group">
                       <div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
-                        <label><b>Short description </b></label>
+                        <label><b>Short description* </b></label>
                         <div class="row" >
                           <div class="form-group col-lg-10">
                             <textarea className="form-control" style={{ height: "100px", width: "1000px" }} type="textarea" required name="message" placeholder="Short description" value={shortInfoPoint} onChange={(e) => setShortInfoPoint(e.target.value)}></textarea>
@@ -629,7 +680,7 @@ const InsertData = (props) => {
 
                     <div className="control-group">
                       <div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
-                        <label><b>Long description</b></label>
+                        <label><b>Long description*</b></label>
                         <div class="row" >
                           <div class="form-group col-lg-10">
                             <textarea className="form-control" style={{ height: "200px", width: "1000px" }} type="textarea" required name="message" placeholder="Long description" value={longInfoPoint} onChange={(e) => setLongInfoPoint(e.target.value)}></textarea>
@@ -641,7 +692,7 @@ const InsertData = (props) => {
 
                     <div className="control-group">
                       <div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
-                        <label><b>Category</b></label>
+                        <label><b>Category*</b></label>
                         <div class="row" >
                           <div class="form-group col-lg-10">
 
@@ -656,9 +707,9 @@ const InsertData = (props) => {
                       </div>
                     </div>
 
-                    <div className="control-group">
+                    {partner && <div className="control-group">
                       <div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
-                        <label><b>Price</b></label>
+                        <label><b>Price*</b></label>
                         <div class="row" >
                           <div class="form-group col-lg-10">
                             <input
@@ -676,10 +727,10 @@ const InsertData = (props) => {
                           </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="control-group">
+                    </div>}
+                    {partner && <div className="control-group">
                       <div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
-                        <label><b>Offer name</b></label>
+                        <label><b>Offer name*</b></label>
                         <div class="row" >
                           <div class="form-group col-lg-10">
                             <input
@@ -697,14 +748,14 @@ const InsertData = (props) => {
                           </div>
                         </div>
                       </div>
-                    </div>
+                    </div>}
 
-                    <div className="control-group">
-                      <div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
+                    <div >
+                      
                         <label><b>Address *</b></label>
-                        <div class="row" >
-                          <div class="form-group col-lg-10">
-                            <input className="form-control" id="suggest" ref={addressInput} placeholder="Address" style={{ width: "1000px", height: "50px" }} />
+                        <div >
+                         
+                            <input id="suggest" ref={addressInput} placeholder="Address" style={{ width: "1000px", height: "50px"}} />
 
                             <YMaps
                               query={{
@@ -714,7 +765,7 @@ const InsertData = (props) => {
                               }}
                             >
                               <Map
-                                style={{ display: "none", width: "1000px" }}
+                                style={{ display: "none", width: "100px", marginLeft:"100px" }}
                                 state={mapState}
                                 onLoad={onYmapsLoad}
                                 instanceRef={(map) => (map = map)}
@@ -722,310 +773,209 @@ const InsertData = (props) => {
                               ></Map>
                             </YMaps>
                           </div>
+                    </div>
+
+                    {partner &&
+                      <div><h6><b>Working hours *</b></h6>
+                        <br />
+
+                        <div className="control-group">
+                          <div className="form-group controls mb-0 pb-2" style={{ opacity: 1, marginLeft: "300px" }}>
+                            <label><b>Monday</b></label>
+
+                            <br />
+                            <label>
+                              <input
+                                type="checkbox"
+                                checked={mondayclosed}
+                                onChange={(e) => setMondayClosed(!mondayclosed)}
+                              />
+                              closed
+                            </label>
+                            {!mondayclosed && <div class="row"  >
+                            <span style={{ marginLeft: "20px", marginRight: "30px" }}>
+                            <TimePicker disableClock={true} onChange={(newValue) => {
+                                setMondayFrom(newValue);
+                              }} value={mondayFrom} />
+                              </span>  <span >
+                              <TimePicker disableClock={true} onChange={(newValue) => {
+                                setMondayTo(newValue);
+                              }} value={mondayTo} /></span>
+
+                            
+                            </div>}
+                          </div>
                         </div>
-                      </div>
-                    </div>
 
-                    <h6><b>Working hours *</b></h6>
-                    <br />
-
-                    <div className="control-group">
-                      <div className="form-group controls mb-0 pb-2" style={{ opacity: 1, marginLeft: "300px" }}>
-                        <label><b>Monday</b></label>
-
-                        <br />
-                        <label>
-                          <input
-                            type="checkbox"
-                            checked={mondayclosed}
-                            onChange={(e) => setMondayClosed(!mondayclosed)}
-                          />
-                          closed
-                        </label>
-                        {!mondayclosed && <div class="row"  >
-
-                          <span style={{ marginLeft: "20px", marginRight: "30px" }}>
-                            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                              <TimePicker
-                                label="From"
-                                value={mondayFrom}
-                                onChange={(newValue) => {
-                                  setMondayFrom(newValue);
-                                }}
-                                renderInput={(params) => <TextField {...params} size="small" sx={{ width: '170px' }}
-                                  error={false} />}
+                        <div className="control-group">
+                          <div className="form-group controls mb-0 pb-2" style={{ opacity: 1, marginLeft: "300px" }}>
+                            <label><b>Tuesday</b></label>
+                            <br />
+                            <label>
+                              <input
+                                type="checkbox"
+                                checked={tuesdayclosed}
+                                onChange={(e) => setTuesdayClosed(!tuesdayclosed)}
                               />
-                            </LocalizationProvider>
-                          </span>
-                          <span >
-                            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                              <TimePicker
-                                label="To"
-                                value={mondayTo}
-                                onChange={(newValue) => {
-                                  setMondayTo(newValue);
-                                }}
-                                renderInput={(params) => <TextField {...params} size="small" sx={{ width: '170px' }} error={false} />}
+                              closed
+                            </label>
+                            {!tuesdayclosed && <div class="row" >
+                            <span style={{ marginLeft: "20px", marginRight: "30px" }}>
+                            <TimePicker disableClock={true} onChange={(newValue) => {
+                                setTuesdayFrom(newValue);
+                              }} value={tuesdayFrom} />
+                              </span>  <span >
+                              <TimePicker disableClock={true} onChange={(newValue) => {
+                                setTuesdayTo(newValue);
+                              }} value={tuesdayTo} /></span>
+                            </div>}
+                          </div>
+                        </div>
+
+                        <div className="control-group">
+                          <div className="form-group controls mb-0 pb-2" style={{ opacity: 1, marginLeft: "300px" }}>
+                            <label><b>Wednesday</b></label>
+                            <br />
+                            <label>
+                              <input
+                                type="checkbox"
+                                checked={wednesdayclosed}
+                                onChange={(e) => setWednesdayClosed(!wednesdayclosed)}
                               />
-                            </LocalizationProvider></span>
-                        </div>}
-                      </div>
-                    </div>
+                              closed
+                            </label>
+                            {!wednesdayclosed && <div class="row" >
+                            <span style={{ marginLeft: "20px", marginRight: "30px" }}>
+                            <TimePicker disableClock={true} onChange={(newValue) => {
+                                setWednesdayFrom(newValue);
+                              }} value={wednesdayFrom} />
+                              </span>  <span >
+                              <TimePicker disableClock={true} onChange={(newValue) => {
+                                setWednesdayTo(newValue);
+                              }} value={wednesdayTo} /></span>
 
-                    <div className="control-group">
-                      <div className="form-group controls mb-0 pb-2" style={{ opacity: 1, marginLeft: "300px" }}>
-                        <label><b>Tuesday</b></label>
-                        <br />
-                        <label>
-                          <input
-                            type="checkbox"
-                            checked={tuesdayclosed}
-                            onChange={(e) => setTuesdayClosed(!tuesdayclosed)}
-                          />
-                          closed
-                        </label>
-                        {!tuesdayclosed && <div class="row" >
+                             
+                            </div>}
+                          </div>
+                        </div>
 
-
-                          <span style={{ marginLeft: "20px", marginRight: "30px" }}>
-                            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                              <TimePicker
-                                label="From"
-                                value={tuesdayFrom}
-                                onChange={(newValue) => {
-                                  setTuesdayFrom(newValue);
-                                }}
-                                renderInput={(params) => <TextField {...params} size="small" sx={{ width: '170px' }} error={false} />}
+                        <div className="control-group">
+                          <div className="form-group controls mb-0 pb-2" style={{ opacity: 1, marginLeft: "300px" }}>
+                            <label><b>Thursday</b></label>
+                            <br />
+                            <label>
+                              <input
+                                type="checkbox"
+                                checked={thursdayclosed}
+                                onChange={(e) => setThursdayClosed(!thursdayclosed)}
                               />
-                            </LocalizationProvider>
-                          </span>
-                          <span >
-                            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                              <TimePicker
-                                label="To"
-                                value={tuesdayTo}
-                                onChange={(newValue) => {
-                                  setTuesdayTo(newValue);
-                                }}
-                                renderInput={(params) => <TextField {...params} size="small" sx={{ width: '170px' }} error={false} />}
+                              closed
+                            </label>
+                            {!thursdayclosed && <div class="row" >
+
+                            <span style={{ marginLeft: "20px", marginRight: "30px" }}>
+                            <TimePicker disableClock={true} onChange={(newValue) => {
+                                setThursdayFrom(newValue);
+                              }} value={thursdayFrom} />
+                              </span>  <span >
+                              <TimePicker disableClock={true} onChange={(newValue) => {
+                                setThursdayTo(newValue);
+                              }} value={thursdayTo} /></span>
+
+                           
+                            </div>}
+                          </div>
+                        </div>
+
+                        <div className="control-group">
+                          <div className="form-group controls mb-0 pb-2" style={{ opacity: 1, marginLeft: "300px" }}>
+                            <label><b>Friday</b></label>
+                            <br />
+                            <label>
+                              <input
+                                type="checkbox"
+                                checked={fridayclosed}
+                                onChange={(e) => setFridayClosed(!fridayclosed)}
                               />
-                            </LocalizationProvider></span>
-                        </div>}
-                      </div>
-                    </div>
+                              closed
+                            </label>
+                            {!fridayclosed && <div class="row" >
 
-                    <div className="control-group">
-                      <div className="form-group controls mb-0 pb-2" style={{ opacity: 1, marginLeft: "300px" }}>
-                        <label><b>Wednesday</b></label>
-                        <br />
-                        <label>
-                          <input
-                            type="checkbox"
-                            checked={wednesdayclosed}
-                            onChange={(e) => setWednesdayClosed(!wednesdayclosed)}
-                          />
-                          closed
-                        </label>
-                        {!wednesdayclosed && <div class="row" >
+                            <span style={{ marginLeft: "20px", marginRight: "30px" }}>
+                            <TimePicker disableClock={true} onChange={(newValue) => {
+                                setFridayFrom(newValue);
+                              }} value={fridayFrom} />
+                              </span>  <span >
+                              <TimePicker disableClock={true} onChange={(newValue) => {
+                                setFridayTo(newValue);
+                              }} value={fridayTo} /></span>
 
 
-                          <span style={{ marginLeft: "20px", marginRight: "30px" }}>
-                            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                              <TimePicker
-                                label="From"
-                                value={wednesdayFrom}
-                                onChange={(newValue) => {
-                                  setWednesdayFrom(newValue);
-                                }}
-                                renderInput={(params) => <TextField {...params} size="small" sx={{ width: '170px' }} error={false} />}
+                            </div>}
+                          </div>
+                        </div>
+
+                        <div className="control-group">
+                          <div className="form-group controls mb-0 pb-2" style={{ opacity: 1, marginLeft: "300px" }}>
+                            <label><b>Saturday</b></label>
+                            <br />
+                            <label>
+                              <input
+                                type="checkbox"
+                                checked={saturdayclosed}
+                                onChange={(e) => setSaturdayClosed(!saturdayclosed)}
                               />
-                            </LocalizationProvider>
-                          </span>
-                          <span >
-                            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                              <TimePicker
-                                label="To"
-                                value={wednesdayTo}
-                                onChange={(newValue) => {
-                                  setWednesdayTo(newValue);
-                                }}
-                                renderInput={(params) => <TextField {...params} size="small" sx={{ width: '170px' }} error={false} />}
+                              closed
+                            </label>
+                            {!saturdayclosed && <div class="row" >
+
+
+                            <span style={{ marginLeft: "20px", marginRight: "30px" }}>
+                            <TimePicker disableClock={true} onChange={(newValue) => {
+                                setSaturdayFrom(newValue);
+                              }} value={saturdayFrom} />
+                              </span>  <span >
+                              <TimePicker disableClock={true} onChange={(newValue) => {
+                                setSaturdayTo(newValue);
+                              }} value={saturdayTo} /></span>
+
+                            </div>}
+                          </div>
+                        </div>
+
+                        <div className="control-group">
+                          <div className="form-group controls mb-0 pb-2" style={{ opacity: 1, marginLeft: "300px" }}>
+                            <label><b>Sunday</b></label>
+                            <br />
+                            <label>
+                              <input
+                                type="checkbox"
+                                checked={sundayclosed}
+                                onChange={(e) => setSundayClosed(!sundayclosed)}
                               />
-                            </LocalizationProvider></span>
-                        </div>}
-                      </div>
-                    </div>
-
-                    <div className="control-group">
-                      <div className="form-group controls mb-0 pb-2" style={{ opacity: 1, marginLeft: "300px" }}>
-                        <label><b>Thursday</b></label>
-                        <br />
-                        <label>
-                          <input
-                            type="checkbox"
-                            checked={thursdayclosed}
-                            onChange={(e) => setThursdayClosed(!thursdayclosed)}
-                          />
-                          closed
-                        </label>
-                        {!thursdayclosed && <div class="row" >
+                              closed
+                            </label>
+                            {!sundayclosed && <div class="row" >
 
 
-                          <span style={{ marginLeft: "20px", marginRight: "30px" }}>
-                            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                              <TimePicker
-                                label="From"
-                                value={thursdayFrom}
-                                onChange={(newValue) => {
-                                  setThursdayFrom(newValue);
-                                }}
-                                renderInput={(params) => <TextField {...params} size="small" sx={{ width: '170px' }} error={false} />}
-                              />
-                            </LocalizationProvider>
-                          </span>
-                          <span >
-                            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                              <TimePicker
-                                label="To"
-                                value={thursdayTo}
-                                onChange={(newValue) => {
-                                  setThursdayTo(newValue);
-                                }}
-                                renderInput={(params) => <TextField {...params} size="small" sx={{ width: '170px' }} error={false} />}
-                              />
-                            </LocalizationProvider></span>
-                        </div>}
-                      </div>
-                    </div>
+                            <span style={{ marginLeft: "20px", marginRight: "30px" }}>
+                            <TimePicker disableClock={true} onChange={(newValue) => {
+                                setSundayFrom(newValue);
+                              }} value={sundayFrom} />
+                              </span>  <span >
+                              <TimePicker disableClock={true} onChange={(newValue) => {
+                                setSundayTo(newValue);
+                              }} value={sundayTo} /></span>
 
-                    <div className="control-group">
-                      <div className="form-group controls mb-0 pb-2" style={{ opacity: 1, marginLeft: "300px" }}>
-                        <label><b>Friday</b></label>
-                        <br />
-                        <label>
-                          <input
-                            type="checkbox"
-                            checked={fridayclosed}
-                            onChange={(e) => setFridayClosed(!fridayclosed)}
-                          />
-                          closed
-                        </label>
-                        {!fridayclosed && <div class="row" >
+                            </div>}
+                          </div>
+                        </div>
 
-                          <span style={{ marginLeft: "20px", marginRight: "30px" }}>
-                            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                              <TimePicker
-                                label="From"
-                                value={fridayFrom}
-                                onChange={(newValue) => {
-                                  setFridayFrom(newValue);
-                                }}
-                                renderInput={(params) => <TextField {...params} size="small" sx={{ width: '170px' }} error={false} />}
-                              />
-                            </LocalizationProvider>
-                          </span>
-                          <span >
-                            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                              <TimePicker
-                                label="To"
-                                value={fridayTo}
-                                onChange={(newValue) => {
-                                  setFridayTo(newValue);
-                                }}
-                                renderInput={(params) => <TextField {...params} size="small" sx={{ width: '170px' }} error={false} />}
-                              />
-                            </LocalizationProvider></span>
-                        </div>}
-                      </div>
-                    </div>
-
-                    <div className="control-group">
-                      <div className="form-group controls mb-0 pb-2" style={{ opacity: 1, marginLeft: "300px" }}>
-                        <label><b>Saturday</b></label>
-                        <br />
-                        <label>
-                          <input
-                            type="checkbox"
-                            checked={saturdayclosed}
-                            onChange={(e) => setSaturdayClosed(!saturdayclosed)}
-                          />
-                          closed
-                        </label>
-                        {!saturdayclosed && <div class="row" >
-
-
-                          <span style={{ marginLeft: "20px", marginRight: "30px" }}>
-                            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                              <TimePicker
-                                label="From"
-                                value={saturdayFrom}
-                                onChange={(newValue) => {
-                                  setSaturdayFrom(newValue);
-                                }}
-                                renderInput={(params) => <TextField {...params} size="small" sx={{ width: '170px' }} error={false} />}
-                              />
-                            </LocalizationProvider>
-                          </span>
-                          <span >
-                            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                              <TimePicker
-                                label="To"
-                                value={saturdayTo}
-                                onChange={(newValue) => {
-                                  setSaturdayTo(newValue);
-                                }}
-                                renderInput={(params) => <TextField {...params} size="small" sx={{ width: '170px' }} error={false} />}
-                              />
-                            </LocalizationProvider></span>
-                        </div>}
-                      </div>
-                    </div>
-
-                    <div className="control-group">
-                      <div className="form-group controls mb-0 pb-2" style={{ opacity: 1, marginLeft: "300px" }}>
-                        <label><b>Sunday</b></label>
-                        <br />
-                        <label>
-                          <input
-                            type="checkbox"
-                            checked={sundayclosed}
-                            onChange={(e) => setSundayClosed(!sundayclosed)}
-                          />
-                          closed
-                        </label>
-                        {!sundayclosed && <div class="row" >
-
-
-                          <span style={{ marginLeft: "20px", marginRight: "30px" }}>
-                            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                              <TimePicker
-                                label="From"
-                                value={sundayFrom}
-                                onChange={(newValue) => {
-                                  setSundayFrom(newValue);
-                                }}
-                                renderInput={(params) => <TextField {...params} size="small" sx={{ width: '170px' }} error={false} />}
-                              />
-                            </LocalizationProvider>
-                          </span>
-                          <span >
-                            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                              <TimePicker
-                                label="To"
-                                value={sundayTo}
-                                onChange={(newValue) => {
-                                  setSundayTo(newValue);
-                                }}
-                                renderInput={(params) => <TextField {...params} size="small" sx={{ width: '170px' }} error={false} />}
-                              />
-                            </LocalizationProvider></span>
-                        </div>}
-                      </div>
-                    </div>
+                      </div>}
 
                     <div style={{ marginTop: "15px" }}>
 
-                      <label><b>Text to speach audio</b></label>
+                      <label><b>Text to speach audio*</b></label>
                       <br /><br />
                       <input type={"file"} accept={".mp3"} onChange={addFile2} />
                     </div>
@@ -1033,7 +983,7 @@ const InsertData = (props) => {
                     <br />
                     <div>
 
-                      <label><b>Image gallery</b></label>
+                      <label><b>Image gallery*</b></label>
                       <br /><br />
                       <div className="row">
                         <div className="col-8">
@@ -1120,96 +1070,98 @@ const InsertData = (props) => {
 
                     <br />
 
-                    <h6><b>Contact information about partner</b></h6>
-                    <br />
-                    <div className="control-group">
-                      <div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
-                        <label><b>Responsible person name</b></label>
-                        <div class="row" >
-                          <div class="form-group col-lg-10">
-                            <input
+                    {partner &&
+                      <div><h6><b>Contact information about partner*</b></h6>
+                        <br />
+                        <div className="control-group">
+                          <div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
+                            <label><b>Responsible person name*</b></label>
+                            <div class="row" >
+                              <div class="form-group col-lg-10">
+                                <input
 
-                              className={"form-control"}
-                              placeholder="Responsible person name"
-                              aria-describedby="basic-addon1"
-                              id="name"
-                              type="text"
-                              style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
+                                  className={"form-control"}
+                                  placeholder="Responsible person name"
+                                  aria-describedby="basic-addon1"
+                                  id="name"
+                                  type="text"
+                                  style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
 
-                              onChange={(e) => setResponsiblePerson(e.target.value)}
-                              value={responsiblePerson}
-                            />
+                                  onChange={(e) => setResponsiblePerson(e.target.value)}
+                                  value={responsiblePerson}
+                                />
+                              </div>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </div>
-                    <div className="control-group">
-                      <div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
-                        <label><b>Phone</b></label>
-                        <div class="row" >
-                          <div class="form-group col-lg-10">
-                            <input
+                        <div className="control-group">
+                          <div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
+                            <label><b>Phone*</b></label>
+                            <div class="row" >
+                              <div class="form-group col-lg-10">
+                                <input
 
-                              className={"form-control"}
-                              placeholder="Phone"
-                              aria-describedby="basic-addon1"
-                              id="name"
-                              type="text"
-                              style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
+                                  className={"form-control"}
+                                  placeholder="Phone"
+                                  aria-describedby="basic-addon1"
+                                  id="name"
+                                  type="text"
+                                  style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
 
-                              onChange={(e) => setPhone(e.target.value)}
-                              value={phone}
-                            />
+                                  onChange={(e) => setPhone(e.target.value)}
+                                  value={phone}
+                                />
+                              </div>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </div>
 
-                    <div className="control-group">
-                      <div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
-                        <label><b>Email</b></label>
-                        <div class="row" >
-                          <div class="form-group col-lg-10">
-                            <input
+                        <div className="control-group">
+                          <div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
+                            <label><b>Email*</b></label>
+                            <div class="row" >
+                              <div class="form-group col-lg-10">
+                                <input
 
-                              className={"form-control"}
-                              placeholder="Email"
-                              aria-describedby="basic-addon1"
-                              id="name"
-                              type="email"
-                              style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
+                                  className={"form-control"}
+                                  placeholder="Email"
+                                  aria-describedby="basic-addon1"
+                                  id="name"
+                                  type="email"
+                                  style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
 
-                              onChange={(e) => setEmail(e.target.value)}
-                              value={email}
-                            />
+                                  onChange={(e) => setEmail(e.target.value)}
+                                  value={email}
+                                />
+                              </div>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </div>
 
-                    <div className="control-group">
-                      <div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
-                        <label><b>Web page</b></label>
-                        <div class="row" >
-                          <div class="form-group col-lg-10">
-                            <input
+                        <div className="control-group">
+                          <div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
+                            <label><b>Web page*</b></label>
+                            <div class="row" >
+                              <div class="form-group col-lg-10">
+                                <input
 
-                              className={"form-control"}
-                              placeholder="Web page"
-                              aria-describedby="basic-addon1"
-                              id="name"
-                              type="text"
-                              style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
+                                  className={"form-control"}
+                                  placeholder="Web page"
+                                  aria-describedby="basic-addon1"
+                                  id="name"
+                                  type="text"
+                                  style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
 
-                              onChange={(e) => setWebUrl(e.target.value)}
-                              value={webURL}
-                            />
+                                  onChange={(e) => setWebUrl(e.target.value)}
+                                  value={webURL}
+                                />
+                              </div>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </div>
 
 
+                      </div>}
 
 
                     <div className="button-p">

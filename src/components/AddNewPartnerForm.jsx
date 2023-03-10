@@ -3,11 +3,7 @@ import React, { useContext, useEffect, useState, forwardRef, useRef } from "reac
 import { homeDataService } from "../services/HomeDataService";
 import { HomeDataContext } from "../contexts/HomeDataContext";
 import { homeDataConstants } from "../constants/HomeDataConstants";
-
-import TextField from '@mui/material/TextField';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { TimePicker } from '@mui/x-date-pickers/TimePicker';
+import TimePicker from 'react-time-picker';
 import { YMaps, Map } from "react-yandex-maps";
 
 import { AiOutlineClose } from 'react-icons/ai';
@@ -201,7 +197,7 @@ const AddNewPartnerForm = (props) => {
 										onClick={handleModalClose}
 										class="btn btn-primary btn-lg"
 									>
-									<AiOutlineClose/>
+										<AiOutlineClose />
 									</button>
 								</div>
 								<form id="contactForm" >
@@ -328,301 +324,201 @@ const AddNewPartnerForm = (props) => {
 														</div>
 													</div>
 
-													<h6><b>Working hours *</b></h6>
-													<br />
+													<div><h6><b>Working hours *</b></h6>
+														<br />
 
-													<div className="control-group">
-														<div className="form-group controls mb-0 pb-2" style={{ color: "#6c757d", opacity: 1 }}>
-															<label><b>Monday</b></label>
+														<div className="control-group">
+															<div className="form-group controls mb-0 pb-2" style={{ opacity: 1, marginLeft: "300px" }}>
+																<label><b>Monday</b></label>
 
-															<br />
-															<label>
-																<input
-																	type="checkbox"
-																	checked={mondayclosed}
-																	onChange={(e) => setMondayClosed(!mondayclosed)}
-																/>
-																closed
-															</label>
-															{!mondayclosed && <div class="row"  >
+																<br />
+																<label>
+																	<input
+																		type="checkbox"
+																		checked={mondayclosed}
+																		onChange={(e) => setMondayClosed(!mondayclosed)}
+																	/>
+																	closed
+																</label>
+																{!mondayclosed && <div class="row"  >
+																	<span style={{ marginLeft: "20px", marginRight: "30px" }}>
+																		<TimePicker disableClock={true} onChange={(newValue) => {
+																			setMondayFrom(newValue);
+																		}} value={mondayFrom} />
+																	</span>  <span >
+																		<TimePicker disableClock={true} onChange={(newValue) => {
+																			setMondayTo(newValue);
+																		}} value={mondayTo} /></span>
 
-																<span style={{ marginLeft: "20px", marginRight: "30px" }}>
-																	<LocalizationProvider dateAdapter={AdapterDayjs}>
-																		<TimePicker
-																			label="From"
-																			value={mondayFrom}
-																			onChange={(newValue) => {
-																				setMondayFrom(newValue);
-																			}}
-																			renderInput={(params) => <TextField {...params} size="small" sx={{ width: '170px' }}
-																				error={false} />}
-																		/>
-																	</LocalizationProvider>
-																</span>
-																<span >
-																	<LocalizationProvider dateAdapter={AdapterDayjs}>
-																		<TimePicker
-																			label="To"
-																			value={mondayTo}
-																			onChange={(newValue) => {
-																				setMondayTo(newValue);
-																			}}
-																			renderInput={(params) => <TextField {...params} size="small" sx={{ width: '170px' }} error={false} />}
-																		/>
-																	</LocalizationProvider></span>
-															</div>}
+
+																</div>}
+															</div>
 														</div>
-													</div>
 
-													<div className="control-group">
-														<div className="form-group controls mb-0 pb-2" style={{ color: "#6c757d", opacity: 1 }}>
-															<label><b>Tuesday</b></label>
-															<br />
-															<label>
-																<input
-																	type="checkbox"
-																	checked={tuesdayclosed}
-																	onChange={(e) => setTuesdayClosed(!tuesdayclosed)}
-																/>
-																closed
-															</label>
-															{!tuesdayclosed && <div class="row" >
-
-
-																<span style={{ marginLeft: "20px", marginRight: "30px" }}>
-																	<LocalizationProvider dateAdapter={AdapterDayjs}>
-																		<TimePicker
-																			label="From"
-																			value={tuesdayFrom}
-																			onChange={(newValue) => {
-																				setTuesdayFrom(newValue);
-																			}}
-																			renderInput={(params) => <TextField {...params} size="small" sx={{ width: '170px' }} error={false} />}
-																		/>
-																	</LocalizationProvider>
-																</span>
-																<span >
-																	<LocalizationProvider dateAdapter={AdapterDayjs}>
-																		<TimePicker
-																			label="To"
-																			value={tuesdayTo}
-																			onChange={(newValue) => {
-																				setTuesdayTo(newValue);
-																			}}
-																			renderInput={(params) => <TextField {...params} size="small" sx={{ width: '170px' }} error={false} />}
-																		/>
-																	</LocalizationProvider></span>
-															</div>}
+														<div className="control-group">
+															<div className="form-group controls mb-0 pb-2" style={{ opacity: 1, marginLeft: "300px" }}>
+																<label><b>Tuesday</b></label>
+																<br />
+																<label>
+																	<input
+																		type="checkbox"
+																		checked={tuesdayclosed}
+																		onChange={(e) => setTuesdayClosed(!tuesdayclosed)}
+																	/>
+																	closed
+																</label>
+																{!tuesdayclosed && <div class="row" >
+																	<span style={{ marginLeft: "20px", marginRight: "30px" }}>
+																		<TimePicker disableClock={true} onChange={(newValue) => {
+																			setTuesdayFrom(newValue);
+																		}} value={tuesdayFrom} />
+																	</span>  <span >
+																		<TimePicker disableClock={true} onChange={(newValue) => {
+																			setTuesdayTo(newValue);
+																		}} value={tuesdayTo} /></span>
+																</div>}
+															</div>
 														</div>
-													</div>
 
-													<div className="control-group">
-														<div className="form-group controls mb-0 pb-2" style={{ color: "#6c757d", opacity: 1 }}>
-															<label><b>Wednesday</b></label>
-															<br />
-															<label>
-																<input
-																	type="checkbox"
-																	checked={wednesdayclosed}
-																	onChange={(e) => setWednesdayClosed(!wednesdayclosed)}
-																/>
-																closed
-															</label>
-															{!wednesdayclosed && <div class="row" >
+														<div className="control-group">
+															<div className="form-group controls mb-0 pb-2" style={{ opacity: 1, marginLeft: "300px" }}>
+																<label><b>Wednesday</b></label>
+																<br />
+																<label>
+																	<input
+																		type="checkbox"
+																		checked={wednesdayclosed}
+																		onChange={(e) => setWednesdayClosed(!wednesdayclosed)}
+																	/>
+																	closed
+																</label>
+																{!wednesdayclosed && <div class="row" >
+																	<span style={{ marginLeft: "20px", marginRight: "30px" }}>
+																		<TimePicker disableClock={true} onChange={(newValue) => {
+																			setWednesdayFrom(newValue);
+																		}} value={wednesdayFrom} />
+																	</span>  <span >
+																		<TimePicker disableClock={true} onChange={(newValue) => {
+																			setWednesdayTo(newValue);
+																		}} value={wednesdayTo} /></span>
 
 
-																<span style={{ marginLeft: "20px", marginRight: "30px" }}>
-																	<LocalizationProvider dateAdapter={AdapterDayjs}>
-																		<TimePicker
-																			label="From"
-																			value={wednesdayFrom}
-																			onChange={(newValue) => {
-																				setWednesdayFrom(newValue);
-																			}}
-																			renderInput={(params) => <TextField {...params} size="small" sx={{ width: '170px' }} error={false} />}
-																		/>
-																	</LocalizationProvider>
-																</span>
-																<span >
-																	<LocalizationProvider dateAdapter={AdapterDayjs}>
-																		<TimePicker
-																			label="To"
-																			value={wednesdayTo}
-																			onChange={(newValue) => {
-																				setWednesdayTo(newValue);
-																			}}
-																			renderInput={(params) => <TextField {...params} size="small" sx={{ width: '170px' }} error={false} />}
-																		/>
-																	</LocalizationProvider></span>
-															</div>}
+																</div>}
+															</div>
 														</div>
-													</div>
 
-													<div className="control-group">
-														<div className="form-group controls mb-0 pb-2" style={{ color: "#6c757d", opacity: 1 }}>
-															<label><b>Thursday</b></label>
-															<br />
-															<label>
-																<input
-																	type="checkbox"
-																	checked={thursdayclosed}
-																	onChange={(e) => setThursdayClosed(!thursdayclosed)}
-																/>
-																closed
-															</label>
-															{!thursdayclosed && <div class="row" >
+														<div className="control-group">
+															<div className="form-group controls mb-0 pb-2" style={{ opacity: 1, marginLeft: "300px" }}>
+																<label><b>Thursday</b></label>
+																<br />
+																<label>
+																	<input
+																		type="checkbox"
+																		checked={thursdayclosed}
+																		onChange={(e) => setThursdayClosed(!thursdayclosed)}
+																	/>
+																	closed
+																</label>
+																{!thursdayclosed && <div class="row" >
+
+																	<span style={{ marginLeft: "20px", marginRight: "30px" }}>
+																		<TimePicker disableClock={true} onChange={(newValue) => {
+																			setThursdayFrom(newValue);
+																		}} value={thursdayFrom} />
+																	</span>  <span >
+																		<TimePicker disableClock={true} onChange={(newValue) => {
+																			setThursdayTo(newValue);
+																		}} value={thursdayTo} /></span>
 
 
-																<span style={{ marginLeft: "20px", marginRight: "30px" }}>
-																	<LocalizationProvider dateAdapter={AdapterDayjs}>
-																		<TimePicker
-																			label="From"
-																			value={thursdayFrom}
-																			onChange={(newValue) => {
-																				setThursdayFrom(newValue);
-																			}}
-																			renderInput={(params) => <TextField {...params} size="small" sx={{ width: '170px' }} error={false} />}
-																		/>
-																	</LocalizationProvider>
-																</span>
-																<span >
-																	<LocalizationProvider dateAdapter={AdapterDayjs}>
-																		<TimePicker
-																			label="To"
-																			value={thursdayTo}
-																			onChange={(newValue) => {
-																				setThursdayTo(newValue);
-																			}}
-																			renderInput={(params) => <TextField {...params} size="small" sx={{ width: '170px' }} error={false} />}
-																		/>
-																	</LocalizationProvider></span>
-															</div>}
+																</div>}
+															</div>
 														</div>
-													</div>
 
-													<div className="control-group">
-														<div className="form-group controls mb-0 pb-2" style={{ color: "#6c757d", opacity: 1 }}>
-															<label><b>Friday</b></label>
-															<br />
-															<label>
-																<input
-																	type="checkbox"
-																	checked={fridayclosed}
-																	onChange={(e) => setFridayClosed(!fridayclosed)}
-																/>
-																closed
-															</label>
-															{!fridayclosed && <div class="row" >
+														<div className="control-group">
+															<div className="form-group controls mb-0 pb-2" style={{ opacity: 1, marginLeft: "300px" }}>
+																<label><b>Friday</b></label>
+																<br />
+																<label>
+																	<input
+																		type="checkbox"
+																		checked={fridayclosed}
+																		onChange={(e) => setFridayClosed(!fridayclosed)}
+																	/>
+																	closed
+																</label>
+																{!fridayclosed && <div class="row" >
 
-																<span style={{ marginLeft: "20px", marginRight: "30px" }}>
-																	<LocalizationProvider dateAdapter={AdapterDayjs}>
-																		<TimePicker
-																			label="From"
-																			value={fridayFrom}
-																			onChange={(newValue) => {
-																				setFridayFrom(newValue);
-																			}}
-																			renderInput={(params) => <TextField {...params} size="small" sx={{ width: '170px' }} error={false} />}
-																		/>
-																	</LocalizationProvider>
-																</span>
-																<span >
-																	<LocalizationProvider dateAdapter={AdapterDayjs}>
-																		<TimePicker
-																			label="To"
-																			value={fridayTo}
-																			onChange={(newValue) => {
-																				setFridayTo(newValue);
-																			}}
-																			renderInput={(params) => <TextField {...params} size="small" sx={{ width: '170px' }} error={false} />}
-																		/>
-																	</LocalizationProvider></span>
-															</div>}
+																	<span style={{ marginLeft: "20px", marginRight: "30px" }}>
+																		<TimePicker disableClock={true} onChange={(newValue) => {
+																			setFridayFrom(newValue);
+																		}} value={fridayFrom} />
+																	</span>  <span >
+																		<TimePicker disableClock={true} onChange={(newValue) => {
+																			setFridayTo(newValue);
+																		}} value={fridayTo} /></span>
+
+
+																</div>}
+															</div>
 														</div>
-													</div>
 
-													<div className="control-group">
-														<div className="form-group controls mb-0 pb-2" style={{ color: "#6c757d", opacity: 1 }}>
-															<label><b>Saturday</b></label>
-															<br />
-															<label>
-																<input
-																	type="checkbox"
-																	checked={saturdayclosed}
-																	onChange={(e) => setSaturdayClosed(!saturdayclosed)}
-																/>
-																closed
-															</label>
-															{!saturdayclosed && <div class="row" >
+														<div className="control-group">
+															<div className="form-group controls mb-0 pb-2" style={{ opacity: 1, marginLeft: "300px" }}>
+																<label><b>Saturday</b></label>
+																<br />
+																<label>
+																	<input
+																		type="checkbox"
+																		checked={saturdayclosed}
+																		onChange={(e) => setSaturdayClosed(!saturdayclosed)}
+																	/>
+																	closed
+																</label>
+																{!saturdayclosed && <div class="row" >
 
 
-																<span style={{ marginLeft: "20px", marginRight: "30px" }}>
-																	<LocalizationProvider dateAdapter={AdapterDayjs}>
-																		<TimePicker
-																			label="From"
-																			value={saturdayFrom}
-																			onChange={(newValue) => {
-																				setSaturdayFrom(newValue);
-																			}}
-																			renderInput={(params) => <TextField {...params} size="small" sx={{ width: '170px' }} error={false} />}
-																		/>
-																	</LocalizationProvider>
-																</span>
-																<span >
-																	<LocalizationProvider dateAdapter={AdapterDayjs}>
-																		<TimePicker
-																			label="To"
-																			value={saturdayTo}
-																			onChange={(newValue) => {
-																				setSaturdayTo(newValue);
-																			}}
-																			renderInput={(params) => <TextField {...params} size="small" sx={{ width: '170px' }} error={false} />}
-																		/>
-																	</LocalizationProvider></span>
-															</div>}
+																	<span style={{ marginLeft: "20px", marginRight: "30px" }}>
+																		<TimePicker disableClock={true} onChange={(newValue) => {
+																			setSaturdayFrom(newValue);
+																		}} value={saturdayFrom} />
+																	</span>  <span >
+																		<TimePicker disableClock={true} onChange={(newValue) => {
+																			setSaturdayTo(newValue);
+																		}} value={saturdayTo} /></span>
+
+																</div>}
+															</div>
 														</div>
-													</div>
 
-													<div className="control-group">
-														<div className="form-group controls mb-0 pb-2" style={{ color: "#6c757d", opacity: 1 }}>
-															<label><b>Sunday</b></label>
-															<br />
-															<label>
-																<input
-																	type="checkbox"
-																	checked={sundayclosed}
-																	onChange={(e) => setSundayClosed(!sundayclosed)}
-																/>
-																closed
-															</label>
-															{!sundayclosed && <div class="row" >
+														<div className="control-group">
+															<div className="form-group controls mb-0 pb-2" style={{ opacity: 1, marginLeft: "300px" }}>
+																<label><b>Sunday</b></label>
+																<br />
+																<label>
+																	<input
+																		type="checkbox"
+																		checked={sundayclosed}
+																		onChange={(e) => setSundayClosed(!sundayclosed)}
+																	/>
+																	closed
+																</label>
+																{!sundayclosed && <div class="row" >
 
 
-																<span style={{ marginLeft: "20px", marginRight: "30px" }}>
-																	<LocalizationProvider dateAdapter={AdapterDayjs}>
-																		<TimePicker
-																			label="From"
-																			value={sundayFrom}
-																			onChange={(newValue) => {
-																				setSundayFrom(newValue);
-																			}}
-																			renderInput={(params) => <TextField {...params} size="small" sx={{ width: '170px' }} error={false} />}
-																		/>
-																	</LocalizationProvider>
-																</span>
-																<span >
-																	<LocalizationProvider dateAdapter={AdapterDayjs}>
-																		<TimePicker
-																			label="To"
-																			value={sundayTo}
-																			onChange={(newValue) => {
-																				setSundayTo(newValue);
-																			}}
-																			renderInput={(params) => <TextField {...params} size="small" sx={{ width: '170px' }} error={false} />}
-																		/>
-																	</LocalizationProvider></span>
-															</div>}
+																	<span style={{ marginLeft: "20px", marginRight: "30px" }}>
+																		<TimePicker disableClock={true} onChange={(newValue) => {
+																			setSundayFrom(newValue);
+																		}} value={sundayFrom} />
+																	</span>  <span >
+																		<TimePicker disableClock={true} onChange={(newValue) => {
+																			setSundayTo(newValue);
+																		}} value={sundayTo} /></span>
+
+																</div>}
+															</div>
 														</div>
+
 													</div>
 
 

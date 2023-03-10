@@ -14,9 +14,30 @@ export const homeDataService = {
 	getQrCode,
 	updatePoint,
 	getBPartners,
+	insertData
 
 };
 
+
+function insertData( tf, dispatch) {
+	
+	if(tf){
+
+
+		console.log("tu saeeeeeemmmm")
+		dispatch(success());
+	}else{
+		dispatch(failure("Error while uploading new menu"));
+	}
+
+	function success() {
+		console.log("tu sammmm")
+		return { type: homeDataConstants.INSERT_DATA_SUCCESS };
+	}
+	function failure(error) {
+		return { type: homeDataConstants.INSERT_DATA_FAILURE, error };
+	}
+}
 
 function addTour(tour, dispatch) {
 

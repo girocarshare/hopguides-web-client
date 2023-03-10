@@ -695,6 +695,32 @@ export const homeDataReducer = (state, action) => {
 
 			};
 
+			case homeDataConstants.INSERT_DATA_SUCCESS:
+
+			return {
+				...state,
+
+				modalData: {
+					success: true,
+					failure: false,
+					text: "You have successfully added new data.",
+				},
+
+			};
+
+		case homeDataConstants.INSERT_DATA_FAILURE:
+
+			return {
+				...state,
+
+				modalData: {
+					success: false,
+					failure: true,
+					text: "Error while adding new data. Please try again later.",
+				},
+
+			};
+
 		default:
 			return state;
 	}
