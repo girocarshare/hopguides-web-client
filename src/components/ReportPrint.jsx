@@ -6,16 +6,10 @@ import { reportService } from "../services/ReportService";
 import { reportConstants } from "../constants/ReportConstants";
 import { deleteLocalStorage, authHeader } from "../helpers/auth-header";
 import Axios from "axios";
-
 import ReactToPrint from 'react-to-print';
-
-import LoginForm from './LoginForm';
-import HomeDataContextProvider from "../contexts/HomeDataContext";
-import UserContextProvider from "../contexts/UserContext";
-
 import Report from './Report';
-
 var url = process.env.REACT_APP_URL || "http://localhost:3000/";
+
 const ReportPrint = () => {
 
     const componentRef = useRef();

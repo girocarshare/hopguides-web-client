@@ -1,39 +1,42 @@
-import { useContext, useState, useEffect,useRef, React } from "react";
-
-import { Modal } from "react-bootstrap";
+import { useContext, useState, useEffect, useRef, React } from "react";
 import { homeDataConstants } from "../constants/HomeDataConstants";
 import { HomeDataContext } from "../contexts/HomeDataContext";
 import PreviousReportTourForm from "./PreviousReportTourForm";
-
-import { homeDataService } from "../services/HomeDataService";
+import { AiOutlineClose } from 'react-icons/ai';
 const PreviousReportTourModal = () => {
-	
+
 	const { homeDataState, dispatch } = useContext(HomeDataContext);
 	const handleModalClose = () => {
-		dispatch({ type: homeDataConstants.HIDE_MODAL});
+		dispatch({ type: homeDataConstants.HIDE_MODAL });
 	};
- 
+
 	return (
-	
-		<Modal
-		show={homeDataState.previousReports.showModal} aria-labelledby="contained-modal-title-vcenter" class="modal-dialog modal-lg" centered onHide={handleModalClose} size="lg">
-
-		<Modal.Header closeButton>
-			<Modal.Title id="contained-modal-title-vcenter">
-				<big>Previous resports</big>
-			</Modal.Title>
-		</Modal.Header>
-		<Modal.Body>
-
-		<PreviousReportTourForm
-				homeDataState = {homeDataState}
-				dispatch = {dispatch}/>
-	</Modal.Body >
-			<Modal.Footer>
-			</Modal.Footer>
 
 
-		</Modal>
+		<div>
+
+			{homeDataState.previousReports.showModal && <div class="overlay" >
+				<div id="myModal" class="modal" style={{ background: "white" }}>
+					<div class="button-login">
+
+						<button
+							type="button"
+							style={{ background: "#0099ff", marginTop: "px", marginRight: "55px", padding: "5px 15px", height: "35px" }}
+							onClick={handleModalClose}
+							class="btn btn-primary btn-lg"
+						>
+							<AiOutlineClose />
+						</button>
+					</div>
+					<h1>Previous resports</h1>
+					<PreviousReportTourForm
+						homeDataState={homeDataState}
+						dispatch={dispatch} />
+				</div>
+			</div>
+
+			}
+		</div>
 	);
 };
 

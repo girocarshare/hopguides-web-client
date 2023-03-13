@@ -9,12 +9,35 @@ export const homeDataService = {
 	getToursAndPointsData,
 	getPreviousMonthsData,
 	addTour,
+	addPartner,
 	updateTour,
 	getQrCode,
-	updatePoint
+	updatePoint,
+	getBPartners,
+	insertData
 
 };
 
+
+function insertData( tf, dispatch) {
+	
+	if(tf){
+
+
+		console.log("tu saeeeeeemmmm")
+		dispatch(success());
+	}else{
+		dispatch(failure("Error while uploading new menu"));
+	}
+
+	function success() {
+		console.log("tu sammmm")
+		return { type: homeDataConstants.INSERT_DATA_SUCCESS };
+	}
+	function failure(error) {
+		return { type: homeDataConstants.INSERT_DATA_FAILURE, error };
+	}
+}
 
 function addTour(tour, dispatch) {
 
@@ -52,6 +75,46 @@ function addTour(tour, dispatch) {
 	function failure(error) {
 		
 		return { type: homeDataConstants.TOUR_SUBMIT_FAILURE, error };
+	}
+}
+
+
+function addPartner(tour, dispatch) {
+
+	dispatch(request());
+	
+	
+
+	var token = authHeader()
+	Axios.post(`${url}api/pnl/tour/addPartners`, tour, {
+		headers: {
+		  Authorization: token 
+		}},{ validateStatus: () => true })
+		.then((res) => {
+			if (res.status === 200) {
+				dispatch(success());
+				window.location.reload()
+			} else if (res.status === 215) {
+				dispatch(failure(res.data.response));
+			}else{
+				
+				dispatch(failure(res.data.error));
+			}
+		})
+		.catch((err) =>{		
+				dispatch(failure(err));
+			})
+
+	function request() {
+		
+		return { type: homeDataConstants.PARTNER_SUBMIT_REQUEST };
+	}
+	function success() {
+		return { type: homeDataConstants.PARTNER_SUBMIT_SUCCESS };
+	}
+	function failure(error) {
+		
+		return { type: homeDataConstants.PARTNER_SUBMIT_FAILURE, error };
 	}
 }
 
@@ -253,4 +316,36 @@ async function getQrCode(dispatch,id) {
 
 		});
 
+}
+
+
+async function getBPartners(dispatch ) {
+
+	await Axios.get(`${url}api/bp/all`, { validateStatus: () => true })
+		.then((res) => {
+			if (res.status === 200) {
+				dispatch(success(res.data));
+			} else {
+				
+				var error = "Error while fetching data"
+				dispatch(failure(error));
+			}
+		})
+		.catch((err) => {
+		
+			var error = "Unknown error, please try again later."
+				dispatch(failure(error));
+		});
+
+	function request() {
+		return { type: homeDataConstants.GET_BPARTNERS_REQUEST };
+	}
+	function success(data) {
+		console.log(data)
+		return { type: homeDataConstants.GET_BPARTNERS_SUCCESS, data: data };
+	}
+	function failure(message) {
+
+		return { type: homeDataConstants.GET_BPARTNERS_FAILURE, errorMessage: message };
+	}
 }

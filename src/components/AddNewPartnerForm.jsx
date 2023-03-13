@@ -5,6 +5,7 @@ import { HomeDataContext } from "../contexts/HomeDataContext";
 import { homeDataConstants } from "../constants/HomeDataConstants";
 import TimePicker from 'react-time-picker';
 import { YMaps, Map } from "react-yandex-maps";
+
 import { AiOutlineClose } from 'react-icons/ai';
 const mapState = {
 	center: [44, 21],
@@ -12,15 +13,13 @@ const mapState = {
 	controls: [],
 };
 
-const AddNewTourForm = () => {
+
+var url = process.env.REACT_APP_URL || "http://localhost:3000/";
+const AddNewPartnerForm = (props) => {
 
 	const addressInput = React.createRef(null);
 
 
-	const [title, setTitle] = useState("");
-	const [shortInfo, setShortInfo] = useState("");
-	const [longInfo, setLongInfo] = useState("");
-	const [price, setPrice] = useState("_€ incl tax");
 
 	const [titlePoint, setTitlePoint] = useState("");
 	const [shortInfoPoint, setShortInfoPoint] = useState("");
@@ -63,10 +62,8 @@ const AddNewTourForm = () => {
 	const [errMessagePartner, setErrMessagePartner] = useState("");
 	const [errMessage, setErrMessage] = useState("");
 	const [points, setPoints] = useState([]);
-	const [add, setAdd] = useState(false);
 
 	const { homeDataState, dispatch } = useContext(HomeDataContext);
-
 
 
 	const onYmapsLoad = (ymaps) => {
@@ -78,39 +75,31 @@ const AddNewTourForm = () => {
 		});
 	};
 
+
 	const handleSubmit = (e) => {
 		e.preventDefault();
 
-		if (title == "") {
-
-			setErrMessage("Please fill in the tour title field")
+		if (points.length == 0) {
+			setErrMessage("Please add at least one partner")
 		} else {
 
-
 			var tour = {
-				title: { en: title },
-				shortInfo: { en: shortInfo },
-				longInfo: { en: longInfo },
-				price: price,
+				id: homeDataState.showAddPartnerModal.id,
 				points: points
 
 
 			}
 
-			homeDataService.addTour(tour, dispatch);
-
+			homeDataService.addPartner(tour, dispatch);
 		}
+
 	};
+
+
 	const handleModalClose = () => {
-		dispatch({ type: homeDataConstants.HIDE_ADD_MODAL });
+		dispatch({ type: homeDataConstants.HIDE_ADD_PARTNER_MODAL });
 		window.location.reload()
 	};
-
-	const addPoint = () => {
-		setAdd(true)
-
-	};
-
 
 	const handleAdd = (e) => {
 
@@ -118,9 +107,6 @@ const AddNewTourForm = () => {
 
 			setErrMessagePartner("Please insert mandatory fields for partner (marked with *)")
 		} else {
-
-			setAdd(false)
-			setErrMessagePartner("")
 
 			let street;
 			let city;
@@ -160,7 +146,6 @@ const AddNewTourForm = () => {
 
 					}
 
-					console.log(point.location)
 					const newData = [point, ...points];
 
 					setPoints(newData)
@@ -185,133 +170,45 @@ const AddNewTourForm = () => {
 
 
 				});
-
 		}
 	}
 
 
 
-
 	return (
 
+
 		<div  >
-			{homeDataState.showModal && <div class="overlay" >
+			{homeDataState.showAddPartnerModal.show && <div class="overlay" >
 				<div id="myModal" class="modal" style={{ background: "white" }}>
 
 
-					<div className="containerModal"  >
 
-						<div className="row mt-5">
-							<div class="button-login">
+					<div   >
 
-								<button
-									type="button"
-									style={{ background: "#0099ff", marginTop: "px", marginRight: "55px", padding: "5px 15px", height: "35px" }}
-									onClick={handleModalClose}
-									class="btn btn-primary btn-lg"
-								>
-									<AiOutlineClose />
-								</button>
-							</div>
-							<form id="contactForm" >
+						<div className="containerModal"  >
 
+							<div className="row mt-5">
+								<div class="button-login">
 
-
-								<table style={{ marginLeft: "4rem", marginBottom: "4rem" }}>
-									<td width="600rem"  >
-										<div className="control-group">
-											<div className="form-group controls mb-0 pb-2" style={{ color: "#6c757d", opacity: 1 }}>
-												<label><b>Title</b></label>
-												<div class="row" >
-													<div class="form-group col-lg-10">
-														<input
-
-															className={"form-control"}
-															placeholder="Title"
-															aria-describedby="basic-addon1"
-															id="name"
-															type="text"
-															style={{ backgroundColor: 'white', outline: 'none' }}
-
-															onChange={(e) => setTitle(e.target.value)}
-															value={title}
-														/>
-													</div>
-												</div>
-											</div>
-										</div>
-
-										<div className="control-group">
-											<div className="form-group controls mb-0 pb-2" style={{ color: "#6c757d", opacity: 1 }}>
-												<label><b>Short description</b></label>
-												<div class="row" >
-													<div class="form-group col-lg-10">
-														<textarea className="form-control" style={{ height: "100px" }} type="textarea" required name="message" placeholder="Short description" value={shortInfo} onChange={(e) => setShortInfo(e.target.value)}></textarea>
-
-													</div>
-												</div>
-											</div>
-										</div>
-
-										<div className="control-group">
-											<div className="form-group controls mb-0 pb-2" style={{ color: "#6c757d", opacity: 1 }}>
-												<label><b>Long description</b></label>
-												<div class="row" >
-													<div class="form-group col-lg-10">
-														<textarea className="form-control" style={{ height: "200px" }} type="textarea" required name="message" placeholder="Long description" value={longInfo} onChange={(e) => setLongInfo(e.target.value)}></textarea>
-
-													</div>
-												</div>
-											</div>
-										</div>
-
-										<div className="control-group">
-											<div className="form-group controls mb-0 pb-2" style={{ color: "#6c757d", opacity: 1 }}>
-												<label><b>Price</b></label>
-												<div class="row" >
-													<div class="form-group col-lg-10">
-														<input
-
-															className={"form-control"}
-															placeholder="Price"
-															aria-describedby="basic-addon1"
-															id="name"
-															type="text"
-															style={{ backgroundColor: 'white', outline: 'none' }}
-
-															onChange={(e) => setPrice(e.target.value)}
-															value={price}
-														/>
-													</div>
-												</div>
-											</div>
-										</div>
+									<button
+										type="button"
+										style={{ background: "#0099ff", marginTop: "px", marginRight: "55px", padding: "5px 15px", height: "35px" }}
+										onClick={handleModalClose}
+										class="btn btn-primary btn-lg"
+									>
+										<AiOutlineClose />
+									</button>
+								</div>
+								<form id="contactForm" >
 
 
 
-										<div className="form-group text-center">
-											<button
-												style={{ background: "#1977cc", marginTop: "15px", marginRight: "55px" }}
-
-												onClick={(e) => { addPoint(e) }}
-												className="btn btn-primary btn-xl"
-												id="sendMessageButton"
-												type="button"
-											>
-												Add partner
-											</button>
-										</div>
+									<table style={{ marginLeft: "4rem", marginBottom: "4rem" }}>
+										<td width="600rem"  >
 
 
-
-
-
-
-
-
-
-										<div>
-											{add &&
+											<div>
 												<div><div className="control-group">
 													<div className="form-group controls mb-0 pb-2" style={{ color: "#6c757d", opacity: 1 }}>
 														<label><b>Partner's name *</b></label>
@@ -733,74 +630,74 @@ const AddNewTourForm = () => {
 													</div>
 
 												</div>
-											}</div></td>
-
-								</table>
-							</form>
-							<div className="form-group text-center" style={{ color: "red", fontSize: "0.8em", marginTop: "30px", marginRight: "40px" }} hidden={!errMessagePartner}>
-								{errMessagePartner}
+											</div></td>
+									</table>
+								</form>
+								<div className="form-group text-center" style={{ color: "red", fontSize: "0.8em", marginTop: "30px", marginRight: "40px" }} hidden={!errMessagePartner}>
+									{errMessagePartner}
+								</div>
 							</div>
 						</div>
-					</div>
 
-					{points.length > 0 &&
-						<div>
-							{
+						{points.length > 0 &&
+							<div>
+								{
 
-								<table style={{ border: "1px solid gray" }}>
-									<thead>
-										<tr>
-											<th style={{ border: "1px solid gray" }}>Title</th>
-											<th style={{ border: "1px solid gray" }}>Short description</th>
-											<th style={{ border: "1px solid gray" }}>Long description</th>
-											<th style={{ border: "1px solid gray" }}>Responsible person</th>
-											<th style={{ border: "1px solid gray" }}>Email</th>
-											<th style={{ border: "1px solid gray" }}>Phone</th>
-											<th style={{ border: "1px solid gray" }}>Web page</th>
-											<th style={{ border: "1px solid gray" }}>Location</th>
-										</tr>
-									</thead>
-
-									{points.map((point) => (
-										<tbody>
+									<table style={{ border: "1px solid gray" }}>
+										<thead>
 											<tr>
-												<td style={{ border: "1px solid gray" }}>{point.title.en}</td>
-												<td style={{ border: "1px solid gray" }}>{point.shortInfo.en}</td>
-												<td style={{ border: "1px solid gray" }}>{point.longInfo.en}</td>
-												<td style={{ border: "1px solid gray" }}>{point.contact.name}</td>
-												<td style={{ border: "1px solid gray" }}>{point.contact.email}</td>
-												<td style={{ border: "1px solid gray" }}>{point.contact.phone}</td>
-												<td style={{ border: "1px solid gray" }}>{point.contact.webURL}</td>
-												<td style={{ border: "1px solid gray" }}>{`${point.location.street}  ${point.location.city} ${point.location.country} ${point.location.latitute}  ${point.location.longitude}`}</td>
-
+												<th style={{ border: "1px solid gray" }}>Title</th>
+												<th style={{ border: "1px solid gray" }}>Short description</th>
+												<th style={{ border: "1px solid gray" }}>Long description</th>
+												<th style={{ border: "1px solid gray" }}>Responsible person</th>
+												<th style={{ border: "1px solid gray" }}>Email</th>
+												<th style={{ border: "1px solid gray" }}>Phone</th>
+												<th style={{ border: "1px solid gray" }}>Web page</th>
+												<th style={{ border: "1px solid gray" }}>Location</th>
 											</tr>
-										</tbody>))
-									}
-								</table>
-							}
+										</thead>
+
+										{points.map((point) => (
+											<tbody>
+												<tr>
+													<td style={{ border: "1px solid gray" }}>{point.title.en}</td>
+													<td style={{ border: "1px solid gray" }}>{point.shortInfo.en}</td>
+													<td style={{ border: "1px solid gray" }}>{point.longInfo.en}</td>
+													<td style={{ border: "1px solid gray" }}>{point.contact.name}</td>
+													<td style={{ border: "1px solid gray" }}>{point.contact.email}</td>
+													<td style={{ border: "1px solid gray" }}>{point.contact.phone}</td>
+													<td style={{ border: "1px solid gray" }}>{point.contact.webURL}</td>
+													<td style={{ border: "1px solid gray" }}>{`${point.location.street}  ${point.location.city} ${point.location.country} ${point.location.latitute}  ${point.location.longitude}`}</td>
+
+												</tr>
+											</tbody>))
+										}
+									</table>
+								}
+							</div>
+						}
+
+
+
+						<div className="form-group text-center" style={{ color: "red", fontSize: "0.8em", marginTop: "30px", marginRight: "40px" }} hidden={!errMessage}>
+							{errMessage}
 						</div>
-					}
+						<div className="form-group text-center">
+							<button
+								style={{ background: "#1977cc", marginTop: "15px" }}
 
+								onClick={(e) => { handleSubmit(e) }}
+								className="btn btn-primary btn-xl"
+								id="sendMessageButton"
+								type="button"
+							>
+								Add partner
+							</button>
+						</div>
 
+						<br />
 
-					<div className="form-group text-center" style={{ color: "red", fontSize: "0.8em", marginTop: "30px", marginRight: "40px" }} hidden={!errMessage}>
-						{errMessage}
 					</div>
-					<div className="form-group text-center">
-						<button
-							style={{ background: "#1977cc", marginTop: "15px" }}
-
-							onClick={(e) => { handleSubmit(e) }}
-							className="btn btn-primary btn-xl"
-							id="sendMessageButton"
-							type="button"
-						>
-							Add tour
-						</button>
-					</div>
-
-					<br />
-
 				</div>
 			</div>}
 		</div>
@@ -809,4 +706,4 @@ const AddNewTourForm = () => {
 	);
 };
 
-export default AddNewTourForm;
+export default AddNewPartnerForm;

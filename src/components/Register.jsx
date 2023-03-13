@@ -2,14 +2,7 @@ import React, { useContext, useEffect, useImperativeHandle, forwardRef, useState
 import { UserContext } from "../contexts/UserContext";
 import { userService } from "../services/UserService";
 import UserContextProvider from "../contexts/UserContext";
-import Select from "react-dropdown-select";
-import { VscLibrary } from 'react-icons/vsc';
-import { MdOutlineDashboard } from 'react-icons/md';
-import { BiCollection } from 'react-icons/bi';
-import { BsBuilding } from "react-icons/bs";
-import { GiPerson } from "react-icons/gi";
 import { YMaps, Map } from "react-yandex-maps";
-import { AiOutlineUserAdd, AiOutlineMail } from 'react-icons/ai';
 const mapState = {
 	center: [44, 21],
 	zoom: 8,
@@ -39,7 +32,6 @@ const Register = () => {
 
 	const handleLogout = (event) => {
 
-		//deleteLocalStorage();
 		window.location = "#/login";
 	}
 

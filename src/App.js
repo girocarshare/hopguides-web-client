@@ -3,6 +3,7 @@ import { HashRouter as Router, Switch, Route, Redirect } from "react-router-dom"
 import ReportPage from "./pages/ReportPage.jsx";
 import PreviousReportPage from "./pages/PreviousReportPage.jsx";
 import HomePage from "./pages/HomePage.jsx";
+import InsertDataPage from "./pages/InsertDataPage.jsx";
 import PageNotFound from "./pages/PageNotFound.jsx";
 import { ProtectedRoute } from "./router/ProtectedRouter.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
@@ -16,6 +17,7 @@ function App() {
 		<Router>
 			<Switch>
 				<Route path="/register" component={RegisterPage} />
+				<Route path="/insertdata" component={InsertDataPage} />
 				<Route path="/setPassword/:email" component={SetPasswordPage} />
 				<Route path="/report/:id" component={ReportPage} />
 				<Route path="/previousReports/:id" component={PreviousReportPage} />

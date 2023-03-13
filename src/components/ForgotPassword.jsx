@@ -2,14 +2,6 @@ import React, { useContext, useEffect, useImperativeHandle, forwardRef, useState
 import { UserContext } from "../contexts/UserContext";
 import { userService } from "../services/UserService";
 import UserContextProvider from "../contexts/UserContext";
-import Select from "react-dropdown-select";
-import { VscLibrary } from 'react-icons/vsc';
-import { MdOutlineDashboard } from 'react-icons/md';
-import { BiCollection } from 'react-icons/bi';
-import { BsBuilding } from "react-icons/bs";
-import { GiPerson } from "react-icons/gi";
-import { AiOutlineUserAdd, AiOutlineMail } from 'react-icons/ai';
-import { useParams } from 'react-router-dom';
 const ForgotPassword = () => {
 
 	const { userState, dispatch } = useContext(UserContext);
@@ -17,8 +9,6 @@ const ForgotPassword = () => {
 	
 
 	const handleSubmitNew = (e) => {
-
-
 
 	
 		e.preventDefault();
