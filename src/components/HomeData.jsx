@@ -345,13 +345,13 @@ const HomeData = forwardRef((props, ref) => {
                   <td style={{ border: "1px solid gray" }}>
                     <input
                       readOnly={!editTourPrice || rowIdTour != tour.tourId}
-                      placeholder={editTourPrice === true ? tour.tourPrice : "Insert price"}
+                      placeholder={editTourPrice === true ? `${tour.tourPrice} ${tour.currency} incl tax` : "Insert price"}
                       aria-describedby="basic-addon1"
                       id="name"
                       type="text"
                       style={{ backgroundColor: editTourPrice === true && rowIdTour == tour.tourId ? '#DCDCDC' : 'white', outline: 'none' }}
                       onChange={(e) => setTourPrice(e.target.value)}
-                      defaultValue={tour.tourPrice}
+                      defaultValue={`${tour.tourPrice} ${tour.currency} incl tax`}
                     />
                   </td>
                   <td style={{ border: "1px solid gray" }}>{tour.noOfRidesAMonth}</td>
@@ -458,7 +458,7 @@ const HomeData = forwardRef((props, ref) => {
                           type="text"
                           style={{ backgroundColor: editPartner === true && rowId == points.point.id ? '#DCDCDC' : 'white', outline: 'none' }}
                           onChange={(e) => setPartnerPrice(e.target.value)}
-                          defaultValue={points.point.price}
+                          defaultValue={ `${points.point.price} ${tour.currency} incl tax`} 
                         />
                       </td>
                       <td style={{ border: "1px solid gray" }}>

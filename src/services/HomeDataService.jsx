@@ -24,14 +24,12 @@ function insertData( tf, dispatch) {
 	if(tf){
 
 
-		console.log("tu saeeeeeemmmm")
 		dispatch(success());
 	}else{
 		dispatch(failure("Error while uploading new menu"));
 	}
 
 	function success() {
-		console.log("tu sammmm")
 		return { type: homeDataConstants.INSERT_DATA_SUCCESS };
 	}
 	function failure(error) {
@@ -236,6 +234,8 @@ async function getData(dispatch) {
 	await Axios.get(`${url}api/pnl/tour/allReport`, { validateStatus: () => true })
 		.then((res) => {
 			if (res.status === 200) {
+				
+				console.log(res.data)
 				dispatch(success(res.data));
 			} else {
 				

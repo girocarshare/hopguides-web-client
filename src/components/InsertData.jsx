@@ -19,12 +19,14 @@ const InsertData = (props) => {
   const [title, setTitle] = useState("");
   const [shortInfo, setShortInfo] = useState("");
   const [longInfo, setLongInfo] = useState("");
-  const [price, setPrice] = useState("_€ incl tax");
+  const [currency, setCurrency] = useState("");
+  const [currencyList, setCurrencyList] = useState(["£", "€", "$"]);
+  const [price, setPrice] = useState("");
 
   const [titlePoint, setTitlePoint] = useState("");
   const [shortInfoPoint, setShortInfoPoint] = useState("");
   const [longInfoPoint, setLongInfoPoint] = useState("");
-  const [pointPrice, setPointPrice] = useState("_€ incl tax");
+  const [pointPrice, setPointPrice] = useState("");
   const [offerName, setOfferName] = useState("");
   const [duration, setDuration] = useState("");
   const [length, setLength] = useState("");
@@ -135,24 +137,25 @@ const InsertData = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     if (title == "" || audio == null || shortInfo == "" || longInfo == "" || price == "" || hotelId == "" || duration == "" || length == "" || highestPoint == "") {
 
       setErrMessage("Please fill in the fileds marked with *")
     } else {
 
 
+
       var tour = {
-        title: { en: title },
-        shortInfo: { en: shortInfo },
-        longInfo: { en: longInfo },
+        title: JSON.parse(title) ,
+        shortInfo: JSON.parse(shortInfo),
+        longInfo: JSON.parse(longInfo),
         price: price,
         points: points,
         duration: duration,
         length: length,
         highestPoint: highestPoint,
         bpartnerId: hotelId,
-        termsAndConditions: termsAndConditions
+        termsAndConditions: termsAndConditions,
+        currency: currency
 
 
       }
@@ -216,12 +219,12 @@ const InsertData = (props) => {
 
   const handleAdd = (e) => {
 
-    if (partner && (titlePoint == "" || shortInfoPoint == "" || longInfoPoint == "" || category == "" || price == "" || offerName=="" || responsiblePerson =="" || phone == "" || email=="" || webURL=="" || addressInput.current.value == "" || audio2 == null || selectedFiles.length == 0 || (!mondayclosed && (mondayFrom == "" || mondayTo == "")) || (!tuesdayclosed && (tuesdayFrom == "" || tuesdayTo == "")) || (!wednesdayclosed && (wednesdayFrom == "" || wednesdayTo == "")) || (!thursdayclosed && (thursdayFrom == "" || thursdayTo == "")) || (!fridayclosed && (fridayFrom == "" || fridayTo == "")) || (!saturdayclosed && (saturdayFrom == "" || saturdayTo == "")) || (!sundayclosed && (sundayFrom == "" || sundayTo == "")))) {
+    if (partner && (titlePoint == "" || shortInfoPoint == "" || longInfoPoint == "" || category == "" || price == "" || offerName == "" || responsiblePerson == "" || phone == "" || email == "" || webURL == "" || addressInput.current.value == "" || audio2 == null || selectedFiles.length == 0 || (!mondayclosed && (mondayFrom == "" || mondayTo == "")) || (!tuesdayclosed && (tuesdayFrom == "" || tuesdayTo == "")) || (!wednesdayclosed && (wednesdayFrom == "" || wednesdayTo == "")) || (!thursdayclosed && (thursdayFrom == "" || thursdayTo == "")) || (!fridayclosed && (fridayFrom == "" || fridayTo == "")) || (!saturdayclosed && (saturdayFrom == "" || saturdayTo == "")) || (!sundayclosed && (sundayFrom == "" || sundayTo == "")))) {
 
       setErrMessagePartner("Please insert mandatory fields for partner (marked with *)")
-    } else if(point && (titlePoint == "" || shortInfoPoint == "" || longInfoPoint == "" || category == "" || addressInput.current.value == "" || audio2 == null || selectedFiles.length == 0 )){
+    } else if (point && (titlePoint == "" || shortInfoPoint == "" || longInfoPoint == "" || category == "" || addressInput.current.value == "" || audio2 == null || selectedFiles.length == 0)) {
       setErrMessagePartner("Please insert mandatory fields for point of interest (marked with *)")
-    }else{
+    } else {
       setAdd(false)
       setErrMessagePartner("")
 
@@ -252,9 +255,9 @@ const InsertData = (props) => {
         .then((res) => {
 
           var point = {
-            title: { en: titlePoint },
-            shortInfo: { en: shortInfoPoint },
-            longInfo: { en: longInfoPoint },
+            title: JSON.parse(titlePoint),
+            shortInfo: JSON.parse(shortInfoPoint),
+            longInfo: JSON.parse(longInfoPoint),
             price: pointPrice,
             offerName: offerName,
             contact: { phone: phone, email: email, webURL: webURL, name: responsiblePerson },
@@ -295,8 +298,8 @@ const InsertData = (props) => {
 
         });
 
-    
-  }
+
+    }
   }
 
 
@@ -412,13 +415,14 @@ const InsertData = (props) => {
 
         {homeDataState.termsAndConditionsModal.show && <div >
           <TermsAndConditionsModal
+          title= {title}
             termsAndConditions={termsAndConditions}
             setTermsAndConditions={setTermsAndConditions}
           /></div>}
         <form id="contactForm" >
 
           <h1 class="paragraph-box" style={{ fontSize: 28 }} ><b>Add new tour</b></h1>
-
+        
           <table style={{ marginBottom: "4rem" }}>
             <td width="1000rem"  >
 
@@ -469,23 +473,34 @@ const InsertData = (props) => {
                 </div>
               </div>
 
+
               <div className="control-group">
                 <div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
                   <label><b>Price*</b></label>
                   <div class="row" >
                     <div class="form-group col-lg-10">
-                      <input
+                      <div class="button-login">
+                        <input
 
-                        className={"form-control"}
-                        placeholder="Price"
-                        aria-describedby="basic-addon1"
-                        id="name"
-                        type="text"
-                        style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
+                          className={"form-control"}
+                          placeholder="Price"
+                          aria-describedby="basic-addon1"
+                          id="name"
+                          type="text"
+                          style={{ backgroundColor: 'white', outline: 'none', width: "800px", height: "50px" }}
 
-                        onChange={(e) => setPrice(e.target.value)}
-                        value={price}
-                      />
+                          onChange={(e) => setPrice(e.target.value)}
+                          value={price}
+                        />
+                        <select onChange={(e) => setCurrency(e.target.value)} name="currency" class="custom-select" style={{ height: "50px", width: "200px" }}>
+                          {currencyList.map(item =>
+                            <option key={item} value={item} >{item}</option>
+                          )};
+
+                        </select>
+
+                      </div>
+
                     </div>
                   </div>
                 </div>
@@ -499,8 +514,8 @@ const InsertData = (props) => {
                     <div class="form-group col-lg-10">
 
                       <select onChange={(e) => setHotelId(e.target.value)} name="category" class="custom-select" style={{ height: "50px", width: "1000px" }}>
-                        
-                      <option key={"none"} > </option>
+
+                        <option key={"none"} > </option>
                         {homeDataState.bpartners.bpartners.map(item =>
                           <option key={item.id} value={item.id} >{item.name}</option>
                         )};
@@ -586,7 +601,7 @@ const InsertData = (props) => {
               <div style={{ marginTop: "15px" }}>
                 <label><b>Background tour image</b></label>
                 <br />   <br />
-                <input type={"file"}  name="file" onChange={onFileChange} />
+                <input type={"file"} name="file" onChange={onFileChange} />
 
               </div>
 
@@ -660,7 +675,7 @@ const InsertData = (props) => {
                             onChange={(e) => setTitlePoint(e.target.value)}
                             value={titlePoint}
                           />
-                          
+
                         </div>
                       </div>
                     </div>
@@ -712,6 +727,7 @@ const InsertData = (props) => {
                         <label><b>Price*</b></label>
                         <div class="row" >
                           <div class="form-group col-lg-10">
+                          <div class="button-login">
                             <input
 
                               className={"form-control"}
@@ -719,11 +735,19 @@ const InsertData = (props) => {
                               aria-describedby="basic-addon1"
                               id="name"
                               type="text"
-                              style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
+                              style={{ backgroundColor: 'white', outline: 'none', width: "800px", height: "50px" }}
 
                               onChange={(e) => setPointPrice(e.target.value)}
                               value={pointPrice}
                             />
+
+                            <select onChange={(e) => setCurrency(e.target.value)} name="currency" class="custom-select" style={{ height: "50px", width: "200px" }}>
+                              {currencyList.map(item =>
+                                <option key={item} value={item} >{item}</option>
+                              )};
+
+                            </select>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -751,28 +775,28 @@ const InsertData = (props) => {
                     </div>}
 
                     <div >
-                      
-                        <label><b>Address *</b></label>
-                        <div >
-                         
-                            <input id="suggest" ref={addressInput} placeholder="Address" style={{ width: "1000px", height: "50px"}} />
 
-                            <YMaps
-                              query={{
-                                load: "package.full",
-                                apikey: "b0ea2fa3-aba0-4e44-a38e-4e890158ece2",
-                                lang: "en_RU",
-                              }}
-                            >
-                              <Map
-                                style={{ display: "none", width: "100px", marginLeft:"100px" }}
-                                state={mapState}
-                                onLoad={onYmapsLoad}
-                                instanceRef={(map) => (map = map)}
-                                modules={["coordSystem.geo", "geocode", "util.bounds"]}
-                              ></Map>
-                            </YMaps>
-                          </div>
+                      <label><b>Address *</b></label>
+                      <div >
+
+                        <input id="suggest" ref={addressInput} placeholder="Address" style={{ width: "1000px", height: "50px" }} />
+
+                        <YMaps
+                          query={{
+                            load: "package.full",
+                            apikey: "b0ea2fa3-aba0-4e44-a38e-4e890158ece2",
+                            lang: "en_RU",
+                          }}
+                        >
+                          <Map
+                            style={{ display: "none", width: "100px", marginLeft: "100px" }}
+                            state={mapState}
+                            onLoad={onYmapsLoad}
+                            instanceRef={(map) => (map = map)}
+                            modules={["coordSystem.geo", "geocode", "util.bounds"]}
+                          ></Map>
+                        </YMaps>
+                      </div>
                     </div>
 
                     {partner &&
@@ -793,16 +817,16 @@ const InsertData = (props) => {
                               closed
                             </label>
                             {!mondayclosed && <div class="row"  >
-                            <span style={{ marginLeft: "20px", marginRight: "30px" }}>
-                            <TimePicker disableClock={true} onChange={(newValue) => {
-                                setMondayFrom(newValue);
-                              }} value={mondayFrom} />
+                              <span style={{ marginLeft: "20px", marginRight: "30px" }}>
+                                <TimePicker disableClock={true} onChange={(newValue) => {
+                                  setMondayFrom(newValue);
+                                }} value={mondayFrom} />
                               </span>  <span >
-                              <TimePicker disableClock={true} onChange={(newValue) => {
-                                setMondayTo(newValue);
-                              }} value={mondayTo} /></span>
+                                <TimePicker disableClock={true} onChange={(newValue) => {
+                                  setMondayTo(newValue);
+                                }} value={mondayTo} /></span>
 
-                            
+
                             </div>}
                           </div>
                         </div>
@@ -820,14 +844,14 @@ const InsertData = (props) => {
                               closed
                             </label>
                             {!tuesdayclosed && <div class="row" >
-                            <span style={{ marginLeft: "20px", marginRight: "30px" }}>
-                            <TimePicker disableClock={true} onChange={(newValue) => {
-                                setTuesdayFrom(newValue);
-                              }} value={tuesdayFrom} />
+                              <span style={{ marginLeft: "20px", marginRight: "30px" }}>
+                                <TimePicker disableClock={true} onChange={(newValue) => {
+                                  setTuesdayFrom(newValue);
+                                }} value={tuesdayFrom} />
                               </span>  <span >
-                              <TimePicker disableClock={true} onChange={(newValue) => {
-                                setTuesdayTo(newValue);
-                              }} value={tuesdayTo} /></span>
+                                <TimePicker disableClock={true} onChange={(newValue) => {
+                                  setTuesdayTo(newValue);
+                                }} value={tuesdayTo} /></span>
                             </div>}
                           </div>
                         </div>
@@ -845,16 +869,16 @@ const InsertData = (props) => {
                               closed
                             </label>
                             {!wednesdayclosed && <div class="row" >
-                            <span style={{ marginLeft: "20px", marginRight: "30px" }}>
-                            <TimePicker disableClock={true} onChange={(newValue) => {
-                                setWednesdayFrom(newValue);
-                              }} value={wednesdayFrom} />
+                              <span style={{ marginLeft: "20px", marginRight: "30px" }}>
+                                <TimePicker disableClock={true} onChange={(newValue) => {
+                                  setWednesdayFrom(newValue);
+                                }} value={wednesdayFrom} />
                               </span>  <span >
-                              <TimePicker disableClock={true} onChange={(newValue) => {
-                                setWednesdayTo(newValue);
-                              }} value={wednesdayTo} /></span>
+                                <TimePicker disableClock={true} onChange={(newValue) => {
+                                  setWednesdayTo(newValue);
+                                }} value={wednesdayTo} /></span>
 
-                             
+
                             </div>}
                           </div>
                         </div>
@@ -873,16 +897,16 @@ const InsertData = (props) => {
                             </label>
                             {!thursdayclosed && <div class="row" >
 
-                            <span style={{ marginLeft: "20px", marginRight: "30px" }}>
-                            <TimePicker disableClock={true} onChange={(newValue) => {
-                                setThursdayFrom(newValue);
-                              }} value={thursdayFrom} />
+                              <span style={{ marginLeft: "20px", marginRight: "30px" }}>
+                                <TimePicker disableClock={true} onChange={(newValue) => {
+                                  setThursdayFrom(newValue);
+                                }} value={thursdayFrom} />
                               </span>  <span >
-                              <TimePicker disableClock={true} onChange={(newValue) => {
-                                setThursdayTo(newValue);
-                              }} value={thursdayTo} /></span>
+                                <TimePicker disableClock={true} onChange={(newValue) => {
+                                  setThursdayTo(newValue);
+                                }} value={thursdayTo} /></span>
 
-                           
+
                             </div>}
                           </div>
                         </div>
@@ -901,14 +925,14 @@ const InsertData = (props) => {
                             </label>
                             {!fridayclosed && <div class="row" >
 
-                            <span style={{ marginLeft: "20px", marginRight: "30px" }}>
-                            <TimePicker disableClock={true} onChange={(newValue) => {
-                                setFridayFrom(newValue);
-                              }} value={fridayFrom} />
+                              <span style={{ marginLeft: "20px", marginRight: "30px" }}>
+                                <TimePicker disableClock={true} onChange={(newValue) => {
+                                  setFridayFrom(newValue);
+                                }} value={fridayFrom} />
                               </span>  <span >
-                              <TimePicker disableClock={true} onChange={(newValue) => {
-                                setFridayTo(newValue);
-                              }} value={fridayTo} /></span>
+                                <TimePicker disableClock={true} onChange={(newValue) => {
+                                  setFridayTo(newValue);
+                                }} value={fridayTo} /></span>
 
 
                             </div>}
@@ -930,14 +954,14 @@ const InsertData = (props) => {
                             {!saturdayclosed && <div class="row" >
 
 
-                            <span style={{ marginLeft: "20px", marginRight: "30px" }}>
-                            <TimePicker disableClock={true} onChange={(newValue) => {
-                                setSaturdayFrom(newValue);
-                              }} value={saturdayFrom} />
+                              <span style={{ marginLeft: "20px", marginRight: "30px" }}>
+                                <TimePicker disableClock={true} onChange={(newValue) => {
+                                  setSaturdayFrom(newValue);
+                                }} value={saturdayFrom} />
                               </span>  <span >
-                              <TimePicker disableClock={true} onChange={(newValue) => {
-                                setSaturdayTo(newValue);
-                              }} value={saturdayTo} /></span>
+                                <TimePicker disableClock={true} onChange={(newValue) => {
+                                  setSaturdayTo(newValue);
+                                }} value={saturdayTo} /></span>
 
                             </div>}
                           </div>
@@ -958,14 +982,14 @@ const InsertData = (props) => {
                             {!sundayclosed && <div class="row" >
 
 
-                            <span style={{ marginLeft: "20px", marginRight: "30px" }}>
-                            <TimePicker disableClock={true} onChange={(newValue) => {
-                                setSundayFrom(newValue);
-                              }} value={sundayFrom} />
+                              <span style={{ marginLeft: "20px", marginRight: "30px" }}>
+                                <TimePicker disableClock={true} onChange={(newValue) => {
+                                  setSundayFrom(newValue);
+                                }} value={sundayFrom} />
                               </span>  <span >
-                              <TimePicker disableClock={true} onChange={(newValue) => {
-                                setSundayTo(newValue);
-                              }} value={sundayTo} /></span>
+                                <TimePicker disableClock={true} onChange={(newValue) => {
+                                  setSundayTo(newValue);
+                                }} value={sundayTo} /></span>
 
                             </div>}
                           </div>
@@ -1064,9 +1088,9 @@ const InsertData = (props) => {
 
 
 
-                    <div className="paragraph-box2" style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }} hidden={!errMessagePhoto}>
+                    {titlePoint.length == 0 && <div className="paragraph-box2" style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }} hidden={!errMessagePhoto}>
                       {errMessagePhoto}
-                    </div>
+                    </div>}
 
                     <br />
 

@@ -20,13 +20,15 @@ const AddNewTourForm = () => {
 	const [title, setTitle] = useState("");
 	const [shortInfo, setShortInfo] = useState("");
 	const [longInfo, setLongInfo] = useState("");
-	const [price, setPrice] = useState("_€ incl tax");
+	const [price, setPrice] = useState("");
 
 	const [titlePoint, setTitlePoint] = useState("");
 	const [shortInfoPoint, setShortInfoPoint] = useState("");
 	const [longInfoPoint, setLongInfoPoint] = useState("");
-	const [pointPrice, setPointPrice] = useState("_€ incl tax");
+	const [pointPrice, setPointPrice] = useState("");
 	const [offerName, setOfferName] = useState("");
+	const [currency, setCurrency] = useState("");
+	const [currencyList, setCurrencyList] = useState(["£", "€", "$"]);
 
 	const [location, setLocation] = useState("");
 	const [phone, setPhone] = useState("");
@@ -92,7 +94,8 @@ const AddNewTourForm = () => {
 				shortInfo: { en: shortInfo },
 				longInfo: { en: longInfo },
 				price: price,
-				points: points
+				currency: currency,
+				points: points,
 
 
 			}
@@ -270,18 +273,26 @@ const AddNewTourForm = () => {
 												<label><b>Price</b></label>
 												<div class="row" >
 													<div class="form-group col-lg-10">
-														<input
+														<div class="button-login">
+															<input
 
-															className={"form-control"}
-															placeholder="Price"
-															aria-describedby="basic-addon1"
-															id="name"
-															type="text"
-															style={{ backgroundColor: 'white', outline: 'none' }}
+																className={"form-control"}
+																placeholder="Price"
+																aria-describedby="basic-addon1"
+																id="name"
+																type="text"
+																style={{ backgroundColor: 'white', outline: 'none' }}
 
-															onChange={(e) => setPrice(e.target.value)}
-															value={price}
-														/>
+																onChange={(e) => setPrice(e.target.value)}
+																value={price}
+															/>
+															<select onChange={(e) => setCurrency(e.target.value)} name="currency" class="custom-select" style={{ height: "50px", width: "200px" }}>
+																{currencyList.map(item =>
+																	<option key={item} value={item} >{item}</option>
+																)};
+
+															</select>
+														</div>
 													</div>
 												</div>
 											</div>
@@ -362,18 +373,27 @@ const AddNewTourForm = () => {
 															<label><b>Price</b></label>
 															<div class="row" >
 																<div class="form-group col-lg-10">
-																	<input
+																	<div class="button-login">
+																		<input
 
-																		className={"form-control"}
-																		placeholder="Price"
-																		aria-describedby="basic-addon1"
-																		id="name"
-																		type="text"
-																		style={{ backgroundColor: 'white', outline: 'none' }}
+																			className={"form-control"}
+																			placeholder="Price"
+																			aria-describedby="basic-addon1"
+																			id="name"
+																			type="text"
+																			style={{ backgroundColor: 'white', outline: 'none' }}
 
-																		onChange={(e) => setPointPrice(e.target.value)}
-																		value={pointPrice}
-																	/>
+																			onChange={(e) => setPointPrice(e.target.value)}
+																			value={pointPrice}
+																		/>
+
+																		<select onChange={(e) => setCurrency(e.target.value)} name="currency" class="custom-select" style={{ height: "50px", width: "200px" }}>
+																			{currencyList.map(item =>
+																				<option key={item} value={item} >{item}</option>
+																			)};
+
+																		</select>
+																	</div>
 																</div>
 															</div>
 														</div>
