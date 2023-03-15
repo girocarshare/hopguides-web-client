@@ -1,0 +1,10 @@
+services:
+  app:
+    image: girocarshare/hopguides-web-client
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - API_URL=https://hopguides-server-main-j7limbsbmq-oc.a.run.app/
+    ports:
+      - '80:80'

@@ -18,7 +18,6 @@ import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import UnauthorizedPage from './pages/UnauthorizedPage.jsx';
 
 function App() {
-  console.log('REACT_APP_URL', process.env.REACT_APP_URL);
   return (
     <Router>
       <Switch>
