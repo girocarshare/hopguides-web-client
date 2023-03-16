@@ -1,11 +1,10 @@
-
 import React, { useContext, useEffect, useState, forwardRef, useRef } from "react";
 import { homeDataService } from "../services/HomeDataService";
 import { HomeDataContext } from "../contexts/HomeDataContext";
 import { homeDataConstants } from "../constants/HomeDataConstants";
 import TimePicker from 'react-time-picker';
 import { YMaps, Map } from "react-yandex-maps";
-import TermsAndConditionsModal from "./TermsAndConditionsModal";
+import { AiOutlineClose } from 'react-icons/ai';
 
 const mapState = {
   center: [44, 21],
@@ -17,11 +16,13 @@ var url = process.env.REACT_APP_URL || "http://localhost:3000/";
 const InsertData = (props) => {
   const addressInput = React.createRef(null);
   const [title, setTitle] = useState("");
+  const [changeTermsAndConditions, setChangeTermsAndConditions] = useState(false);
   const [shortInfo, setShortInfo] = useState("");
   const [longInfo, setLongInfo] = useState("");
   const [currency, setCurrency] = useState("");
   const [currencyList, setCurrencyList] = useState(["£", "€", "$"]);
   const [price, setPrice] = useState("");
+  const [showModal, setShowModal] = useState(false);
 
   const [titlePoint, setTitlePoint] = useState("");
   const [shortInfoPoint, setShortInfoPoint] = useState("");
@@ -91,7 +92,7 @@ const InsertData = (props) => {
 
   const { homeDataState, dispatch } = useContext(HomeDataContext);
 
-  const [termsAndConditions, setTermsAndConditions] = useState(homeDataState.termsAndConditionsModal.text);
+  const [termsAndConditions, setTermsAndConditions] = useState("");
   const someFetchActionCreator = () => {
     const getDocumentsInfoHandler = async () => {
       await homeDataService.getBPartners(dispatch);
@@ -100,6 +101,7 @@ const InsertData = (props) => {
     };
     getDocumentsInfoHandler();
   };
+
 
   useEffect(() => {
     someFetchActionCreator();
@@ -145,7 +147,7 @@ const InsertData = (props) => {
 
 
       var tour = {
-        title: JSON.parse(title) ,
+        title: JSON.parse(title),
         shortInfo: JSON.parse(shortInfo),
         longInfo: JSON.parse(longInfo),
         price: price,
@@ -212,17 +214,24 @@ const InsertData = (props) => {
 
   const editTermsAndConditions = () => {
 
-    dispatch({ type: homeDataConstants.SHOW_TERMS_AND_CONDITIONS_MODAL });
+    setShowModal(true)
+    //if(termsAndConditions === ""){
+    // console.log("fcksdksfdj")
+    setTermsAndConditions(eval('`' + homeDataState.termsAndConditionsModal.text + '`'))
+    // }
 
   };
 
 
   const handleAdd = (e) => {
 
-    if (partner && (titlePoint == "" || shortInfoPoint == "" || longInfoPoint == "" || category == "" || price == "" || offerName == "" || responsiblePerson == "" || phone == "" || email == "" || webURL == "" || addressInput.current.value == "" || audio2 == null || selectedFiles.length == 0 || (!mondayclosed && (mondayFrom == "" || mondayTo == "")) || (!tuesdayclosed && (tuesdayFrom == "" || tuesdayTo == "")) || (!wednesdayclosed && (wednesdayFrom == "" || wednesdayTo == "")) || (!thursdayclosed && (thursdayFrom == "" || thursdayTo == "")) || (!fridayclosed && (fridayFrom == "" || fridayTo == "")) || (!saturdayclosed && (saturdayFrom == "" || saturdayTo == "")) || (!sundayclosed && (sundayFrom == "" || sundayTo == "")))) {
+    if (partner && (titlePoint == "" || shortInfoPoint == "" || longInfoPoint == "" || category == "" || pointPrice == "" || offerName == "" || responsiblePerson == "" || phone == "" || email == "" || webURL == "" || addressInput.current.value == "" || audio2 == null || selectedFiles.length == 0 || (!mondayclosed && (mondayFrom == "" || mondayTo == "")) || (!tuesdayclosed && (tuesdayFrom == "" || tuesdayTo == "")) || (!wednesdayclosed && (wednesdayFrom == "" || wednesdayTo == "")) || (!thursdayclosed && (thursdayFrom == "" || thursdayTo == "")) || (!fridayclosed && (fridayFrom == "" || fridayTo == "")) || (!saturdayclosed && (saturdayFrom == "" || saturdayTo == "")) || (!sundayclosed && (sundayFrom == "" || sundayTo == "")))) {
 
+      console.log(titlePoint + " " + shortInfoPoint + " " + longInfoPoint + " " + category + " " + pointPrice + " " + offerName + " " + responsiblePerson + " " + phone + " " + email + " " + webURL + " ")
       setErrMessagePartner("Please insert mandatory fields for partner (marked with *)")
     } else if (point && (titlePoint == "" || shortInfoPoint == "" || longInfoPoint == "" || category == "" || addressInput.current.value == "" || audio2 == null || selectedFiles.length == 0)) {
+      console.log(titlePoint + " " + shortInfoPoint + " " + longInfoPoint + " " + category + " " + addressInput.current.value + " " + audio2 + " " + selectedFiles.length)
+
       setErrMessagePartner("Please insert mandatory fields for point of interest (marked with *)")
     } else {
       setAdd(false)
@@ -316,6 +325,7 @@ const InsertData = (props) => {
     if (e.target.files[0]) {
 
       var new_file = new File([e.target.files[0]], 'audio2' + titlePoint + "---" + [e.target.files[0].name]);
+      console.log("lalalallalal")
       setAudio2(new_file);
     }
   };
@@ -402,6 +412,51 @@ const InsertData = (props) => {
     homeDataService.insertData(false, dispatch);
   };
 
+
+  const handleClose = () => {
+
+    setShowModal(false)
+  };
+
+
+  const handleChangeTermsAndConditions = () => {
+
+    if (changeTermsAndConditions) {
+
+      setChangeTermsAndConditions(false)
+
+    } else {
+      setChangeTermsAndConditions(true)
+      setTermsAndConditions(eval('`' + homeDataState.termsAndConditionsModal.text + '`'))
+    }
+  };
+
+  var row;
+
+ /* function drop() {
+    console.log("drop called")
+  }
+  
+  function allowDrop(event) {
+    event.preventDefault();
+  }*/
+
+  const drop = e => {
+    e.preventDefault();
+
+    // key of the card to be fetched is passed
+    const card_id = e.dataTransfer.getData('id_card');
+    const card = document.getElementById(card_id);
+
+    e.target.appendChild(card);
+    
+}
+
+const dragOver = e => {
+    e.preventDefault();
+}
+
+
   return (
 
 
@@ -413,21 +468,58 @@ const InsertData = (props) => {
 
       <div >
 
-        {homeDataState.termsAndConditionsModal.show && <div >
-          <TermsAndConditionsModal
-          title= {title}
-            termsAndConditions={termsAndConditions}
-            setTermsAndConditions={setTermsAndConditions}
-          /></div>}
+        {showModal && <div >
+
+          <div class="overlay" >
+            <div id="myModal" class="modal" style={{ background: "white" }}>
+
+              <div class="button-login">
+
+                <button
+                  type="button"
+                  style={{ background: "#0099ff", marginTop: "px", marginRight: "55px", padding: "5px 15px", height: "35px" }}
+                  onClick={handleClose}
+                  class="btn btn-primary btn-lg"
+                >
+                  <AiOutlineClose />
+                </button>
+              </div>
+          
+              <div className="control-group">
+                <div className="form-group controls mb-0 pb-2" style={{ color: "#6c757d", opacity: 1 }}>
+
+                  <div class="row" >
+                    <div class="form-group col-lg-10">
+                      <textarea className="form-control" readOnly={!changeTermsAndConditions} style={{ height: "430px", width: "1100px" }} type="textarea" required name="message" placeholder="Terms and conditions" value={termsAndConditions} onChange={(e) => setTermsAndConditions(e.target.value)}></textarea>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="button-p">
+                <button
+                  style={{ background: "#0099ff", marginTop: "px", marginRight: "55px", padding: "5px 15px", height: "35px" }}
+
+                  onClick={handleChangeTermsAndConditions}
+                  className="btn btn-primary btn-xl"
+                  id="sendMessageButton"
+                  type="button"
+                >
+                  {changeTermsAndConditions === true ? `Done` : "Edit"}
+                </button>
+              </div>
+            </div>
+          </div></div>}
         <form id="contactForm" >
 
           <h1 class="paragraph-box" style={{ fontSize: 28 }} ><b>Add new tour</b></h1>
-        
+          
           <table style={{ marginBottom: "4rem" }}>
             <td width="1000rem"  >
 
               <div className="control-group">
-
+              
                 <div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
                   <label><b>Title*</b></label>
                   <div class="row" >
@@ -727,26 +819,26 @@ const InsertData = (props) => {
                         <label><b>Price*</b></label>
                         <div class="row" >
                           <div class="form-group col-lg-10">
-                          <div class="button-login">
-                            <input
+                            <div class="button-login">
+                              <input
 
-                              className={"form-control"}
-                              placeholder="Price"
-                              aria-describedby="basic-addon1"
-                              id="name"
-                              type="text"
-                              style={{ backgroundColor: 'white', outline: 'none', width: "800px", height: "50px" }}
+                                className={"form-control"}
+                                placeholder="Price"
+                                aria-describedby="basic-addon1"
+                                id="name"
+                                type="text"
+                                style={{ backgroundColor: 'white', outline: 'none', width: "800px", height: "50px" }}
 
-                              onChange={(e) => setPointPrice(e.target.value)}
-                              value={pointPrice}
-                            />
+                                onChange={(e) => setPointPrice(e.target.value)}
+                                value={pointPrice}
+                              />
 
-                            <select onChange={(e) => setCurrency(e.target.value)} name="currency" class="custom-select" style={{ height: "50px", width: "200px" }}>
-                              {currencyList.map(item =>
-                                <option key={item} value={item} >{item}</option>
-                              )};
+                              <select onChange={(e) => setCurrency(e.target.value)} name="currency" class="custom-select" style={{ height: "50px", width: "200px" }}>
+                                {currencyList.map(item =>
+                                  <option key={item} value={item} >{item}</option>
+                                )};
 
-                            </select>
+                              </select>
                             </div>
                           </div>
                         </div>
@@ -1216,37 +1308,55 @@ const InsertData = (props) => {
         <div>
           {
 
-            <table style={{ border: "1px solid gray" }}>
-              <thead>
-                <tr>
-                  <th style={{ border: "1px solid gray" }}>Title</th>
-                  <th style={{ border: "1px solid gray" }}>Short description</th>
-                  <th style={{ border: "1px solid gray" }}>Long description</th>
-                  <th style={{ border: "1px solid gray" }}>Responsible person</th>
-                  <th style={{ border: "1px solid gray" }}>Email</th>
-                  <th style={{ border: "1px solid gray" }}>Phone</th>
-                  <th style={{ border: "1px solid gray" }}>Web page</th>
-                  <th style={{ border: "1px solid gray" }}>Location</th>
-                </tr>
-              </thead>
+            <div class="flex flex-col">
+              <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+                <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+                  <div class="overflow-hidden">
+                    <table class="min-w-full text-left text-sm font-light">
+                      <thead class="border-b font-medium dark:border-neutral-500">
+                        <tr >
+                          <th scope="col" class="px-6 py-4" style={{ border: "1px solid gray" }} >Title</th>
+                          <th scope="col" class="px-6 py-4" style={{ border: "1px solid gray" }}>Short description</th>
+                          <th scope="col" class="px-6 py-4" style={{ border: "1px solid gray" }}>Long description</th>
+                          <th scope="col" class="px-6 py-4" style={{ border: "1px solid gray" }}>Category</th>
+                          <th scope="col" class="px-6 py-4" style={{ border: "1px solid gray" }}>Price</th>
+                          <th scope="col" class="px-6 py-4" style={{ border: "1px solid gray" }}>Offer name</th>
+                          <th scope="col" class="px-6 py-4" style={{ border: "1px solid gray" }}>Responsible person</th>
+                          <th scope="col" class="px-6 py-4" style={{ border: "1px solid gray" }}>Email</th>
+                          <th scope="col" class="px-6 py-4" style={{ border: "1px solid gray" }}>Phone</th>
+                          <th scope="col" class="px-6 py-4" style={{ border: "1px solid gray" }}>Web page</th>
+                          <th scope="col" class="px-6 py-4" style={{ border: "1px solid gray" }}>Location</th>
+                        </tr>
+                      </thead>
 
-              {points.map((point) => (
-                <tbody>
-                  <tr>
-                    <td style={{ border: "1px solid gray" }}>{point.title.en}</td>
-                    <td style={{ border: "1px solid gray" }}>{point.shortInfo.en}</td>
-                    <td style={{ border: "1px solid gray" }}>{point.longInfo.en}</td>
-                    <td style={{ border: "1px solid gray" }}>{point.contact.name}</td>
-                    <td style={{ border: "1px solid gray" }}>{point.contact.email}</td>
-                    <td style={{ border: "1px solid gray" }}>{point.contact.phone}</td>
-                    <td style={{ border: "1px solid gray" }}>{point.contact.webURL}</td>
-                    <td style={{ border: "1px solid gray" }}>{`${point.location.street}  ${point.location.city} ${point.location.country} ${point.location.latitute}  ${point.location.longitude}`}</td>
+                      {points.map((point) => (
+                        <tbody>
+                          <tr class="border-b dark:border-neutral-500" >
+                            <td class="whitespace-nowrap px-6 py-4 font-medium" style={{ border: "1px solid gray" }}>{point.title.english}</td>
+                            <td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>{point.shortInfo.english}</td>
+                            <td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>{point.longInfo.english}</td>
+                            <td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>{point.category}</td>
+                            {point.price == "" ? <td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>/</td> : <td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>{point.price} {currency}</td>}
+                            {point.offerName == "" ? <td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>/</td> : <td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>{point.offerName}</td>}
+                            {point.contact.name == "" ? <td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>/</td> : <td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>{point.contact.name}</td>}
+                            {point.contact.email == "" ? <td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>/</td> : <td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>{point.contact.email}</td>}
+                            {point.contact.phone == "" ? <td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>/</td> : <td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>{point.contact.phone}</td>}
+                            {point.contact.webURL == "" ? <td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>/</td> : <td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>{point.contact.webURL}</td>}
 
-                  </tr>
-                </tbody>))
-              }
-            </table>
+                            <td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>{`${point.location.street}  ${point.location.city} ${point.location.country} ${point.location.latitute}  ${point.location.longitude}`}</td>
+
+                          </tr>
+                        </tbody>))
+                      }
+
+                    </table>
+
+                  </div>
+                </div>
+              </div>
+            </div>
           }
+
         </div>
       }
       <div className="paragraph-box2" style={{ color: "red", fontSize: "0.8em", marginTop: "30px", marginRight: "40px" }} hidden={!errMessage}>

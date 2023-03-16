@@ -58,7 +58,7 @@ const HomeDataContextProvider = (props) => {
 
 		termsAndConditionsModal: {
 			show: false,
-			text: "${props.title} global terms of service, effective as of 1.3.2023\n"+
+			text: "${title} global terms of service, effective as of 1.3.2023\n"+
 			`1. General
 			1.1. These Terms of Service constitute the agreement ("Agreement") between you ("You", "User" or "Rider") and GoGiro digital d.o.o. or our affiliates ("GoGiro", "We", "Us" or "Our"), regarding Your use of (i) any human-powered and electrically assisted vehicle made available in the App, such as e-scooters and e-bikes (together, "E-Vehicles"); (ii) Our mobile application for accessing and using E-vehicles (“App”); and (iii) other related services such as charging, maintenance, pick-up and similar services ("Related Services") made available by Us (E-Vehicles, App and Related Services are collectively the "Services").
 			1.2. If you need to contact us: 1.2.1 Our address is: [Verovškova 55, 1000 Ljubljana, Slovenia ]. 1.2.3 Online: You can contact our customer support team via the chat function in the App.
