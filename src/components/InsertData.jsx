@@ -155,7 +155,6 @@ const InsertData = (props) => {
         duration: duration,
         length: length,
         highestPoint: highestPoint,
-        bpartnerId: hotelId,
         termsAndConditions: termsAndConditions,
         currency: currency
 
@@ -264,7 +263,7 @@ const InsertData = (props) => {
         .then((res) => {
 
           var point = {
-            title: JSON.parse(titlePoint),
+            name: titlePoint,
             shortInfo: JSON.parse(shortInfoPoint),
             longInfo: JSON.parse(longInfoPoint),
             price: pointPrice,
@@ -272,7 +271,7 @@ const InsertData = (props) => {
             contact: { phone: phone, email: email, webURL: webURL, name: responsiblePerson },
             location: { street: street, country: country, city: city, latitude: latitude, longitude: longitude },
             workingHours: { monday: { from: mondayFrom, to: mondayTo }, tuesday: { from: tuesdayFrom, to: tuesdayTo }, wednesday: { from: wednesdayFrom, to: wednesdayTo }, thursday: { from: thursdayFrom, to: thursdayTo }, friday: { from: fridayFrom, to: fridayTo }, saturday: { from: saturdayFrom, to: saturdayTo }, sunday: { from: sundayFrom, to: sundayTo } },
-
+            bpartnerId: hotelId,
             category: category
           }
 
@@ -1332,7 +1331,7 @@ const dragOver = e => {
                       {points.map((point) => (
                         <tbody>
                           <tr class="border-b dark:border-neutral-500" >
-                            <td class="whitespace-nowrap px-6 py-4 font-medium" style={{ border: "1px solid gray" }}>{point.title.english}</td>
+                            <td class="whitespace-nowrap px-6 py-4 font-medium" style={{ border: "1px solid gray" }}>{point.title}</td>
                             <td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>{point.shortInfo.english}</td>
                             <td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>{point.longInfo.english}</td>
                             <td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>{point.category}</td>

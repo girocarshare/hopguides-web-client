@@ -118,6 +118,7 @@ function forgotPassword(sendEmailRequest, dispatch) {
 function sendRegistrationMail(sendEmailRequest, dispatch) {
 	
 
+	console.log("EEEEOOOO")
 	dispatch(request());
 	Axios.post(`${url}api/users/sendRegistrationEmail`, sendEmailRequest, { validateStatus: () => true })
 		.then((res) => {

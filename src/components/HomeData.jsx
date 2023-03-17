@@ -352,16 +352,7 @@ const HomeData = forwardRef((props, ref) => {
         {
           <table style={{ border: "1px solid gray", width: 1400, background: "white" }}>
             <thead>
-              <tr>
-                {admin && <button
-                  style={{ background: "#0099ff", marginTop: "px", marginRight: "55px", padding: "5px 15px", height: "35px" }}
-                  color="primary"
-                  variant="contained"
-                  onClick={(e) => addNew(e)}
-                >
-                  Add tour
-                </button>}
-              </tr>
+             
 
               <tr>
                 <th style={{ border: "1px solid gray" }}>Name</th>
@@ -455,7 +446,7 @@ if (element) {
                         <MdLaunch />
 
                       </button></td>
-                      <td style={{ border: "1px solid gray" }}>{points.point.title.english}</td>
+                      <td style={{ border: "1px solid gray" }}>{points.point.name}</td>
                       <td style={{ border: "1px solid gray" }}>
                         <input
                           readOnly={!editPartner || rowId != points.point.id}

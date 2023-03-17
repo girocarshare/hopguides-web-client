@@ -137,7 +137,7 @@ const AddNewPartnerForm = (props) => {
 				.then((res) => {
 
 					var point = {
-						title: { en: titlePoint },
+						name: titlePoint,
 						shortInfo: { en: shortInfoPoint },
 						longInfo: { en: longInfoPoint },
 						price: pointPrice,
@@ -677,7 +677,7 @@ const AddNewPartnerForm = (props) => {
 														{points.map((point) => (
 															<tbody>
 																<tr class="border-b dark:border-neutral-500" >
-																	<td class="whitespace-nowrap px-6 py-4 font-medium" style={{ border: "1px solid gray" }}>{point.title.english}</td>
+																	<td class="whitespace-nowrap px-6 py-4 font-medium" style={{ border: "1px solid gray" }}>{point.title}</td>
 																	<td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>{point.shortInfo.english}</td>
 																	<td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>{point.longInfo.english}</td>
 																	<td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>{point.category}</td>
