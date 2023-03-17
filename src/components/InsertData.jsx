@@ -1,30 +1,32 @@
-
 import React, { useContext, useEffect, useState, forwardRef, useRef } from "react";
 import { homeDataService } from "../services/HomeDataService";
 import { HomeDataContext } from "../contexts/HomeDataContext";
 import { homeDataConstants } from "../constants/HomeDataConstants";
 import TimePicker from 'react-time-picker';
 import { YMaps, Map } from "react-yandex-maps";
-import TermsAndConditionsModal from "./TermsAndConditionsModal";
+import { AiOutlineClose } from 'react-icons/ai';
 
 const mapState = {
   center: [44, 21],
   zoom: 8,
   controls: [],
-};
-var url = process.env.REACT_APP_URL || "http://localhost:3000/";
+};var url = process.env.REACT_APP_URL || "http://localhost:8080/";
 
 const InsertData = (props) => {
   const addressInput = React.createRef(null);
   const [title, setTitle] = useState("");
+  const [changeTermsAndConditions, setChangeTermsAndConditions] = useState(false);
   const [shortInfo, setShortInfo] = useState("");
   const [longInfo, setLongInfo] = useState("");
-  const [price, setPrice] = useState("_€ incl tax");
+  const [currency, setCurrency] = useState("");
+  const [currencyList, setCurrencyList] = useState(["£", "€", "$"]);
+  const [price, setPrice] = useState("");
+  const [showModal, setShowModal] = useState(false);
 
   const [titlePoint, setTitlePoint] = useState("");
   const [shortInfoPoint, setShortInfoPoint] = useState("");
   const [longInfoPoint, setLongInfoPoint] = useState("");
-  const [pointPrice, setPointPrice] = useState("_€ incl tax");
+  const [pointPrice, setPointPrice] = useState("");
   const [offerName, setOfferName] = useState("");
   const [duration, setDuration] = useState("");
   const [length, setLength] = useState("");
@@ -89,7 +91,7 @@ const InsertData = (props) => {
 
   const { homeDataState, dispatch } = useContext(HomeDataContext);
 
-  const [termsAndConditions, setTermsAndConditions] = useState(homeDataState.termsAndConditionsModal.text);
+  const [termsAndConditions, setTermsAndConditions] = useState("");
   const someFetchActionCreator = () => {
     const getDocumentsInfoHandler = async () => {
       await homeDataService.getBPartners(dispatch);
@@ -98,6 +100,7 @@ const InsertData = (props) => {
     };
     getDocumentsInfoHandler();
   };
+
 
   useEffect(() => {
     someFetchActionCreator();
@@ -135,24 +138,24 @@ const InsertData = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     if (title == "" || audio == null || shortInfo == "" || longInfo == "" || price == "" || hotelId == "" || duration == "" || length == "" || highestPoint == "") {
 
       setErrMessage("Please fill in the fileds marked with *")
     } else {
 
 
+
       var tour = {
-        title: { en: title },
-        shortInfo: { en: shortInfo },
-        longInfo: { en: longInfo },
+        title: JSON.parse(title),
+        shortInfo: JSON.parse(shortInfo),
+        longInfo: JSON.parse(longInfo),
         price: price,
         points: points,
         duration: duration,
         length: length,
         highestPoint: highestPoint,
-        bpartnerId: hotelId,
-        termsAndConditions: termsAndConditions
+        termsAndConditions: termsAndConditions,
+        currency: currency
 
 
       }
@@ -209,19 +212,26 @@ const InsertData = (props) => {
 
   const editTermsAndConditions = () => {
 
-    dispatch({ type: homeDataConstants.SHOW_TERMS_AND_CONDITIONS_MODAL });
+    setShowModal(true)
+    //if(termsAndConditions === ""){
+    // console.log("fcksdksfdj")
+    setTermsAndConditions(eval('`' + homeDataState.termsAndConditionsModal.text + '`'))
+    // }
 
   };
 
 
   const handleAdd = (e) => {
 
-    if (partner && (titlePoint == "" || shortInfoPoint == "" || longInfoPoint == "" || category == "" || price == "" || offerName=="" || responsiblePerson =="" || phone == "" || email=="" || webURL=="" || addressInput.current.value == "" || audio2 == null || selectedFiles.length == 0 || (!mondayclosed && (mondayFrom == "" || mondayTo == "")) || (!tuesdayclosed && (tuesdayFrom == "" || tuesdayTo == "")) || (!wednesdayclosed && (wednesdayFrom == "" || wednesdayTo == "")) || (!thursdayclosed && (thursdayFrom == "" || thursdayTo == "")) || (!fridayclosed && (fridayFrom == "" || fridayTo == "")) || (!saturdayclosed && (saturdayFrom == "" || saturdayTo == "")) || (!sundayclosed && (sundayFrom == "" || sundayTo == "")))) {
+    if (partner && (titlePoint == "" || shortInfoPoint == "" || longInfoPoint == "" || category == "" || pointPrice == "" || offerName == "" || responsiblePerson == "" || phone == "" || email == "" || webURL == "" || addressInput.current.value == "" || audio2 == null || selectedFiles.length == 0 || (!mondayclosed && (mondayFrom == "" || mondayTo == "")) || (!tuesdayclosed && (tuesdayFrom == "" || tuesdayTo == "")) || (!wednesdayclosed && (wednesdayFrom == "" || wednesdayTo == "")) || (!thursdayclosed && (thursdayFrom == "" || thursdayTo == "")) || (!fridayclosed && (fridayFrom == "" || fridayTo == "")) || (!saturdayclosed && (saturdayFrom == "" || saturdayTo == "")) || (!sundayclosed && (sundayFrom == "" || sundayTo == "")))) {
 
+      console.log(titlePoint + " " + shortInfoPoint + " " + longInfoPoint + " " + category + " " + pointPrice + " " + offerName + " " + responsiblePerson + " " + phone + " " + email + " " + webURL + " ")
       setErrMessagePartner("Please insert mandatory fields for partner (marked with *)")
-    } else if(point && (titlePoint == "" || shortInfoPoint == "" || longInfoPoint == "" || category == "" || addressInput.current.value == "" || audio2 == null || selectedFiles.length == 0 )){
+    } else if (point && (titlePoint == "" || shortInfoPoint == "" || longInfoPoint == "" || category == "" || addressInput.current.value == "" || audio2 == null || selectedFiles.length == 0)) {
+      console.log(titlePoint + " " + shortInfoPoint + " " + longInfoPoint + " " + category + " " + addressInput.current.value + " " + audio2 + " " + selectedFiles.length)
+
       setErrMessagePartner("Please insert mandatory fields for point of interest (marked with *)")
-    }else{
+    } else {
       setAdd(false)
       setErrMessagePartner("")
 
@@ -252,15 +262,15 @@ const InsertData = (props) => {
         .then((res) => {
 
           var point = {
-            title: { en: titlePoint },
-            shortInfo: { en: shortInfoPoint },
-            longInfo: { en: longInfoPoint },
+            name: titlePoint,
+            shortInfo: JSON.parse(shortInfoPoint),
+            longInfo: JSON.parse(longInfoPoint),
             price: pointPrice,
             offerName: offerName,
             contact: { phone: phone, email: email, webURL: webURL, name: responsiblePerson },
             location: { street: street, country: country, city: city, latitude: latitude, longitude: longitude },
             workingHours: { monday: { from: mondayFrom, to: mondayTo }, tuesday: { from: tuesdayFrom, to: tuesdayTo }, wednesday: { from: wednesdayFrom, to: wednesdayTo }, thursday: { from: thursdayFrom, to: thursdayTo }, friday: { from: fridayFrom, to: fridayTo }, saturday: { from: saturdayFrom, to: saturdayTo }, sunday: { from: sundayFrom, to: sundayTo } },
-
+            bpartnerId: hotelId,
             category: category
           }
 
@@ -295,8 +305,8 @@ const InsertData = (props) => {
 
         });
 
-    
-  }
+
+    }
   }
 
 
@@ -313,6 +323,7 @@ const InsertData = (props) => {
     if (e.target.files[0]) {
 
       var new_file = new File([e.target.files[0]], 'audio2' + titlePoint + "---" + [e.target.files[0].name]);
+      console.log("lalalallalal")
       setAudio2(new_file);
     }
   };
@@ -399,6 +410,51 @@ const InsertData = (props) => {
     homeDataService.insertData(false, dispatch);
   };
 
+
+  const handleClose = () => {
+
+    setShowModal(false)
+  };
+
+
+  const handleChangeTermsAndConditions = () => {
+
+    if (changeTermsAndConditions) {
+
+      setChangeTermsAndConditions(false)
+
+    } else {
+      setChangeTermsAndConditions(true)
+      setTermsAndConditions(eval('`' + homeDataState.termsAndConditionsModal.text + '`'))
+    }
+  };
+
+  var row;
+
+ /* function drop() {
+    console.log("drop called")
+  }
+  
+  function allowDrop(event) {
+    event.preventDefault();
+  }*/
+
+  const drop = e => {
+    e.preventDefault();
+
+    // key of the card to be fetched is passed
+    const card_id = e.dataTransfer.getData('id_card');
+    const card = document.getElementById(card_id);
+
+    e.target.appendChild(card);
+    
+}
+
+const dragOver = e => {
+    e.preventDefault();
+}
+
+
   return (
 
 
@@ -410,20 +466,58 @@ const InsertData = (props) => {
 
       <div >
 
-        {homeDataState.termsAndConditionsModal.show && <div >
-          <TermsAndConditionsModal
-            termsAndConditions={termsAndConditions}
-            setTermsAndConditions={setTermsAndConditions}
-          /></div>}
+        {showModal && <div >
+
+          <div class="overlay" >
+            <div id="myModal" class="modal" style={{ background: "white" }}>
+
+              <div class="button-login">
+
+                <button
+                  type="button"
+                  style={{ background: "#0099ff", marginTop: "px", marginRight: "55px", padding: "5px 15px", height: "35px" }}
+                  onClick={handleClose}
+                  class="btn btn-primary btn-lg"
+                >
+                  <AiOutlineClose />
+                </button>
+              </div>
+          
+              <div className="control-group">
+                <div className="form-group controls mb-0 pb-2" style={{ color: "#6c757d", opacity: 1 }}>
+
+                  <div class="row" >
+                    <div class="form-group col-lg-10">
+                      <textarea className="form-control" readOnly={!changeTermsAndConditions} style={{ height: "430px", width: "1100px" }} type="textarea" required name="message" placeholder="Terms and conditions" value={termsAndConditions} onChange={(e) => setTermsAndConditions(e.target.value)}></textarea>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="button-p">
+                <button
+                  style={{ background: "#0099ff", marginTop: "px", marginRight: "55px", padding: "5px 15px", height: "35px" }}
+
+                  onClick={handleChangeTermsAndConditions}
+                  className="btn btn-primary btn-xl"
+                  id="sendMessageButton"
+                  type="button"
+                >
+                  {changeTermsAndConditions === true ? `Done` : "Edit"}
+                </button>
+              </div>
+            </div>
+          </div></div>}
         <form id="contactForm" >
 
           <h1 class="paragraph-box" style={{ fontSize: 28 }} ><b>Add new tour</b></h1>
-
+          
           <table style={{ marginBottom: "4rem" }}>
             <td width="1000rem"  >
 
               <div className="control-group">
-
+              
                 <div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
                   <label><b>Title*</b></label>
                   <div class="row" >
@@ -469,23 +563,34 @@ const InsertData = (props) => {
                 </div>
               </div>
 
+
               <div className="control-group">
                 <div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
                   <label><b>Price*</b></label>
                   <div class="row" >
                     <div class="form-group col-lg-10">
-                      <input
+                      <div class="button-login">
+                        <input
 
-                        className={"form-control"}
-                        placeholder="Price"
-                        aria-describedby="basic-addon1"
-                        id="name"
-                        type="text"
-                        style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
+                          className={"form-control"}
+                          placeholder="Price"
+                          aria-describedby="basic-addon1"
+                          id="name"
+                          type="text"
+                          style={{ backgroundColor: 'white', outline: 'none', width: "800px", height: "50px" }}
 
-                        onChange={(e) => setPrice(e.target.value)}
-                        value={price}
-                      />
+                          onChange={(e) => setPrice(e.target.value)}
+                          value={price}
+                        />
+                        <select onChange={(e) => setCurrency(e.target.value)} name="currency" class="custom-select" style={{ height: "50px", width: "200px" }}>
+                          {currencyList.map(item =>
+                            <option key={item} value={item} >{item}</option>
+                          )};
+
+                        </select>
+
+                      </div>
+
                     </div>
                   </div>
                 </div>
@@ -499,8 +604,8 @@ const InsertData = (props) => {
                     <div class="form-group col-lg-10">
 
                       <select onChange={(e) => setHotelId(e.target.value)} name="category" class="custom-select" style={{ height: "50px", width: "1000px" }}>
-                        
-                      <option key={"none"} > </option>
+
+                        <option key={"none"} > </option>
                         {homeDataState.bpartners.bpartners.map(item =>
                           <option key={item.id} value={item.id} >{item.name}</option>
                         )};
@@ -586,7 +691,7 @@ const InsertData = (props) => {
               <div style={{ marginTop: "15px" }}>
                 <label><b>Background tour image</b></label>
                 <br />   <br />
-                <input type={"file"}  name="file" onChange={onFileChange} />
+                <input type={"file"} name="file" onChange={onFileChange} />
 
               </div>
 
@@ -660,7 +765,7 @@ const InsertData = (props) => {
                             onChange={(e) => setTitlePoint(e.target.value)}
                             value={titlePoint}
                           />
-                          
+
                         </div>
                       </div>
                     </div>
@@ -712,18 +817,27 @@ const InsertData = (props) => {
                         <label><b>Price*</b></label>
                         <div class="row" >
                           <div class="form-group col-lg-10">
-                            <input
+                            <div class="button-login">
+                              <input
 
-                              className={"form-control"}
-                              placeholder="Price"
-                              aria-describedby="basic-addon1"
-                              id="name"
-                              type="text"
-                              style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
+                                className={"form-control"}
+                                placeholder="Price"
+                                aria-describedby="basic-addon1"
+                                id="name"
+                                type="text"
+                                style={{ backgroundColor: 'white', outline: 'none', width: "800px", height: "50px" }}
 
-                              onChange={(e) => setPointPrice(e.target.value)}
-                              value={pointPrice}
-                            />
+                                onChange={(e) => setPointPrice(e.target.value)}
+                                value={pointPrice}
+                              />
+
+                              <select onChange={(e) => setCurrency(e.target.value)} name="currency" class="custom-select" style={{ height: "50px", width: "200px" }}>
+                                {currencyList.map(item =>
+                                  <option key={item} value={item} >{item}</option>
+                                )};
+
+                              </select>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -751,28 +865,28 @@ const InsertData = (props) => {
                     </div>}
 
                     <div >
-                      
-                        <label><b>Address *</b></label>
-                        <div >
-                         
-                            <input id="suggest" ref={addressInput} placeholder="Address" style={{ width: "1000px", height: "50px"}} />
 
-                            <YMaps
-                              query={{
-                                load: "package.full",
-                                apikey: "b0ea2fa3-aba0-4e44-a38e-4e890158ece2",
-                                lang: "en_RU",
-                              }}
-                            >
-                              <Map
-                                style={{ display: "none", width: "100px", marginLeft:"100px" }}
-                                state={mapState}
-                                onLoad={onYmapsLoad}
-                                instanceRef={(map) => (map = map)}
-                                modules={["coordSystem.geo", "geocode", "util.bounds"]}
-                              ></Map>
-                            </YMaps>
-                          </div>
+                      <label><b>Address *</b></label>
+                      <div >
+
+                        <input id="suggest" ref={addressInput} placeholder="Address" style={{ width: "1000px", height: "50px" }} />
+
+                        <YMaps
+                          query={{
+                            load: "package.full",
+                            apikey: "b0ea2fa3-aba0-4e44-a38e-4e890158ece2",
+                            lang: "en_RU",
+                          }}
+                        >
+                          <Map
+                            style={{ display: "none", width: "100px", marginLeft: "100px" }}
+                            state={mapState}
+                            onLoad={onYmapsLoad}
+                            instanceRef={(map) => (map = map)}
+                            modules={["coordSystem.geo", "geocode", "util.bounds"]}
+                          ></Map>
+                        </YMaps>
+                      </div>
                     </div>
 
                     {partner &&
@@ -793,16 +907,16 @@ const InsertData = (props) => {
                               closed
                             </label>
                             {!mondayclosed && <div class="row"  >
-                            <span style={{ marginLeft: "20px", marginRight: "30px" }}>
-                            <TimePicker disableClock={true} onChange={(newValue) => {
-                                setMondayFrom(newValue);
-                              }} value={mondayFrom} />
+                              <span style={{ marginLeft: "20px", marginRight: "30px" }}>
+                                <TimePicker disableClock={true} onChange={(newValue) => {
+                                  setMondayFrom(newValue);
+                                }} value={mondayFrom} />
                               </span>  <span >
-                              <TimePicker disableClock={true} onChange={(newValue) => {
-                                setMondayTo(newValue);
-                              }} value={mondayTo} /></span>
+                                <TimePicker disableClock={true} onChange={(newValue) => {
+                                  setMondayTo(newValue);
+                                }} value={mondayTo} /></span>
 
-                            
+
                             </div>}
                           </div>
                         </div>
@@ -820,14 +934,14 @@ const InsertData = (props) => {
                               closed
                             </label>
                             {!tuesdayclosed && <div class="row" >
-                            <span style={{ marginLeft: "20px", marginRight: "30px" }}>
-                            <TimePicker disableClock={true} onChange={(newValue) => {
-                                setTuesdayFrom(newValue);
-                              }} value={tuesdayFrom} />
+                              <span style={{ marginLeft: "20px", marginRight: "30px" }}>
+                                <TimePicker disableClock={true} onChange={(newValue) => {
+                                  setTuesdayFrom(newValue);
+                                }} value={tuesdayFrom} />
                               </span>  <span >
-                              <TimePicker disableClock={true} onChange={(newValue) => {
-                                setTuesdayTo(newValue);
-                              }} value={tuesdayTo} /></span>
+                                <TimePicker disableClock={true} onChange={(newValue) => {
+                                  setTuesdayTo(newValue);
+                                }} value={tuesdayTo} /></span>
                             </div>}
                           </div>
                         </div>
@@ -845,16 +959,16 @@ const InsertData = (props) => {
                               closed
                             </label>
                             {!wednesdayclosed && <div class="row" >
-                            <span style={{ marginLeft: "20px", marginRight: "30px" }}>
-                            <TimePicker disableClock={true} onChange={(newValue) => {
-                                setWednesdayFrom(newValue);
-                              }} value={wednesdayFrom} />
+                              <span style={{ marginLeft: "20px", marginRight: "30px" }}>
+                                <TimePicker disableClock={true} onChange={(newValue) => {
+                                  setWednesdayFrom(newValue);
+                                }} value={wednesdayFrom} />
                               </span>  <span >
-                              <TimePicker disableClock={true} onChange={(newValue) => {
-                                setWednesdayTo(newValue);
-                              }} value={wednesdayTo} /></span>
+                                <TimePicker disableClock={true} onChange={(newValue) => {
+                                  setWednesdayTo(newValue);
+                                }} value={wednesdayTo} /></span>
 
-                             
+
                             </div>}
                           </div>
                         </div>
@@ -873,16 +987,16 @@ const InsertData = (props) => {
                             </label>
                             {!thursdayclosed && <div class="row" >
 
-                            <span style={{ marginLeft: "20px", marginRight: "30px" }}>
-                            <TimePicker disableClock={true} onChange={(newValue) => {
-                                setThursdayFrom(newValue);
-                              }} value={thursdayFrom} />
+                              <span style={{ marginLeft: "20px", marginRight: "30px" }}>
+                                <TimePicker disableClock={true} onChange={(newValue) => {
+                                  setThursdayFrom(newValue);
+                                }} value={thursdayFrom} />
                               </span>  <span >
-                              <TimePicker disableClock={true} onChange={(newValue) => {
-                                setThursdayTo(newValue);
-                              }} value={thursdayTo} /></span>
+                                <TimePicker disableClock={true} onChange={(newValue) => {
+                                  setThursdayTo(newValue);
+                                }} value={thursdayTo} /></span>
 
-                           
+
                             </div>}
                           </div>
                         </div>
@@ -901,14 +1015,14 @@ const InsertData = (props) => {
                             </label>
                             {!fridayclosed && <div class="row" >
 
-                            <span style={{ marginLeft: "20px", marginRight: "30px" }}>
-                            <TimePicker disableClock={true} onChange={(newValue) => {
-                                setFridayFrom(newValue);
-                              }} value={fridayFrom} />
+                              <span style={{ marginLeft: "20px", marginRight: "30px" }}>
+                                <TimePicker disableClock={true} onChange={(newValue) => {
+                                  setFridayFrom(newValue);
+                                }} value={fridayFrom} />
                               </span>  <span >
-                              <TimePicker disableClock={true} onChange={(newValue) => {
-                                setFridayTo(newValue);
-                              }} value={fridayTo} /></span>
+                                <TimePicker disableClock={true} onChange={(newValue) => {
+                                  setFridayTo(newValue);
+                                }} value={fridayTo} /></span>
 
 
                             </div>}
@@ -930,14 +1044,14 @@ const InsertData = (props) => {
                             {!saturdayclosed && <div class="row" >
 
 
-                            <span style={{ marginLeft: "20px", marginRight: "30px" }}>
-                            <TimePicker disableClock={true} onChange={(newValue) => {
-                                setSaturdayFrom(newValue);
-                              }} value={saturdayFrom} />
+                              <span style={{ marginLeft: "20px", marginRight: "30px" }}>
+                                <TimePicker disableClock={true} onChange={(newValue) => {
+                                  setSaturdayFrom(newValue);
+                                }} value={saturdayFrom} />
                               </span>  <span >
-                              <TimePicker disableClock={true} onChange={(newValue) => {
-                                setSaturdayTo(newValue);
-                              }} value={saturdayTo} /></span>
+                                <TimePicker disableClock={true} onChange={(newValue) => {
+                                  setSaturdayTo(newValue);
+                                }} value={saturdayTo} /></span>
 
                             </div>}
                           </div>
@@ -958,14 +1072,14 @@ const InsertData = (props) => {
                             {!sundayclosed && <div class="row" >
 
 
-                            <span style={{ marginLeft: "20px", marginRight: "30px" }}>
-                            <TimePicker disableClock={true} onChange={(newValue) => {
-                                setSundayFrom(newValue);
-                              }} value={sundayFrom} />
+                              <span style={{ marginLeft: "20px", marginRight: "30px" }}>
+                                <TimePicker disableClock={true} onChange={(newValue) => {
+                                  setSundayFrom(newValue);
+                                }} value={sundayFrom} />
                               </span>  <span >
-                              <TimePicker disableClock={true} onChange={(newValue) => {
-                                setSundayTo(newValue);
-                              }} value={sundayTo} /></span>
+                                <TimePicker disableClock={true} onChange={(newValue) => {
+                                  setSundayTo(newValue);
+                                }} value={sundayTo} /></span>
 
                             </div>}
                           </div>
@@ -1064,9 +1178,9 @@ const InsertData = (props) => {
 
 
 
-                    <div className="paragraph-box2" style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }} hidden={!errMessagePhoto}>
+                    {titlePoint.length == 0 && <div className="paragraph-box2" style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }} hidden={!errMessagePhoto}>
                       {errMessagePhoto}
-                    </div>
+                    </div>}
 
                     <br />
 
@@ -1192,37 +1306,55 @@ const InsertData = (props) => {
         <div>
           {
 
-            <table style={{ border: "1px solid gray" }}>
-              <thead>
-                <tr>
-                  <th style={{ border: "1px solid gray" }}>Title</th>
-                  <th style={{ border: "1px solid gray" }}>Short description</th>
-                  <th style={{ border: "1px solid gray" }}>Long description</th>
-                  <th style={{ border: "1px solid gray" }}>Responsible person</th>
-                  <th style={{ border: "1px solid gray" }}>Email</th>
-                  <th style={{ border: "1px solid gray" }}>Phone</th>
-                  <th style={{ border: "1px solid gray" }}>Web page</th>
-                  <th style={{ border: "1px solid gray" }}>Location</th>
-                </tr>
-              </thead>
+            <div class="flex flex-col">
+              <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+                <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+                  <div class="overflow-hidden">
+                    <table class="min-w-full text-left text-sm font-light">
+                      <thead class="border-b font-medium dark:border-neutral-500">
+                        <tr >
+                          <th scope="col" class="px-6 py-4" style={{ border: "1px solid gray" }} >Title</th>
+                          <th scope="col" class="px-6 py-4" style={{ border: "1px solid gray" }}>Short description</th>
+                          <th scope="col" class="px-6 py-4" style={{ border: "1px solid gray" }}>Long description</th>
+                          <th scope="col" class="px-6 py-4" style={{ border: "1px solid gray" }}>Category</th>
+                          <th scope="col" class="px-6 py-4" style={{ border: "1px solid gray" }}>Price</th>
+                          <th scope="col" class="px-6 py-4" style={{ border: "1px solid gray" }}>Offer name</th>
+                          <th scope="col" class="px-6 py-4" style={{ border: "1px solid gray" }}>Responsible person</th>
+                          <th scope="col" class="px-6 py-4" style={{ border: "1px solid gray" }}>Email</th>
+                          <th scope="col" class="px-6 py-4" style={{ border: "1px solid gray" }}>Phone</th>
+                          <th scope="col" class="px-6 py-4" style={{ border: "1px solid gray" }}>Web page</th>
+                          <th scope="col" class="px-6 py-4" style={{ border: "1px solid gray" }}>Location</th>
+                        </tr>
+                      </thead>
 
-              {points.map((point) => (
-                <tbody>
-                  <tr>
-                    <td style={{ border: "1px solid gray" }}>{point.title.en}</td>
-                    <td style={{ border: "1px solid gray" }}>{point.shortInfo.en}</td>
-                    <td style={{ border: "1px solid gray" }}>{point.longInfo.en}</td>
-                    <td style={{ border: "1px solid gray" }}>{point.contact.name}</td>
-                    <td style={{ border: "1px solid gray" }}>{point.contact.email}</td>
-                    <td style={{ border: "1px solid gray" }}>{point.contact.phone}</td>
-                    <td style={{ border: "1px solid gray" }}>{point.contact.webURL}</td>
-                    <td style={{ border: "1px solid gray" }}>{`${point.location.street}  ${point.location.city} ${point.location.country} ${point.location.latitute}  ${point.location.longitude}`}</td>
+                      {points.map((point) => (
+                        <tbody>
+                          <tr class="border-b dark:border-neutral-500" >
+                            <td class="whitespace-nowrap px-6 py-4 font-medium" style={{ border: "1px solid gray" }}>{point.title}</td>
+                            <td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>{point.shortInfo.english}</td>
+                            <td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>{point.longInfo.english}</td>
+                            <td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>{point.category}</td>
+                            {point.price == "" ? <td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>/</td> : <td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>{point.price} {currency}</td>}
+                            {point.offerName == "" ? <td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>/</td> : <td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>{point.offerName}</td>}
+                            {point.contact.name == "" ? <td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>/</td> : <td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>{point.contact.name}</td>}
+                            {point.contact.email == "" ? <td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>/</td> : <td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>{point.contact.email}</td>}
+                            {point.contact.phone == "" ? <td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>/</td> : <td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>{point.contact.phone}</td>}
+                            {point.contact.webURL == "" ? <td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>/</td> : <td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>{point.contact.webURL}</td>}
 
-                  </tr>
-                </tbody>))
-              }
-            </table>
+                            <td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>{`${point.location.street}  ${point.location.city} ${point.location.country} ${point.location.latitute}  ${point.location.longitude}`}</td>
+
+                          </tr>
+                        </tbody>))
+                      }
+
+                    </table>
+
+                  </div>
+                </div>
+              </div>
+            </div>
           }
+
         </div>
       }
       <div className="paragraph-box2" style={{ color: "red", fontSize: "0.8em", marginTop: "30px", marginRight: "40px" }} hidden={!errMessage}>

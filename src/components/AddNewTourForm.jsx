@@ -20,13 +20,15 @@ const AddNewTourForm = () => {
 	const [title, setTitle] = useState("");
 	const [shortInfo, setShortInfo] = useState("");
 	const [longInfo, setLongInfo] = useState("");
-	const [price, setPrice] = useState("_€ incl tax");
+	const [price, setPrice] = useState("");
 
 	const [titlePoint, setTitlePoint] = useState("");
 	const [shortInfoPoint, setShortInfoPoint] = useState("");
 	const [longInfoPoint, setLongInfoPoint] = useState("");
-	const [pointPrice, setPointPrice] = useState("_€ incl tax");
+	const [pointPrice, setPointPrice] = useState("");
 	const [offerName, setOfferName] = useState("");
+	const [currency, setCurrency] = useState("");
+	const [currencyList, setCurrencyList] = useState(["£", "€", "$"]);
 
 	const [location, setLocation] = useState("");
 	const [phone, setPhone] = useState("");
@@ -81,18 +83,19 @@ const AddNewTourForm = () => {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 
-		if (title == "") {
+		if (title == "" || shortInfo == "" || longInfo == "" || price == "") {
 
 			setErrMessage("Please fill in the tour title field")
 		} else {
 
 
 			var tour = {
-				title: { en: title },
-				shortInfo: { en: shortInfo },
-				longInfo: { en: longInfo },
+				title: JSON.parse(title),
+				shortInfo: JSON.parse(shortInfo),
+				longInfo: JSON.parse(longInfo),
 				price: price,
-				points: points
+				currency: currency,
+				points: points,
 
 
 			}
@@ -114,7 +117,7 @@ const AddNewTourForm = () => {
 
 	const handleAdd = (e) => {
 
-		if (titlePoint == "" || addressInput.current.value == "" || (!mondayclosed && (mondayFrom == "" || mondayTo == "")) || (!tuesdayclosed && (tuesdayFrom == "" || tuesdayTo == "")) || (!wednesdayclosed && (wednesdayFrom == "" || wednesdayTo == "")) || (!thursdayclosed && (thursdayFrom == "" || thursdayTo == "")) || (!fridayclosed && (fridayFrom == "" || fridayTo == "")) || (!saturdayclosed && (saturdayFrom == "" || saturdayTo == "")) || (!sundayclosed && (sundayFrom == "" || sundayTo == ""))) {
+		if (titlePoint == "" || shortInfoPoint == "" || longInfoPoint == "" || pointPrice == "" || offerName == "" || responsiblePerson == "" || phone == "" || email == "" || webURL == "" || addressInput.current.value == "" || (!mondayclosed && (mondayFrom == "" || mondayTo == "")) || (!tuesdayclosed && (tuesdayFrom == "" || tuesdayTo == "")) || (!wednesdayclosed && (wednesdayFrom == "" || wednesdayTo == "")) || (!thursdayclosed && (thursdayFrom == "" || thursdayTo == "")) || (!fridayclosed && (fridayFrom == "" || fridayTo == "")) || (!saturdayclosed && (saturdayFrom == "" || saturdayTo == "")) || (!sundayclosed && (sundayFrom == "" || sundayTo == ""))) {
 
 			setErrMessagePartner("Please insert mandatory fields for partner (marked with *)")
 		} else {
@@ -149,9 +152,9 @@ const AddNewTourForm = () => {
 				.then((res) => {
 
 					var point = {
-						title: { en: titlePoint },
-						shortInfo: { en: shortInfoPoint },
-						longInfo: { en: longInfoPoint },
+						title: JSON.parse(titlePoint),
+						shortInfo: JSON.parse(shortInfoPoint),
+						longInfo: JSON.parse(longInfoPoint),
 						price: pointPrice,
 						offerName: offerName,
 						contact: { phone: phone, email: email, webURL: webURL, name: responsiblePerson },
@@ -270,18 +273,26 @@ const AddNewTourForm = () => {
 												<label><b>Price</b></label>
 												<div class="row" >
 													<div class="form-group col-lg-10">
-														<input
+														<div class="button-login">
+															<input
 
-															className={"form-control"}
-															placeholder="Price"
-															aria-describedby="basic-addon1"
-															id="name"
-															type="text"
-															style={{ backgroundColor: 'white', outline: 'none' }}
+																className={"form-control"}
+																placeholder="Price"
+																aria-describedby="basic-addon1"
+																id="name"
+																type="text"
+																style={{ backgroundColor: 'white', outline: 'none' }}
 
-															onChange={(e) => setPrice(e.target.value)}
-															value={price}
-														/>
+																onChange={(e) => setPrice(e.target.value)}
+																value={price}
+															/>
+															<select onChange={(e) => setCurrency(e.target.value)} name="currency" class="custom-select" style={{ height: "50px", width: "200px" }}>
+																{currencyList.map(item =>
+																	<option key={item} value={item} >{item}</option>
+																)};
+
+															</select>
+														</div>
 													</div>
 												</div>
 											</div>
@@ -362,18 +373,27 @@ const AddNewTourForm = () => {
 															<label><b>Price</b></label>
 															<div class="row" >
 																<div class="form-group col-lg-10">
-																	<input
+																	<div class="button-login">
+																		<input
 
-																		className={"form-control"}
-																		placeholder="Price"
-																		aria-describedby="basic-addon1"
-																		id="name"
-																		type="text"
-																		style={{ backgroundColor: 'white', outline: 'none' }}
+																			className={"form-control"}
+																			placeholder="Price"
+																			aria-describedby="basic-addon1"
+																			id="name"
+																			type="text"
+																			style={{ backgroundColor: 'white', outline: 'none' }}
 
-																		onChange={(e) => setPointPrice(e.target.value)}
-																		value={pointPrice}
-																	/>
+																			onChange={(e) => setPointPrice(e.target.value)}
+																			value={pointPrice}
+																		/>
+
+																		<select onChange={(e) => setCurrency(e.target.value)} name="currency" class="custom-select" style={{ height: "50px", width: "200px" }}>
+																			{currencyList.map(item =>
+																				<option key={item} value={item} >{item}</option>
+																			)};
+
+																		</select>
+																	</div>
 																</div>
 															</div>
 														</div>
@@ -747,36 +767,53 @@ const AddNewTourForm = () => {
 						<div>
 							{
 
-								<table style={{ border: "1px solid gray" }}>
-									<thead>
-										<tr>
-											<th style={{ border: "1px solid gray" }}>Title</th>
-											<th style={{ border: "1px solid gray" }}>Short description</th>
-											<th style={{ border: "1px solid gray" }}>Long description</th>
-											<th style={{ border: "1px solid gray" }}>Responsible person</th>
-											<th style={{ border: "1px solid gray" }}>Email</th>
-											<th style={{ border: "1px solid gray" }}>Phone</th>
-											<th style={{ border: "1px solid gray" }}>Web page</th>
-											<th style={{ border: "1px solid gray" }}>Location</th>
-										</tr>
-									</thead>
+								<div class="flex flex-col">
+									<div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+										<div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+											<div class="overflow-hidden">
+												<table class="min-w-full text-left text-sm font-light">
+													<thead class="border-b font-medium dark:border-neutral-500">
+														<tr >
+															<th scope="col" class="px-6 py-4" style={{ border: "1px solid gray" }} >Title</th>
+															<th scope="col" class="px-6 py-4" style={{ border: "1px solid gray" }}>Short description</th>
+															<th scope="col" class="px-6 py-4" style={{ border: "1px solid gray" }}>Long description</th>
+															<th scope="col" class="px-6 py-4" style={{ border: "1px solid gray" }}>Category</th>
+															<th scope="col" class="px-6 py-4" style={{ border: "1px solid gray" }}>Price</th>
+															<th scope="col" class="px-6 py-4" style={{ border: "1px solid gray" }}>Offer name</th>
+															<th scope="col" class="px-6 py-4" style={{ border: "1px solid gray" }}>Responsible person</th>
+															<th scope="col" class="px-6 py-4" style={{ border: "1px solid gray" }}>Email</th>
+															<th scope="col" class="px-6 py-4" style={{ border: "1px solid gray" }}>Phone</th>
+															<th scope="col" class="px-6 py-4" style={{ border: "1px solid gray" }}>Web page</th>
+															<th scope="col" class="px-6 py-4" style={{ border: "1px solid gray" }}>Location</th>
+														</tr>
+													</thead>
 
-									{points.map((point) => (
-										<tbody>
-											<tr>
-												<td style={{ border: "1px solid gray" }}>{point.title.en}</td>
-												<td style={{ border: "1px solid gray" }}>{point.shortInfo.en}</td>
-												<td style={{ border: "1px solid gray" }}>{point.longInfo.en}</td>
-												<td style={{ border: "1px solid gray" }}>{point.contact.name}</td>
-												<td style={{ border: "1px solid gray" }}>{point.contact.email}</td>
-												<td style={{ border: "1px solid gray" }}>{point.contact.phone}</td>
-												<td style={{ border: "1px solid gray" }}>{point.contact.webURL}</td>
-												<td style={{ border: "1px solid gray" }}>{`${point.location.street}  ${point.location.city} ${point.location.country} ${point.location.latitute}  ${point.location.longitude}`}</td>
+													{points.map((point) => (
+														<tbody>
+															<tr class="border-b dark:border-neutral-500" >
+																<td class="whitespace-nowrap px-6 py-4 font-medium" style={{ border: "1px solid gray" }}>{point.title.english}</td>
+																<td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>{point.shortInfo.english}</td>
+																<td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>{point.longInfo.english}</td>
+																<td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>{point.category}</td>
+																{point.price == "" ? <td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>/</td> : <td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>{point.price} {currency}</td>}
+																{point.offerName == "" ? <td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>/</td> : <td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>{point.offerName}</td>}
+																{point.contact.name == "" ? <td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>/</td> : <td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>{point.contact.name}</td>}
+																{point.contact.email == "" ? <td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>/</td> : <td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>{point.contact.email}</td>}
+																{point.contact.phone == "" ? <td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>/</td> : <td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>{point.contact.phone}</td>}
+																{point.contact.webURL == "" ? <td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>/</td> : <td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>{point.contact.webURL}</td>}
 
-											</tr>
-										</tbody>))
-									}
-								</table>
+																<td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>{`${point.location.street}  ${point.location.city} ${point.location.country} ${point.location.latitute}  ${point.location.longitude}`}</td>
+
+															</tr>
+														</tbody>))
+													}
+
+												</table>
+
+											</div>
+										</div>
+									</div>
+								</div>
 							}
 						</div>
 					}

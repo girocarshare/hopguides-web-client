@@ -10,7 +10,7 @@ import { reportService } from "../services/ReportService";
 import Axios from "axios";
 import { deleteLocalStorage, authHeader } from "../helpers/auth-header";
 import { useParams } from 'react-router-dom';
-var url = process.env.REACT_APP_URL || "http://localhost:3000/";
+var url = process.env.REACT_APP_URL || "http://localhost:8080/";
 
 
 const PreviousReport = forwardRef((props, ref) => {

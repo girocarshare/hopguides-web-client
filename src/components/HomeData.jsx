@@ -14,8 +14,7 @@ import Axios from "axios";
 import { deleteLocalStorage, authHeader } from "../helpers/auth-header";
 import AddNewTourForm from "./AddNewTourForm";
 
-
-var url = process.env.REACT_APP_URL || "http://localhost:3000/";
+var url = process.env.REACT_APP_URL || "http://localhost:8080/";
 
 
 const HomeData = forwardRef((props, ref) => {
@@ -60,9 +59,6 @@ const HomeData = forwardRef((props, ref) => {
     deleteLocalStorage();
     window.location = "#/login";
   };
-  const timeout = (delay) => {
-    return new Promise(res => setTimeout(res, delay));
-  }
   useEffect(() => {
     var token = authHeader()
     if (token == "null") {
@@ -148,7 +144,6 @@ const HomeData = forwardRef((props, ref) => {
 
   const onUpdatePoint = (oldData, newData) => {
 
-    console.log(oldData)
     const getUpdateHandlerr = async () => {
       return await homeDataService.updatePoint(dispatch, oldData);
     };
@@ -185,15 +180,23 @@ const HomeData = forwardRef((props, ref) => {
       setEditTourPrice(true)
       setRowIdTour(tour.tourId)
       setUpdateField("Finish")
+      setTourPrice(tour.tourPrice)
     } else {
       setEditTourPrice(false)
       setRowIdTour("")
       setUpdateField("Update")
+      if (tourPrice == "") {
+        setTourPrice(`${tour.tourPrice} ${tour.currency} incl tax`)
+      } else {
+
+        setTourPrice(`${tourPrice} ${tour.currency} incl tax`)
+      }
       var data = {
         noOfRidesAMonth: tour.noOfRidesAMonth,
         tourId: tour.tourId,
         tourName: tour.tourName,
-        tourPrice: tourPrice
+        tourPrice: tourPrice,
+
       }
 
       onUpdate(data, "")
@@ -201,23 +204,62 @@ const HomeData = forwardRef((props, ref) => {
   };
 
 
-  
-
-  const updatePartnerPrice = (e, tour) => {
 
 
-    console.log(tour.point.id)
+  const updatePartnerPrice = (e, point, tour) => {
+
+
 
     if (updatePartner == "Update") {
       setEditPartner(true)
-      setRowId(tour.point.id)
+      setRowId(point.point.id)
       setUpdatePartner("Finish")
+      if (responsiblePerson == "") {
+        setResponsiblePerson(`${point.point.contact.name}`)
+      }
+
+      if (contactEmail == "") {
+        setContactEmail(`${point.point.contact.email}`)
+      }
+
+      if (contactPhone == "") {
+        setContactPhone(`${point.point.contact.phone}`)
+      }
+
+     
+        setPartnerPrice(point.point.price)
+      
+
+        
+      if(offerName == ""){
+        setOfferName(`${point.point.offerName}`)
+        }
+     
     } else {
       setEditPartner(false)
       setUpdatePartner("Update")
       setRowId("")
-      var data = tour
-      data.point.contact.email = tour.point.contact.email
+      if (partnerPrice == "") {
+        setPartnerPrice(`${point.point.price} ${tour.currency} incl tax`)
+      } else {
+
+        setPartnerPrice(`${partnerPrice} ${tour.currency} incl tax`)
+      }
+      console.log(point)
+      var data = {
+        point: {
+          bpartnerId: point.point.bpartnerId,
+          contact: { phone: contactPhone, name: responsiblePerson, email: contactEmail, webURL: point.point.contact.webURL },
+          id: point.point.id,
+          location: point.point.location,
+          longInfo: point.point.longInfo,
+          offerName: offerName,
+          price: partnerPrice,
+          shortInfo: point.point.shortInfo,
+          title: point.point.title,
+          workingHours: point.point.workingHours,
+        }
+      }
 
       console.log(data)
       onUpdatePoint(data, "")
@@ -229,10 +271,10 @@ const HomeData = forwardRef((props, ref) => {
 
     <div class="login-page" >
 
-{homeDataState.showModal && <div >
-  <AddNewTourForm/>
-  </div>}
-      {!role &&
+      {homeDataState.showModal && <div >
+        <AddNewTourForm />
+      </div>}
+      {role &&
         <div class="button-login">
 
           <button
@@ -246,9 +288,9 @@ const HomeData = forwardRef((props, ref) => {
         </div>
       }
 
-      {role &&
+      {!role &&
         <div class=" button-login">
-           <button
+          <button
             type="button"
             style={{ background: "#0099ff", marginTop: "px", marginRight: "55px", padding: "5px 15px", height: "35px" }}
             onClick={handleLogout}
@@ -309,16 +351,7 @@ const HomeData = forwardRef((props, ref) => {
         {
           <table style={{ border: "1px solid gray", width: 1400, background: "white" }}>
             <thead>
-              <tr>
-                <button 
-                style={{ background: "#0099ff", marginTop: "px", marginRight: "55px", padding: "5px 15px", height: "35px" }}
-                  color="primary"
-                  variant="contained"
-                  onClick={(e) => addNew(e)}
-                >
-                  Add tour
-                </button>
-              </tr>
+             
 
               <tr>
                 <th style={{ border: "1px solid gray" }}>Name</th>
@@ -331,27 +364,27 @@ const HomeData = forwardRef((props, ref) => {
 
             {tours.map((tour) => (
               <tbody>
-                <tr id={tour.tourId} onClick={(e) => {
+                <tr >
+                  <td style={{ border: "1px solid gray" }} id={tour.tourId} onClick={(e) => {
 
-                  const element = document.getElementById(tour.tourId);
-                  if (element) {
-                    element.scrollIntoView({ behavior: 'smooth' });
-                  }
+const element = document.getElementById(tour.tourId);
+if (element) {
+  element.scrollIntoView({ behavior: 'smooth' });
+}
 
 
 
-                }}>
-                  <td style={{ border: "1px solid gray" }}>{tour.tourName}</td>
+}}>{tour.tourName}</td>
                   <td style={{ border: "1px solid gray" }}>
                     <input
                       readOnly={!editTourPrice || rowIdTour != tour.tourId}
-                      placeholder={editTourPrice === true ? tour.tourPrice : "Insert price"}
+                      placeholder={editTourPrice === true ? `${tour.tourPrice}` : "Insert price"}
                       aria-describedby="basic-addon1"
                       id="name"
                       type="text"
                       style={{ backgroundColor: editTourPrice === true && rowIdTour == tour.tourId ? '#DCDCDC' : 'white', outline: 'none' }}
                       onChange={(e) => setTourPrice(e.target.value)}
-                      defaultValue={tour.tourPrice}
+                      value={tourPrice === "" ? `${tour.tourPrice} ${tour.currency} incl tax` : tourPrice}
                     />
                   </td>
                   <td style={{ border: "1px solid gray" }}>{tour.noOfRidesAMonth}</td>
@@ -375,7 +408,7 @@ const HomeData = forwardRef((props, ref) => {
                 <thead>
                   <tr>
                     {admin && <button
-                       style={{ background: "#0099ff", marginTop: "px", marginRight: "55px", padding: "5px 15px", height: "35px" }}
+                      style={{ background: "#0099ff", marginTop: "px", marginRight: "55px", padding: "5px 15px", height: "35px" }}
                       color="primary"
                       variant="contained"
                       onClick={(e) => addNewPartner(e, tour.tourId)}
@@ -403,16 +436,16 @@ const HomeData = forwardRef((props, ref) => {
                   <tbody>
                     <tr >
                       <td style={{ border: "1px solid gray" }}><button
-                      color="inherit"
-                      onClick={(event) => {
+                        color="inherit"
+                        onClick={(event) => {
 
-                        visitWebsite(event, points.point.id)
-                      }}
-                    >
-                      <MdLaunch />
+                          visitWebsite(event, points.point.id)
+                        }}
+                      >
+                        <MdLaunch />
 
-                    </button></td>
-                      <td style={{ border: "1px solid gray" }}>{points.point.title.en}</td>
+                      </button></td>
+                      <td style={{ border: "1px solid gray" }}>{points.point.name}</td>
                       <td style={{ border: "1px solid gray" }}>
                         <input
                           readOnly={!editPartner || rowId != points.point.id}
@@ -422,7 +455,7 @@ const HomeData = forwardRef((props, ref) => {
                           type="text"
                           style={{ backgroundColor: editPartner === true && rowId == points.point.id ? '#DCDCDC' : 'white', outline: 'none' }}
                           onChange={(e) => setResponsiblePerson(e.target.value)}
-                          defaultValue={points.point.contact.name}
+                          value={responsiblePerson === "" ? `${points.point.contact.name} ` : responsiblePerson}
                         />
                       </td>
                       <td style={{ border: "1px solid gray" }}>
@@ -434,67 +467,68 @@ const HomeData = forwardRef((props, ref) => {
                           type="text"
                           style={{ backgroundColor: editPartner === true && rowId == points.point.id ? '#DCDCDC' : 'white', outline: 'none' }}
                           onChange={(e) => setContactEmail(e.target.value)}
-                          defaultValue={points.point.contact.email}
+                         
+                          value={contactEmail === "" ? `${points.point.contact.email} ` : contactEmail}
                         />
                       </td>
                       <td style={{ border: "1px solid gray" }}>
                         <input
                           readOnly={!editPartner || rowId != points.point.id}
-                          placeholder={editPartner === true ? points.point.contact.phone : "Contact email"}
+                          placeholder={editPartner === true ? points.point.contact.phone : "Contact phone"}
                           aria-describedby="basic-addon1"
                           id="name"
                           type="text"
                           style={{ backgroundColor: editPartner === true && rowId == points.point.id ? '#DCDCDC' : 'white', outline: 'none' }}
                           onChange={(e) => setContactPhone(e.target.value)}
-                          defaultValue={points.point.contact.phone}
+                          value={contactPhone === "" ? `${points.point.contact.phone} ` : contactPhone}
                         />
                       </td>
                       <td style={{ border: "1px solid gray" }}>
                         <input
                           readOnly={!editPartner || rowId != points.point.id}
-                          placeholder={editPartner === true ? points.point.price : "Contact email"}
+                          placeholder={editPartner === true ? points.point.price : "Price"}
                           aria-describedby="basic-addon1"
                           id="name"
                           type="text"
                           style={{ backgroundColor: editPartner === true && rowId == points.point.id ? '#DCDCDC' : 'white', outline: 'none' }}
                           onChange={(e) => setPartnerPrice(e.target.value)}
-                          defaultValue={points.point.price}
+                          value={partnerPrice === "" ? `${points.point.price} ${tour.currency} incl tax` : partnerPrice}
                         />
                       </td>
                       <td style={{ border: "1px solid gray" }}>
                         <input
                           readOnly={!editPartner || rowId != points.point.id}
-                          placeholder={editPartner === true ? points.point.price : "Contact email"}
+                          placeholder={editPartner === true ? points.point.offerName : "Offer name"}
                           aria-describedby="basic-addon1"
                           id="name"
                           type="text"
                           style={{ backgroundColor: editPartner === true && rowId == points.point.id ? '#DCDCDC' : 'white', outline: 'none' }}
                           onChange={(e) => setOfferName(e.target.value)}
-                          defaultValue={points.point.offerName}
+                          value={offerName === "" ? `${points.point.offerName} ` : offerName}
                         />
                       </td>
 
                       <td style={{ border: "1px solid gray" }}>{points.monthlyUsed}</td>
 
                       <td style={{ border: "1px solid gray" }}>  <button
-                      color="inherit"
-                      onClick={(event) => {
-                        updateMenu(event, points.point.id)
-                      }}
-                    >
+                        color="inherit"
+                        onClick={(event) => {
+                          updateMenu(event, points.point.id)
+                        }}
+                      >
 
-                      <MdOutlineModeEditOutline />
-                    </button></td>
-                      <td style={{ border: "1px solid gray" }}>      
-                         <button
-                      color="inherit"
-                      onClick={(event) => {
-                        getQrCode(event, points.point.id)
-                      }}
-                    >
-                      Get QR code
-                    </button></td>
-                      <td style={{ border: "1px solid gray" }}><button onClick={(e) => updatePartnerPrice(e, points)} >{updatePartner}</button></td>
+                        <MdOutlineModeEditOutline />
+                      </button></td>
+                      <td style={{ border: "1px solid gray" }}>
+                        <button
+                          color="inherit"
+                          onClick={(event) => {
+                            getQrCode(event, points.point.id)
+                          }}
+                        >
+                          Get QR code
+                        </button></td>
+                      <td style={{ border: "1px solid gray" }}><button onClick={(e) => updatePartnerPrice(e, points, tour)} >{updatePartner}</button></td>
 
                     </tr>
                   </tbody>))}
@@ -503,7 +537,7 @@ const HomeData = forwardRef((props, ref) => {
           </div>
 
 
-        
+
         </div>
       )}
 

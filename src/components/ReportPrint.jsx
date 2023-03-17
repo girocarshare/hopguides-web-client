@@ -8,7 +8,7 @@ import { deleteLocalStorage, authHeader } from "../helpers/auth-header";
 import Axios from "axios";
 import ReactToPrint from 'react-to-print';
 import Report from './Report';
-var url = process.env.REACT_APP_URL || "http://localhost:3000/";
+var url = process.env.REACT_APP_URL || "http://localhost:8080/";
 
 const ReportPrint = () => {
 

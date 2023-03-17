@@ -3,11 +3,14 @@ import { UserContext } from "../contexts/UserContext";
 import { userService } from "../services/UserService";
 import UserContextProvider from "../contexts/UserContext";
 import { YMaps, Map } from "react-yandex-maps";
+import { authHeader } from "../helpers/auth-header";
+import Axios from "axios";
 const mapState = {
 	center: [44, 21],
 	zoom: 8,
 	controls: [],
 };
+var url = process.env.REACT_APP_URL || "http://localhost:8080/";
 const Register = () => {
 
 	const { userState, dispatch } = useContext(UserContext);
@@ -17,6 +20,11 @@ const Register = () => {
 	const [phone2, setPhone2] = useState("");
 	const [contactEmail, setContactEmail] = useState("");
 	const [webURL, setWebURL] = useState("");
+	const [errMessage, setErrMessage] = useState("");
+	const uploadRef = React.useRef();
+	const statusRef = React.useRef();
+	const progressRef = React.useRef();
+	const [file, setFile] = useState(null);
 
 	const addressInput = React.createRef(null);
 	const [ymaps, setYmaps] = useState(null);
@@ -30,12 +38,62 @@ const Register = () => {
 		});
 	};
 
+	
+	const onFileChange = (event) => {
+		setFile(event.target.files[0]);
+	}
+
+
+	const fileData = () => {
+		if (file) {
+
+			return (
+				<div>
+					<h2 style={{ marginTop: "20px" }}>File details</h2>
+					<p>File name: {file.name}</p>
+					<p>File type: {file.type}</p>
+					<p>
+						LAst modified:{" "}
+						{file.lastModifiedDate.toDateString()}
+					</p>
+				</div>
+			);
+		}
+	};
+
 	const handleLogout = (event) => {
 
 		window.location = "#/login";
 	}
 
+	const ProgressHandler = (e) => {
+		var percent = (e.loaded / e.total) * 100;
+		progressRef.current.value = Math.round(percent);
+		statusRef.current.innerHTML = Math.round(percent) + "% uploaded...";
 
+	};
+
+	const SuccessHandler = (e) => {
+
+		statusRef.current.innerHTML = "Success";
+		progressRef.current.value = 100;
+		//reportService.addMenu(true, dispatch);
+
+		//dispatch({ type: homeDataConstants.UPDATE_MENU_PHOTO_SUCCESS });
+	};
+	const ErrorHandler = () => {
+
+		statusRef.current.innerHTML = "Upload failed";
+
+		//dispatch({ type: homeDataConstants.UPDATE_MENU_PHOTO_FAILURE });
+		//reportService.addMenu(false, dispatch);
+	};
+	const AbortHandler = () => {
+
+		statusRef.current.innerHTML = "Upload aborted";
+
+		//reportService.addMenu(false, dispatch);
+	};
 	const handleSubmitNew = (e) => {
 
 
@@ -69,26 +127,62 @@ const Register = () => {
 			.then((res) => {
 
 
-				let sendEmailRequest = {}
-
-				sendEmailRequest = {
-					email: email,
-					contactEmail: contactEmail,
-					phone: phone,
-					phone2: phone2,
-					webURL: webURL,
+				var sendEmailRequest = {
 					name: name,
-					location: { street: street, country: country, city: city, latitude: latitude, longitude: longitude },
+					contact: {
+						phone: phone,
+						phone2: phone2,
+						email: contactEmail,
+						webURL: webURL,
+					location: {
+						street: street,
+						 country: country, 
+						 city: city, 
+						 latitude: latitude,
+						  longitude: longitude 
+
+					}},
+
+
+				}
+
+				//userService.sendRegistrationMail(sendEmailRequest, dispatch);
+
+
+
+				if (file == null) {
+
+					setErrMessage("Please pick a logo photo")
+				} else {
+		
+					const formData = new FormData();
+		
+					formData.append('file', file);
+					formData.append('request', JSON.stringify(sendEmailRequest));
+		
+					var xhr = new XMLHttpRequest();
+					xhr.upload.addEventListener("progress", ProgressHandler, false);
+					xhr.addEventListener("load", SuccessHandler, false);
+					xhr.addEventListener("error", ErrorHandler, false);
+					xhr.addEventListener("abort", AbortHandler, false);
+					//************************************** */
+					xhr.open('POST', `${url}api/users/sendRegistrationEmail`, true);
+					//xhr.setRequestHeader("Authorization", props.token);
+					xhr.onload = function () {
+						// do something to response
+					};
+		
+					console.log(formData)
+
+					xhr.send(formData);
+		
+		
 				}
 
 
-				userService.sendRegistrationMail(sendEmailRequest, dispatch);
-
-
-
-
-
 			});
+
+
 
 
 	};
@@ -154,6 +248,18 @@ const Register = () => {
 								</div>
 
 								<label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+
+								<div style={{ marginTop: "15px" }}>
+									<label><b>Logo</b></label>
+									<br />   <br />
+									<input type={"file"} name="file" onChange={onFileChange} />
+
+								</div>
+
+								{fileData()}
+
+								<br/>
+								<br/>
 								<div
 									className="form-group text-center"
 									style={{ color: "green", fontSize: "0.8em" }}

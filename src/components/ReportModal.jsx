@@ -4,8 +4,7 @@ import { ReportContext } from "../contexts/ReportContext";
 import { reportService } from "../services/ReportService";
 import { AiOutlineClose } from 'react-icons/ai';
 import { useParams } from 'react-router-dom';
-
-var url = process.env.REACT_APP_URL || "http://localhost:3000/";
+var url = process.env.REACT_APP_URL || "http://localhost:8080/";
 
 const ReportModal = () => {
 
