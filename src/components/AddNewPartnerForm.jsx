@@ -14,7 +14,7 @@ const mapState = {
 };
 
 
-var url = process.env.REACT_APP_URL || "http://localhost:3000/";
+var url = process.env.REACT_APP_URL || "http://localhost:8080/";
 const AddNewPartnerForm = (props) => {
 
 	const addressInput = React.createRef(null);

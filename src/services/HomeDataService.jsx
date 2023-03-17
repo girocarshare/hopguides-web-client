@@ -2,7 +2,7 @@ import Axios from "axios";
 import { homeDataConstants } from "../constants/HomeDataConstants";
 
 import { authHeader } from "../helpers/auth-header";
-var url = process.env.REACT_APP_URL || "http://localhost:3000/";
+var url = process.env.REACT_APP_URL || "http://localhost:8080/";
 
 export const homeDataService = {
 	getData,

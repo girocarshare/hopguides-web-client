@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect, useRef } from "react";
 import { homeDataConstants } from "../constants/HomeDataConstants";
 import { HomeDataContext } from "../contexts/HomeDataContext";
 import { AiOutlineClose } from 'react-icons/ai';
-var url = process.env.REACT_APP_URL || "http://localhost:3000/";
+var url = process.env.REACT_APP_URL || "http://localhost:8080/";
 
 
 const UpdateMenuModal = () => {

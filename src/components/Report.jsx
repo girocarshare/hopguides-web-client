@@ -7,8 +7,7 @@ import { reportConstants } from "../constants/ReportConstants";
 import { deleteLocalStorage, authHeader } from "../helpers/auth-header";
 import Axios from "axios";
 
-
-var url = process.env.REACT_APP_URL || "http://localhost:3000/";
+var url = process.env.REACT_APP_URL || "http://localhost:8080/";
 
 const Report = forwardRef(( props, ref ) => {
     const { reportState, dispatch } = useContext(ReportContext);
@@ -113,7 +112,7 @@ const Report = forwardRef(( props, ref ) => {
 
                 <h3><b>Tour name</b>:  {reportState.report.name}</h3>
                 <h3><b>Monthly usage</b>:  {reportState.report.monthlyUsedCoupons || 0}</h3>
-                <a class="abutton" href={"http://localhost:3001/#/previousReports/" + id}>Get previous reports</a>
+                <a class="abutton" href={"http://localhost:3000/#/previousReports/" + id}>Get previous reports</a>
             </div>
 
 

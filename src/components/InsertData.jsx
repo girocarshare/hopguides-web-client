@@ -10,8 +10,7 @@ const mapState = {
   center: [44, 21],
   zoom: 8,
   controls: [],
-};
-var url = process.env.REACT_APP_URL || "http://localhost:3000/";
+};var url = process.env.REACT_APP_URL || "http://localhost:8080/";
 
 const InsertData = (props) => {
   const addressInput = React.createRef(null);

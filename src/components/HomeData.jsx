@@ -14,8 +14,7 @@ import Axios from "axios";
 import { deleteLocalStorage, authHeader } from "../helpers/auth-header";
 import AddNewTourForm from "./AddNewTourForm";
 
-
-var url = process.env.REACT_APP_URL || "http://localhost:3000/";
+var url = process.env.REACT_APP_URL || "http://localhost:8080/";
 
 
 const HomeData = forwardRef((props, ref) => {
