@@ -10,11 +10,13 @@ const mapState = {
   center: [44, 21],
   zoom: 8,
   controls: [],
-};var url = process.env.REACT_APP_URL || "http://localhost:8080/";
+}; var url = process.env.REACT_APP_URL || "http://localhost:8080/";
 
 const InsertData = (props) => {
   const addressInput = React.createRef(null);
   const [title, setTitle] = useState("");
+  const [agreementTitle, setAgreementTitle] = useState("");
+  const [agreementDesc, setAgreementDesc] = useState("");
   const [changeTermsAndConditions, setChangeTermsAndConditions] = useState(false);
   const [shortInfo, setShortInfo] = useState("");
   const [longInfo, setLongInfo] = useState("");
@@ -68,6 +70,7 @@ const InsertData = (props) => {
 
   const [errMessagePartner, setErrMessagePartner] = useState("");
   const [errMessage, setErrMessage] = useState("");
+  const [voucherDesc, setVoucherDesc] = useState("");
   const [errMessagePhoto, setErrMessagePhoto] = useState("");
   const [points, setPoints] = useState([]);
   const [add, setAdd] = useState(false);
@@ -138,15 +141,18 @@ const InsertData = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (title == "" || audio == null || shortInfo == "" || longInfo == "" || price == "" || hotelId == "" || duration == "" || length == "" || highestPoint == "") {
+    if (title == "" || agreementTitle == "" || agreementDesc == "" || audio == null || shortInfo == "" || longInfo == "" || price == "" || hotelId == "" || duration == "" || length == "" || highestPoint == "") {
 
       setErrMessage("Please fill in the fileds marked with *")
     } else {
 
 
+      console.log(termsAndConditions)
 
       var tour = {
         title: JSON.parse(title),
+        agreementTitle: JSON.parse(agreementTitle),
+        agreementDesc: JSON.parse(agreementDesc),
         shortInfo: JSON.parse(shortInfo),
         longInfo: JSON.parse(longInfo),
         price: price,
@@ -155,7 +161,9 @@ const InsertData = (props) => {
         length: length,
         highestPoint: highestPoint,
         termsAndConditions: termsAndConditions,
-        currency: currency
+        currency: currency,
+        bpartnerId: hotelId,
+
 
 
       }
@@ -223,7 +231,7 @@ const InsertData = (props) => {
 
   const handleAdd = (e) => {
 
-    if (partner && (titlePoint == "" || shortInfoPoint == "" || longInfoPoint == "" || category == "" || pointPrice == "" || offerName == "" || responsiblePerson == "" || phone == "" || email == "" || webURL == "" || addressInput.current.value == "" || audio2 == null || selectedFiles.length == 0 || (!mondayclosed && (mondayFrom == "" || mondayTo == "")) || (!tuesdayclosed && (tuesdayFrom == "" || tuesdayTo == "")) || (!wednesdayclosed && (wednesdayFrom == "" || wednesdayTo == "")) || (!thursdayclosed && (thursdayFrom == "" || thursdayTo == "")) || (!fridayclosed && (fridayFrom == "" || fridayTo == "")) || (!saturdayclosed && (saturdayFrom == "" || saturdayTo == "")) || (!sundayclosed && (sundayFrom == "" || sundayTo == "")))) {
+    if (partner && (titlePoint == "" || shortInfoPoint == "" || longInfoPoint == "" || category == "" || pointPrice == "" || offerName == "" || responsiblePerson == "" || voucherDesc == "" || phone == "" || email == "" || webURL == "" || addressInput.current.value == "" || audio2 == null || selectedFiles.length == 0 || (!mondayclosed && (mondayFrom == "" || mondayTo == "")) || (!tuesdayclosed && (tuesdayFrom == "" || tuesdayTo == "")) || (!wednesdayclosed && (wednesdayFrom == "" || wednesdayTo == "")) || (!thursdayclosed && (thursdayFrom == "" || thursdayTo == "")) || (!fridayclosed && (fridayFrom == "" || fridayTo == "")) || (!saturdayclosed && (saturdayFrom == "" || saturdayTo == "")) || (!sundayclosed && (sundayFrom == "" || sundayTo == "")))) {
 
       console.log(titlePoint + " " + shortInfoPoint + " " + longInfoPoint + " " + category + " " + pointPrice + " " + offerName + " " + responsiblePerson + " " + phone + " " + email + " " + webURL + " ")
       setErrMessagePartner("Please insert mandatory fields for partner (marked with *)")
@@ -267,6 +275,7 @@ const InsertData = (props) => {
             longInfo: JSON.parse(longInfoPoint),
             price: pointPrice,
             offerName: offerName,
+            voucherDesc: JSON.parse(voucherDesc),
             contact: { phone: phone, email: email, webURL: webURL, name: responsiblePerson },
             location: { street: street, country: country, city: city, latitude: latitude, longitude: longitude },
             workingHours: { monday: { from: mondayFrom, to: mondayTo }, tuesday: { from: tuesdayFrom, to: tuesdayTo }, wednesday: { from: wednesdayFrom, to: wednesdayTo }, thursday: { from: thursdayFrom, to: thursdayTo }, friday: { from: fridayFrom, to: fridayTo }, saturday: { from: saturdayFrom, to: saturdayTo }, sunday: { from: sundayFrom, to: sundayTo } },
@@ -284,6 +293,7 @@ const InsertData = (props) => {
           setPhone("")
           setEmail("")
           setResponsiblePerson("")
+          setVoucherDesc("")
           setMondayClosed(false)
           setTuesdayClosed(false)
           setWednesdayClosed(false)
@@ -304,11 +314,8 @@ const InsertData = (props) => {
 
 
         });
-
-
     }
   }
-
 
   const addFile = (e) => {
     if (e.target.files[0]) {
@@ -323,7 +330,7 @@ const InsertData = (props) => {
     if (e.target.files[0]) {
 
       var new_file = new File([e.target.files[0]], 'audio2' + titlePoint + "---" + [e.target.files[0].name]);
-      console.log("lalalallalal")
+
       setAudio2(new_file);
     }
   };
@@ -431,13 +438,13 @@ const InsertData = (props) => {
 
   var row;
 
- /* function drop() {
-    console.log("drop called")
-  }
-  
-  function allowDrop(event) {
-    event.preventDefault();
-  }*/
+  /* function drop() {
+     console.log("drop called")
+   }
+   
+   function allowDrop(event) {
+     event.preventDefault();
+   }*/
 
   const drop = e => {
     e.preventDefault();
@@ -447,20 +454,15 @@ const InsertData = (props) => {
     const card = document.getElementById(card_id);
 
     e.target.appendChild(card);
-    
-}
 
-const dragOver = e => {
+  }
+
+  const dragOver = e => {
     e.preventDefault();
-}
+  }
 
 
   return (
-
-
-
-
-
 
     <div className="containerModal"  >
 
@@ -482,7 +484,7 @@ const dragOver = e => {
                   <AiOutlineClose />
                 </button>
               </div>
-          
+
               <div className="control-group">
                 <div className="form-group controls mb-0 pb-2" style={{ color: "#6c757d", opacity: 1 }}>
 
@@ -512,12 +514,12 @@ const dragOver = e => {
         <form id="contactForm" >
 
           <h1 class="paragraph-box" style={{ fontSize: 28 }} ><b>Add new tour</b></h1>
-          
+
           <table style={{ marginBottom: "4rem" }}>
             <td width="1000rem"  >
 
               <div className="control-group">
-              
+
                 <div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
                   <label><b>Title*</b></label>
                   <div class="row" >
@@ -533,6 +535,52 @@ const dragOver = e => {
 
                         onChange={(e) => setTitle(e.target.value)}
                         value={title}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="control-group">
+
+                <div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
+                  <label><b>Agreement title*</b></label>
+                  <div class="row" >
+                    <div class="form-group col-lg-10">
+                      <input
+
+                        className={"form-control"}
+                        placeholder="Agreement title"
+                        aria-describedby="basic-addon1"
+                        id="name"
+                        type="text"
+                        style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
+
+                        onChange={(e) => setAgreementTitle(e.target.value)}
+                        value={agreementTitle}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="control-group">
+
+                <div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
+                  <label><b>Agreement description*</b></label>
+                  <div class="row" >
+                    <div class="form-group col-lg-10">
+                      <input
+
+                        className={"form-control"}
+                        placeholder="Agreement description"
+                        aria-describedby="basic-addon1"
+                        id="name"
+                        type="text"
+                        style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
+
+                        onChange={(e) => setAgreementDesc(e.target.value)}
+                        value={agreementDesc}
                       />
                     </div>
                   </div>
@@ -789,6 +837,18 @@ const dragOver = e => {
                         <div class="row" >
                           <div class="form-group col-lg-10">
                             <textarea className="form-control" style={{ height: "200px", width: "1000px" }} type="textarea" required name="message" placeholder="Long description" value={longInfoPoint} onChange={(e) => setLongInfoPoint(e.target.value)}></textarea>
+
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="control-group">
+                      <div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
+                        <label><b>Voucher description*</b></label>
+                        <div class="row" >
+                          <div class="form-group col-lg-10">
+                            <textarea className="form-control" style={{ height: "200px", width: "1000px" }} type="textarea" required name="message" placeholder="Voucher description" value={voucherDesc} onChange={(e) => setVoucherDesc(e.target.value)}></textarea>
 
                           </div>
                         </div>
@@ -1330,7 +1390,7 @@ const dragOver = e => {
                       {points.map((point) => (
                         <tbody>
                           <tr class="border-b dark:border-neutral-500" >
-                            <td class="whitespace-nowrap px-6 py-4 font-medium" style={{ border: "1px solid gray" }}>{point.title}</td>
+                            <td class="whitespace-nowrap px-6 py-4 font-medium" style={{ border: "1px solid gray" }}>{point.name}</td>
                             <td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>{point.shortInfo.english}</td>
                             <td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>{point.longInfo.english}</td>
                             <td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>{point.category}</td>

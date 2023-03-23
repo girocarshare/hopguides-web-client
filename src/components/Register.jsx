@@ -16,6 +16,9 @@ const Register = () => {
 	const { userState, dispatch } = useContext(UserContext);
 	const [email, setEmail] = useState("");
 	const [name, setName] = useState("");
+	const [height, setHeight] = useState("");
+	const [width, setWidth] = useState("");
+	const [support, setSuppoprt] = useState("");
 	const [phone, setPhone] = useState("");
 	const [phone2, setPhone2] = useState("");
 	const [contactEmail, setContactEmail] = useState("");
@@ -40,7 +43,19 @@ const Register = () => {
 
 	
 	const onFileChange = (event) => {
+		var _URL = window.URL || window.webkitURL;
 		setFile(event.target.files[0]);
+
+		var imgg = new Image();
+        var objectUrl = _URL.createObjectURL(file);
+        imgg.onload = function () {
+            alert(this.width + " " + this.height);
+			setWidth(this.width)
+			setHeight(this.height)
+            _URL.revokeObjectURL(objectUrl);
+        };
+        imgg.src = objectUrl;
+
 	}
 
 
@@ -126,9 +141,11 @@ const Register = () => {
 			})
 			.then((res) => {
 
-
+console.log(height + width)
 				var sendEmailRequest = {
 					name: name,
+					support: JSON.parse(support),
+					dimensions: {height: height, width:width},
 					contact: {
 						phone: phone,
 						phone2: phone2,
@@ -140,15 +157,8 @@ const Register = () => {
 						 city: city, 
 						 latitude: latitude,
 						  longitude: longitude 
-
 					}},
-
-
 				}
-
-				//userService.sendRegistrationMail(sendEmailRequest, dispatch);
-
-
 
 				if (file == null) {
 
@@ -225,7 +235,9 @@ const Register = () => {
 								<div className="form-group">
 									<input className="form-control" type="text" style={{ height: "50px" }} required name="name" placeholder="Website" value={webURL} onChange={(e) => setWebURL(e.target.value)}></input>
 								</div>
-
+								<div className="form-group">
+									<input className="form-control" type="text" style={{ height: "50px" }} required name="name" placeholder="Support description" value={support} onChange={(e) => setSuppoprt(e.target.value)}></input>
+								</div>
 
 								<div className="form-group">
 									<input className="form-control" style={{ height: "50px" }} id="suggest" ref={addressInput} placeholder="Address" />
