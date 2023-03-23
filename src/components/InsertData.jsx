@@ -36,6 +36,8 @@ const InsertData = (props) => {
   const [highestPoint, setHighestPoint] = useState("");
 
   const [location, setLocation] = useState("");
+  const [longitude, setLongitude] = useState("");
+  const [latitude, setLatitude] = useState("");
   const [phone, setPhone] = useState("");
   const [hotelId, setHotelId] = useState("");
   const [ymaps, setYmaps] = useState(null);
@@ -231,19 +233,17 @@ const InsertData = (props) => {
 
   const handleAdd = (e) => {
 
-    if (partner && (titlePoint == "" || shortInfoPoint == "" || longInfoPoint == "" || category == "" || pointPrice == "" || offerName == "" || responsiblePerson == "" || voucherDesc == "" || phone == "" || email == "" || webURL == "" || addressInput.current.value == "" || audio2 == null || selectedFiles.length == 0 || (!mondayclosed && (mondayFrom == "" || mondayTo == "")) || (!tuesdayclosed && (tuesdayFrom == "" || tuesdayTo == "")) || (!wednesdayclosed && (wednesdayFrom == "" || wednesdayTo == "")) || (!thursdayclosed && (thursdayFrom == "" || thursdayTo == "")) || (!fridayclosed && (fridayFrom == "" || fridayTo == "")) || (!saturdayclosed && (saturdayFrom == "" || saturdayTo == "")) || (!sundayclosed && (sundayFrom == "" || sundayTo == "")))) {
+    if (partner && (titlePoint == "" || shortInfoPoint == "" || longInfoPoint == "" || category == "" || pointPrice == "" || offerName == "" || responsiblePerson == "" || voucherDesc == "" || phone == "" || email == "" || webURL == "" ||  longitude == "" || latitude == "" || audio2 == null || selectedFiles.length == 0 || (!mondayclosed && (mondayFrom == "" || mondayTo == "")) || (!tuesdayclosed && (tuesdayFrom == "" || tuesdayTo == "")) || (!wednesdayclosed && (wednesdayFrom == "" || wednesdayTo == "")) || (!thursdayclosed && (thursdayFrom == "" || thursdayTo == "")) || (!fridayclosed && (fridayFrom == "" || fridayTo == "")) || (!saturdayclosed && (saturdayFrom == "" || saturdayTo == "")) || (!sundayclosed && (sundayFrom == "" || sundayTo == "")))) {
 
-      console.log(titlePoint + " " + shortInfoPoint + " " + longInfoPoint + " " + category + " " + pointPrice + " " + offerName + " " + responsiblePerson + " " + phone + " " + email + " " + webURL + " ")
       setErrMessagePartner("Please insert mandatory fields for partner (marked with *)")
-    } else if (point && (titlePoint == "" || shortInfoPoint == "" || longInfoPoint == "" || category == "" || addressInput.current.value == "" || audio2 == null || selectedFiles.length == 0)) {
-      console.log(titlePoint + " " + shortInfoPoint + " " + longInfoPoint + " " + category + " " + addressInput.current.value + " " + audio2 + " " + selectedFiles.length)
-
+    } else if (point && (titlePoint == "" || shortInfoPoint == "" || longInfoPoint == "" || category == "" || longitude == "" || latitude == "" || audio2 == null || selectedFiles.length == 0)) {
+     
       setErrMessagePartner("Please insert mandatory fields for point of interest (marked with *)")
     } else {
       setAdd(false)
       setErrMessagePartner("")
 
-      let street;
+      /*let street;
       let city;
       let country;
       let latitude;
@@ -268,7 +268,7 @@ const InsertData = (props) => {
           }
         })
         .then((res) => {
-
+*/
           var point = {
             name: titlePoint,
             shortInfo: JSON.parse(shortInfoPoint),
@@ -277,7 +277,7 @@ const InsertData = (props) => {
             offerName: offerName,
             voucherDesc: JSON.parse(voucherDesc),
             contact: { phone: phone, email: email, webURL: webURL, name: responsiblePerson },
-            location: { street: street, country: country, city: city, latitude: latitude, longitude: longitude },
+            location: { latitude: latitude, longitude: longitude },
             workingHours: { monday: { from: mondayFrom, to: mondayTo }, tuesday: { from: tuesdayFrom, to: tuesdayTo }, wednesday: { from: wednesdayFrom, to: wednesdayTo }, thursday: { from: thursdayFrom, to: thursdayTo }, friday: { from: fridayFrom, to: fridayTo }, saturday: { from: saturdayFrom, to: saturdayTo }, sunday: { from: sundayFrom, to: sundayTo } },
             bpartnerId: hotelId,
             category: category
@@ -305,6 +305,8 @@ const InsertData = (props) => {
           setCategory("")
           setWebUrl("")
           setLocation("")
+          setLongitude("")
+          setLatitude("")
 
           setFiles(files.concat(selectedFiles))
           setAudios(audios.concat(audio2))
@@ -313,7 +315,7 @@ const InsertData = (props) => {
           setAudio2(null)
 
 
-        });
+       // });
     }
   }
 
@@ -398,6 +400,8 @@ const InsertData = (props) => {
     setShortInfo("")
     setPrice("")
     setDuration("")
+    setLongitude("")
+    setLatitude("")
     setHighestPoint("")
     setLength("")
 
@@ -927,26 +931,38 @@ const InsertData = (props) => {
                     <div >
 
                       <label><b>Address *</b></label>
-                      <div >
+                      <div class="row" >
+                          <div class="form-group col-lg-10">
+                            <input
 
-                        <input id="suggest" ref={addressInput} placeholder="Address" style={{ width: "1000px", height: "50px" }} />
+                              className={"form-control"}
+                              placeholder="Longitude"
+                              aria-describedby="basic-addon1"
+                              id="name"
+                              type="text"
+                              style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
 
-                        <YMaps
-                          query={{
-                            load: "package.full",
-                            apikey: "b0ea2fa3-aba0-4e44-a38e-4e890158ece2",
-                            lang: "en_RU",
-                          }}
-                        >
-                          <Map
-                            style={{ display: "none", width: "100px", marginLeft: "100px" }}
-                            state={mapState}
-                            onLoad={onYmapsLoad}
-                            instanceRef={(map) => (map = map)}
-                            modules={["coordSystem.geo", "geocode", "util.bounds"]}
-                          ></Map>
-                        </YMaps>
-                      </div>
+                              onChange={(e) => setLongitude(e.target.value)}
+                              value={longitude}
+                            />
+                          </div>
+                          <div class="row" >
+                          <div class="form-group col-lg-10">
+                            <input
+
+                              className={"form-control"}
+                              placeholder="Latitude"
+                              aria-describedby="basic-addon1"
+                              id="name"
+                              type="text"
+                              style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
+
+                              onChange={(e) => setLatitude(e.target.value)}
+                              value={latitude}
+                            />
+                          </div>
+                        </div>
+                        </div>
                     </div>
 
                     {partner &&
