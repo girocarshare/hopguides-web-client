@@ -48,7 +48,7 @@ export const homeDataReducer = (state, action) => {
 
 	switch (action.type) {
 
-		case homeDataConstants.DATA_GET_SUCCESS:
+		/*case homeDataConstants.DATA_GET_SUCCESS:
 
 
 
@@ -84,9 +84,10 @@ export const homeDataReducer = (state, action) => {
 					tours: []
 				},
 			};
-
+*/
 		case homeDataConstants.DATA_TOUR_POINTS_GET_SUCCESS:
 
+		console.log("cskjbcjsbjhsbf")
 			var array = []
 			var points = []
 			var points2 = []
@@ -212,13 +213,12 @@ export const homeDataReducer = (state, action) => {
 			array.push(tour)
 			array.push(tour2)
 
-			return {
-				...state,
-				toursWithPoints: {
-					toursWithPoints: action.data
-					//toursWithPoints: array
-				},
-			};
+			prodCpy = { ...state };
+
+			prodCpy.toursWithPoints.toursWithPoints = action.data;
+			return prodCpy;
+
+			
 
 		case homeDataConstants.DATA_TOUR_POINTS_GET_FAILURE:
 
@@ -447,7 +447,7 @@ export const homeDataReducer = (state, action) => {
 
 			prodCpy = { ...state };
 
-			prodCpy.tours.tours = action.data;
+			prodCpy.toursWithPoints.toursWithPoints = action.data;
 			prodCpy.modalData.success = true;
 			prodCpy.modalData.text = "You have successfully updated tour.";
 			return prodCpy;

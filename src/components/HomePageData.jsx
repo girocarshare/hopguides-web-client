@@ -21,7 +21,7 @@ const HomePageData = forwardRef((props, ref) => {
     const [admin, setAdmin] = useState(false);
     const someFetchActionCreator = () => {
         const getDocumentsInfoHandler = async () => {
-            await homeDataService.getData(dispatch);
+           // await homeDataService.getData(dispatch);
             await homeDataService.getToursAndPointsData(dispatch);
 
 
@@ -42,13 +42,13 @@ const HomePageData = forwardRef((props, ref) => {
     }, [dispatch]);
 
 
-    if(homeDataState.tours.tours == null) return (<span>loading...</span>);
+    if(homeDataState.toursWithPoints.toursWithPoints == null) return (<span>loading...</span>);
     return (
 
         <div>
 
              <HomeData 
-            data = {homeDataState.tours.tours}
+            data = {homeDataState.toursWithPoints.toursWithPoints}
             tours = {tours}/>
         </div>
 

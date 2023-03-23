@@ -147,6 +147,7 @@ const InsertData = (props) => {
     } else {
 
 
+      console.log(termsAndConditions)
 
       var tour = {
         title: JSON.parse(title),

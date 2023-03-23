@@ -91,7 +91,7 @@ const HomeData = forwardRef((props, ref) => {
 
         })
     }
-    setTours(homeDataState.tours.tours)
+    setTours(homeDataState.toursWithPoints.toursWithPoints)
     var contactUser = {
       name: "Danijel Omrzel",
       email: "danijel.omrzel@visitlljubljana.si",
@@ -180,13 +180,13 @@ const HomeData = forwardRef((props, ref) => {
       setEditTourPrice(true)
       setRowIdTour(tour.tourId)
       setUpdateField("Finish")
-      setTourPrice(tour.tourPrice)
+      setTourPrice(tour.price)
     } else {
       setEditTourPrice(false)
       setRowIdTour("")
       setUpdateField("Update")
       if (tourPrice == "") {
-        setTourPrice(`${tour.tourPrice} ${tour.currency} incl tax`)
+        setTourPrice(`${tour.price} ${tour.currency} incl tax`)
       } else {
 
         setTourPrice(`${tourPrice} ${tour.currency} incl tax`)
@@ -195,7 +195,7 @@ const HomeData = forwardRef((props, ref) => {
         noOfRidesAMonth: tour.noOfRidesAMonth,
         tourId: tour.tourId,
         tourName: tour.tourName,
-        tourPrice: tourPrice,
+        price: tourPrice,
 
       }
 
@@ -226,15 +226,15 @@ const HomeData = forwardRef((props, ref) => {
         setContactPhone(`${point.point.contact.phone}`)
       }
 
-     
-        setPartnerPrice(point.point.price)
-      
 
-        
-      if(offerName == ""){
+      setPartnerPrice(point.point.price)
+
+
+
+      if (offerName == "") {
         setOfferName(`${point.point.offerName}`)
-        }
-     
+      }
+
     } else {
       setEditPartner(false)
       setUpdatePartner("Update")
@@ -351,7 +351,7 @@ const HomeData = forwardRef((props, ref) => {
         {
           <table style={{ border: "1px solid gray", width: 1400, background: "white" }}>
             <thead>
-             
+
 
               <tr>
                 <th style={{ border: "1px solid gray" }}>Name</th>
@@ -362,29 +362,29 @@ const HomeData = forwardRef((props, ref) => {
               </tr>
             </thead>
 
-            {tours.map((tour) => (
+            {homeDataState.toursWithPoints.toursWithPoints.map((tour) => (
               <tbody>
                 <tr >
                   <td style={{ border: "1px solid gray" }} id={tour.tourId} onClick={(e) => {
 
-const element = document.getElementById(tour.tourId);
-if (element) {
-  element.scrollIntoView({ behavior: 'smooth' });
-}
+                    const element = document.getElementById(tour.tourId);
+                    if (element) {
+                      element.scrollIntoView({ behavior: 'smooth' });
+                    }
 
 
 
-}}>{tour.tourName}</td>
+                  }}>{tour.title}</td>
                   <td style={{ border: "1px solid gray" }}>
                     <input
                       readOnly={!editTourPrice || rowIdTour != tour.tourId}
-                      placeholder={editTourPrice === true ? `${tour.tourPrice}` : "Insert price"}
+                      placeholder={editTourPrice === true ? `${tour.price}` : "Insert price"}
                       aria-describedby="basic-addon1"
                       id="name"
                       type="text"
                       style={{ backgroundColor: editTourPrice === true && rowIdTour == tour.tourId ? '#DCDCDC' : 'white', outline: 'none' }}
                       onChange={(e) => setTourPrice(e.target.value)}
-                      value={tourPrice === "" ? `${tour.tourPrice} ${tour.currency} incl tax` : tourPrice}
+                      value={tourPrice === "" ? `${tour.price} ${tour.currency} incl tax` : tourPrice}
                     />
                   </td>
                   <td style={{ border: "1px solid gray" }}>{tour.noOfRidesAMonth}</td>
@@ -467,7 +467,7 @@ if (element) {
                           type="text"
                           style={{ backgroundColor: editPartner === true && rowId == points.point.id ? '#DCDCDC' : 'white', outline: 'none' }}
                           onChange={(e) => setContactEmail(e.target.value)}
-                         
+
                           value={contactEmail === "" ? `${points.point.contact.email} ` : contactEmail}
                         />
                       </td>
