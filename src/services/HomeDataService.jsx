@@ -37,6 +37,26 @@ function insertData( tf, dispatch) {
 	}
 }
 
+
+function updateTour( tf, dispatch) {
+	
+	if(tf){
+
+
+		dispatch(success());
+	}else{
+		dispatch(failure("Error while updateing tour"));
+	}
+
+	function success() {
+		return { type: homeDataConstants.TOUR_UPDATE_SUCCESS };
+	}
+	function failure(error) {
+		return { type: homeDataConstants.TOUR_UPDATE_FAILURE, error };
+	}
+}
+
+
 function addTour(tour, dispatch) {
 
 	dispatch(request());
@@ -153,43 +173,6 @@ async function updatePoint( dispatch, point) {
 	}
 }
 
-
-  async function updateTour( dispatch, tour) {
-  
-	  dispatch(request());
-	  var token = authHeader()
-	  await Axios.post(`${url}api/pnl/tour/update/`+tour.id, tour, {
-		  headers: {
-			Authorization: token 
-		  }},{ validateStatus: () => true })
-		  .then((res) => {
-			  if (res.status === 200) {
-				  console.log(res.data)
-				  dispatch(success(res.data));
-			  } else if (res.status === 215) {
-				  dispatch(failure(res.data.response));
-			  }else{
-				  
-				  dispatch(failure(res.data.error));
-			  }
-		  })
-		  .catch((err) =>{		
-				  dispatch(failure(err));
-			  })
-  
-	  function request() {
-		  
-		  return { type: homeDataConstants.TOUR_UPDATE_REQUEST };
-	  }
-	  function success(data) {
-		  return { type: homeDataConstants.TOUR_UPDATE_SUCCESS, data: data  };
-	  
-	  }
-	  function failure(error) {
-		  
-		  return { type: homeDataConstants.TOUR_UPDATE_FAILURE, error };
-	  }
-  }
 
 
 async function getPreviousMonthsData(dispatch ,id) {

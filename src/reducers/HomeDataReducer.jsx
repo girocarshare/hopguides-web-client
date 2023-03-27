@@ -447,7 +447,7 @@ export const homeDataReducer = (state, action) => {
 
 			prodCpy = { ...state };
 
-			prodCpy.toursWithPoints.toursWithPoints = action.data;
+			prodCpy.updateTourData.show = false;
 			prodCpy.modalData.success = true;
 			prodCpy.modalData.text = "You have successfully updated tour.";
 			return prodCpy;
@@ -719,6 +719,25 @@ export const homeDataReducer = (state, action) => {
 					text: "Error while adding new data. Please try again later.",
 				},
 
+			};
+			case homeDataConstants.UPDATE_TOUR_DATA_MODAL_SHOW:
+
+			console.log(action.tour)
+			prodCpy = { ...state };
+
+			prodCpy.updateTourData.show = true;
+			prodCpy.updateTourData.tour = action.tour;
+
+			return prodCpy;
+		
+			case homeDataConstants.UPDATE_TOUR_DATA_MODAL_CLOSE:
+
+			return {
+				...state,
+				updateTourData: {
+					show: false,
+
+				},
 			};
 
 		default:

@@ -10,11 +10,13 @@ import AddNewPartnerForm from "../components/AddNewPartnerForm";
 import UpdateMenuModal from "../components/UpdateMenuModal";
 import SuccessModal from "../components/SuccessModal";
 import FailureModal from "../components/FailureModal";
+import TourData from "../components/TourData";
 const HomePage = () => {
 
 	return (
 		<div>
 			<HomeDataContextProvider>
+				<TourData />
 				<SuccessModal />
 				<FailureModal />
 				<HomePageData />

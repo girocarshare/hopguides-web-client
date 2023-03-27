@@ -149,8 +149,6 @@ const InsertData = (props) => {
     } else {
 
 
-      console.log(termsAndConditions)
-
       var tour = {
         title: JSON.parse(title),
         agreementTitle: JSON.parse(agreementTitle),
@@ -313,6 +311,7 @@ const InsertData = (props) => {
 
           setSelectedFiles([])
           setAudio2(null)
+          setImagePreviews([])
 
 
        // });
@@ -392,7 +391,9 @@ const InsertData = (props) => {
     setWebUrl("")
     setLocation("")
     setFiles([])
+    setFile(null)
     setAudios([])
+    setAudio(null)
     setSelectedFiles([])
     setAudio2(null)
     setTitle("")
@@ -401,9 +402,13 @@ const InsertData = (props) => {
     setPrice("")
     setDuration("")
     setLongitude("")
+    setAgreementTitle("")
+    setAgreementDesc("")
     setLatitude("")
     setHighestPoint("")
     setLength("")
+    setImagePreview(null)
+    setImagePreviews([])
 
     //dispatch({ type: homeDataConstants.UPDATE_MENU_PHOTO_SUCCESS });
   };
@@ -847,7 +852,7 @@ const InsertData = (props) => {
                       </div>
                     </div>
 
-                    <div className="control-group">
+                    {partner && <div className="control-group">
                       <div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
                         <label><b>Voucher description*</b></label>
                         <div class="row" >
@@ -857,7 +862,7 @@ const InsertData = (props) => {
                           </div>
                         </div>
                       </div>
-                    </div>
+                    </div>}
 
                     <div className="control-group">
                       <div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>

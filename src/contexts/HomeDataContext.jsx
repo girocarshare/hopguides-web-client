@@ -50,6 +50,12 @@ const HomeDataContextProvider = (props) => {
 		},
 
 		
+		updateTourData: {
+			show: false,
+			tour: null,
+		},
+
+		
 		bpartners: {
 			bpartners: [],
 		},

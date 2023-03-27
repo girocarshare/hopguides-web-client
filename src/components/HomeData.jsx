@@ -13,6 +13,7 @@ import { MdOutlineModeEditOutline, MdLaunch } from 'react-icons/md';
 import Axios from "axios";
 import { deleteLocalStorage, authHeader } from "../helpers/auth-header";
 import AddNewTourForm from "./AddNewTourForm";
+import TourData from "./TourData";
 
 var url = process.env.REACT_APP_URL || "http://localhost:8080/";
 
@@ -173,10 +174,13 @@ const HomeData = forwardRef((props, ref) => {
 
 
 
-  const updateTourPrice = (e, tour) => {
+  const update = (e, tour) => {
 
 
-    if (updateField == "Update") {
+
+    dispatch({ type: homeDataConstants.UPDATE_TOUR_DATA_MODAL_SHOW, tour});
+
+   /* if (updateField == "Update") {
       setEditTourPrice(true)
       setRowIdTour(tour.tourId)
       setUpdateField("Finish")
@@ -200,7 +204,7 @@ const HomeData = forwardRef((props, ref) => {
       }
 
       onUpdate(data, "")
-    }
+    }*/
   };
 
 
@@ -273,6 +277,10 @@ const HomeData = forwardRef((props, ref) => {
 
       {homeDataState.showModal && <div >
         <AddNewTourForm />
+      </div>}
+
+      {homeDataState.updateTourData.show && <div >
+        <TourData />
       </div>}
       {role &&
         <div class="button-login">
@@ -374,7 +382,7 @@ const HomeData = forwardRef((props, ref) => {
 
 
 
-                  }}>{tour.title}</td>
+                  }}>{tour.title.english}</td>
                   <td style={{ border: "1px solid gray" }}>
                     <input
                       readOnly={!editTourPrice || rowIdTour != tour.tourId}
@@ -389,7 +397,7 @@ const HomeData = forwardRef((props, ref) => {
                   </td>
                   <td style={{ border: "1px solid gray" }}>{tour.noOfRidesAMonth}</td>
                   <td style={{ border: "1px solid gray" }}><button onClick={(e) => getHistory(e, tour.tourId)} >Get report</button></td>
-                  <td style={{ border: "1px solid gray" }}><button onClick={(e) => updateTourPrice(e, tour)} >{updateField}</button></td>
+                  <td style={{ border: "1px solid gray" }}><button onClick={(e) => update(e, tour)} >{updateField}</button></td>
 
                 </tr>
               </tbody>))
