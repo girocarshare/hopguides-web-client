@@ -11,12 +11,14 @@ import UpdateMenuModal from "../components/UpdateMenuModal";
 import SuccessModal from "../components/SuccessModal";
 import FailureModal from "../components/FailureModal";
 import TourData from "../components/TourData";
+import POIData from "../components/POIData";
 const HomePage = () => {
 
 	return (
 		<div>
 			<HomeDataContextProvider>
 				<TourData />
+				<POIData />
 				<SuccessModal />
 				<FailureModal />
 				<HomePageData />

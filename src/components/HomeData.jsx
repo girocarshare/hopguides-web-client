@@ -180,31 +180,7 @@ const HomeData = forwardRef((props, ref) => {
 
     dispatch({ type: homeDataConstants.UPDATE_TOUR_DATA_MODAL_SHOW, tour});
 
-   /* if (updateField == "Update") {
-      setEditTourPrice(true)
-      setRowIdTour(tour.tourId)
-      setUpdateField("Finish")
-      setTourPrice(tour.price)
-    } else {
-      setEditTourPrice(false)
-      setRowIdTour("")
-      setUpdateField("Update")
-      if (tourPrice == "") {
-        setTourPrice(`${tour.price} ${tour.currency} incl tax`)
-      } else {
-
-        setTourPrice(`${tourPrice} ${tour.currency} incl tax`)
-      }
-      var data = {
-        noOfRidesAMonth: tour.noOfRidesAMonth,
-        tourId: tour.tourId,
-        tourName: tour.tourName,
-        price: tourPrice,
-
-      }
-
-      onUpdate(data, "")
-    }*/
+  
   };
 
 
@@ -212,9 +188,10 @@ const HomeData = forwardRef((props, ref) => {
 
   const updatePartnerPrice = (e, point, tour) => {
 
+    dispatch({ type: homeDataConstants.UPDATE_POINT_DATA_MODAL_SHOW, point});
 
 
-    if (updatePartner == "Update") {
+   /* if (updatePartner == "Update") {
       setEditPartner(true)
       setRowId(point.point.id)
       setUpdatePartner("Finish")
@@ -267,7 +244,7 @@ const HomeData = forwardRef((props, ref) => {
 
       console.log(data)
       onUpdatePoint(data, "")
-    }
+    }*/
   };
 
 
@@ -427,14 +404,11 @@ const HomeData = forwardRef((props, ref) => {
 
                   <tr>
                     <th style={{ border: "1px solid gray" }}>Visit website</th>
-                    <th style={{ border: "1px solid gray" }}>Partners</th>
-                    <th style={{ border: "1px solid gray" }}>Responsible person</th>
-                    <th style={{ border: "1px solid gray" }}>Contact email</th>
-                    <th style={{ border: "1px solid gray" }}>Contact phone</th>
+                    <th style={{ border: "1px solid gray" }}>POI name</th>
                     <th style={{ border: "1px solid gray" }}>Price</th>
                     <th style={{ border: "1px solid gray" }}>Offer name</th>
+                    <th style={{ border: "1px solid gray" }}>Category</th>
                     <th style={{ border: "1px solid gray" }}>Coupons realized by partner in current month </th>
-                    <th style={{ border: "1px solid gray" }}>Update menu photo</th>
                     <th style={{ border: "1px solid gray" }}>Generate QR code</th>
                     <th style={{ border: "1px solid gray" }}>Update</th>
                   </tr>
@@ -454,43 +428,7 @@ const HomeData = forwardRef((props, ref) => {
 
                       </button></td>
                       <td style={{ border: "1px solid gray" }}>{points.point.name}</td>
-                      <td style={{ border: "1px solid gray" }}>
-                        <input
-                          readOnly={!editPartner || rowId != points.point.id}
-                          placeholder={editPartner === true ? points.point.contact.name : "Responsible person"}
-                          aria-describedby="basic-addon1"
-                          id="name"
-                          type="text"
-                          style={{ backgroundColor: editPartner === true && rowId == points.point.id ? '#DCDCDC' : 'white', outline: 'none' }}
-                          onChange={(e) => setResponsiblePerson(e.target.value)}
-                          value={responsiblePerson === "" ? `${points.point.contact.name} ` : responsiblePerson}
-                        />
-                      </td>
-                      <td style={{ border: "1px solid gray" }}>
-                        <input
-                          readOnly={!editPartner || rowId != points.point.id}
-                          placeholder={editPartner === true ? points.point.contact.email : "Contact email"}
-                          aria-describedby="basic-addon1"
-                          id="name"
-                          type="text"
-                          style={{ backgroundColor: editPartner === true && rowId == points.point.id ? '#DCDCDC' : 'white', outline: 'none' }}
-                          onChange={(e) => setContactEmail(e.target.value)}
-
-                          value={contactEmail === "" ? `${points.point.contact.email} ` : contactEmail}
-                        />
-                      </td>
-                      <td style={{ border: "1px solid gray" }}>
-                        <input
-                          readOnly={!editPartner || rowId != points.point.id}
-                          placeholder={editPartner === true ? points.point.contact.phone : "Contact phone"}
-                          aria-describedby="basic-addon1"
-                          id="name"
-                          type="text"
-                          style={{ backgroundColor: editPartner === true && rowId == points.point.id ? '#DCDCDC' : 'white', outline: 'none' }}
-                          onChange={(e) => setContactPhone(e.target.value)}
-                          value={contactPhone === "" ? `${points.point.contact.phone} ` : contactPhone}
-                        />
-                      </td>
+                     
                       <td style={{ border: "1px solid gray" }}>
                         <input
                           readOnly={!editPartner || rowId != points.point.id}
@@ -516,17 +454,11 @@ const HomeData = forwardRef((props, ref) => {
                         />
                       </td>
 
+                      
+                  <td style={{ border: "1px solid gray" }}>{points.point.category}</td>
+
                       <td style={{ border: "1px solid gray" }}>{points.monthlyUsed}</td>
 
-                      <td style={{ border: "1px solid gray" }}>  <button
-                        color="inherit"
-                        onClick={(event) => {
-                          updateMenu(event, points.point.id)
-                        }}
-                      >
-
-                        <MdOutlineModeEditOutline />
-                      </button></td>
                       <td style={{ border: "1px solid gray" }}>
                         <button
                           color="inherit"

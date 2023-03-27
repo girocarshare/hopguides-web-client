@@ -55,7 +55,10 @@ const HomeDataContextProvider = (props) => {
 			tour: null,
 		},
 
-		
+		updatePointData: {
+			show: false,
+			point: null,
+		},
 		bpartners: {
 			bpartners: [],
 		},

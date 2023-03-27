@@ -190,7 +190,7 @@ const InsertData = (props) => {
       xhr.addEventListener("error", ErrorHandler, false);
       xhr.addEventListener("abort", AbortHandler, false);
       //************************************** */
-      xhr.open('POST', `${url}api/pnl/tour/addFull`, true);
+      xhr.open('POST', `${url}api/pnl/tour/addFull/add`, true);
       //xhr.setRequestHeader("Authorization", props.token);
       xhr.onload = function () {
         // do something to response
@@ -273,7 +273,6 @@ const InsertData = (props) => {
             longInfo: JSON.parse(longInfoPoint),
             price: pointPrice,
             offerName: offerName,
-            voucherDesc: JSON.parse(voucherDesc),
             contact: { phone: phone, email: email, webURL: webURL, name: responsiblePerson },
             location: { latitude: latitude, longitude: longitude },
             workingHours: { monday: { from: mondayFrom, to: mondayTo }, tuesday: { from: tuesdayFrom, to: tuesdayTo }, wednesday: { from: wednesdayFrom, to: wednesdayTo }, thursday: { from: thursdayFrom, to: thursdayTo }, friday: { from: fridayFrom, to: fridayTo }, saturday: { from: saturdayFrom, to: saturdayTo }, sunday: { from: sundayFrom, to: sundayTo } },
@@ -281,6 +280,20 @@ const InsertData = (props) => {
             category: category
           }
 
+      
+
+          if(voucherDesc == ""){
+            point.voucherDesc = JSON.parse(`{
+              "english": "",
+              "spanish": "",
+              "serbian": "",
+              "slovenian": ""
+              }`)
+            point.partner = false
+          }else{
+            point.voucherDesc = JSON.parse(voucherDesc)
+            point.partner = true
+          }
           const newData = [point, ...points];
 
           setPoints(newData)

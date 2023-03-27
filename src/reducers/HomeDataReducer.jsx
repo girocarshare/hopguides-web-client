@@ -87,7 +87,7 @@ export const homeDataReducer = (state, action) => {
 */
 		case homeDataConstants.DATA_TOUR_POINTS_GET_SUCCESS:
 
-		console.log("cskjbcjsbjhsbf")
+		console.log(action.data)
 			var array = []
 			var points = []
 			var points2 = []
@@ -628,7 +628,7 @@ export const homeDataReducer = (state, action) => {
 			prodCpy = { ...state };
 
 			console.log(action.data)
-			prodCpy.toursWithPoints.toursWithPoints = action.data;//array;
+			//prodCpy.toursWithPoints.toursWithPoints = action.data;//array;
 			prodCpy.modalData.success = true;
 			prodCpy.modalData.text = "You have successfully updated partners data.";
 
@@ -722,7 +722,6 @@ export const homeDataReducer = (state, action) => {
 			};
 			case homeDataConstants.UPDATE_TOUR_DATA_MODAL_SHOW:
 
-			console.log(action.tour)
 			prodCpy = { ...state };
 
 			prodCpy.updateTourData.show = true;
@@ -735,6 +734,26 @@ export const homeDataReducer = (state, action) => {
 			return {
 				...state,
 				updateTourData: {
+					show: false,
+
+				},
+			};
+
+			case homeDataConstants.UPDATE_POINT_DATA_MODAL_SHOW:
+
+			prodCpy = { ...state };
+
+			console.log(action.point.point)
+			prodCpy.updatePointData.show = true;
+			prodCpy.updatePointData.point = action.point.point;
+
+			return prodCpy;
+		
+			case homeDataConstants.UPDATE_POINT_DATA_MODAL_CLOSE:
+
+			return {
+				...state,
+				updatePointData: {
 					show: false,
 
 				},

@@ -137,41 +137,25 @@ function addPartner(tour, dispatch) {
 }
 
 
-async function updatePoint( dispatch, point) {
-
-	dispatch(request());
-	var token = authHeader()
-	await Axios.post(`${url}api/poi/update/`+point.point.id, point, {
-		headers: {
-		  Authorization: token 
-		}},{ validateStatus: () => true })
-		.then((res) => {
-			if (res.status === 200) {
-				dispatch(success(res.data));
-			} else if (res.status === 215) {
-				dispatch(failure(res.data.response));
-			}else{
-				
-				dispatch(failure(res.data.error));
-			}
-		})
-		.catch((err) =>{		
-				dispatch(failure(err));
-			})
-
-	function request() {
-		
-		return { type: homeDataConstants.POI_UPDATE_REQUEST };
-	}
-	function success(data) {
-		return { type: homeDataConstants.POI_UPDATE_SUCCESS, data:data };
+function updatePoint( tf, dispatch) {
 	
+	if(tf){
+
+
+		dispatch(success());
+	}else{
+		dispatch(failure("Error while updateing tour"));
+	}
+
+	function success() {
+		return { type: homeDataConstants.POI_UPDATE_SUCCESS };
 	}
 	function failure(error) {
-		
 		return { type: homeDataConstants.POI_UPDATE_FAILURE, error };
 	}
 }
+
+
 
 
 
