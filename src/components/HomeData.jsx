@@ -136,10 +136,10 @@ const HomeData = forwardRef((props, ref) => {
 
     dispatch({ type: homeDataConstants.SHOW_ADD_MODAL });
   };
-  const addNewPartner = (e, id) => {
+  const addNewPartner = (e, id, bpartnerId) => {
 
-    console.log(id)
-    dispatch({ type: homeDataConstants.SHOW_ADD_PARTNER_MODAL, id: id });
+    console.log(bpartnerId)
+    dispatch({ type: homeDataConstants.SHOW_ADD_PARTNER_MODAL, id: id, bpartnerId:bpartnerId });
   };
 
 
@@ -183,8 +183,21 @@ const HomeData = forwardRef((props, ref) => {
   
   };
 
+  const deleteTour = async (e, tour) => {
 
 
+    await homeDataService.deleteTour(dispatch, tour.tourId);
+
+  
+  };
+
+  const deletePoi = async (e, tour, poiId) => {
+
+
+    await homeDataService.deletePoi(dispatch, tour.tourId, poiId);
+
+  
+  };
 
   const updatePartnerPrice = (e, point, tour) => {
 
@@ -344,6 +357,7 @@ const HomeData = forwardRef((props, ref) => {
                 <th style={{ border: "1px solid gray" }}>Number of executed tours for current month</th>
                 <th style={{ border: "1px solid gray" }}>Get monthly report</th>
                 <th style={{ border: "1px solid gray" }}>Update</th>
+                    <th style={{ border: "1px solid gray" }}>Delete</th>
               </tr>
             </thead>
 
@@ -375,6 +389,7 @@ const HomeData = forwardRef((props, ref) => {
                   <td style={{ border: "1px solid gray" }}>{tour.noOfRidesAMonth}</td>
                   <td style={{ border: "1px solid gray" }}><button onClick={(e) => getHistory(e, tour.tourId)} >Get report</button></td>
                   <td style={{ border: "1px solid gray" }}><button onClick={(e) => update(e, tour)} >{updateField}</button></td>
+                  <td style={{ border: "1px solid gray" }}><button onClick={(e) => deleteTour(e, tour)} >Delete</button></td>
 
                 </tr>
               </tbody>))
@@ -396,7 +411,7 @@ const HomeData = forwardRef((props, ref) => {
                       style={{ background: "#0099ff", marginTop: "px", marginRight: "55px", padding: "5px 15px", height: "35px" }}
                       color="primary"
                       variant="contained"
-                      onClick={(e) => addNewPartner(e, tour.tourId)}
+                      onClick={(e) => addNewPartner(e, tour.tourId, tour.bpartnerId)}
                     >
                       Add partner
                     </button>}
@@ -411,6 +426,7 @@ const HomeData = forwardRef((props, ref) => {
                     <th style={{ border: "1px solid gray" }}>Coupons realized by partner in current month </th>
                     <th style={{ border: "1px solid gray" }}>Generate QR code</th>
                     <th style={{ border: "1px solid gray" }}>Update</th>
+                    <th style={{ border: "1px solid gray" }}>Delete</th>
                   </tr>
                 </thead>
 
@@ -469,6 +485,7 @@ const HomeData = forwardRef((props, ref) => {
                           Get QR code
                         </button></td>
                       <td style={{ border: "1px solid gray" }}><button onClick={(e) => updatePartnerPrice(e, points, tour)} >{updatePartner}</button></td>
+                      <td style={{ border: "1px solid gray" }}><button onClick={(e) => deletePoi(e, tour, points.point.id)} >Delete</button></td>
 
                     </tr>
                   </tbody>))}

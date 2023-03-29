@@ -6,8 +6,7 @@ var url = process.env.REACT_APP_URL || "http://localhost:3000/";
 export const reportService = {
 	getReport,
 	getReports,
-	addMenu,
-	getMenu
+	addMenu
 
 };
 
@@ -37,7 +36,6 @@ async function getReport(dispatch ,id) {
 	}
 	function success(data) {
 		
-		console.log("ckdhfksdkfjlllllll")
 		return { type: reportConstants.REPORT_GET_SUCCESS, data: data };
 	}
 	function failure(message) {
@@ -97,34 +95,4 @@ function addMenu( tf, dispatch) {
 	function failure(error) {
 		return { type: reportConstants.MENU_SUBMIT_FAILURE, error };
 	}
-}
-
-
-
-
-
-async function getMenu( dispatch,id) {
-	
-	console.log(id)
-	await Axios.get(`${url}api/poi/getFile/ `+id,{ validateStatus: () => true,  responseType: 'blob'})
-		.then((res) => {
-			if (res.status === 200) {
-				console.log(res.data)
-				//FileDownload(res.data, fileName);
-				//window.location.reload(true);
-				var objectURL = URL.createObjectURL(res.data);
-				console.log(objectURL)
-				dispatch(success(objectURL));
-			}
-		})
-		.catch((err) => {
-			dispatch(failure("Error while getting menu"));
-		});
-		function success(data) {
-			
-			return { type: reportConstants.GET_MENU_SUCCESS, data:data };
-		}
-		function failure(error) {
-			return { type: reportConstants.GET_MENU_FAILURE, error };
-		}
 }

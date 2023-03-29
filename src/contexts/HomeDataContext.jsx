@@ -24,7 +24,8 @@ const HomeDataContextProvider = (props) => {
 
 		showAddPartnerModal: {
 			show: false,
-			id: ""
+			id: "",
+			bpartnerId: ""
 		},
 
 		id: "",

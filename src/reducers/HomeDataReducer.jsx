@@ -398,17 +398,11 @@ export const homeDataReducer = (state, action) => {
 			};
 
 		case homeDataConstants.PARTNER_SUBMIT_SUCCESS:
-
-			return {
-				...state,
-
-				modalData: {
-					success: true,
-					failure: false,
-					text: "You have successfully added new partner.",
-				},
-
-			};
+			prodCpy.showAddPartnerModal.show = false;
+			prodCpy.modalData.success = true;
+			prodCpy.modalData.text = "You have successfully added new partner.";
+			return prodCpy;
+		
 
 		case homeDataConstants.PARTNER_SUBMIT_FAILURE:
 
@@ -662,7 +656,8 @@ export const homeDataReducer = (state, action) => {
 				...state,
 				showAddPartnerModal: {
 					show: true,
-					id: action.id
+					id: action.id,
+					bpartnerId: action.bpartnerId
 				}
 
 			};

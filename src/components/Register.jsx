@@ -41,20 +41,20 @@ const Register = () => {
 		});
 	};
 
-	
+
 	const onFileChange = (event) => {
 		var _URL = window.URL || window.webkitURL;
 		setFile(event.target.files[0]);
 
 		var imgg = new Image();
-        var objectUrl = _URL.createObjectURL(file);
-        imgg.onload = function () {
-            alert(this.width + " " + this.height);
+		var objectUrl = _URL.createObjectURL(file);
+		imgg.onload = function () {
+			alert(this.width + " " + this.height);
 			setWidth(this.width)
 			setHeight(this.height)
-            _URL.revokeObjectURL(objectUrl);
-        };
-        imgg.src = objectUrl;
+			_URL.revokeObjectURL(objectUrl);
+		};
+		imgg.src = objectUrl;
 
 	}
 
@@ -141,35 +141,36 @@ const Register = () => {
 			})
 			.then((res) => {
 
-console.log(height + width)
+				console.log(height + width)
 				var sendEmailRequest = {
 					name: name,
 					support: JSON.parse(support),
-					dimensions: {height: height, width:width},
+					dimensions: { height: height, width: width },
 					contact: {
 						phone: phone,
 						phone2: phone2,
 						email: contactEmail,
 						webURL: webURL,
-					location: {
-						street: street,
-						 country: country, 
-						 city: city, 
-						 latitude: latitude,
-						  longitude: longitude 
-					}},
+						location: {
+							street: street,
+							country: country,
+							city: city,
+							latitude: latitude,
+							longitude: longitude
+						}
+					},
 				}
-
+				
 				if (file == null) {
 
 					setErrMessage("Please pick a logo photo")
 				} else {
-		
+
 					const formData = new FormData();
-		
+
 					formData.append('file', file);
 					formData.append('request', JSON.stringify(sendEmailRequest));
-		
+
 					var xhr = new XMLHttpRequest();
 					xhr.upload.addEventListener("progress", ProgressHandler, false);
 					xhr.addEventListener("load", SuccessHandler, false);
@@ -181,12 +182,12 @@ console.log(height + width)
 					xhr.onload = function () {
 						// do something to response
 					};
-		
+
 					console.log(formData)
 
 					xhr.send(formData);
-		
-		
+
+
 				}
 
 
@@ -270,8 +271,8 @@ console.log(height + width)
 
 								{fileData()}
 
-								<br/>
-								<br/>
+								<br />
+								<br />
 								<div
 									className="form-group text-center"
 									style={{ color: "green", fontSize: "0.8em" }}

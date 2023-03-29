@@ -11,6 +11,8 @@ export const homeDataService = {
 	addTour,
 	addPartner,
 	updateTour,
+	deleteTour,
+	deletePoi,
 	getQrCode,
 	updatePoint,
 	getBPartners,
@@ -97,14 +99,12 @@ function addTour(tour, dispatch) {
 }
 
 
-function addPartner(tour, dispatch) {
+function deleteTour( dispatch, tourId) {
 
 	dispatch(request());
 	
-	
-
 	var token = authHeader()
-	Axios.post(`${url}api/pnl/tour/addPartners`, tour, {
+	Axios.get(`${url}api/pnl/tour/deleteTour/`+ tourId, {
 		headers: {
 		  Authorization: token 
 		}},{ validateStatus: () => true })
@@ -112,7 +112,7 @@ function addPartner(tour, dispatch) {
 			if (res.status === 200) {
 				dispatch(success());
 				window.location.reload()
-			} else if (res.status === 215) {
+			} else if (res.status === 500) {
 				dispatch(failure(res.data.response));
 			}else{
 				
@@ -125,15 +125,76 @@ function addPartner(tour, dispatch) {
 
 	function request() {
 		
-		return { type: homeDataConstants.PARTNER_SUBMIT_REQUEST };
+		return { type: homeDataConstants.DELETE_TOUR_REQUEST };
 	}
+	function success() {
+		window.location.reload()
+		return { type: homeDataConstants.DELETE_TOUR_SUCCESS };
+	}
+	function failure(error) {
+		
+		return { type: homeDataConstants.DELETE_TOUR_FAILURE, error };
+	}
+}
+
+
+
+function deletePoi( dispatch, tourId, poiId) {
+
+	dispatch(request());
+	
+	var token = authHeader()
+	Axios.get(`${url}api/pnl/tour/deletePoi/`+ tourId + "/" + poiId, {
+		headers: {
+		  Authorization: token 
+		}},{ validateStatus: () => true })
+		.then((res) => {
+			if (res.status === 200) {
+				dispatch(success());
+				window.location.reload()
+			} else if (res.status === 500) {
+				dispatch(failure(res.data.response));
+			}else{
+				
+				dispatch(failure(res.data.error));
+			}
+		})
+		.catch((err) =>{		
+				dispatch(failure(err));
+			})
+
+	function request() {
+		
+		return { type: homeDataConstants.DELETE_TOUR_REQUEST };
+	}
+	function success() {
+		window.location.reload()
+		return { type: homeDataConstants.DELETE_TOUR_SUCCESS };
+	}
+	function failure(error) {
+		
+		return { type: homeDataConstants.DELETE_TOUR_FAILURE, error };
+	}
+}
+
+
+function addPartner(tf, dispatch) {
+
+	if(tf){
+
+
+		dispatch(success());
+	}else{
+		dispatch(failure("Error while adding new point"));
+	}
+
 	function success() {
 		return { type: homeDataConstants.PARTNER_SUBMIT_SUCCESS };
 	}
 	function failure(error) {
-		
 		return { type: homeDataConstants.PARTNER_SUBMIT_FAILURE, error };
 	}
+	
 }
 
 
@@ -273,7 +334,6 @@ async function getBPartners(dispatch ) {
 		return { type: homeDataConstants.GET_BPARTNERS_REQUEST };
 	}
 	function success(data) {
-		console.log(data)
 		return { type: homeDataConstants.GET_BPARTNERS_SUCCESS, data: data };
 	}
 	function failure(message) {
