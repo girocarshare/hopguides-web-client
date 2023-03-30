@@ -13,6 +13,7 @@ const mapState = {
 	controls: [],
 };
 
+var num = 1;
 
 var url = process.env.REACT_APP_URL || "http://localhost:8080/";
 const AddNewPartnerForm = (props) => {
@@ -117,9 +118,9 @@ const AddNewPartnerForm = (props) => {
 		  setAdd(false)
 		  setErrMessagePartner("")
 	
-		  console.log(homeDataState.showAddPartnerModal.bpartnerId)
 		 
 			  var point = {
+				num: num,
 				name: titlePoint,
 				shortInfo: JSON.parse(shortInfoPoint),
 				longInfo: JSON.parse(longInfoPoint),
@@ -175,6 +176,7 @@ const AddNewPartnerForm = (props) => {
 			  setSelectedFiles([])
 			  setAudio2(null)
 			  setImagePreviews([])
+			  num = num+1
 	
 	
 		   // });
@@ -183,7 +185,7 @@ const AddNewPartnerForm = (props) => {
 	  const addFile2 = (e) => {
 		if (e.target.files[0]) {
 	
-		  var new_file = new File([e.target.files[0]], 'audio2' + titlePoint + "---" + [e.target.files[0].name]);
+		  var new_file = new File([e.target.files[0]], 'audio2' + num + "---" + [e.target.files[0].name]);
 	
 		  setAudio2(new_file);
 		}
@@ -198,7 +200,7 @@ const AddNewPartnerForm = (props) => {
 		  var fs = []
 		  for (let i = 0; i < event.target.files.length; i++) {
 			images.push(URL.createObjectURL(event.target.files[i]));
-			var new_file = new File([event.target.files[i]], 'partner' + titlePoint + "---" + [event.target.files[i].name]);
+			var new_file = new File([event.target.files[i]], 'partner' + num + "---" + [event.target.files[i].name]);
 			fs.push(new_file)
 	
 		  }
