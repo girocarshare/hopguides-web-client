@@ -16,6 +16,7 @@ export const homeDataService = {
 	getQrCode,
 	updatePoint,
 	getBPartners,
+	changeLockCode,
 	insertData
 
 };
@@ -70,6 +71,40 @@ function addTour(tour, dispatch) {
 		headers: {
 		  Authorization: token 
 		}},{ validateStatus: () => true })
+		.then((res) => {
+			if (res.status === 200) {
+				dispatch(success());
+				window.location.reload()
+			} else if (res.status === 215) {
+				dispatch(failure(res.data.response));
+			}else{
+				
+				dispatch(failure(res.data.error));
+			}
+		})
+		.catch((err) =>{		
+				dispatch(failure(err));
+			})
+
+	function request() {
+		
+		return { type: homeDataConstants.TOUR_SUBMIT_REQUEST };
+	}
+	function success() {
+		return { type: homeDataConstants.TOUR_SUBMIT_SUCCESS };
+	}
+	function failure(error) {
+		
+		return { type: homeDataConstants.TOUR_SUBMIT_FAILURE, error };
+	}
+}
+
+function changeLockCode(lockCode, dispatch) {
+
+	dispatch(request());
+	
+	var token = authHeader()
+	Axios.post(`${url}api/bp/changeLockCode/` + lockCode, { headers: { Authorization: token } },{ validateStatus: () => true })
 		.then((res) => {
 			if (res.status === 200) {
 				dispatch(success());

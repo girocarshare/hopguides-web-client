@@ -13,7 +13,9 @@ import { MdOutlineModeEditOutline, MdLaunch } from 'react-icons/md';
 import Axios from "axios";
 import { deleteLocalStorage, authHeader } from "../helpers/auth-header";
 import AddNewTourForm from "./AddNewTourForm";
+import UpdateLogoModal from "./UpdateLogoModal";
 import TourData from "./TourData";
+import ChangeLockCodeModal from "./ChangeLockCodeModal";
 
 var url = process.env.REACT_APP_URL || "http://localhost:8080/";
 
@@ -126,9 +128,18 @@ const HomeData = forwardRef((props, ref) => {
   };
 
 
-  const updateMenu = (e, data) => {
+  const updateLogo = (e) => {
 
-    dispatch({ type: homeDataConstants.SHOW_ADD_MENU_MODAL, data });
+    
+    dispatch({ type: homeDataConstants.SHOW_UPDATE_LOGO_MODAL });
+  };
+
+  
+
+  const editLockCode = (e) => {
+
+    
+    dispatch({ type: homeDataConstants.SHOW_CHANGE_LOCK_CODE_MODAL });
   };
 
 
@@ -204,60 +215,6 @@ const HomeData = forwardRef((props, ref) => {
     dispatch({ type: homeDataConstants.UPDATE_POINT_DATA_MODAL_SHOW, point});
 
 
-   /* if (updatePartner == "Update") {
-      setEditPartner(true)
-      setRowId(point.point.id)
-      setUpdatePartner("Finish")
-      if (responsiblePerson == "") {
-        setResponsiblePerson(`${point.point.contact.name}`)
-      }
-
-      if (contactEmail == "") {
-        setContactEmail(`${point.point.contact.email}`)
-      }
-
-      if (contactPhone == "") {
-        setContactPhone(`${point.point.contact.phone}`)
-      }
-
-
-      setPartnerPrice(point.point.price)
-
-
-
-      if (offerName == "") {
-        setOfferName(`${point.point.offerName}`)
-      }
-
-    } else {
-      setEditPartner(false)
-      setUpdatePartner("Update")
-      setRowId("")
-      if (partnerPrice == "") {
-        setPartnerPrice(`${point.point.price} ${tour.currency} incl tax`)
-      } else {
-
-        setPartnerPrice(`${partnerPrice} ${tour.currency} incl tax`)
-      }
-      console.log(point)
-      var data = {
-        point: {
-          bpartnerId: point.point.bpartnerId,
-          contact: { phone: contactPhone, name: responsiblePerson, email: contactEmail, webURL: point.point.contact.webURL },
-          id: point.point.id,
-          location: point.point.location,
-          longInfo: point.point.longInfo,
-          offerName: offerName,
-          price: partnerPrice,
-          shortInfo: point.point.shortInfo,
-          title: point.point.title,
-          workingHours: point.point.workingHours,
-        }
-      }
-
-      console.log(data)
-      onUpdatePoint(data, "")
-    }*/
   };
 
 
@@ -267,6 +224,14 @@ const HomeData = forwardRef((props, ref) => {
 
       {homeDataState.showModal && <div >
         <AddNewTourForm />
+      </div>}
+
+      {homeDataState.showEditLogoModal && <div >
+        <UpdateLogoModal />
+      </div>}
+
+      {homeDataState.showEditLockCodeModal && <div >
+        <ChangeLockCodeModal />
       </div>}
 
       {homeDataState.updateTourData.show && <div >
@@ -295,6 +260,30 @@ const HomeData = forwardRef((props, ref) => {
             class="btn btn-primary btn-lg"
           >
             Log out
+          </button>
+        </div>
+      }
+      <br /> {!role &&
+        <div class=" button-login">
+          <button
+            type="button"
+            style={{ background: "#0099ff", marginTop: "px", marginRight: "55px", padding: "5px 15px", height: "35px" }}
+            onClick={updateLogo}
+            class="btn btn-primary btn-lg"
+          >
+            Edit logo
+          </button>
+        </div>
+      }  
+      <br /> {!role &&
+        <div class=" button-login">
+          <button
+            type="button"
+            style={{ background: "#0099ff", marginTop: "px", marginRight: "55px", padding: "5px 15px", height: "35px" }}
+            onClick={editLockCode}
+            class="btn btn-primary btn-lg"
+          >
+            Edit lock code
           </button>
         </div>
       }

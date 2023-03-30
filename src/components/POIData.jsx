@@ -80,9 +80,7 @@ const POIData = () => {
 	const selectFiles = (event) => {
 		let images = [];
 
-		if (name == "" || homeDataState.updatePointData.point.name == "") {
-			setErrMessagePhoto("Please first insert partners name")
-		} else {
+		
 			var fs = []
 			for (let i = 0; i < event.target.files.length; i++) {
 				images.push(URL.createObjectURL(event.target.files[i]));
@@ -94,7 +92,7 @@ const POIData = () => {
 			setSelectedFiles(selectedFiles.concat(fs))
 			setImagePreviews(images);
 			setProgressInfos({ val: [] });
-		}
+		
 	};
 
 	const handleSubmit = (e) => {
@@ -103,12 +101,6 @@ const POIData = () => {
 
 		if (name != "") {
 			point.name = name
-		}
-		if (audio != null) {
-			point.audio = audio
-		}
-		if (menu != null) {
-			point.menu = menu
 		}
 		if (shortInfo != "") {
 			point.shortInfo = JSON.parse(shortInfo)
@@ -146,9 +138,6 @@ const POIData = () => {
 		if (category != "") {
 			point.category = category
 		}
-		if (files != []) {
-			point.images = files
-		}
 
 		point.id = homeDataState.updatePointData.point.id
 
@@ -156,12 +145,22 @@ const POIData = () => {
 
 		const formData = new FormData();
 
-		formData.append('file', file);
-		formData.append('file', audio);
-		for (var f of files) {
+		if(file!=null){
 
-			formData.append('file', f);
+			formData.append('file', file);
 		}
+		if(audio!=null){
+
+			formData.append('file', audio);
+		}
+
+		if(selectedFiles!=[]){
+			for (var f of selectedFiles) {
+
+				formData.append('file', f);
+			}
+		}
+		
 		formData.append('point', JSON.stringify(point));
 
 		var xhr = new XMLHttpRequest();
@@ -210,7 +209,7 @@ const POIData = () => {
 	const addFile = (e) => {
 		if (e.target.files[0]) {
 
-			var new_file = new File([e.target.files[0]], 'audio1' + titlePoint + "---" + [e.target.files[0].name]);
+			var new_file = new File([e.target.files[0]], 'audio2' + titlePoint + "---" + [e.target.files[0].name]);
 			setAudio(new_file);
 
 		}
@@ -218,7 +217,7 @@ const POIData = () => {
 
 	const onFileChange = (event) => {
 
-		var new_file = new File([event.target.files[0]], 'image' + "---" + [event.target.files[0].name]);
+		var new_file = new File([event.target.files[0]], 'menu' + "---" + [event.target.files[0].name]);
 		setFile(new_file);
 		setImagePreview(URL.createObjectURL(event.target.files[0]));
 	}

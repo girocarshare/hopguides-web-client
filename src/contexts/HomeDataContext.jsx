@@ -21,6 +21,8 @@ const HomeDataContextProvider = (props) => {
 		showModal: false,
 		
 		showEditMenuModal: false,
+		showEditLogoModal: false,
+		showEditLockCodeModal: false,
 
 		showAddPartnerModal: {
 			show: false,

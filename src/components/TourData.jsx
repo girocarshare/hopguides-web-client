@@ -73,12 +73,6 @@ const TourData = () => {
 		 if(agreementDesc != ""){
 			tour.agreementDesc = JSON.parse(agreementTitle)
 		}
-		 if(audio != null){
-			tour.audio = audio
-		}
-		if(file != null){
-			tour.file = file
-	   }
 		 if(shortInfo != ""){
 			tour.shortInfo = JSON.parse(shortInfo)
 		}
@@ -108,14 +102,22 @@ const TourData = () => {
 		tour.id =  homeDataState.updateTourData.tour.tourId
 		
 	
-	  
-			const formData = new FormData();
-	  
+		const formData = new FormData();
+		if(file!=null){
+			
 			formData.append('file', file);
+		}
+
+		if(audio!=null){
+
 			formData.append('file', audio);
+		}
+	  
+	  
 			
 			formData.append('tour', JSON.stringify(tour));
 	  
+			console.log(formData)
 			var xhr = new XMLHttpRequest();
 			xhr.addEventListener("load", SuccessHandler, false);
 			xhr.addEventListener("error", ErrorHandler, false);
@@ -163,6 +165,7 @@ const TourData = () => {
 		if (e.target.files[0]) {
 
 			var new_file = new File([e.target.files[0]], 'audio1' + titlePoint + "---" + [e.target.files[0].name]);
+			
 			setAudio(new_file);
 
 		}

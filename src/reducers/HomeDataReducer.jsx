@@ -351,6 +351,68 @@ export const homeDataReducer = (state, action) => {
 
 
 			};
+			
+			case homeDataConstants.SHOW_ADD_MENU_MODAL:
+
+
+			return {
+				...state,
+				id: action.data,
+				showEditMenuModal: true
+
+			};
+
+
+		case homeDataConstants.HIDE_ADD_MENU_MODAL:
+			return {
+				...state,
+				id: "",
+
+				showEditMenuModal: false
+
+
+
+			};
+
+			case homeDataConstants.SHOW_UPDATE_LOGO_MODAL:
+
+
+			return {
+				...state,
+				showEditLogoModal: true
+
+			};
+
+
+		case homeDataConstants.HIDE_UPDATE_LOGO_MODAL:
+			return {
+				...state,
+
+				showEditLogoModal: false
+
+
+
+			};
+
+			case homeDataConstants.SHOW_CHANGE_LOCK_CODE_MODAL:
+
+
+			return {
+				...state,
+				showEditLockCodeModal: true
+
+			};
+
+
+		case homeDataConstants.HIDE_CHANGE_LOCK_CODE_MODAL:
+			return {
+				...state,
+
+				showEditLockCodeModal: false
+
+
+
+			};
 
 
 		case homeDataConstants.SHOW_ADD_MODAL:
