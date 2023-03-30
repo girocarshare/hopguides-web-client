@@ -5,6 +5,7 @@ import { homeDataConstants } from "../constants/HomeDataConstants";
 import TimePicker from 'react-time-picker';
 import { YMaps, Map } from "react-yandex-maps";
 import { AiOutlineClose } from 'react-icons/ai';
+import { ConstructionOutlined } from "@mui/icons-material";
 
 const mapState = {
   center: [44, 21],
@@ -12,6 +13,7 @@ const mapState = {
   controls: [],
 }; var url = process.env.REACT_APP_URL || "http://localhost:8080/";
 
+var num = 1;
 const InsertData = (props) => {
   const addressInput = React.createRef(null);
   const [title, setTitle] = useState("");
@@ -120,7 +122,7 @@ const InsertData = (props) => {
       var fs = []
       for (let i = 0; i < event.target.files.length; i++) {
         images.push(URL.createObjectURL(event.target.files[i]));
-        var new_file = new File([event.target.files[i]], 'partner' + titlePoint + "---" + [event.target.files[i].name]);
+        var new_file = new File([event.target.files[i]], 'partner' + num + "---" + [event.target.files[i].name]);
         fs.push(new_file)
 
       }
@@ -175,6 +177,7 @@ const InsertData = (props) => {
       formData.append('file', audio2);
       for (var f of files) {
 
+        console.log(f)
         formData.append('file', f);
       }
       for (var a of audios) {
@@ -184,6 +187,7 @@ const InsertData = (props) => {
       //formData.append('audio', audio);
       formData.append('tour', JSON.stringify(tour));
 
+      console.log(tour)
       var xhr = new XMLHttpRequest();
       xhr.upload.addEventListener("progress", ProgressHandler, false);
       xhr.addEventListener("load", SuccessHandler, false);
@@ -268,6 +272,7 @@ const InsertData = (props) => {
         .then((res) => {
 */
           var point = {
+            num : num,
             name: titlePoint,
             shortInfo: JSON.parse(shortInfoPoint),
             longInfo: JSON.parse(longInfoPoint),
@@ -325,6 +330,7 @@ const InsertData = (props) => {
           setSelectedFiles([])
           setAudio2(null)
           setImagePreviews([])
+          num = num+1
 
 
        // });
@@ -334,7 +340,7 @@ const InsertData = (props) => {
   const addFile = (e) => {
     if (e.target.files[0]) {
 
-      var new_file = new File([e.target.files[0]], 'audio1' + titlePoint + "---" + [e.target.files[0].name]);
+      var new_file = new File([e.target.files[0]], 'audio1' + num + "---" + [e.target.files[0].name]);
       setAudio(new_file);
 
     }
@@ -343,7 +349,7 @@ const InsertData = (props) => {
   const addFile2 = (e) => {
     if (e.target.files[0]) {
 
-      var new_file = new File([e.target.files[0]], 'audio2' + titlePoint + "---" + [e.target.files[0].name]);
+      var new_file = new File([e.target.files[0]], 'audio2' + num + "---" + [e.target.files[0].name]);
 
       setAudio2(new_file);
     }
@@ -422,6 +428,7 @@ const InsertData = (props) => {
     setLength("")
     setImagePreview(null)
     setImagePreviews([])
+    num=0
 
     //dispatch({ type: homeDataConstants.UPDATE_MENU_PHOTO_SUCCESS });
   };
