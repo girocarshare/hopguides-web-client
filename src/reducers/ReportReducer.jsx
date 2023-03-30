@@ -65,6 +65,7 @@ export const reportReducer = (state, action) => {
 		 * *********************************
 		 * *********************************
 		 */
+		
 
 			return {
 				...state,
@@ -77,6 +78,7 @@ export const reportReducer = (state, action) => {
 					bpratnerPhone: action.data.bpratnerPhone,
 					bpratnerPhone2: action.data.bpratnerPhone2,
 					offerName: action.data.offerName,
+					menu: action.data.menu
 				},
 
 			};
@@ -121,21 +123,7 @@ export const reportReducer = (state, action) => {
 				},
 			};
 
-		case reportConstants.GET_MENU_SUCCESS:
-
-			return {
-				...state,
-				image: action.data,
-
-			};
-
-		case reportConstants.GET_MENU_FAILURE:
-
-			return {
-				...state,
-					image: null,
-			};
-
+		
 		case reportConstants.PREVIOUS_REPORT_GET_SUCCESS:
 
 

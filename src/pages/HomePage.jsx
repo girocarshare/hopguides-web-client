@@ -8,13 +8,19 @@ import PreviousReportTourModal from "../components/PreviousReportTourModal";
 import AddNewTourForm from "../components/AddNewTourForm";
 import AddNewPartnerForm from "../components/AddNewPartnerForm";
 import UpdateMenuModal from "../components/UpdateMenuModal";
+import UpdateLogoModal from "../components/UpdateLogoModal";
+import ChangeLockCodeModal from "../components/ChangeLockCodeModal";
 import SuccessModal from "../components/SuccessModal";
 import FailureModal from "../components/FailureModal";
+import TourData from "../components/TourData";
+import POIData from "../components/POIData";
 const HomePage = () => {
 
 	return (
 		<div>
 			<HomeDataContextProvider>
+				<TourData />
+				<POIData />
 				<SuccessModal />
 				<FailureModal />
 				<HomePageData />
@@ -22,6 +28,8 @@ const HomePage = () => {
 				<AddNewTourForm/>
 				<AddNewPartnerForm/>
 				<UpdateMenuModal/>
+				<ChangeLockCodeModal/>
+				<UpdateLogoModal/>
 			</HomeDataContextProvider>
 		</div>
 	);

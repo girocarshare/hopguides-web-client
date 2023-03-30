@@ -21,10 +21,13 @@ const HomeDataContextProvider = (props) => {
 		showModal: false,
 		
 		showEditMenuModal: false,
+		showEditLogoModal: false,
+		showEditLockCodeModal: false,
 
 		showAddPartnerModal: {
 			show: false,
-			id: ""
+			id: "",
+			bpartnerId: ""
 		},
 
 		id: "",
@@ -50,6 +53,15 @@ const HomeDataContextProvider = (props) => {
 		},
 
 		
+		updateTourData: {
+			show: false,
+			tour: null,
+		},
+
+		updatePointData: {
+			show: false,
+			point: null,
+		},
 		bpartners: {
 			bpartners: [],
 		},

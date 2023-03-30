@@ -18,7 +18,6 @@ const Report = forwardRef(( props, ref ) => {
     const someFetchActionCreator = () => {
         const getReportInfoHandler = async () => {
             await reportService.getReport(dispatch, id);
-            await reportService.getMenu(dispatch, id);
         };
 
 
@@ -171,8 +170,8 @@ const Report = forwardRef(( props, ref ) => {
 
             <div class="menu-box">
                 {
-                    reportState.image ? (
-                        <img alt="" src={reportState.image}/>//src = "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80"/>//src={reportState.image} />
+                    reportState.report.menu ? (
+                        <img alt="" src={reportState.report.menu}></img>
                     ) : (
                         null
                     )

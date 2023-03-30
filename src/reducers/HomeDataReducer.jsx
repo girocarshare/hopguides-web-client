@@ -87,7 +87,7 @@ export const homeDataReducer = (state, action) => {
 */
 		case homeDataConstants.DATA_TOUR_POINTS_GET_SUCCESS:
 
-		console.log("cskjbcjsbjhsbf")
+		console.log(action.data)
 			var array = []
 			var points = []
 			var points2 = []
@@ -351,6 +351,68 @@ export const homeDataReducer = (state, action) => {
 
 
 			};
+			
+			case homeDataConstants.SHOW_ADD_MENU_MODAL:
+
+
+			return {
+				...state,
+				id: action.data,
+				showEditMenuModal: true
+
+			};
+
+
+		case homeDataConstants.HIDE_ADD_MENU_MODAL:
+			return {
+				...state,
+				id: "",
+
+				showEditMenuModal: false
+
+
+
+			};
+
+			case homeDataConstants.SHOW_UPDATE_LOGO_MODAL:
+
+
+			return {
+				...state,
+				showEditLogoModal: true
+
+			};
+
+
+		case homeDataConstants.HIDE_UPDATE_LOGO_MODAL:
+			return {
+				...state,
+
+				showEditLogoModal: false
+
+
+
+			};
+
+			case homeDataConstants.SHOW_CHANGE_LOCK_CODE_MODAL:
+
+
+			return {
+				...state,
+				showEditLockCodeModal: true
+
+			};
+
+
+		case homeDataConstants.HIDE_CHANGE_LOCK_CODE_MODAL:
+			return {
+				...state,
+
+				showEditLockCodeModal: false
+
+
+
+			};
 
 
 		case homeDataConstants.SHOW_ADD_MODAL:
@@ -398,17 +460,11 @@ export const homeDataReducer = (state, action) => {
 			};
 
 		case homeDataConstants.PARTNER_SUBMIT_SUCCESS:
-
-			return {
-				...state,
-
-				modalData: {
-					success: true,
-					failure: false,
-					text: "You have successfully added new partner.",
-				},
-
-			};
+			prodCpy.showAddPartnerModal.show = false;
+			prodCpy.modalData.success = true;
+			prodCpy.modalData.text = "You have successfully added new partner.";
+			return prodCpy;
+		
 
 		case homeDataConstants.PARTNER_SUBMIT_FAILURE:
 
@@ -447,7 +503,7 @@ export const homeDataReducer = (state, action) => {
 
 			prodCpy = { ...state };
 
-			prodCpy.toursWithPoints.toursWithPoints = action.data;
+			prodCpy.updateTourData.show = false;
 			prodCpy.modalData.success = true;
 			prodCpy.modalData.text = "You have successfully updated tour.";
 			return prodCpy;
@@ -628,7 +684,7 @@ export const homeDataReducer = (state, action) => {
 			prodCpy = { ...state };
 
 			console.log(action.data)
-			prodCpy.toursWithPoints.toursWithPoints = action.data;//array;
+			//prodCpy.toursWithPoints.toursWithPoints = action.data;//array;
 			prodCpy.modalData.success = true;
 			prodCpy.modalData.text = "You have successfully updated partners data.";
 
@@ -662,7 +718,8 @@ export const homeDataReducer = (state, action) => {
 				...state,
 				showAddPartnerModal: {
 					show: true,
-					id: action.id
+					id: action.id,
+					bpartnerId: action.bpartnerId
 				}
 
 			};
@@ -719,6 +776,44 @@ export const homeDataReducer = (state, action) => {
 					text: "Error while adding new data. Please try again later.",
 				},
 
+			};
+			case homeDataConstants.UPDATE_TOUR_DATA_MODAL_SHOW:
+
+			prodCpy = { ...state };
+
+			prodCpy.updateTourData.show = true;
+			prodCpy.updateTourData.tour = action.tour;
+
+			return prodCpy;
+		
+			case homeDataConstants.UPDATE_TOUR_DATA_MODAL_CLOSE:
+
+			return {
+				...state,
+				updateTourData: {
+					show: false,
+
+				},
+			};
+
+			case homeDataConstants.UPDATE_POINT_DATA_MODAL_SHOW:
+
+			prodCpy = { ...state };
+
+			console.log(action.point.point)
+			prodCpy.updatePointData.show = true;
+			prodCpy.updatePointData.point = action.point.point;
+
+			return prodCpy;
+		
+			case homeDataConstants.UPDATE_POINT_DATA_MODAL_CLOSE:
+
+			return {
+				...state,
+				updatePointData: {
+					show: false,
+
+				},
 			};
 
 		default:

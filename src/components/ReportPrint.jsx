@@ -21,7 +21,6 @@ const ReportPrint = () => {
     const someFetchActionCreator = () => {
         const getReportInfoHandler = async () => {
             await reportService.getReport(dispatch, id);
-            await reportService.getMenu(dispatch, id);
         };
 
 

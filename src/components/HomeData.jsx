@@ -13,6 +13,9 @@ import { MdOutlineModeEditOutline, MdLaunch } from 'react-icons/md';
 import Axios from "axios";
 import { deleteLocalStorage, authHeader } from "../helpers/auth-header";
 import AddNewTourForm from "./AddNewTourForm";
+import UpdateLogoModal from "./UpdateLogoModal";
+import TourData from "./TourData";
+import ChangeLockCodeModal from "./ChangeLockCodeModal";
 
 var url = process.env.REACT_APP_URL || "http://localhost:8080/";
 
@@ -125,9 +128,18 @@ const HomeData = forwardRef((props, ref) => {
   };
 
 
-  const updateMenu = (e, data) => {
+  const updateLogo = (e) => {
 
-    dispatch({ type: homeDataConstants.SHOW_ADD_MENU_MODAL, data });
+    
+    dispatch({ type: homeDataConstants.SHOW_UPDATE_LOGO_MODAL });
+  };
+
+  
+
+  const editLockCode = (e) => {
+
+    
+    dispatch({ type: homeDataConstants.SHOW_CHANGE_LOCK_CODE_MODAL });
   };
 
 
@@ -135,10 +147,10 @@ const HomeData = forwardRef((props, ref) => {
 
     dispatch({ type: homeDataConstants.SHOW_ADD_MODAL });
   };
-  const addNewPartner = (e, id) => {
+  const addNewPartner = (e, id, bpartnerId) => {
 
-    console.log(id)
-    dispatch({ type: homeDataConstants.SHOW_ADD_PARTNER_MODAL, id: id });
+    console.log(bpartnerId)
+    dispatch({ type: homeDataConstants.SHOW_ADD_PARTNER_MODAL, id: id, bpartnerId:bpartnerId });
   };
 
 
@@ -173,97 +185,36 @@ const HomeData = forwardRef((props, ref) => {
 
 
 
-  const updateTourPrice = (e, tour) => {
+  const update = (e, tour) => {
 
 
-    if (updateField == "Update") {
-      setEditTourPrice(true)
-      setRowIdTour(tour.tourId)
-      setUpdateField("Finish")
-      setTourPrice(tour.price)
-    } else {
-      setEditTourPrice(false)
-      setRowIdTour("")
-      setUpdateField("Update")
-      if (tourPrice == "") {
-        setTourPrice(`${tour.price} ${tour.currency} incl tax`)
-      } else {
 
-        setTourPrice(`${tourPrice} ${tour.currency} incl tax`)
-      }
-      var data = {
-        noOfRidesAMonth: tour.noOfRidesAMonth,
-        tourId: tour.tourId,
-        tourName: tour.tourName,
-        price: tourPrice,
+    dispatch({ type: homeDataConstants.UPDATE_TOUR_DATA_MODAL_SHOW, tour});
 
-      }
-
-      onUpdate(data, "")
-    }
+  
   };
 
+  const deleteTour = async (e, tour) => {
 
 
+    await homeDataService.deleteTour(dispatch, tour.tourId);
+
+  
+  };
+
+  const deletePoi = async (e, tour, poiId) => {
+
+
+    await homeDataService.deletePoi(dispatch, tour.tourId, poiId);
+
+  
+  };
 
   const updatePartnerPrice = (e, point, tour) => {
 
+    dispatch({ type: homeDataConstants.UPDATE_POINT_DATA_MODAL_SHOW, point});
 
 
-    if (updatePartner == "Update") {
-      setEditPartner(true)
-      setRowId(point.point.id)
-      setUpdatePartner("Finish")
-      if (responsiblePerson == "") {
-        setResponsiblePerson(`${point.point.contact.name}`)
-      }
-
-      if (contactEmail == "") {
-        setContactEmail(`${point.point.contact.email}`)
-      }
-
-      if (contactPhone == "") {
-        setContactPhone(`${point.point.contact.phone}`)
-      }
-
-
-      setPartnerPrice(point.point.price)
-
-
-
-      if (offerName == "") {
-        setOfferName(`${point.point.offerName}`)
-      }
-
-    } else {
-      setEditPartner(false)
-      setUpdatePartner("Update")
-      setRowId("")
-      if (partnerPrice == "") {
-        setPartnerPrice(`${point.point.price} ${tour.currency} incl tax`)
-      } else {
-
-        setPartnerPrice(`${partnerPrice} ${tour.currency} incl tax`)
-      }
-      console.log(point)
-      var data = {
-        point: {
-          bpartnerId: point.point.bpartnerId,
-          contact: { phone: contactPhone, name: responsiblePerson, email: contactEmail, webURL: point.point.contact.webURL },
-          id: point.point.id,
-          location: point.point.location,
-          longInfo: point.point.longInfo,
-          offerName: offerName,
-          price: partnerPrice,
-          shortInfo: point.point.shortInfo,
-          title: point.point.title,
-          workingHours: point.point.workingHours,
-        }
-      }
-
-      console.log(data)
-      onUpdatePoint(data, "")
-    }
   };
 
 
@@ -273,6 +224,18 @@ const HomeData = forwardRef((props, ref) => {
 
       {homeDataState.showModal && <div >
         <AddNewTourForm />
+      </div>}
+
+      {homeDataState.showEditLogoModal && <div >
+        <UpdateLogoModal />
+      </div>}
+
+      {homeDataState.showEditLockCodeModal && <div >
+        <ChangeLockCodeModal />
+      </div>}
+
+      {homeDataState.updateTourData.show && <div >
+        <TourData />
       </div>}
       {role &&
         <div class="button-login">
@@ -297,6 +260,30 @@ const HomeData = forwardRef((props, ref) => {
             class="btn btn-primary btn-lg"
           >
             Log out
+          </button>
+        </div>
+      }
+      <br /> {!role &&
+        <div class=" button-login">
+          <button
+            type="button"
+            style={{ background: "#0099ff", marginTop: "px", marginRight: "55px", padding: "5px 15px", height: "35px" }}
+            onClick={updateLogo}
+            class="btn btn-primary btn-lg"
+          >
+            Edit logo
+          </button>
+        </div>
+      }  
+      <br /> {!role &&
+        <div class=" button-login">
+          <button
+            type="button"
+            style={{ background: "#0099ff", marginTop: "px", marginRight: "55px", padding: "5px 15px", height: "35px" }}
+            onClick={editLockCode}
+            class="btn btn-primary btn-lg"
+          >
+            Edit lock code
           </button>
         </div>
       }
@@ -359,6 +346,7 @@ const HomeData = forwardRef((props, ref) => {
                 <th style={{ border: "1px solid gray" }}>Number of executed tours for current month</th>
                 <th style={{ border: "1px solid gray" }}>Get monthly report</th>
                 <th style={{ border: "1px solid gray" }}>Update</th>
+                    <th style={{ border: "1px solid gray" }}>Delete</th>
               </tr>
             </thead>
 
@@ -374,7 +362,7 @@ const HomeData = forwardRef((props, ref) => {
 
 
 
-                  }}>{tour.title}</td>
+                  }}>{tour.title.english}</td>
                   <td style={{ border: "1px solid gray" }}>
                     <input
                       readOnly={!editTourPrice || rowIdTour != tour.tourId}
@@ -389,7 +377,8 @@ const HomeData = forwardRef((props, ref) => {
                   </td>
                   <td style={{ border: "1px solid gray" }}>{tour.noOfRidesAMonth}</td>
                   <td style={{ border: "1px solid gray" }}><button onClick={(e) => getHistory(e, tour.tourId)} >Get report</button></td>
-                  <td style={{ border: "1px solid gray" }}><button onClick={(e) => updateTourPrice(e, tour)} >{updateField}</button></td>
+                  <td style={{ border: "1px solid gray" }}><button onClick={(e) => update(e, tour)} >{updateField}</button></td>
+                  <td style={{ border: "1px solid gray" }}><button onClick={(e) => deleteTour(e, tour)} >Delete</button></td>
 
                 </tr>
               </tbody>))
@@ -411,7 +400,7 @@ const HomeData = forwardRef((props, ref) => {
                       style={{ background: "#0099ff", marginTop: "px", marginRight: "55px", padding: "5px 15px", height: "35px" }}
                       color="primary"
                       variant="contained"
-                      onClick={(e) => addNewPartner(e, tour.tourId)}
+                      onClick={(e) => addNewPartner(e, tour.tourId, tour.bpartnerId)}
                     >
                       Add partner
                     </button>}
@@ -419,16 +408,14 @@ const HomeData = forwardRef((props, ref) => {
 
                   <tr>
                     <th style={{ border: "1px solid gray" }}>Visit website</th>
-                    <th style={{ border: "1px solid gray" }}>Partners</th>
-                    <th style={{ border: "1px solid gray" }}>Responsible person</th>
-                    <th style={{ border: "1px solid gray" }}>Contact email</th>
-                    <th style={{ border: "1px solid gray" }}>Contact phone</th>
+                    <th style={{ border: "1px solid gray" }}>POI name</th>
                     <th style={{ border: "1px solid gray" }}>Price</th>
                     <th style={{ border: "1px solid gray" }}>Offer name</th>
+                    <th style={{ border: "1px solid gray" }}>Category</th>
                     <th style={{ border: "1px solid gray" }}>Coupons realized by partner in current month </th>
-                    <th style={{ border: "1px solid gray" }}>Update menu photo</th>
                     <th style={{ border: "1px solid gray" }}>Generate QR code</th>
                     <th style={{ border: "1px solid gray" }}>Update</th>
+                    <th style={{ border: "1px solid gray" }}>Delete</th>
                   </tr>
                 </thead>
 
@@ -446,43 +433,7 @@ const HomeData = forwardRef((props, ref) => {
 
                       </button></td>
                       <td style={{ border: "1px solid gray" }}>{points.point.name}</td>
-                      <td style={{ border: "1px solid gray" }}>
-                        <input
-                          readOnly={!editPartner || rowId != points.point.id}
-                          placeholder={editPartner === true ? points.point.contact.name : "Responsible person"}
-                          aria-describedby="basic-addon1"
-                          id="name"
-                          type="text"
-                          style={{ backgroundColor: editPartner === true && rowId == points.point.id ? '#DCDCDC' : 'white', outline: 'none' }}
-                          onChange={(e) => setResponsiblePerson(e.target.value)}
-                          value={responsiblePerson === "" ? `${points.point.contact.name} ` : responsiblePerson}
-                        />
-                      </td>
-                      <td style={{ border: "1px solid gray" }}>
-                        <input
-                          readOnly={!editPartner || rowId != points.point.id}
-                          placeholder={editPartner === true ? points.point.contact.email : "Contact email"}
-                          aria-describedby="basic-addon1"
-                          id="name"
-                          type="text"
-                          style={{ backgroundColor: editPartner === true && rowId == points.point.id ? '#DCDCDC' : 'white', outline: 'none' }}
-                          onChange={(e) => setContactEmail(e.target.value)}
-
-                          value={contactEmail === "" ? `${points.point.contact.email} ` : contactEmail}
-                        />
-                      </td>
-                      <td style={{ border: "1px solid gray" }}>
-                        <input
-                          readOnly={!editPartner || rowId != points.point.id}
-                          placeholder={editPartner === true ? points.point.contact.phone : "Contact phone"}
-                          aria-describedby="basic-addon1"
-                          id="name"
-                          type="text"
-                          style={{ backgroundColor: editPartner === true && rowId == points.point.id ? '#DCDCDC' : 'white', outline: 'none' }}
-                          onChange={(e) => setContactPhone(e.target.value)}
-                          value={contactPhone === "" ? `${points.point.contact.phone} ` : contactPhone}
-                        />
-                      </td>
+                     
                       <td style={{ border: "1px solid gray" }}>
                         <input
                           readOnly={!editPartner || rowId != points.point.id}
@@ -508,17 +459,11 @@ const HomeData = forwardRef((props, ref) => {
                         />
                       </td>
 
+                      
+                  <td style={{ border: "1px solid gray" }}>{points.point.category}</td>
+
                       <td style={{ border: "1px solid gray" }}>{points.monthlyUsed}</td>
 
-                      <td style={{ border: "1px solid gray" }}>  <button
-                        color="inherit"
-                        onClick={(event) => {
-                          updateMenu(event, points.point.id)
-                        }}
-                      >
-
-                        <MdOutlineModeEditOutline />
-                      </button></td>
                       <td style={{ border: "1px solid gray" }}>
                         <button
                           color="inherit"
@@ -529,6 +474,7 @@ const HomeData = forwardRef((props, ref) => {
                           Get QR code
                         </button></td>
                       <td style={{ border: "1px solid gray" }}><button onClick={(e) => updatePartnerPrice(e, points, tour)} >{updatePartner}</button></td>
+                      <td style={{ border: "1px solid gray" }}><button onClick={(e) => deletePoi(e, tour, points.point.id)} >Delete</button></td>
 
                     </tr>
                   </tbody>))}
