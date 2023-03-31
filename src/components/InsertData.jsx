@@ -554,7 +554,7 @@ const InsertData = (props) => {
                       <input
 
                         className={"form-control"}
-                        placeholder="Title"
+                        placeholder='JSON FORMAT: { "language": "Text"}'
                         aria-describedby="basic-addon1"
                         id="name"
                         type="text"
@@ -577,7 +577,7 @@ const InsertData = (props) => {
                       <input
 
                         className={"form-control"}
-                        placeholder="Agreement title"
+                        placeholder='JSON FORMAT: { "language": "Text"}'
                         aria-describedby="basic-addon1"
                         id="name"
                         type="text"
@@ -600,7 +600,7 @@ const InsertData = (props) => {
                       <input
 
                         className={"form-control"}
-                        placeholder="Agreement description"
+                        placeholder='JSON FORMAT: { "language": "Text"}'
                         aria-describedby="basic-addon1"
                         id="name"
                         type="text"
@@ -619,7 +619,7 @@ const InsertData = (props) => {
                   <label><b>Short description*</b></label>
                   <div class="row" >
                     <div class="form-group col-lg-10">
-                      <textarea className="form-control" style={{ height: "100px", width: "1000px" }} type="textarea" required name="message" placeholder="Short description" value={shortInfo} onChange={(e) => setShortInfo(e.target.value)}></textarea>
+                      <textarea className="form-control" style={{ height: "100px", width: "1000px" }} type="textarea" required name="message" placeholder='JSON FORMAT: { "language": "Text"}' value={shortInfo} onChange={(e) => setShortInfo(e.target.value)}></textarea>
 
                     </div>
                   </div>
@@ -631,7 +631,7 @@ const InsertData = (props) => {
                   <label><b>Long description*</b></label>
                   <div class="row" >
                     <div class="form-group col-lg-10">
-                      <textarea className="form-control" style={{ height: "200px", width: "1000px" }} type="textarea" required name="message" placeholder="Long description" value={longInfo} onChange={(e) => setLongInfo(e.target.value)}></textarea>
+                      <textarea className="form-control" style={{ height: "200px", width: "1000px" }} type="textarea" required name="message" placeholder='JSON FORMAT: { "language": "Text"}' value={longInfo} onChange={(e) => setLongInfo(e.target.value)}></textarea>
 
                     </div>
                   </div>
@@ -851,7 +851,7 @@ const InsertData = (props) => {
                         <label><b>Short description* </b></label>
                         <div class="row" >
                           <div class="form-group col-lg-10">
-                            <textarea className="form-control" style={{ height: "100px", width: "1000px" }} type="textarea" required name="message" placeholder="Short description" value={shortInfoPoint} onChange={(e) => setShortInfoPoint(e.target.value)}></textarea>
+                            <textarea className="form-control" style={{ height: "100px", width: "1000px" }} type="textarea" required name="message" placeholder='JSON FORMAT: { "language": "Text"}' value={shortInfoPoint} onChange={(e) => setShortInfoPoint(e.target.value)}></textarea>
 
                           </div>
                         </div>
@@ -863,7 +863,7 @@ const InsertData = (props) => {
                         <label><b>Long description*</b></label>
                         <div class="row" >
                           <div class="form-group col-lg-10">
-                            <textarea className="form-control" style={{ height: "200px", width: "1000px" }} type="textarea" required name="message" placeholder="Long description" value={longInfoPoint} onChange={(e) => setLongInfoPoint(e.target.value)}></textarea>
+                            <textarea className="form-control" style={{ height: "200px", width: "1000px" }} type="textarea" required name="message" placeholder='JSON FORMAT: { "language": "Text"}' value={longInfoPoint} onChange={(e) => setLongInfoPoint(e.target.value)}></textarea>
 
                           </div>
                         </div>
@@ -875,7 +875,7 @@ const InsertData = (props) => {
                         <label><b>Voucher description*</b></label>
                         <div class="row" >
                           <div class="form-group col-lg-10">
-                            <textarea className="form-control" style={{ height: "200px", width: "1000px" }} type="textarea" required name="message" placeholder="Voucher description" value={voucherDesc} onChange={(e) => setVoucherDesc(e.target.value)}></textarea>
+                            <textarea className="form-control" style={{ height: "200px", width: "1000px" }} type="textarea" required name="message" placeholder='JSON FORMAT: { "language": "Text"}' value={voucherDesc} onChange={(e) => setVoucherDesc(e.target.value)}></textarea>
 
                           </div>
                         </div>
