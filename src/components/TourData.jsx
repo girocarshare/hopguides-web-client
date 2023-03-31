@@ -71,7 +71,7 @@ const TourData = () => {
 			tour.agreementTitle = JSON.parse(agreementTitle)
 		}
 		 if(agreementDesc != ""){
-			tour.agreementDesc = JSON.parse(agreementTitle)
+			tour.agreementDesc = JSON.parse(agreementDesc)
 		}
 		 if(shortInfo != ""){
 			tour.shortInfo = JSON.parse(shortInfo)
