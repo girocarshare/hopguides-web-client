@@ -23,11 +23,13 @@ const Register = () => {
 	const [phone2, setPhone2] = useState("");
 	const [contactEmail, setContactEmail] = useState("");
 	const [webURL, setWebURL] = useState("");
+	const [address, setAddress] = useState("");
 	const [errMessage, setErrMessage] = useState("");
 	const uploadRef = React.useRef();
 	const statusRef = React.useRef();
 	const progressRef = React.useRef();
 	const [file, setFile] = useState(null);
+	const [success, setSuccess] = useState(false);
 
 	const addressInput = React.createRef(null);
 	const [ymaps, setYmaps] = useState(null);
@@ -90,11 +92,12 @@ const Register = () => {
 
 	const SuccessHandler = (e) => {
 
-		statusRef.current.innerHTML = "Success";
-		progressRef.current.value = 100;
+		//statusRef.current.innerHTML = "Success";
+		//progressRef.current.value = 100;
 		//reportService.addMenu(true, dispatch);
 
 		//dispatch({ type: homeDataConstants.UPDATE_MENU_PHOTO_SUCCESS });
+		setSuccess(true)
 	};
 	const ErrorHandler = () => {
 
@@ -115,7 +118,7 @@ const Register = () => {
 		e.preventDefault();
 
 
-		let street;
+	/*	let street;
 		let city;
 		let country;
 		let latitude;
@@ -141,7 +144,7 @@ const Register = () => {
 			})
 			.then((res) => {
 
-				console.log(height + width)
+				console.log(height + width)*/
 				var sendEmailRequest = {
 					name: name,
 					support: JSON.parse(support),
@@ -152,11 +155,7 @@ const Register = () => {
 						email: contactEmail,
 						webURL: webURL,
 						location: {
-							street: street,
-							country: country,
-							city: city,
-							latitude: latitude,
-							longitude: longitude
+							street: address,
 						}
 					},
 				}
@@ -191,7 +190,7 @@ const Register = () => {
 				}
 
 
-			});
+			//});
 
 
 
@@ -237,27 +236,12 @@ const Register = () => {
 									<input className="form-control" type="text" style={{ height: "50px" }} required name="name" placeholder="Website" value={webURL} onChange={(e) => setWebURL(e.target.value)}></input>
 								</div>
 								<div className="form-group">
-									<input className="form-control" type="text" style={{ height: "50px" }} required name="name" placeholder="Support description" value={support} onChange={(e) => setSuppoprt(e.target.value)}></input>
+									<input className="form-control" type="text" style={{ height: "50px" }} required name="name" placeholder='JSON FORMAT: { "language": "Text"}' value={support} onChange={(e) => setSuppoprt(e.target.value)}></input>
 								</div>
 
 								<div className="form-group">
-									<input className="form-control" style={{ height: "50px" }} id="suggest" ref={addressInput} placeholder="Address" />
-
-									<YMaps
-										query={{
-											load: "package.full",
-											apikey: "b0ea2fa3-aba0-4e44-a38e-4e890158ece2",
-											lang: "en_RU",
-										}}
-									>
-										<Map
-											style={{ display: "none" }}
-											state={mapState}
-											onLoad={onYmapsLoad}
-											instanceRef={(map) => (map = map)}
-											modules={["coordSystem.geo", "geocode", "util.bounds"]}
-										></Map>
-									</YMaps>
+								<input className="form-control" type="text" style={{ height: "50px" }} required name="name" placeholder="Address" value={address} onChange={(e) => setAddress(e.target.value)}></input>
+								
 								</div>
 
 								<label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
@@ -276,7 +260,7 @@ const Register = () => {
 								<div
 									className="form-group text-center"
 									style={{ color: "green", fontSize: "0.8em" }}
-									hidden={!userState.success}
+									hidden={!success}
 								>
 									Success
 								</div>
