@@ -164,7 +164,6 @@ const AddNewPartnerForm = (props) => {
 			  setSaturdayClosed(false)
 			  setSundayClosed(false)
 			  setOfferName("")
-			  setCategory("")
 			  setWebUrl("")
 			  setLocation("")
 			  setLongitude("")
