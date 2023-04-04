@@ -8,6 +8,7 @@ import {
 import ReportPage from './pages/ReportPage.jsx';
 import PreviousReportPage from './pages/PreviousReportPage.jsx';
 import HomePage from './pages/HomePage.jsx';
+import BusinessPartnersPage from './pages/BusinessPartnersPage.jsx';
 import InsertDataPage from './pages/InsertDataPage.jsx';
 import PageNotFound from './pages/PageNotFound.jsx';
 import { ProtectedRoute } from './router/ProtectedRouter.jsx';
@@ -15,6 +16,7 @@ import LoginPage from './pages/LoginPage.jsx';
 import RegisterPage from './pages/RegisterPage';
 import SetPasswordPage from './pages/SetPasswordPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
+import TermsAndConditionsPage from './pages/TermsAndConditionsPage';
 import UnauthorizedPage from './pages/UnauthorizedPage.jsx';
 
 function App() {
@@ -22,6 +24,7 @@ function App() {
     <Router>
       <Switch>
         <Route path="/register" component={RegisterPage} />
+        <Route path="/termsAndConditions/:id" component={TermsAndConditionsPage} />
         <Route path="/insertdata" component={InsertDataPage} />
         <Route path="/setPassword/:email" component={SetPasswordPage} />
         <Route path="/report/:id" component={ReportPage} />
@@ -29,6 +32,7 @@ function App() {
         <Route path="/forgotPassword" component={ForgotPasswordPage} />
         <Route path="/404" component={PageNotFound} />
         <Route path="/login" component={LoginPage} />
+        <Route path="/businesspartners" component={BusinessPartnersPage} />
         <Route path="/" component={HomePage} />
         <Route path="/unauthorized" component={UnauthorizedPage} />
         <Redirect to="/404" />
