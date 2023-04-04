@@ -24,6 +24,8 @@ const HomeDataContextProvider = (props) => {
 		showEditLogoModal: false,
 		showEditLockCodeModal: false,
 
+		termsAndConsitions: "",
+		
 		showAddPartnerModal: {
 			show: false,
 			id: "",

@@ -816,6 +816,34 @@ export const homeDataReducer = (state, action) => {
 				},
 			};
 
+			case homeDataConstants.GET_TERMS_AND_CONSITIONS_REQUEST:
+
+
+			return {
+				...state,
+				termsAndConsitions: ""
+
+			};
+
+
+		case homeDataConstants.GET_TERMS_AND_CONSITIONS_SUCCESS:
+			return {
+				...state,
+
+				termsAndConsitions: action.data
+
+
+
+			};
+
+
+		case homeDataConstants.GET_TERMS_AND_CONSITIONS_FAILURE:
+			return {
+				...state,
+				termsAndConsitions: ""
+
+			};
+
 		default:
 			return state;
 	}

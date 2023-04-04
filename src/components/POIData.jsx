@@ -80,19 +80,19 @@ const POIData = () => {
 	const selectFiles = (event) => {
 		let images = [];
 
-		
-			var fs = []
-			for (let i = 0; i < event.target.files.length; i++) {
-				images.push(URL.createObjectURL(event.target.files[i]));
-				var new_file = new File([event.target.files[i]], 'partner' + titlePoint + "---" + [event.target.files[i].name]);
-				fs.push(new_file)
 
-			}
+		var fs = []
+		for (let i = 0; i < event.target.files.length; i++) {
+			images.push(URL.createObjectURL(event.target.files[i]));
+			var new_file = new File([event.target.files[i]], 'partner' + titlePoint + "---" + [event.target.files[i].name]);
+			fs.push(new_file)
 
-			setSelectedFiles(selectedFiles.concat(fs))
-			setImagePreviews(images);
-			setProgressInfos({ val: [] });
-		
+		}
+
+		setSelectedFiles(selectedFiles.concat(fs))
+		setImagePreviews(images);
+		setProgressInfos({ val: [] });
+
 	};
 
 	const handleSubmit = (e) => {
@@ -140,27 +140,27 @@ const POIData = () => {
 		}
 
 		point.id = homeDataState.updatePointData.point.id
-
-
+		point.workingHours =  { monday: { from: mondayFrom, to: mondayTo }, tuesday: { from: tuesdayFrom, to: tuesdayTo }, wednesday: { from: wednesdayFrom, to: wednesdayTo }, thursday: { from: thursdayFrom, to: thursdayTo }, friday: { from: fridayFrom, to: fridayTo }, saturday: { from: saturdayFrom, to: saturdayTo }, sunday: { from: sundayFrom, to: sundayTo } }
+            
 
 		const formData = new FormData();
 
-		if(file!=null){
+		if (file != null) {
 
 			formData.append('file', file);
 		}
-		if(audio!=null){
+		if (audio != null) {
 
 			formData.append('file', audio);
 		}
 
-		if(selectedFiles!=[]){
+		if (selectedFiles != []) {
 			for (var f of selectedFiles) {
 
 				formData.append('file', f);
 			}
 		}
-		
+
 		formData.append('point', JSON.stringify(point));
 
 		var xhr = new XMLHttpRequest();
@@ -238,7 +238,6 @@ const POIData = () => {
 			);
 		}
 	};
-
 
 
 	return (
@@ -537,254 +536,262 @@ const POIData = () => {
 											</div>
 										</div>
 										{homeDataState.updatePointData.point.partner &&
-										<div>
-										<h6><b>Working hours *</b></h6>
-										<br />
-														 <label>
-															Monday: 
-														</label>
-														 <label>
-														 {homeDataState.updatePointData.point.workingHours.monday.from } - {homeDataState.updatePointData.point.workingHours.monday.to }
-														</label>
-														<br />
-														 <label>
-															Tuesday: 
-														</label>
-														 <label>
-														 {homeDataState.updatePointData.point.workingHours.tuesday.from } - {homeDataState.updatePointData.point.workingHours.tuesday.to }
-														</label>	<br />
-														 <label>
-															Wednesday: 
-														</label>
-														 <label>
-														 {homeDataState.updatePointData.point.workingHours.wednesday.from } - {homeDataState.updatePointData.point.workingHours.wednesday.to }
-														</label>
-															<br />
-														 <label>
-															Thursday: 
-														</label>
-														 <label>
-														 {homeDataState.updatePointData.point.workingHours.thursday.from } - {homeDataState.updatePointData.point.workingHours.thursday.to }
-														</label>
-														<br />
-														 <label>
-															Friday: 
-														</label>
-														 <label>
-														 {homeDataState.updatePointData.point.workingHours.friday.from } - {homeDataState.updatePointData.point.workingHours.friday.to }
-														</label>
-														<br />
-														 <label>
-															Saturday: 
-														</label>
-														 <label>
-														 {homeDataState.updatePointData.point.workingHours.saturday.from } - {homeDataState.updatePointData.point.workingHours.saturday.to }
-														</label>
-														<br />
-														 <label>
-															Sunday: 
-														</label>
-														 <label>
-														 {homeDataState.updatePointData.point.workingHours.sunday.from } - {homeDataState.updatePointData.point.workingHours.sunday.to }
-														</label>
-
-										{ edit &&
 											<div>
-												<br />
 
-												<div className="control-group">
-													<div className="form-group controls mb-0 pb-2" style={{ opacity: 1, marginLeft: "300px" }}>
-														<label><b>Monday</b></label>
-
-														<br />
-														 <label>
-															<input
-																type="checkbox"
-																checked={mondayclosed}
-																onChange={(e) => setMondayClosed(!mondayclosed)}
-															/>
-															closed
-														</label>
-														{!mondayclosed && <div class="row"  >
-															<span style={{ marginLeft: "20px", marginRight: "30px" }}>
-																<TimePicker disableClock={true} onChange={(newValue) => {
-																	setMondayFrom(newValue);
-																}} value={mondayFrom} />
-															</span>  <span >
-																<TimePicker disableClock={true} onChange={(newValue) => {
-																	setMondayTo(newValue);
-																}} value={mondayTo} /></span>
+												<h6><b>Working hours *</b></h6>
 
 
-														</div>}
-													</div>
+												{!edit && <div>
+
+
+													<br />
+													<label>
+														Monday:
+													</label>
+													<label>
+														{homeDataState.updatePointData.point.workingHours.monday.from} - {homeDataState.updatePointData.point.workingHours.monday.to}
+													</label>
+													<br />
+													<label>
+														Tuesday:
+													</label>
+													<label>
+														{homeDataState.updatePointData.point.workingHours.tuesday.from} - {homeDataState.updatePointData.point.workingHours.tuesday.to}
+													</label>	<br />
+													<label>
+														Wednesday:
+													</label>
+													<label>
+														{homeDataState.updatePointData.point.workingHours.wednesday.from} - {homeDataState.updatePointData.point.workingHours.wednesday.to}
+													</label>
+													<br />
+													<label>
+														Thursday:
+													</label>
+													<label>
+														{homeDataState.updatePointData.point.workingHours.thursday.from} - {homeDataState.updatePointData.point.workingHours.thursday.to}
+													</label>
+													<br />
+													<label>
+														Friday:
+													</label>
+													<label>
+														{homeDataState.updatePointData.point.workingHours.friday.from} - {homeDataState.updatePointData.point.workingHours.friday.to}
+													</label>
+													<br />
+													<label>
+														Saturday:
+													</label>
+													<label>
+														{homeDataState.updatePointData.point.workingHours.saturday.from} - {homeDataState.updatePointData.point.workingHours.saturday.to}
+													</label>
+													<br />
+													<label>
+														Sunday:
+													</label>
+													<label>
+														{homeDataState.updatePointData.point.workingHours.sunday.from} - {homeDataState.updatePointData.point.workingHours.sunday.to}
+													</label>
 												</div>
+												}
 
-												<div className="control-group">
-													<div className="form-group controls mb-0 pb-2" style={{ opacity: 1, marginLeft: "300px" }}>
-														<label><b>Tuesday</b></label>
+												{edit &&
+													<div>
 														<br />
-														<label>
-															<input
-																type="checkbox"
-																checked={tuesdayclosed}
-																onChange={(e) => setTuesdayClosed(!tuesdayclosed)}
-															/>
-															closed
-														</label>
-														{!tuesdayclosed && <div class="row" >
-															<span style={{ marginLeft: "20px", marginRight: "30px" }}>
-																<TimePicker disableClock={true} onChange={(newValue) => {
-																	setTuesdayFrom(newValue);
-																}} value={tuesdayFrom} />
-															</span>  <span >
-																<TimePicker disableClock={true} onChange={(newValue) => {
-																	setTuesdayTo(newValue);
-																}} value={tuesdayTo} /></span>
-														</div>}
-													</div>
-												</div>
 
-												<div className="control-group">
-													<div className="form-group controls mb-0 pb-2" style={{ opacity: 1, marginLeft: "300px" }}>
-														<label><b>Wednesday</b></label>
-														<br />
-														<label>
-															<input
-																type="checkbox"
-																checked={wednesdayclosed}
-																onChange={(e) => setWednesdayClosed(!wednesdayclosed)}
-															/>
-															closed
-														</label>
-														{!wednesdayclosed && <div class="row" >
-															<span style={{ marginLeft: "20px", marginRight: "30px" }}>
-																<TimePicker disableClock={true} onChange={(newValue) => {
-																	setWednesdayFrom(newValue);
-																}} value={wednesdayFrom} />
-															</span>  <span >
-																<TimePicker disableClock={true} onChange={(newValue) => {
-																	setWednesdayTo(newValue);
-																}} value={wednesdayTo} /></span>
+														<div className="control-group">
+															<div className="form-group controls mb-0 pb-2" style={{ opacity: 1, marginLeft: "300px" }}>
+																<label><b>Monday</b></label>
+
+																<br />
+																<label>
+																	<input
+																		type="checkbox"
+																		checked={mondayclosed}
+																		onChange={(e) => setMondayClosed(!mondayclosed)}
+																	/>
+																	closed
+																</label>
+																{!mondayclosed && <div class="row"  >
+																	<span style={{ marginLeft: "20px", marginRight: "30px" }}>
+																		<TimePicker disableClock={true} onChange={(newValue) => {
+																			setMondayFrom(newValue);
+																		}} value={mondayFrom} />
+																	</span>  <span >
+																		<TimePicker disableClock={true} onChange={(newValue) => {
+																			setMondayTo(newValue);
+																		}} value={mondayTo} /></span>
 
 
-														</div>}
-													</div>
-												</div>
+																</div>}
+															</div>
+														</div>
 
-												<div className="control-group">
-													<div className="form-group controls mb-0 pb-2" style={{ opacity: 1, marginLeft: "300px" }}>
-														<label><b>Thursday</b></label>
-														<br />
-														<label>
-															<input
-																type="checkbox"
-																checked={thursdayclosed}
-																onChange={(e) => setThursdayClosed(!thursdayclosed)}
-															/>
-															closed
-														</label>
-														{!thursdayclosed && <div class="row" >
+														<div className="control-group">
+															<div className="form-group controls mb-0 pb-2" style={{ opacity: 1, marginLeft: "300px" }}>
+																<label><b>Tuesday</b></label>
+																<br />
+																<label>
+																	<input
+																		type="checkbox"
+																		checked={tuesdayclosed}
+																		onChange={(e) => setTuesdayClosed(!tuesdayclosed)}
+																	/>
+																	closed
+																</label>
+																{!tuesdayclosed && <div class="row" >
+																	<span style={{ marginLeft: "20px", marginRight: "30px" }}>
+																		<TimePicker disableClock={true} onChange={(newValue) => {
+																			setTuesdayFrom(newValue);
+																		}} value={tuesdayFrom} />
+																	</span>  <span >
+																		<TimePicker disableClock={true} onChange={(newValue) => {
+																			setTuesdayTo(newValue);
+																		}} value={tuesdayTo} /></span>
+																</div>}
+															</div>
+														</div>
 
-															<span style={{ marginLeft: "20px", marginRight: "30px" }}>
-																<TimePicker disableClock={true} onChange={(newValue) => {
-																	setThursdayFrom(newValue);
-																}} value={thursdayFrom} />
-															</span>  <span >
-																<TimePicker disableClock={true} onChange={(newValue) => {
-																	setThursdayTo(newValue);
-																}} value={thursdayTo} /></span>
-
-
-														</div>}
-													</div>
-												</div>
-
-												<div className="control-group">
-													<div className="form-group controls mb-0 pb-2" style={{ opacity: 1, marginLeft: "300px" }}>
-														<label><b>Friday</b></label>
-														<br />
-														<label>
-															<input
-																type="checkbox"
-																checked={fridayclosed}
-																onChange={(e) => setFridayClosed(!fridayclosed)}
-															/>
-															closed
-														</label>
-														{!fridayclosed && <div class="row" >
-
-															<span style={{ marginLeft: "20px", marginRight: "30px" }}>
-																<TimePicker disableClock={true} onChange={(newValue) => {
-																	setFridayFrom(newValue);
-																}} value={fridayFrom} />
-															</span>  <span >
-																<TimePicker disableClock={true} onChange={(newValue) => {
-																	setFridayTo(newValue);
-																}} value={fridayTo} /></span>
+														<div className="control-group">
+															<div className="form-group controls mb-0 pb-2" style={{ opacity: 1, marginLeft: "300px" }}>
+																<label><b>Wednesday</b></label>
+																<br />
+																<label>
+																	<input
+																		type="checkbox"
+																		checked={wednesdayclosed}
+																		onChange={(e) => setWednesdayClosed(!wednesdayclosed)}
+																	/>
+																	closed
+																</label>
+																{!wednesdayclosed && <div class="row" >
+																	<span style={{ marginLeft: "20px", marginRight: "30px" }}>
+																		<TimePicker disableClock={true} onChange={(newValue) => {
+																			setWednesdayFrom(newValue);
+																		}} value={wednesdayFrom} />
+																	</span>  <span >
+																		<TimePicker disableClock={true} onChange={(newValue) => {
+																			setWednesdayTo(newValue);
+																		}} value={wednesdayTo} /></span>
 
 
-														</div>}
-													</div>
-												</div>
+																</div>}
+															</div>
+														</div>
 
-												<div className="control-group">
-													<div className="form-group controls mb-0 pb-2" style={{ opacity: 1, marginLeft: "300px" }}>
-														<label><b>Saturday</b></label>
-														<br />
-														<label>
-															<input
-																type="checkbox"
-																checked={saturdayclosed}
-																onChange={(e) => setSaturdayClosed(!saturdayclosed)}
-															/>
-															closed
-														</label>
-														{!saturdayclosed && <div class="row" >
+														<div className="control-group">
+															<div className="form-group controls mb-0 pb-2" style={{ opacity: 1, marginLeft: "300px" }}>
+																<label><b>Thursday</b></label>
+																<br />
+																<label>
+																	<input
+																		type="checkbox"
+																		checked={thursdayclosed}
+																		onChange={(e) => setThursdayClosed(!thursdayclosed)}
+																	/>
+																	closed
+																</label>
+																{!thursdayclosed && <div class="row" >
 
-
-															<span style={{ marginLeft: "20px", marginRight: "30px" }}>
-																<TimePicker disableClock={true} onChange={(newValue) => {
-																	setSaturdayFrom(newValue);
-																}} value={saturdayFrom} />
-															</span>  <span >
-																<TimePicker disableClock={true} onChange={(newValue) => {
-																	setSaturdayTo(newValue);
-																}} value={saturdayTo} /></span>
-
-														</div>}
-													</div>
-												</div>
-
-												<div className="control-group">
-													<div className="form-group controls mb-0 pb-2" style={{ opacity: 1, marginLeft: "300px" }}>
-														<label><b>Sunday</b></label>
-														<br />
-														<label>
-															<input
-																type="checkbox"
-																checked={sundayclosed}
-																onChange={(e) => setSundayClosed(!sundayclosed)}
-															/>
-															closed
-														</label>
-														{!sundayclosed && <div class="row" >
+																	<span style={{ marginLeft: "20px", marginRight: "30px" }}>
+																		<TimePicker disableClock={true} onChange={(newValue) => {
+																			setThursdayFrom(newValue);
+																		}} value={thursdayFrom} />
+																	</span>  <span >
+																		<TimePicker disableClock={true} onChange={(newValue) => {
+																			setThursdayTo(newValue);
+																		}} value={thursdayTo} /></span>
 
 
-															<span style={{ marginLeft: "20px", marginRight: "30px" }}>
-																<TimePicker disableClock={true} onChange={(newValue) => {
-																	setSundayFrom(newValue);
-																}} value={sundayFrom} />
-															</span>  <span >
-																<TimePicker disableClock={true} onChange={(newValue) => {
-																	setSundayTo(newValue);
-																}} value={sundayTo} /></span>
+																</div>}
+															</div>
+														</div>
 
-														</div>}
-													</div>
-												</div>
+														<div className="control-group">
+															<div className="form-group controls mb-0 pb-2" style={{ opacity: 1, marginLeft: "300px" }}>
+																<label><b>Friday</b></label>
+																<br />
+																<label>
+																	<input
+																		type="checkbox"
+																		checked={fridayclosed}
+																		onChange={(e) => setFridayClosed(!fridayclosed)}
+																	/>
+																	closed
+																</label>
+																{!fridayclosed && <div class="row" >
 
-											</div>}
+																	<span style={{ marginLeft: "20px", marginRight: "30px" }}>
+																		<TimePicker disableClock={true} onChange={(newValue) => {
+																			setFridayFrom(newValue);
+																		}} value={fridayFrom} />
+																	</span>  <span >
+																		<TimePicker disableClock={true} onChange={(newValue) => {
+																			setFridayTo(newValue);
+																		}} value={fridayTo} /></span>
+
+
+																</div>}
+															</div>
+														</div>
+
+														<div className="control-group">
+															<div className="form-group controls mb-0 pb-2" style={{ opacity: 1, marginLeft: "300px" }}>
+																<label><b>Saturday</b></label>
+																<br />
+																<label>
+																	<input
+																		type="checkbox"
+																		checked={saturdayclosed}
+																		onChange={(e) => setSaturdayClosed(!saturdayclosed)}
+																	/>
+																	closed
+																</label>
+																{!saturdayclosed && <div class="row" >
+
+
+																	<span style={{ marginLeft: "20px", marginRight: "30px" }}>
+																		<TimePicker disableClock={true} onChange={(newValue) => {
+																			setSaturdayFrom(newValue);
+																		}} value={saturdayFrom} />
+																	</span>  <span >
+																		<TimePicker disableClock={true} onChange={(newValue) => {
+																			setSaturdayTo(newValue);
+																		}} value={saturdayTo} /></span>
+
+																</div>}
+															</div>
+														</div>
+
+														<div className="control-group">
+															<div className="form-group controls mb-0 pb-2" style={{ opacity: 1, marginLeft: "300px" }}>
+																<label><b>Sunday</b></label>
+																<br />
+																<label>
+																	<input
+																		type="checkbox"
+																		checked={sundayclosed}
+																		onChange={(e) => setSundayClosed(!sundayclosed)}
+																	/>
+																	closed
+																</label>
+																{!sundayclosed && <div class="row" >
+
+
+																	<span style={{ marginLeft: "20px", marginRight: "30px" }}>
+																		<TimePicker disableClock={true} onChange={(newValue) => {
+																			setSundayFrom(newValue);
+																		}} value={sundayFrom} />
+																	</span>  <span >
+																		<TimePicker disableClock={true} onChange={(newValue) => {
+																			setSundayTo(newValue);
+																		}} value={sundayTo} /></span>
+
+																</div>}
+															</div>
+														</div>
+
+													</div>}
 											</div>}
 
 										<div className="control-group">

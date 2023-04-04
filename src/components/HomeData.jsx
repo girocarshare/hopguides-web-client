@@ -127,6 +127,12 @@ const HomeData = forwardRef((props, ref) => {
     window.location = "#/report/" + data;
   };
 
+  
+  const seeTermsAndConditions = (e, data) => {
+
+    window.location = "#/termsAndConditions/" + data;
+  };
+
 
   const updateLogo = (e) => {
 
@@ -347,6 +353,7 @@ const HomeData = forwardRef((props, ref) => {
                 <th style={{ border: "1px solid gray" }}>Get monthly report</th>
                 <th style={{ border: "1px solid gray" }}>Update</th>
                     <th style={{ border: "1px solid gray" }}>Delete</th>
+                    <th style={{ border: "1px solid gray" }}>See terms and conditions</th>
               </tr>
             </thead>
 
@@ -379,6 +386,16 @@ const HomeData = forwardRef((props, ref) => {
                   <td style={{ border: "1px solid gray" }}><button onClick={(e) => getHistory(e, tour.tourId)} >Get report</button></td>
                   <td style={{ border: "1px solid gray" }}><button onClick={(e) => update(e, tour)} >{updateField}</button></td>
                   <td style={{ border: "1px solid gray" }}><button onClick={(e) => deleteTour(e, tour)} >Delete</button></td>
+                  <td style={{ border: "1px solid gray" }}><button
+                        color="inherit"
+                        onClick={(event) => {
+
+                          seeTermsAndConditions(event, tour.tourId)
+                        }}
+                      >
+                        <MdLaunch />
+
+                      </button></td>
 
                 </tr>
               </tbody>))

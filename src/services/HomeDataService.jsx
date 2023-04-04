@@ -17,7 +17,8 @@ export const homeDataService = {
 	updatePoint,
 	getBPartners,
 	changeLockCode,
-	insertData
+	insertData,
+	getTermsAndConditions
 
 };
 
@@ -37,6 +38,39 @@ function insertData( tf, dispatch) {
 	}
 	function failure(error) {
 		return { type: homeDataConstants.INSERT_DATA_FAILURE, error };
+	}
+}
+
+
+async function getTermsAndConditions(dispatch ,id) {
+	
+	
+	dispatch(request());
+	
+	await Axios.get(`${url}api/pnl/tour/termsandconditions/` + id, { validateStatus: () => true })
+		.then((res) => {
+			if (res.status === 200) {
+				dispatch(success(res.data));
+			} else {
+				var error = "Error while fetching data"
+				dispatch(failure(error));
+			}
+		})
+		.catch((err) => {
+		
+			var error = "Unknown error, please try again later."
+				dispatch(failure(error));
+		});
+
+	function request() {
+		return { type: homeDataConstants.GET_TERMS_AND_CONSITIONS_REQUEST };
+	}
+	function success(data) {
+		
+		return { type: homeDataConstants.GET_TERMS_AND_CONSITIONS_SUCCESS, data: data };
+	}
+	function failure(message) {
+		return { type: homeDataConstants.GET_TERMS_AND_CONSITIONS_FAILURE, errorMessage: message };
 	}
 }
 

@@ -16,8 +16,6 @@ const Register = () => {
 	const { userState, dispatch } = useContext(UserContext);
 	const [email, setEmail] = useState("");
 	const [name, setName] = useState("");
-	const [height, setHeight] = useState("");
-	const [width, setWidth] = useState("");
 	const [support, setSuppoprt] = useState("");
 	const [phone, setPhone] = useState("");
 	const [phone2, setPhone2] = useState("");
@@ -45,17 +43,9 @@ const Register = () => {
 
 
 	const onFileChange = (event) => {
-		var _URL = window.URL || window.webkitURL;
 		setFile(event.target.files[0]);
 
 		var imgg = new Image();
-		var objectUrl = _URL.createObjectURL(file);
-		imgg.onload = function () {
-			alert(this.width + " " + this.height);
-			setWidth(this.width)
-			setHeight(this.height)
-			_URL.revokeObjectURL(objectUrl);
-		};
 		imgg.src = objectUrl;
 
 	}
@@ -148,7 +138,6 @@ const Register = () => {
 				var sendEmailRequest = {
 					name: name,
 					support: JSON.parse(support),
-					dimensions: { height: height, width: width },
 					contact: {
 						phone: phone,
 						phone2: phone2,
