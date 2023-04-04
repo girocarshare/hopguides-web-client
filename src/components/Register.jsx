@@ -19,6 +19,8 @@ const Register = () => {
 	const [support, setSuppoprt] = useState("");
 	const [phone, setPhone] = useState("");
 	const [phone2, setPhone2] = useState("");
+	const [height, setHeight] = useState("");
+	const [width, setWidth] = useState("");
 	const [contactEmail, setContactEmail] = useState("");
 	const [webURL, setWebURL] = useState("");
 	const [address, setAddress] = useState("");
@@ -45,8 +47,6 @@ const Register = () => {
 	const onFileChange = (event) => {
 		setFile(event.target.files[0]);
 
-		var imgg = new Image();
-		imgg.src = objectUrl;
 
 	}
 
@@ -138,6 +138,10 @@ const Register = () => {
 				var sendEmailRequest = {
 					name: name,
 					support: JSON.parse(support),
+					dimensions: {
+						height: height,
+						width: width
+					},
 					contact: {
 						phone: phone,
 						phone2: phone2,
@@ -243,6 +247,15 @@ const Register = () => {
 								</div>
 
 								{fileData()}
+
+								<div className="form-group">
+								<input className="form-control" type="text" style={{ height: "50px" }} required name="name" placeholder="Height" value={height} onChange={(e) => setHeight(e.target.value)}></input>
+								
+								</div>
+								<div className="form-group">
+								<input className="form-control" type="text" style={{ height: "50px" }} required name="name" placeholder="Width" value={width} onChange={(e) => setWidth(e.target.value)}></input>
+								
+								</div>
 
 								<br />
 								<br />

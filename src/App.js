@@ -8,6 +8,7 @@ import {
 import ReportPage from './pages/ReportPage.jsx';
 import PreviousReportPage from './pages/PreviousReportPage.jsx';
 import HomePage from './pages/HomePage.jsx';
+import BusinessPartnersPage from './pages/BusinessPartnersPage.jsx';
 import InsertDataPage from './pages/InsertDataPage.jsx';
 import PageNotFound from './pages/PageNotFound.jsx';
 import { ProtectedRoute } from './router/ProtectedRouter.jsx';
@@ -31,6 +32,7 @@ function App() {
         <Route path="/forgotPassword" component={ForgotPasswordPage} />
         <Route path="/404" component={PageNotFound} />
         <Route path="/login" component={LoginPage} />
+        <Route path="/businesspartners" component={BusinessPartnersPage} />
         <Route path="/" component={HomePage} />
         <Route path="/unauthorized" component={UnauthorizedPage} />
         <Redirect to="/404" />
