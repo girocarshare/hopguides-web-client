@@ -449,7 +449,7 @@ const HomeData = forwardRef((props, ref) => {
                         <MdLaunch />
 
                       </button></td>
-                      <td style={{ border: "1px solid gray" }}>{points.point.name}</td>
+                      <td style={{ border: "1px solid gray" }}>{points.point.name.english}</td>
                      
                       <td style={{ border: "1px solid gray" }}>
                         <input

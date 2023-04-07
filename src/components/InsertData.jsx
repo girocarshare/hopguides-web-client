@@ -6,19 +6,20 @@ import TimePicker from 'react-time-picker';
 import { YMaps, Map } from "react-yandex-maps";
 import { AiOutlineClose } from 'react-icons/ai';
 import { ConstructionOutlined } from "@mui/icons-material";
+import Axios from "axios";
 
-const mapState = {
-  center: [44, 21],
-  zoom: 8,
-  controls: [],
-}; var url = process.env.REACT_APP_URL || "http://localhost:8080/";
+var url = process.env.REACT_APP_URL || "http://localhost:8080/";
 
 var num = 1;
 const InsertData = (props) => {
   const addressInput = React.createRef(null);
+  const [place, setPlace] = useState("");
   const [title, setTitle] = useState("");
+  const [titleTransl, setTitleTransl] = useState("");
   const [agreementTitle, setAgreementTitle] = useState("");
+  const [agreementTitleTransl, setAgreementTitleTransl] = useState("");
   const [agreementDesc, setAgreementDesc] = useState("");
+  const [agreementDescTransl, setAgreementDescTransl] = useState("");
   const [changeTermsAndConditions, setChangeTermsAndConditions] = useState(false);
   const [shortInfo, setShortInfo] = useState("");
   const [longInfo, setLongInfo] = useState("");
@@ -28,8 +29,11 @@ const InsertData = (props) => {
   const [showModal, setShowModal] = useState(false);
 
   const [titlePoint, setTitlePoint] = useState("");
+  const [titlePointTransl, setTitlePointTransl] = useState("");
   const [shortInfoPoint, setShortInfoPoint] = useState("");
+  const [shortInfoPointTransl, setShortInfoPointTransl] = useState("");
   const [longInfoPoint, setLongInfoPoint] = useState("");
+  const [longInfoPointTransl, setLongInfoPointTransl] = useState("");
   const [pointPrice, setPointPrice] = useState("");
   const [offerName, setOfferName] = useState("");
   const [duration, setDuration] = useState("");
@@ -75,6 +79,7 @@ const InsertData = (props) => {
   const [errMessagePartner, setErrMessagePartner] = useState("");
   const [errMessage, setErrMessage] = useState("");
   const [voucherDesc, setVoucherDesc] = useState("");
+  const [voucherDescTransl, setVoucherDescTransl] = useState("");
   const [errMessagePhoto, setErrMessagePhoto] = useState("");
   const [points, setPoints] = useState([]);
   const [add, setAdd] = useState(false);
@@ -99,6 +104,96 @@ const InsertData = (props) => {
   const { homeDataState, dispatch } = useContext(HomeDataContext);
 
   const [termsAndConditions, setTermsAndConditions] = useState("");
+
+
+
+  const fetchData = async (input, num) => {
+    const response = await Axios.post(
+      "https://api.openai.com/v1/completions",
+      {
+        prompt: `translate "${input}" to english, spanish, serbian and slovenian and make it as one json with lower case letters as keys`,
+        model: 'text-davinci-002',
+        max_tokens: 500,
+        n: 1,
+        stop: ".",
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer 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`,
+        },
+      }
+    );
+
+    if (num == 1) {
+
+      setTitleTransl(response.data.choices[0].text)
+    } else if (num == 2) {
+
+      setAgreementTitleTransl(response.data.choices[0].text)
+    } else if (num == 3) {
+
+      setAgreementDescTransl(response.data.choices[0].text)
+    } else if (num == 4) {
+
+      setTitlePointTransl(response.data.choices[0].text)
+    } else if (num == 5) {
+
+      setShortInfoPointTransl(response.data.choices[0].text)
+    } else if (num == 6) {
+
+      setLongInfoPointTransl(response.data.choices[0].text)
+    } else if (num == 7) {
+
+      setVoucherDescTransl(response.data.choices[0].text)
+    }
+
+    return response.data.choices[0].text;
+  };
+
+
+  const makeShortAndLongDesc = async (input) => {
+    const response = await Axios.post(
+      "https://api.openai.com/v1/completions",
+      {
+        prompt: `write me a short description about ${input}, translate it to english, spanish, serbian and slovenian and make it as one json with lower case letters as keys`,
+        model: 'text-davinci-003',
+        max_tokens: 2049,
+        n: 1,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer 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`,
+        },
+      }
+    );
+
+    setShortInfo(response.data.choices[0].text)
+
+    const response2 = await Axios.post(
+      "https://api.openai.com/v1/completions",
+      {
+        prompt: `write me a long description about ${input}, translate it to to english, spanish, serbian and slovenian and make it as one json with lower case letters as keys`,
+        model: 'text-davinci-003',
+        max_tokens: 2049,
+        n: 1,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer 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`,
+        },
+      }
+    );
+
+
+    setLongInfo(response2.data.choices[0].text)
+    return response.data.choices[0].text;
+  };
+
+
+
   const someFetchActionCreator = () => {
     const getDocumentsInfoHandler = async () => {
       await homeDataService.getBPartners(dispatch);
@@ -134,27 +229,18 @@ const InsertData = (props) => {
     }
   };
 
-  const onYmapsLoad = (ymaps) => {
-    setYmaps(ymaps)
-    new ymaps.SuggestView(addressInput.current, {
-      provider: {
-        suggest: (request, options) => ymaps.suggest(request),
-      },
-    });
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (title == "" || agreementTitle == "" || agreementDesc == "" || audio == null || shortInfo == "" || longInfo == "" || price == "" || hotelId == "" || duration == "" || length == "" || highestPoint == "") {
+    if (titleTransl == "" || agreementDescTransl == "" || agreementDescTransl == "" || audio == null || shortInfo == "" || longInfo == "" || price == "" || hotelId == "" || duration == "" || length == "" || highestPoint == "") {
 
       setErrMessage("Please fill in the fileds marked with *")
     } else {
 
 
       var tour = {
-        title: JSON.parse(title),
-        agreementTitle: JSON.parse(agreementTitle),
-        agreementDesc: JSON.parse(agreementDesc),
+        title: JSON.parse(titleTransl),
+        agreementTitle: JSON.parse(agreementTitleTransl),
+        agreementDesc: JSON.parse(agreementDescTransl),
         shortInfo: JSON.parse(shortInfo),
         longInfo: JSON.parse(longInfo),
         price: price,
@@ -165,8 +251,6 @@ const InsertData = (props) => {
         termsAndConditions: termsAndConditions,
         currency: currency,
         bpartnerId: hotelId,
-
-
 
       }
 
@@ -202,7 +286,6 @@ const InsertData = (props) => {
 
       xhr.send(formData);
 
-      // homeDataService.addTour(tour, dispatch);
 
     }
   };
@@ -225,114 +308,88 @@ const InsertData = (props) => {
   const editTermsAndConditions = () => {
 
     setShowModal(true)
-    //if(termsAndConditions === ""){
-    // console.log("fcksdksfdj")
     setTermsAndConditions(eval('`' + homeDataState.termsAndConditionsModal.text + '`'))
-    // }
+
 
   };
 
 
   const handleAdd = (e) => {
 
-    if (partner && (titlePoint == "" || shortInfoPoint == "" || longInfoPoint == "" || category == "" || pointPrice == "" || offerName == "" || responsiblePerson == "" || voucherDesc == "" || phone == "" || email == "" || webURL == "" ||  longitude == "" || latitude == "" || audio2 == null || selectedFiles.length == 0 || (!mondayclosed && (mondayFrom == "" || mondayTo == "")) || (!tuesdayclosed && (tuesdayFrom == "" || tuesdayTo == "")) || (!wednesdayclosed && (wednesdayFrom == "" || wednesdayTo == "")) || (!thursdayclosed && (thursdayFrom == "" || thursdayTo == "")) || (!fridayclosed && (fridayFrom == "" || fridayTo == "")) || (!saturdayclosed && (saturdayFrom == "" || saturdayTo == "")) || (!sundayclosed && (sundayFrom == "" || sundayTo == "")))) {
+    if (partner && (titlePointTransl == "" || shortInfoPointTransl == "" || longInfoPointTransl == "" || category == "" || pointPrice == "" || offerName == "" || responsiblePerson == "" || voucherDescTransl == "" || phone == "" || email == "" || longitude == "" || latitude == "" || audio2 == null || selectedFiles.length == 0 || (!mondayclosed && (mondayFrom == "" || mondayTo == "")) || (!tuesdayclosed && (tuesdayFrom == "" || tuesdayTo == "")) || (!wednesdayclosed && (wednesdayFrom == "" || wednesdayTo == "")) || (!thursdayclosed && (thursdayFrom == "" || thursdayTo == "")) || (!fridayclosed && (fridayFrom == "" || fridayTo == "")) || (!saturdayclosed && (saturdayFrom == "" || saturdayTo == "")) || (!sundayclosed && (sundayFrom == "" || sundayTo == "")))) {
 
       setErrMessagePartner("Please insert mandatory fields for partner (marked with *)")
-    } else if (point && (titlePoint == "" || shortInfoPoint == "" || longInfoPoint == "" || category == "" || longitude == "" || latitude == "" || audio2 == null || selectedFiles.length == 0)) {
-     
+    } else if (point && (titlePointTransl == "" || shortInfoPointTransl == "" || longInfoPointTransl == "" || category == "" || longitude == "" || latitude == "" || audio2 == null || selectedFiles.length == 0)) {
+
       setErrMessagePartner("Please insert mandatory fields for point of interest (marked with *)")
     } else {
       setAdd(false)
       setErrMessagePartner("")
 
-      /*let street;
-      let city;
-      let country;
-      let latitude;
-      let longitude;
-      let found = true;
-      ymaps.geocode(addressInput.current.value, {
-        results: 1,
-      })
-        .then(function (res) {
+      var point = {
+        num: num,
+        name: JSON.parse(titlePointTransl),
+        shortInfo: JSON.parse(shortInfoPointTransl),
+        longInfo: JSON.parse(longInfoPointTransl),
+        price: pointPrice,
+        offerName: offerName,
+        contact: { phone: phone, email: email, webURL: webURL, name: responsiblePerson },
+        location: { latitude: latitude, longitude: longitude },
+        workingHours: { monday: { from: mondayFrom, to: mondayTo }, tuesday: { from: tuesdayFrom, to: tuesdayTo }, wednesday: { from: wednesdayFrom, to: wednesdayTo }, thursday: { from: thursdayFrom, to: thursdayTo }, friday: { from: fridayFrom, to: fridayTo }, saturday: { from: saturdayFrom, to: saturdayTo }, sunday: { from: sundayFrom, to: sundayTo } },
+        bpartnerId: hotelId,
+        category: category
+      }
 
-          if (typeof res.geoObjects.get(0) === "undefined") found = false;
-          else {
-            var firstGeoObject = res.geoObjects.get(0),
-              coords = firstGeoObject.geometry.getCoordinates();
 
-            console.log(firstGeoObject)
-            latitude = coords[0];
-            longitude = coords[1];
-            country = firstGeoObject.getCountry();
-            street = firstGeoObject.getThoroughfare();
-            city = firstGeoObject.getLocalities().join(", ");
-          }
-        })
-        .then((res) => {
-*/
-          var point = {
-            num : num,
-            name: titlePoint,
-            shortInfo: JSON.parse(shortInfoPoint),
-            longInfo: JSON.parse(longInfoPoint),
-            price: pointPrice,
-            offerName: offerName,
-            contact: { phone: phone, email: email, webURL: webURL, name: responsiblePerson },
-            location: { latitude: latitude, longitude: longitude },
-            workingHours: { monday: { from: mondayFrom, to: mondayTo }, tuesday: { from: tuesdayFrom, to: tuesdayTo }, wednesday: { from: wednesdayFrom, to: wednesdayTo }, thursday: { from: thursdayFrom, to: thursdayTo }, friday: { from: fridayFrom, to: fridayTo }, saturday: { from: saturdayFrom, to: saturdayTo }, sunday: { from: sundayFrom, to: sundayTo } },
-            bpartnerId: hotelId,
-            category: category
-          }
 
-      
-
-          if(voucherDesc == ""){
-            point.voucherDesc = JSON.parse(`{
+      if (voucherDesc == "") {
+        point.voucherDesc = JSON.parse(`{
               "english": "",
               "spanish": "",
               "serbian": "",
               "slovenian": ""
               }`)
-            point.partner = false
-          }else{
-            point.voucherDesc = JSON.parse(voucherDesc)
-            point.partner = true
-          }
-          const newData = [point, ...points];
+        point.partner = false
+      } else {
+        point.voucherDesc = JSON.parse(voucherDescTransl)
+        point.partner = true
+      }
+      const newData = [point, ...points];
 
-          setPoints(newData)
-          setTitlePoint("")
-          setShortInfoPoint("")
-          setLongInfoPoint("")
-          setPointPrice("")
-          setPhone("")
-          setEmail("")
-          setResponsiblePerson("")
-          setVoucherDesc("")
-          setMondayClosed(false)
-          setTuesdayClosed(false)
-          setWednesdayClosed(false)
-          setThursdayClosed(false)
-          setFridayClosed(false)
-          setSaturdayClosed(false)
-          setSundayClosed(false)
-          setOfferName("")
-          setWebUrl("")
-          setLocation("")
-          setLongitude("")
-          setLatitude("")
+      setPoints(newData)
+      setTitlePoint("")
+      setShortInfoPoint("")
+      setLongInfoPoint("")
+      setPointPrice("")
+      setPhone("")
+      setEmail("")
+      setResponsiblePerson("")
+      setVoucherDesc("")
+      setMondayClosed(false)
+      setTuesdayClosed(false)
+      setWednesdayClosed(false)
+      setThursdayClosed(false)
+      setFridayClosed(false)
+      setSaturdayClosed(false)
+      setSundayClosed(false)
+      setOfferName("")
+      setWebUrl("")
+      setLocation("")
+      setLongitude("")
+      setLatitude("")
+      setTitlePointTransl("")
+      setShortInfoPointTransl("")
+      setLongInfoPointTransl("")
+      setVoucherDescTransl("")
 
-          setFiles(files.concat(selectedFiles))
-          setAudios(audios.concat(audio2))
+      setFiles(files.concat(selectedFiles))
+      setAudios(audios.concat(audio2))
 
-          setSelectedFiles([])
-          setAudio2(null)
-          setImagePreviews([])
-          num = num+1
+      setSelectedFiles([])
+      setAudio2(null)
+      setImagePreviews([])
+      num = num + 1
 
-
-       // });
     }
   }
 
@@ -424,22 +481,19 @@ const InsertData = (props) => {
     setLatitude("")
     setHighestPoint("")
     setLength("")
+    setTitleTransl("")
+    setAgreementDescTransl("")
+    setAgreementTitleTransl("")
     setImagePreview(null)
     setImagePreviews([])
-    num=0
+    num = 0
 
-    //dispatch({ type: homeDataConstants.UPDATE_MENU_PHOTO_SUCCESS });
   };
   const ErrorHandler = () => {
 
-    //statusRef.current.innerHTML = "Upload failed";
-
-    //dispatch({ type: homeDataConstants.UPDATE_MENU_PHOTO_FAILURE });
     homeDataService.insertData(false, dispatch);
   };
   const AbortHandler = () => {
-
-    //statusRef.current.innerHTML = "Upload aborted";
 
     homeDataService.insertData(false, dispatch);
   };
@@ -462,32 +516,6 @@ const InsertData = (props) => {
       setTermsAndConditions(eval('`' + homeDataState.termsAndConditionsModal.text + '`'))
     }
   };
-
-  var row;
-
-  /* function drop() {
-     console.log("drop called")
-   }
-   
-   function allowDrop(event) {
-     event.preventDefault();
-   }*/
-
-  const drop = e => {
-    e.preventDefault();
-
-    // key of the card to be fetched is passed
-    const card_id = e.dataTransfer.getData('id_card');
-    const card = document.getElementById(card_id);
-
-    e.target.appendChild(card);
-
-  }
-
-  const dragOver = e => {
-    e.preventDefault();
-  }
-
 
   return (
 
@@ -550,23 +578,113 @@ const InsertData = (props) => {
                 <div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
                   <label><b>Title*</b></label>
                   <div class="row" >
+                    <div >
+                      <div >
+                        <input
+
+                          className={"form-control"}
+                          placeholder='Title'
+                          aria-describedby="basic-addon1"
+                          id="name"
+                          type="text"
+                          style={{ backgroundColor: 'white', outline: 'none', width: "800px", height: "50px" }}
+
+                          onChange={(e) => setTitle(e.target.value)}
+                          value={title}
+                        />
+                        <button
+                          style={{ background: "#0099ff", marginTop: "px", height: "35px" }}
+
+                          onClick={(e) => fetchData(title, 1)}
+                          className="btn btn-primary btn-xl"
+                          id="sendMessageButton"
+                          type="button"
+                        >
+                          Translate title
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div >
+
                     <div class="form-group col-lg-10">
                       <input
 
                         className={"form-control"}
-                        placeholder='JSON FORMAT: { "language": "Text"}'
+                        placeholder='Title translated'
                         aria-describedby="basic-addon1"
                         id="name"
                         type="text"
                         style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
 
-                        onChange={(e) => setTitle(e.target.value)}
-                        value={title}
+                        onChange={(e) => setTitleTransl(e.target.value)}
+                        value={titleTransl}
                       />
                     </div>
                   </div>
                 </div>
               </div>
+
+              <div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
+                <label><b>Name of the place*</b></label>
+                <div class="row" >
+                  <div >
+                    <div >
+                      <input
+
+                        className={"form-control"}
+                        placeholder='Title'
+                        aria-describedby="basic-addon1"
+                        id="name"
+                        type="text"
+                        style={{ backgroundColor: 'white', outline: 'none', width: "800px", height: "50px" }}
+
+                        onChange={(e) => setPlace(e.target.value)}
+                        value={place}
+                      />
+                      <button
+                        style={{ background: "#0099ff", marginTop: "px", height: "35px" }}
+
+                        onClick={(e) => makeShortAndLongDesc(place)}
+                        className="btn btn-primary btn-xl"
+                        id="sendMessageButton"
+                        type="button"
+                      >
+                        Generate short and long description
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="control-group">
+                    <div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
+                      <label><b>Short description*</b></label>
+                      <div class="row" >
+                        <div class="form-group col-lg-10">
+                          <textarea className="form-control" style={{ height: "100px", width: "1000px" }} type="textarea" required name="message" placeholder='JSON FORMAT: { "language": "Text"}' value={shortInfo} onChange={(e) => setShortInfo(e.target.value)}></textarea>
+
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="control-group">
+                    <div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
+                      <label><b>Long description*</b></label>
+                      <div class="row" >
+                        <div class="form-group col-lg-10">
+                          <textarea className="form-control" style={{ height: "200px", width: "1000px" }} type="textarea" required name="message" placeholder='JSON FORMAT: { "language": "Text"}' value={longInfo} onChange={(e) => setLongInfo(e.target.value)}></textarea>
+
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+
+
 
               <div className="control-group">
 
@@ -577,7 +695,7 @@ const InsertData = (props) => {
                       <input
 
                         className={"form-control"}
-                        placeholder='JSON FORMAT: { "language": "Text"}'
+                        placeholder='Agreement title'
                         aria-describedby="basic-addon1"
                         id="name"
                         type="text"
@@ -586,10 +704,40 @@ const InsertData = (props) => {
                         onChange={(e) => setAgreementTitle(e.target.value)}
                         value={agreementTitle}
                       />
+                      <button
+                        style={{ background: "#0099ff", marginTop: "px", height: "35px" }}
+
+                        onClick={(e) => fetchData(agreementTitle, 2)}
+                        className="btn btn-primary btn-xl"
+                        id="sendMessageButton"
+                        type="button"
+                      >
+                        Translate agreement title
+                      </button>
                     </div>
                   </div>
                 </div>
+
+                <div >
+
+                  <div class="form-group col-lg-10">
+                    <input
+
+                      className={"form-control"}
+                      placeholder='Agreement title translated'
+                      aria-describedby="basic-addon1"
+                      id="name"
+                      type="text"
+                      style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
+
+                      onChange={(e) => setAgreementTitleTransl(e.target.value)}
+                      value={agreementTitleTransl}
+                    />
+
+                  </div>
+                </div>
               </div>
+
 
               <div className="control-group">
 
@@ -600,7 +748,7 @@ const InsertData = (props) => {
                       <input
 
                         className={"form-control"}
-                        placeholder='JSON FORMAT: { "language": "Text"}'
+                        placeholder='Agreement description'
                         aria-describedby="basic-addon1"
                         id="name"
                         type="text"
@@ -609,34 +757,40 @@ const InsertData = (props) => {
                         onChange={(e) => setAgreementDesc(e.target.value)}
                         value={agreementDesc}
                       />
+                      <button
+                        style={{ background: "#0099ff", marginTop: "px", height: "35px" }}
+
+                        onClick={(e) => fetchData(agreementDesc, 3)}
+                        className="btn btn-primary btn-xl"
+                        id="sendMessageButton"
+                        type="button"
+                      >
+                        Translate agreement description
+                      </button>
+
+                      <div >
+
+                        <div class="form-group col-lg-10">
+                          <input
+
+                            className={"form-control"}
+                            placeholder='Agreement description translated'
+                            aria-describedby="basic-addon1"
+                            id="name"
+                            type="text"
+                            style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
+
+                            onChange={(e) => setAgreementDescTransl(e.target.value)}
+                            value={agreementDescTransl}
+                          />
+
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <div className="control-group">
-                <div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
-                  <label><b>Short description*</b></label>
-                  <div class="row" >
-                    <div class="form-group col-lg-10">
-                      <textarea className="form-control" style={{ height: "100px", width: "1000px" }} type="textarea" required name="message" placeholder='JSON FORMAT: { "language": "Text"}' value={shortInfo} onChange={(e) => setShortInfo(e.target.value)}></textarea>
-
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="control-group">
-                <div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
-                  <label><b>Long description*</b></label>
-                  <div class="row" >
-                    <div class="form-group col-lg-10">
-                      <textarea className="form-control" style={{ height: "200px", width: "1000px" }} type="textarea" required name="message" placeholder='JSON FORMAT: { "language": "Text"}' value={longInfo} onChange={(e) => setLongInfo(e.target.value)}></textarea>
-
-                    </div>
-                  </div>
-                </div>
-              </div>
 
 
               <div className="control-group">
@@ -814,13 +968,6 @@ const InsertData = (props) => {
               </div>
 
 
-
-
-
-
-
-
-
               <div>
                 {(partner || point) &&
                   <div><div className="control-group">
@@ -841,6 +988,35 @@ const InsertData = (props) => {
                             value={titlePoint}
                           />
 
+                          <button
+                            style={{ background: "#0099ff", marginTop: "px", height: "35px" }}
+
+                            onClick={(e) => fetchData(titlePoint, 4)}
+                            className="btn btn-primary btn-xl"
+                            id="sendMessageButton"
+                            type="button"
+                          >
+                            Translate partners name
+                          </button>
+
+                          <div >
+
+                            <div class="form-group col-lg-10">
+                              <input
+
+                                className={"form-control"}
+                                placeholder='Partners name translated'
+                                aria-describedby="basic-addon1"
+                                id="name"
+                                type="text"
+                                style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
+
+                                onChange={(e) => setTitlePointTransl(e.target.value)}
+                                value={titlePointTransl}
+                              />
+
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -851,36 +1027,121 @@ const InsertData = (props) => {
                         <label><b>Short description* </b></label>
                         <div class="row" >
                           <div class="form-group col-lg-10">
-                            <textarea className="form-control" style={{ height: "100px", width: "1000px" }} type="textarea" required name="message" placeholder='JSON FORMAT: { "language": "Text"}' value={shortInfoPoint} onChange={(e) => setShortInfoPoint(e.target.value)}></textarea>
+                            <textarea className="form-control" style={{ height: "100px", width: "1000px" }} type="textarea" required name="message" placeholder='Short description' value={shortInfoPoint} onChange={(e) => setShortInfoPoint(e.target.value)}></textarea>
 
+                            <button
+                            style={{ background: "#0099ff", marginTop: "px", height: "35px" }}
+
+                            onClick={(e) => fetchData(shortInfoPoint, 5)}
+                            className="btn btn-primary btn-xl"
+                            id="sendMessageButton"
+                            type="button"
+                          >
+                            Translate short description
+                          </button>
+
+                          <div >
+
+                            <div class="form-group col-lg-10">
+                              <input
+
+                                className={"form-control"}
+                                placeholder='Short description translated'
+                                aria-describedby="basic-addon1"
+                                id="name"
+                                type="text"
+                                style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
+
+                                onChange={(e) => setShortInfoPointTransl(e.target.value)}
+                                value={shortInfoPointTransl}
+                              />
+
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
+                  </div>
 
                     <div className="control-group">
                       <div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
                         <label><b>Long description*</b></label>
                         <div class="row" >
                           <div class="form-group col-lg-10">
-                            <textarea className="form-control" style={{ height: "200px", width: "1000px" }} type="textarea" required name="message" placeholder='JSON FORMAT: { "language": "Text"}' value={longInfoPoint} onChange={(e) => setLongInfoPoint(e.target.value)}></textarea>
+                            <textarea className="form-control" style={{ height: "200px", width: "1000px" }} type="textarea" required name="message" placeholder='Long description' value={longInfoPoint} onChange={(e) => setLongInfoPoint(e.target.value)}></textarea>
+                            <button
+                            style={{ background: "#0099ff", marginTop: "px", height: "35px" }}
 
+                            onClick={(e) => fetchData(longInfoPoint, 6)}
+                            className="btn btn-primary btn-xl"
+                            id="sendMessageButton"
+                            type="button"
+                          >
+                            Translate long description
+                          </button>
+
+                          <div >
+
+                            <div class="form-group col-lg-10">
+                              <input
+
+                                className={"form-control"}
+                                placeholder='Long description translated'
+                                aria-describedby="basic-addon1"
+                                id="name"
+                                type="text"
+                                style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
+
+                                onChange={(e) => setLongInfoPointTransl(e.target.value)}
+                                value={longInfoPointTransl}
+                              />
+
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
+                  </div>
 
                     {partner && <div className="control-group">
                       <div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
                         <label><b>Voucher description*</b></label>
                         <div class="row" >
                           <div class="form-group col-lg-10">
-                            <textarea className="form-control" style={{ height: "200px", width: "1000px" }} type="textarea" required name="message" placeholder='JSON FORMAT: { "language": "Text"}' value={voucherDesc} onChange={(e) => setVoucherDesc(e.target.value)}></textarea>
+                            <textarea className="form-control" style={{ height: "200px", width: "1000px" }} type="textarea" required name="message" placeholder='Voucher description' value={voucherDesc} onChange={(e) => setVoucherDesc(e.target.value)}></textarea>
+                            <button
+                            style={{ background: "#0099ff", marginTop: "px", height: "35px" }}
 
+                            onClick={(e) => fetchData(voucherDesc, 7)}
+                            className="btn btn-primary btn-xl"
+                            id="sendMessageButton"
+                            type="button"
+                          >
+                            Translate voucher description
+                          </button>
+
+                          <div >
+
+                            <div class="form-group col-lg-10">
+                              <input
+
+                                className={"form-control"}
+                                placeholder='Voucher description translated'
+                                aria-describedby="basic-addon1"
+                                id="name"
+                                type="text"
+                                style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
+
+                                onChange={(e) => setVoucherDescTransl(e.target.value)}
+                                value={voucherDescTransl}
+                              />
+
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>}
+                    </div>
+                  </div>}
 
                     <div className="control-group">
                       <div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
@@ -955,21 +1216,21 @@ const InsertData = (props) => {
 
                       <label><b>Address *</b></label>
                       <div class="row" >
-                          <div class="form-group col-lg-10">
-                            <input
+                        <div class="form-group col-lg-10">
+                          <input
 
-                              className={"form-control"}
-                              placeholder="Longitude"
-                              aria-describedby="basic-addon1"
-                              id="name"
-                              type="text"
-                              style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
+                            className={"form-control"}
+                            placeholder="Longitude"
+                            aria-describedby="basic-addon1"
+                            id="name"
+                            type="text"
+                            style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
 
-                              onChange={(e) => setLongitude(e.target.value)}
-                              value={longitude}
-                            />
-                          </div>
-                          <div class="row" >
+                            onChange={(e) => setLongitude(e.target.value)}
+                            value={longitude}
+                          />
+                        </div>
+                        <div class="row" >
                           <div class="form-group col-lg-10">
                             <input
 
@@ -985,7 +1246,7 @@ const InsertData = (props) => {
                             />
                           </div>
                         </div>
-                        </div>
+                      </div>
                     </div>
 
                     {partner &&
@@ -1429,7 +1690,7 @@ const InsertData = (props) => {
                       {points.map((point) => (
                         <tbody>
                           <tr class="border-b dark:border-neutral-500" >
-                            <td class="whitespace-nowrap px-6 py-4 font-medium" style={{ border: "1px solid gray" }}>{point.name}</td>
+                            <td class="whitespace-nowrap px-6 py-4 font-medium" style={{ border: "1px solid gray" }}>{point.name.english}</td>
                             <td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>{point.shortInfo.english}</td>
                             <td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>{point.longInfo.english}</td>
                             <td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>{point.category}</td>

@@ -11,6 +11,8 @@ const UpdateLogoModal = () => {
 	const { homeDataState, dispatch } = useContext(HomeDataContext);
 	const [file, setFile] = useState(null);
 	const [errMessage, setErrMessage] = useState("");
+	const [height, setHeight] = useState("");
+	const [width, setWidth] = useState("");
 	const uploadRef = React.useRef();
 	const statusRef = React.useRef();
 	const progressRef = React.useRef();
@@ -54,14 +56,19 @@ const UpdateLogoModal = () => {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 
+		
 
-		if (file == null) {
+		if (file == null || height =="" || width == "") {
 
-			setErrMessage("Please pick a photo")
+			setErrMessage("Please pick a photo and height and width")
 		} else {
 
 			const formData = new FormData();
-
+			var dimensions = {
+				height: height,
+				width: width
+			}
+			formData.append('dimensions', JSON.stringify(dimensions));
 			formData.append('file', file);
 			var token = authHeader()
 			var xhr = new XMLHttpRequest();
@@ -145,6 +152,14 @@ const UpdateLogoModal = () => {
 
 										{fileData()}
 
+										<div className="form-group">
+								<input className="form-control" type="text" style={{ height: "50px" }} required name="name" placeholder="Height" value={height} onChange={(e) => setHeight(e.target.value)}></input>
+								
+								</div>
+								<div className="form-group">
+								<input className="form-control" type="text" style={{ height: "50px" }} required name="name" placeholder="Width" value={width} onChange={(e) => setWidth(e.target.value)}></input>
+								
+								</div>
 										<div className="form-group text-center" style={{ color: "red", fontSize: "0.8em", marginTop: "30px", marginRight: "40px" }} hidden={!errMessage}>
 											{errMessage}
 										</div>
