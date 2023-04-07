@@ -7,16 +7,19 @@ import { homeDataConstants } from "../constants/HomeDataConstants";
 import { deleteLocalStorage, authHeader } from "../helpers/auth-header";
 import Axios from "axios";
 
-var url = process.env.REACT_APP_URL || "http://localhost:8080/";
+
 
 const Report = forwardRef(( props, ref ) => {
 	const { homeDataState, dispatch } = useContext(HomeDataContext);
+	const [text, setText] = useState("");
 
     let { id } = useParams()
     const someFetchActionCreator = () => {
         const getReportInfoHandler = async () => {
             await homeDataService.getTermsAndConditions(dispatch, id);
         };
+       
+      
 
 
         getReportInfoHandler();
@@ -37,6 +40,7 @@ const Report = forwardRef(( props, ref ) => {
             <div class="hotelcontact-box" >
                 
                 <p>{homeDataState.termsAndConsitions}</p>
+                <p>{text}</p>
 
             </div>
 
