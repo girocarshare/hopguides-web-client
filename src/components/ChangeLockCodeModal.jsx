@@ -14,7 +14,6 @@ const ChangeLockCodeModal = () => {
 
 	const handleModalClose = () => {
 		dispatch({ type: homeDataConstants.HIDE_CHANGE_LOCK_CODE_MODAL });
-		//window.location.reload()
 	};
 
 	const handleSubmit = (e) => {

@@ -40,6 +40,15 @@ export const userReducer = (state, action) => {
 			prodCpy.modalData.text = "You are unable to send registration mail. Please try again later";
 			return prodCpy;
 
+
+			case userConstants.USER_SUCCESS_FAILURE_HIDE:
+
+
+			prodCpy = { ...state };
+			prodCpy.modalData.show = false;
+			prodCpy.modalData.title = "";
+			prodCpy.modalData.text = "";
+			return prodCpy;
 		case userConstants.SET_PASSWORD_SUCCESS:
 			return {
 				successPassword: true

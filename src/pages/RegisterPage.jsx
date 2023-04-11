@@ -14,6 +14,7 @@ const RegisterPage = () => {
 			<div>
 			
 					<UserContextProvider>
+				<SuccessFailureModalUsers />
 					<Register/>
 					</UserContextProvider>
 			

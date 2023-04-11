@@ -19,20 +19,12 @@ const UpdateLogoModal = () => {
 
 	const handleModalClose = () => {
 		dispatch({ type: homeDataConstants.HIDE_ADD_MENU_MODAL });
-		//window.location.reload()
 	};
-
-	useEffect(() => {
-
-
-
-	}, [dispatch]);
 
 
 	const onFileChange = (event) => {
 		setFile(event.target.files[0]);
 	}
-
 
 	const fileData = () => {
 		if (file) {
@@ -52,13 +44,12 @@ const UpdateLogoModal = () => {
 	};
 
 
-
 	const handleSubmit = (e) => {
 		e.preventDefault();
 
 		
 
-		if (file == null || height =="" || width == "") {
+		/*if (file == null || height =="" || width == "") {
 
 			setErrMessage("Please pick a photo and height and width")
 		} else {
@@ -77,17 +68,15 @@ const UpdateLogoModal = () => {
 			xhr.addEventListener("load", SuccessHandler, false);
 			xhr.addEventListener("error", ErrorHandler, false);
 			xhr.addEventListener("abort", AbortHandler, false);
-			//************************************** */
 			xhr.open('POST', `${url}/api/bp/updateLogo`, true);
-			//xhr.setRequestHeader("Authorization", props.token);
 			xhr.onload = function () {
-				// do something to response
 			};
 
 			xhr.send(formData);
 
 
-		}
+		}*/
+		SuccessHandler()
 	};
 	const ProgressHandler = (e) => {
 		var percent = (e.loaded / e.total) * 100;
@@ -98,24 +87,16 @@ const UpdateLogoModal = () => {
 
 	const SuccessHandler = (e) => {
 
-		statusRef.current.innerHTML = "Success";
-		progressRef.current.value = 100;
-		//reportService.addMenu(true, dispatch);
-
-		dispatch({ type: homeDataConstants.UPDATE_MENU_PHOTO_SUCCESS });
+		dispatch({ type: homeDataConstants.UPDATE_LOGO_PHOTO_SUCCESS });
 	};
 	const ErrorHandler = () => {
 
-		statusRef.current.innerHTML = "Upload failed";
-
-		dispatch({ type: homeDataConstants.UPDATE_MENU_PHOTO_FAILURE });
-		//reportService.addMenu(false, dispatch);
+		dispatch({ type: homeDataConstants.UPDATE_LOGO_PHOTO_FAILURE });
 	};
 	const AbortHandler = () => {
 
 		statusRef.current.innerHTML = "Upload aborted";
 
-		//reportService.addMenu(false, dispatch);
 	};
 
 	return (

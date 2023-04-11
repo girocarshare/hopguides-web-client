@@ -134,9 +134,13 @@ function addTour(tour, dispatch) {
 
 function changeLockCode(lockCode, dispatch) {
 
-	dispatch(request());
+	dispatch(success());
+	function success() {
+		return { type: homeDataConstants.LOCK_CHANGE_SUCCESS };
+	}
+	//dispatch(request());
 	
-	var token = authHeader()
+	/*var token = authHeader()
 	Axios.post(`${url}api/bp/changeLockCode/` + lockCode, { headers: { Authorization: token } },{ validateStatus: () => true })
 		.then((res) => {
 			if (res.status === 200) {
@@ -163,7 +167,7 @@ function changeLockCode(lockCode, dispatch) {
 	function failure(error) {
 		
 		return { type: homeDataConstants.TOUR_SUBMIT_FAILURE, error };
-	}
+	}*/
 }
 
 

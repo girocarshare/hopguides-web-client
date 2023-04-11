@@ -431,6 +431,28 @@ export const homeDataReducer = (state, action) => {
 
 
 			};
+			case homeDataConstants.LOCK_CHANGE_SUCCESS:
+				prodCpy = { ...state };
+				prodCpy.showEditLockCodeModal= false;
+				prodCpy.modalData.success = true;
+				prodCpy.modalData.failure = false;
+				prodCpy.modalData.text = "You have successfully changed lock code.";
+				return prodCpy;
+	
+			
+			case homeDataConstants.LOCK_CHANGE_FAILURE:
+
+			return {
+				...state,
+				showEditLockCodeModal: false,
+				modalData: {
+					
+					success: true,
+					failure: false,
+					text: "There has been error while changing lock code. Please try again later.",
+				},
+
+			};
 
 
 		case homeDataConstants.TOUR_SUBMIT_SUCCESS:
@@ -439,6 +461,7 @@ export const homeDataReducer = (state, action) => {
 				...state,
 
 				modalData: {
+
 					success: true,
 					failure: false,
 					text: "You have successfully added new tour.",
@@ -526,7 +549,6 @@ export const homeDataReducer = (state, action) => {
 		case homeDataConstants.UPDATE_MENU_PHOTO_SUCCESS:
 
 
-			//console.log(action.data)
 			return {
 				...state,
 
@@ -543,11 +565,40 @@ export const homeDataReducer = (state, action) => {
 
 			return {
 				...state,
-
 				modalData: {
 					success: false,
 					failure: true,
 					text: "Error while updating menu photo. Please try again later.",
+				},
+
+			};
+			
+
+			case homeDataConstants.UPDATE_LOGO_PHOTO_SUCCESS:
+
+
+			return {
+				...state,
+
+				showEditLogoModal: false,
+				modalData: {
+					success: true,
+					failure: false,
+					text: "You have successfully updated logo photo.",
+				},
+
+			};
+
+		case homeDataConstants.UPDATE_LOGO_PHOTO_FAILURE:
+
+
+			return {
+				...state,
+				showEditLogoModal: false,
+				modalData: {
+					success: false,
+					failure: true,
+					text: "Error while updating logo photo. Please try again later.",
 				},
 
 			};
