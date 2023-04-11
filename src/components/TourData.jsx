@@ -16,7 +16,6 @@ const mapState = {
 var url = process.env.REACT_APP_URL || "http://localhost:8080/";
 const TourData = () => {
 
-	const addressInput = React.createRef(null);
 	const [title, setTitle] = useState("");
 	const [place, setPlace] = useState("");
 	const [titleTransl, setTitleTransl] = useState("");
@@ -24,7 +23,6 @@ const TourData = () => {
 	const [agreementTitleTransl, setAgreementTitleTransl] = useState("");
 	const [agreementDesc, setAgreementDesc] = useState("");
 	const [agreementDescTransl, setAgreementDescTransl] = useState("");
-	const [changeTermsAndConditions, setChangeTermsAndConditions] = useState(false);
 	const [shortInfo, setShortInfo] = useState("");
 	const [longInfo, setLongInfo] = useState("");
 	const [price, setPrice] = useState(0);
@@ -35,9 +33,6 @@ const TourData = () => {
 	const [currencyList, setCurrencyList] = useState(["£", "€", "$"]);
 
 	const [errMessage, setErrMessage] = useState("");
-	const [points, setPoints] = useState([]);
-	const progressRef = React.useRef();
-	const statusRef = React.useRef();
 	const [file, setFile] = useState(null);
 	const [audio, setAudio] = useState(null);
 	const [imagePreview, setImagePreview] = useState(null);
@@ -46,14 +41,7 @@ const TourData = () => {
 	const [highestPoint, setHighestPoint] = useState("");
 	const [termsAndConditions, setTermsAndConditions] = useState("");
 	const [showModal, setShowModal] = useState(false);
-	const progressInfosRef = useRef(null);
-
-
-
 	const { homeDataState, dispatch } = useContext(HomeDataContext);
-
-
-
 
 
 	const fetchData = async (input, num) => {
@@ -147,7 +135,7 @@ const TourData = () => {
 
 	};
 	const handleSubmit = (e) => {
-		e.preventDefault();
+		/*e.preventDefault();
 		var tour = {}
 
 		if (titleTransl != "") {
@@ -208,17 +196,13 @@ const TourData = () => {
 		xhr.addEventListener("load", SuccessHandler, false);
 		xhr.addEventListener("error", ErrorHandler, false);
 		xhr.addEventListener("abort", AbortHandler, false);
-		//************************************** */
 		xhr.open('POST', `${url}api/pnl/tour/update/tour`, true);
-		//xhr.setRequestHeader("Authorization", props.token);
 		xhr.onload = function () {
-			// do something to response
 		};
 
 		xhr.send(formData);
-
-		// homeDataService.addTour(tour, dispatch);
-
+*/
+		SuccessHandler()
 	};
 
 
@@ -227,7 +211,7 @@ const TourData = () => {
 
 		homeDataService.updateTour(true, dispatch);
 
-		//dispatch({ type: homeDataConstants.UPDATE_MENU_PHOTO_SUCCESS });
+	
 	};
 	const ErrorHandler = () => {
 
@@ -318,30 +302,30 @@ const TourData = () => {
 												<label><b>Title</b></label>
 												<div class="row" >
 													<div class="form-group col-lg-10">
-														{edit && 
-														<div><input
+														{edit &&
+															<div><input
 
-															className={"form-control"}
-															placeholder='Title'
-															aria-describedby="basic-addon1"
-															id="name"
-															type="text"
-															style={{ backgroundColor: 'white', outline: 'none', width: "800px", height: "50px" }}
+																className={"form-control"}
+																placeholder='Title'
+																aria-describedby="basic-addon1"
+																id="name"
+																type="text"
+																style={{ backgroundColor: 'white', outline: 'none', width: "800px", height: "50px" }}
 
-															onChange={(e) => setTitle(e.target.value)}
-															value={title}
-														/>
-														<button
-															style={{ background: "#0099ff", marginTop: "px", height: "35px" }}
+																onChange={(e) => setTitle(e.target.value)}
+																value={title}
+															/>
+																<button
+																	style={{ background: "#0099ff", marginTop: "px", height: "35px" }}
 
-															onClick={(e) => fetchData(title, 1)}
-															className="btn btn-primary btn-xl"
-															id="sendMessageButton"
-															type="button"
-														>
-															Translate title
-														</button>
-														</div>}
+																	onClick={(e) => fetchData(title, 1)}
+																	className="btn btn-primary btn-xl"
+																	id="sendMessageButton"
+																	type="button"
+																>
+																	Translate title
+																</button>
+															</div>}
 														<input
 															readOnly={!edit}
 															aria-describedby="basic-addon1"
@@ -362,31 +346,31 @@ const TourData = () => {
 												<label><b>Agreement title</b></label>
 												<div class="row" >
 													<div class="form-group col-lg-10">
-													{edit && <div>
-														<input
+														{edit && <div>
+															<input
 
-															className={"form-control"}
-															placeholder='Agreement title'
-															aria-describedby="basic-addon1"
-															id="name"
-															type="text"
-															style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
+																className={"form-control"}
+																placeholder='Agreement title'
+																aria-describedby="basic-addon1"
+																id="name"
+																type="text"
+																style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
 
-															onChange={(e) => setAgreementTitle(e.target.value)}
-															value={agreementTitle}
-														/>
-														<button
-															style={{ background: "#0099ff", marginTop: "px", height: "35px" }}
+																onChange={(e) => setAgreementTitle(e.target.value)}
+																value={agreementTitle}
+															/>
+															<button
+																style={{ background: "#0099ff", marginTop: "px", height: "35px" }}
 
-															onClick={(e) => fetchData(agreementTitle, 2)}
-															className="btn btn-primary btn-xl"
-															id="sendMessageButton"
-															type="button"
-														>
-															Translate agreement title
-														</button>
+																onClick={(e) => fetchData(agreementTitle, 2)}
+																className="btn btn-primary btn-xl"
+																id="sendMessageButton"
+																type="button"
+															>
+																Translate agreement title
+															</button>
 
-</div>}
+														</div>}
 														<input
 															readOnly={!edit}
 															aria-describedby="basic-addon1"
@@ -409,30 +393,30 @@ const TourData = () => {
 												<label><b>Agreement description</b></label>
 												<div class="row" >
 													<div class="form-group col-lg-10">
-													{edit && <div>
-														<input
+														{edit && <div>
+															<input
 
-															className={"form-control"}
-															placeholder='Agreement description'
-															aria-describedby="basic-addon1"
-															id="name"
-															type="text"
-															style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
+																className={"form-control"}
+																placeholder='Agreement description'
+																aria-describedby="basic-addon1"
+																id="name"
+																type="text"
+																style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
 
-															onChange={(e) => setAgreementDesc(e.target.value)}
-															value={agreementDesc}
-														/>
-														<button
-															style={{ background: "#0099ff", marginTop: "px", height: "35px" }}
+																onChange={(e) => setAgreementDesc(e.target.value)}
+																value={agreementDesc}
+															/>
+															<button
+																style={{ background: "#0099ff", marginTop: "px", height: "35px" }}
 
-															onClick={(e) => fetchData(agreementDesc, 3)}
-															className="btn btn-primary btn-xl"
-															id="sendMessageButton"
-															type="button"
-														>
-															Translate agreement description
-														</button>
-</div>}
+																onClick={(e) => fetchData(agreementDesc, 3)}
+																className="btn btn-primary btn-xl"
+																id="sendMessageButton"
+																type="button"
+															>
+																Translate agreement description
+															</button>
+														</div>}
 
 														<input
 															readOnly={!edit}
@@ -455,37 +439,37 @@ const TourData = () => {
 										<div className="control-group">
 											<div className="form-group controls mb-0 pb-2" style={{ color: "#6c757d", opacity: 1 }}>
 
-												{edit&& 
-												<div>
-													<label><b>Name of the place*</b></label>
+												{edit &&
+													<div>
+														<label><b>Name of the place*</b></label>
 
-												<div >
-													<div >
-														<input
+														<div >
+															<div >
+																<input
 
-															className={"form-control"}
-															placeholder='Title'
-															aria-describedby="basic-addon1"
-															id="name"
-															type="text"
-															style={{ backgroundColor: 'white', outline: 'none', width: "800px", height: "50px" }}
+																	className={"form-control"}
+																	placeholder='Title'
+																	aria-describedby="basic-addon1"
+																	id="name"
+																	type="text"
+																	style={{ backgroundColor: 'white', outline: 'none', width: "800px", height: "50px" }}
 
-															onChange={(e) => setPlace(e.target.value)}
-															value={place}
-														/>
-														<button
-															style={{ background: "#0099ff", marginTop: "px", height: "35px" }}
+																	onChange={(e) => setPlace(e.target.value)}
+																	value={place}
+																/>
+																<button
+																	style={{ background: "#0099ff", marginTop: "px", height: "35px" }}
 
-															onClick={(e) => makeShortAndLongDesc(place)}
-															className="btn btn-primary btn-xl"
-															id="sendMessageButton"
-															type="button"
-														>
-															Generate short and long description
-														</button>
-													</div>
-												</div>
-												</div>}
+																	onClick={(e) => makeShortAndLongDesc(place)}
+																	className="btn btn-primary btn-xl"
+																	id="sendMessageButton"
+																	type="button"
+																>
+																	Generate short and long description
+																</button>
+															</div>
+														</div>
+													</div>}
 												<label><b>Short description</b></label>
 												<div class="row" >
 													<div class="form-group col-lg-10">

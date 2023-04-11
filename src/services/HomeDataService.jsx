@@ -43,8 +43,12 @@ function insertData( tf, dispatch) {
 
 async function getTermsAndConditions(dispatch ,id) {
 	
-	
-	dispatch(request());
+	dispatch(success(""));
+	function success(data) {
+		
+		return { type: homeDataConstants.GET_TERMS_AND_CONSITIONS_SUCCESS, data: data };
+	}
+	/*dispatch(request());
 	
 	await Axios.get(`${url}api/pnl/tour/termsandconditions/` + id, { validateStatus: () => true })
 		.then((res) => {
@@ -70,7 +74,7 @@ async function getTermsAndConditions(dispatch ,id) {
 	}
 	function failure(message) {
 		return { type: homeDataConstants.GET_TERMS_AND_CONSITIONS_FAILURE, errorMessage: message };
-	}
+	}*/
 }
 
 
@@ -173,7 +177,12 @@ function changeLockCode(lockCode, dispatch) {
 
 function deleteTour( dispatch, tourId) {
 
-	dispatch(request());
+	dispatch(success());
+	function success() {
+		//window.location.reload()
+		return { type: homeDataConstants.DELETE_TOUR_SUCCESS };
+	}
+	/*dispatch(request());
 	
 	var token = authHeader()
 	Axios.get(`${url}api/pnl/tour/deleteTour/`+ tourId, {
@@ -206,14 +215,17 @@ function deleteTour( dispatch, tourId) {
 	function failure(error) {
 		
 		return { type: homeDataConstants.DELETE_TOUR_FAILURE, error };
-	}
+	}*/
 }
 
 
 
 function deletePoi( dispatch, tourId, poiId) {
-
-	dispatch(request());
+	dispatch(success());
+	function success() {
+		return { type: homeDataConstants.DELETE_POI_SUCCESS };
+	}
+	/*dispatch(request());
 	
 	var token = authHeader()
 	Axios.get(`${url}api/pnl/tour/deletePoi/`+ tourId + "/" + poiId, {
@@ -241,12 +253,12 @@ function deletePoi( dispatch, tourId, poiId) {
 	}
 	function success() {
 		window.location.reload()
-		return { type: homeDataConstants.DELETE_TOUR_SUCCESS };
+		return { type: homeDataConstants.DELETE_POI_SUCCESS };
 	}
 	function failure(error) {
 		
-		return { type: homeDataConstants.DELETE_TOUR_FAILURE, error };
-	}
+		return { type: homeDataConstants.DELETE_POI_FAILURE, error };
+	}*/
 }
 
 
@@ -293,8 +305,11 @@ function updatePoint( tf, dispatch) {
 
 
 async function getPreviousMonthsData(dispatch ,id) {
-
-	dispatch(request());
+	dispatch(success([]));
+	function success(data) {
+		return { type: homeDataConstants.PREVIOUS_DATA_GET_SUCCESS, data: data };
+	}
+	/*dispatch(request());
 	
 	if(id==""){
 		id = "x"
@@ -324,15 +339,18 @@ async function getPreviousMonthsData(dispatch ,id) {
 	function failure(message) {
 
 		return { type: homeDataConstants.PREVIOUS_DATA_GET_FAILURE, errorMessage: message };
-	}
+	}*/
 }
 
 async function getToursAndPointsData(dispatch) {
-
-		dispatch(request());
+	dispatch(success([]));
+	function success(data) {
+		return { type: homeDataConstants.DATA_TOUR_POINTS_GET_SUCCESS, data: data };
+	}
+		//dispatch(request());
 	
 	
-	await Axios.get(`${url}api/pnl/tour/allToursWithPoints`, { validateStatus: () => true })
+	/*await Axios.get(`${url}api/pnl/tour/allToursWithPoints`, { validateStatus: () => true })
 		.then((res) => {
 			if (res.status === 200) {
 				dispatch(success(res.data));
@@ -357,7 +375,7 @@ async function getToursAndPointsData(dispatch) {
 	function failure(message) {
 
 		return { type: homeDataConstants.DATA_TOUR_POINTS_GET_FAILURE, errorMessage: message };
-	}
+	}*/
 }
 
 

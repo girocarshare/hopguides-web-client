@@ -16,16 +16,9 @@ const UpdateMenuModal = () => {
 
 	const handleModalClose = () => {
 		dispatch({ type: homeDataConstants.HIDE_ADD_MENU_MODAL });
-		//window.location.reload()
 	};
 
-	useEffect(() => {
-
-
-
-	}, [dispatch]);
-
-
+	
 	const onFileChange = (event) => {
 		setFile(event.target.files[0]);
 	}
@@ -51,7 +44,7 @@ const UpdateMenuModal = () => {
 
 
 	const handleSubmit = (e) => {
-		e.preventDefault();
+		/*e.preventDefault();
 
 
 		if (file == null || homeDataState.id == "") {
@@ -68,9 +61,7 @@ const UpdateMenuModal = () => {
 			xhr.addEventListener("load", SuccessHandler, false);
 			xhr.addEventListener("error", ErrorHandler, false);
 			xhr.addEventListener("abort", AbortHandler, false);
-			//************************************** */
 			xhr.open('POST', `${url}api/poi/${homeDataState.id}/uploadMenu`, true);
-			//xhr.setRequestHeader("Authorization", props.token);
 			xhr.onload = function () {
 				// do something to response
 			};
@@ -78,7 +69,9 @@ const UpdateMenuModal = () => {
 			xhr.send(formData);
 
 
-		}
+		}*/
+
+		SuccessHandler()
 	};
 	const ProgressHandler = (e) => {
 		var percent = (e.loaded / e.total) * 100;
@@ -88,11 +81,6 @@ const UpdateMenuModal = () => {
 	};
 
 	const SuccessHandler = (e) => {
-
-		statusRef.current.innerHTML = "Success";
-		progressRef.current.value = 100;
-		//reportService.addMenu(true, dispatch);
-
 		dispatch({ type: homeDataConstants.UPDATE_MENU_PHOTO_SUCCESS });
 	};
 	const ErrorHandler = () => {

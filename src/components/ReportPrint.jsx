@@ -15,8 +15,7 @@ const ReportPrint = () => {
     const componentRef = useRef();
     const { reportState, dispatch } = useContext(ReportContext);
 
-    const [role, setRole] = useState(false);
-    const [admin, setAdmin] = useState(false);
+    
     let { id } = useParams()
     const someFetchActionCreator = () => {
         const getReportInfoHandler = async () => {
@@ -31,7 +30,7 @@ const ReportPrint = () => {
     useEffect(() => {
 
        
-        var token = authHeader()
+       /* var token = authHeader()
         if (token == "null") {
             // window.location = "#/unauthorized";
         } else {
@@ -57,7 +56,7 @@ const ReportPrint = () => {
                 })
         }
 
-
+*/
         someFetchActionCreator()
     }, [dispatch]);
 
@@ -103,7 +102,8 @@ const ReportPrint = () => {
 
             <div class='parent'>
 
-                {!role && <div >
+               {/* {!role && */}
+               <div >
                     <button
                         type="button"
                         onClick={handleLogin}
@@ -112,9 +112,10 @@ const ReportPrint = () => {
                     >
                         Log in
                     </button>
-                </div>}
+                </div>
+                {/*}*/}
 
-                 {role &&  <div>
+                  {/* {role && */}<div>
                     <button
                         type="button"
                         onClick={handleLogout}
@@ -124,7 +125,8 @@ const ReportPrint = () => {
                         Log out
                     </button>
 
-                </div>}
+                </div> 
+                {/*}*/}
 
 
                 <ReactToPrint

@@ -11,7 +11,6 @@ import Axios from "axios";
 
 const Report = forwardRef(( props, ref ) => {
 	const { homeDataState, dispatch } = useContext(HomeDataContext);
-	const [text, setText] = useState("");
 
     let { id } = useParams()
     const someFetchActionCreator = () => {
@@ -40,7 +39,6 @@ const Report = forwardRef(( props, ref ) => {
             <div class="hotelcontact-box" >
                 
                 <p>{homeDataState.termsAndConsitions}</p>
-                <p>{text}</p>
 
             </div>
 

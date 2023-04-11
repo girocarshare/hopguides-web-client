@@ -36,7 +36,7 @@ const PreviousReport = forwardRef((props, ref) => {
 
 
 
-    var token = authHeader()
+   /* var token = authHeader()
     if (token == "null") {
       window.location = "#/unauthorized";
     } else {
@@ -61,7 +61,7 @@ const PreviousReport = forwardRef((props, ref) => {
 
         })
 
-      }
+      }*/
       someFetchActionCreator();
     }, [dispatch]);
 

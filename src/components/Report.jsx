@@ -27,7 +27,7 @@ const Report = forwardRef(( props, ref ) => {
 
     useEffect(() => {
         window.scrollTo(0, 0);
-        var token = authHeader()
+        /*var token = authHeader()
         if (token == "null") {
             // window.location = "#/unauthorized";
         } else {
@@ -53,7 +53,7 @@ const Report = forwardRef(( props, ref ) => {
                 })
         }
 
-
+*/
         someFetchActionCreator()
     }, [dispatch]);
 
@@ -154,7 +154,7 @@ const Report = forwardRef(( props, ref ) => {
 
             </div>
 
-           {admin && 
+           {/*{admin && */}
            <div class=" button-p">
                 <button
                     type="button"
@@ -165,7 +165,7 @@ const Report = forwardRef(( props, ref ) => {
                     Update menu image
                 </button>
             </div>
-            }
+           {/*} */}
 
 
             <div class="menu-box">

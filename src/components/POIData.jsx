@@ -144,7 +144,7 @@ const POIData = () => {
 	};
 
 	const handleSubmit = (e) => {
-		e.preventDefault();
+		/*e.preventDefault();
 		var point = {}
 
 		if (nameTransl != "") {
@@ -218,7 +218,6 @@ const POIData = () => {
 		xhr.addEventListener("load", SuccessHandler, false);
 		xhr.addEventListener("error", ErrorHandler, false);
 		xhr.addEventListener("abort", AbortHandler, false);
-		//************************************** */
 		xhr.open('POST', `${url}api/poi/update`, true);
 		//xhr.setRequestHeader("Authorization", props.token);
 		xhr.onload = function () {
@@ -226,8 +225,8 @@ const POIData = () => {
 		};
 
 		xhr.send(formData);
-
-		// homeDataService.addTour(tour, dispatch);
+*/
+SuccessHandler()
 
 	};
 
@@ -237,18 +236,12 @@ const POIData = () => {
 
 		homeDataService.updatePoint(true, dispatch);
 
-		//dispatch({ type: homeDataConstants.UPDATE_MENU_PHOTO_SUCCESS });
 	};
 	const ErrorHandler = () => {
 
-		//statusRef.current.innerHTML = "Upload failed";
-
-		//dispatch({ type: homeDataConstants.UPDATE_MENU_PHOTO_FAILURE });
 		homeDataService.updatePoint(false, dispatch);
 	};
 	const AbortHandler = () => {
-
-		//statusRef.current.innerHTML = "Upload aborted";
 
 		homeDataService.insertData(false, dispatch);
 	};

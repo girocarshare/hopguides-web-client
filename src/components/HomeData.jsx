@@ -34,41 +34,22 @@ const HomeData = forwardRef((props, ref) => {
   const [updateField, setUpdateField] = useState("Update");
   const [updatePartner, setUpdatePartner] = useState("Update");
   const [editTourPrice, setEditTourPrice] = useState(false);
-  const [editResponsiblePerson, setEditResponsiblePerson] = useState(false);
-  const [responsiblePerson, setResponsiblePerson] = useState("");
-  const [editContactEmail, setEditContactEmail] = useState(false);
-  const [contactEmail, setContactEmail] = useState("");
-  const [editContactPhone, setEditContactPhone] = useState(false);
-  const [contactPhone, setContactPhone] = useState("");
   const [editPartner, setEditPartner] = useState(false);
   const [partnerPrice, setPartnerPrice] = useState("");
-  const [editOfferName, setEditOfferName] = useState(false);
   const [offerName, setOfferName] = useState("");
-  const someFetchActionCreator = () => {
-    const getDocumentsInfoHandler = async () => {
-      await homeDataService.getData(dispatch);
-      await homeDataService.getToursAndPointsData(dispatch);
-
-
-    };
-
-
-    getDocumentsInfoHandler();
-  };
-
-
+ 
 
   const handleLogout = () => {
     deleteLocalStorage();
     window.location = "#/login";
   };
   useEffect(() => {
-    var token = authHeader()
+    /*var token = authHeader()
     if (token == "null") {
       window.location = "#/unauthorized";
     } else {
 
-      Axios.get(`${url}api/users/getRole`, { headers: { Authorization: token } }, { validateStatus: () => true },
+      /*Axios.get(`${url}api/users/getRole`, { headers: { Authorization: token } }, { validateStatus: () => true },
       )
         .then((res) => {
           if (res.status === 200) {
@@ -93,7 +74,7 @@ const HomeData = forwardRef((props, ref) => {
         .catch((err) => {
 
         })
-    }
+    }*/
     setTours(homeDataState.toursWithPoints.toursWithPoints)
     var contactUser = {
       name: "Danijel Omrzel",
@@ -106,7 +87,6 @@ const HomeData = forwardRef((props, ref) => {
   }, [dispatch]);
 
   const getHistory = (e, data) => {
-    console.log(data)
     const getDocumentsInfoHandlerr = async () => {
       await homeDataService.getPreviousMonthsData(dispatch, data);
     };
@@ -441,6 +421,8 @@ const HomeData = forwardRef((props, ref) => {
         }
       </div>
 
+      <h4 class="paragraph-box" style={{ fontSize: 20 }} >Points of interest/Partners</h4>
+
       {homeDataState.toursWithPoints.toursWithPoints.map((tour, i) =>
 
         <div style={{ marginTop: "100px" }} id={tour.tourId}>
@@ -450,14 +432,16 @@ const HomeData = forwardRef((props, ref) => {
               <table style={{ border: "1px solid gray", width: 1400, background: "white" }}>
                 <thead>
                   <tr>
-                    {admin && <button
+                   {/* {admin && */}
+                   <button
                       style={{ background: "#0099ff", marginTop: "px", marginRight: "55px", padding: "5px 15px", height: "35px" }}
                       color="primary"
                       variant="contained"
                       onClick={(e) => addNewPartner(e, tour.tourId, tour.bpartnerId)}
                     >
                       Add partner
-                    </button>}
+                    </button>
+                    {/*}*/}
                   </tr>
 
                   <tr>

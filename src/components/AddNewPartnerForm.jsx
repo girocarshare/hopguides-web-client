@@ -4,57 +4,37 @@ import { homeDataService } from "../services/HomeDataService";
 import { HomeDataContext } from "../contexts/HomeDataContext";
 import { homeDataConstants } from "../constants/HomeDataConstants";
 import TimePicker from 'react-time-picker';
-import { YMaps, Map } from "react-yandex-maps";
-
+import Axios from "axios";
 import { AiOutlineClose } from 'react-icons/ai';
-const mapState = {
-	center: [44, 21],
-	zoom: 8,
-	controls: [],
-};
 
 var num = 1;
 
 var url = process.env.REACT_APP_URL || "http://localhost:8080/";
 const AddNewPartnerForm = (props) => {
 
-	const addressInput = React.createRef(null);
-
-
-
+	
 	const [titlePoint, setTitlePoint] = useState("");
+	const [titlePointTransl, setTitlePointTransl] = useState("");
 	const [shortInfoPoint, setShortInfoPoint] = useState("");
+	const [shortInfoPointTransl, setShortInfoPointTransl] = useState("");
 	const [longInfoPoint, setLongInfoPoint] = useState("");
+	const [longInfoPointTransl, setLongInfoPointTransl] = useState("");
 	const [pointPrice, setPointPrice] = useState("");
 	const [offerName, setOfferName] = useState("");
-	const [currency, setCurrency] = useState("");
-	const [currencyList, setCurrencyList] = useState(["£", "€", "$"]);
-	const [point, setPoint] = useState(false);
+	const [duration, setDuration] = useState("");
+	const [length, setLength] = useState("");
+	const [imagePreview, setImagePreview] = useState("");
+	const [highestPoint, setHighestPoint] = useState("");
+  
+	const [location, setLocation] = useState("");
 	const [longitude, setLongitude] = useState("");
 	const [latitude, setLatitude] = useState("");
-	const [add, setAdd] = useState(false);
-
-	const [imageInfos, setImageInfos] = useState([]);
-	const [partner, setPartner] = useState(false);
-	const [voucherDesc, setVoucherDesc] = useState("");
-	const [audio2, setAudio2] = useState();
-	const [audios, setAudios] = useState([]);
-	const [selectedFiles, setSelectedFiles] = useState([]);
-	const [files, setFiles] = useState([]);
-	const [categories, setCategories] = useState(["HISTORY", "DRINKS", "NATURE", "EATS", "BRIDGE", "MUSEUMS", "EXPERIENCE"]);
-	const [category, setCategory] = useState(categories[0]);
-	
-	const [location, setLocation] = useState("");
 	const [phone, setPhone] = useState("");
-	const [ymaps, setYmaps] = useState(null);
+	const [hotelId, setHotelId] = useState("");
 	const [email, setEmail] = useState("");
 	const [responsiblePerson, setResponsiblePerson] = useState("");
 	const [webURL, setWebUrl] = useState("");
-	const [imagePreviews, setImagePreviews] = useState([]);
-	const [progressInfos, setProgressInfos] = useState({ val: [] });
-	const [message, setMessage] = useState([]);
-
-
+  
 	const [mondayFrom, setMondayFrom] = useState("");
 	const [mondayTo, setMondayTo] = useState("");
 	const [tuesdayFrom, setTuesdayFrom] = useState("");
@@ -69,7 +49,9 @@ const AddNewPartnerForm = (props) => {
 	const [saturdayTo, setSaturdayTo] = useState("");
 	const [sundayFrom, setSundayFrom] = useState("");
 	const [sundayTo, setSundayTo] = useState("");
-
+	const [partner, setPartner] = useState(false);
+	const [point, setPoint] = useState(false);
+  
 	const [mondayclosed, setMondayClosed] = useState(false);
 	const [tuesdayclosed, setTuesdayClosed] = useState(false);
 	const [wednesdayclosed, setWednesdayClosed] = useState(false);
@@ -77,29 +59,82 @@ const AddNewPartnerForm = (props) => {
 	const [fridayclosed, setFridayClosed] = useState(false);
 	const [saturdayclosed, setSaturdayClosed] = useState(false);
 	const [sundayclosed, setSundayClosed] = useState(false);
-	const [errMessagePhoto, setErrMessagePhoto] = useState("");
-
-
+  
 	const [errMessagePartner, setErrMessagePartner] = useState("");
 	const [errMessage, setErrMessage] = useState("");
+	const [voucherDesc, setVoucherDesc] = useState("");
+	const [voucherDescTransl, setVoucherDescTransl] = useState("");
+	const [errMessagePhoto, setErrMessagePhoto] = useState("");
 	const [points, setPoints] = useState([]);
+	const [add, setAdd] = useState(false);
+	const [file, setFile] = useState(null);
+	const [audio, setAudio] = useState();
+	const [audio2, setAudio2] = useState();
+	const [audios, setAudios] = useState([]);
+	const statusRef = React.useRef();
+	const progressRef = React.useRef();
+	const [currency, setCurrency] = useState("");
+	const [currencyList, setCurrencyList] = useState(["£", "€", "$"]);
+  
+	const [selectedFiles, setSelectedFiles] = useState([]);
+	const [files, setFiles] = useState([]);
+	const [categories, setCategories] = useState(["HISTORY", "DRINKS", "NATURE", "EATS", "BRIDGE", "MUSEUMS", "EXPERIENCE"]);
+	const [category, setCategory] = useState(categories[0]);
+	const [imagePreviews, setImagePreviews] = useState([]);
+	const [progressInfos, setProgressInfos] = useState({ val: [] });
+	const [message, setMessage] = useState([]);
+	const [imageInfos, setImageInfos] = useState([]);
 
 	const { homeDataState, dispatch } = useContext(HomeDataContext);
 
 
+	const fetchData = async (input, num) => {
+		const response = await Axios.post(
+		  "https://api.openai.com/v1/completions",
+		  {
+			prompt: `translate "${input}" to english, spanish, serbian and slovenian and make it as one json with lower case letters as keys`,
+			model: 'text-davinci-002',
+			max_tokens: 500,
+			n: 1,
+			stop: ".",
+		  },
+		  {
+			headers: {
+			  "Content-Type": "application/json",
+			  Authorization: `Bearer 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`,
+			},
+		  }
+		);
+	
+		if (num == 4) {
+	
+		  setTitlePointTransl(response.data.choices[0].text)
+		} else if (num == 5) {
+	
+		  setShortInfoPointTransl(response.data.choices[0].text)
+		} else if (num == 6) {
+	
+		  setLongInfoPointTransl(response.data.choices[0].text)
+		} else if (num == 7) {
+	
+		  setVoucherDescTransl(response.data.choices[0].text)
+		}
+	
+		return response.data.choices[0].text;
+	  };
 	const addPartner = () => {
 		setPartner(true)
 		setPoint(false)
-	
-	  };
-	
-	
-	
-	  const addPoint = () => {
+
+	};
+
+
+
+	const addPoint = () => {
 		setPartner(false)
 		setPoint(true)
-	
-	  };
+
+	};
 
 	const handleModalClose = () => {
 		dispatch({ type: homeDataConstants.HIDE_ADD_PARTNER_MODAL });
@@ -108,22 +143,22 @@ const AddNewPartnerForm = (props) => {
 
 	const handleAdd = (e) => {
 
-		if (partner && (titlePoint == "" || shortInfoPoint == "" || longInfoPoint == "" || category == "" || pointPrice == "" || offerName == "" || responsiblePerson == "" || voucherDesc == "" || phone == "" || email == ""  ||  longitude == "" || latitude == "" || audio2 == null || selectedFiles.length == 0 || (!mondayclosed && (mondayFrom == "" || mondayTo == "")) || (!tuesdayclosed && (tuesdayFrom == "" || tuesdayTo == "")) || (!wednesdayclosed && (wednesdayFrom == "" || wednesdayTo == "")) || (!thursdayclosed && (thursdayFrom == "" || thursdayTo == "")) || (!fridayclosed && (fridayFrom == "" || fridayTo == "")) || (!saturdayclosed && (saturdayFrom == "" || saturdayTo == "")) || (!sundayclosed && (sundayFrom == "" || sundayTo == "")))) {
-	
-		  setErrMessagePartner("Please insert mandatory fields for partner (marked with *)")
-		} else if (point && (titlePoint == "" || shortInfoPoint == "" || longInfoPoint == "" || category == "" || longitude == "" || latitude == "" || audio2 == null || selectedFiles.length == 0)) {
-		 
-		  setErrMessagePartner("Please insert mandatory fields for point of interest (marked with *)")
+		/*if (partner && (titlePointTransl == "" || shortInfoPointTransl == "" || longInfoPointTransl == "" || category == "" || pointPrice == "" || offerName == "" || responsiblePerson == "" || voucherDescTransl == "" || phone == "" || email == "" || longitude == "" || latitude == "" || audio2 == null || selectedFiles.length == 0 || (!mondayclosed && (mondayFrom == "" || mondayTo == "")) || (!tuesdayclosed && (tuesdayFrom == "" || tuesdayTo == "")) || (!wednesdayclosed && (wednesdayFrom == "" || wednesdayTo == "")) || (!thursdayclosed && (thursdayFrom == "" || thursdayTo == "")) || (!fridayclosed && (fridayFrom == "" || fridayTo == "")) || (!saturdayclosed && (saturdayFrom == "" || saturdayTo == "")) || (!sundayclosed && (sundayFrom == "" || sundayTo == "")))) {
+
+			setErrMessagePartner("Please insert mandatory fields for partner (marked with *)")
+		} else if (point && (titlePointTransl == "" || shortInfoPointTransl == "" || longInfoPointTransl == "" || category == "" || longitude == "" || latitude == "" || audio2 == null || selectedFiles.length == 0)) {
+
+			setErrMessagePartner("Please insert mandatory fields for point of interest (marked with *)")
 		} else {
-		  setAdd(false)
-		  setErrMessagePartner("")
-	
-		 
-			  var point = {
+			setAdd(false)
+			setErrMessagePartner("")
+
+
+			var point = {
 				num: num,
-				name: JSON.parse(titlePoint),
-				shortInfo: JSON.parse(shortInfoPoint),
-				longInfo: JSON.parse(longInfoPoint),
+				name: JSON.parse(titlePointTransl),
+				shortInfo: JSON.parse(shortInfoPointTransl),
+				longInfo: JSON.parse(longInfoPointTransl),
 				price: pointPrice,
 				offerName: offerName,
 				contact: { phone: phone, email: email, webURL: webURL, name: responsiblePerson },
@@ -131,9 +166,9 @@ const AddNewPartnerForm = (props) => {
 				workingHours: { monday: { from: mondayFrom, to: mondayTo }, tuesday: { from: tuesdayFrom, to: tuesdayTo }, wednesday: { from: wednesdayFrom, to: wednesdayTo }, thursday: { from: thursdayFrom, to: thursdayTo }, friday: { from: fridayFrom, to: fridayTo }, saturday: { from: saturdayFrom, to: saturdayTo }, sunday: { from: sundayFrom, to: sundayTo } },
 				category: category,
 				bpartnerId: homeDataState.showAddPartnerModal.bpartnerId
-			  }
-	
-			  if(voucherDesc == ""){
+			}
+
+			if (voucherDesc == "") {
 				point.voucherDesc = JSON.parse(`{
 				  "english": "",
 				  "spanish": "",
@@ -141,146 +176,164 @@ const AddNewPartnerForm = (props) => {
 				  "slovenian": ""
 				  }`)
 				point.partner = false
-			  }else{
-				point.voucherDesc = JSON.parse(voucherDesc)
+			} else {
+				point.voucherDesc = JSON.parse(voucherDescTransl)
 				point.partner = true
-			  }
-			  const newData = [point, ...points];
-	
-			  setPoints(newData)
-			  setTitlePoint("")
-			  setShortInfoPoint("")
-			  setLongInfoPoint("")
-			  setPointPrice("")
-			  setPhone("")
-			  setEmail("")
-			  setResponsiblePerson("")
-			  setVoucherDesc("")
-			  setMondayClosed(false)
-			  setTuesdayClosed(false)
-			  setWednesdayClosed(false)
-			  setThursdayClosed(false)
-			  setFridayClosed(false)
-			  setSaturdayClosed(false)
-			  setSundayClosed(false)
-			  setOfferName("")
-			  setWebUrl("")
-			  setLocation("")
-			  setLongitude("")
-			  setLatitude("")
-	
-			  setFiles(files.concat(selectedFiles))
-			  setAudios(audios.concat(audio2))
-	
-			  setSelectedFiles([])
-			  setAudio2(null)
-			  setImagePreviews([])
-			  num = num+1
-	
-	
-		   // });
-		}
-	  }
-	  const addFile2 = (e) => {
-		if (e.target.files[0]) {
-	
-		  var new_file = new File([e.target.files[0]], 'audio2' + num + "---" + [e.target.files[0].name]);
-	
-		  setAudio2(new_file);
-		}
-	  };
+			}
+			const newData = [point, ...points];
 
-	  const selectFiles = (event) => {
-		let images = [];
-	
-		if (titlePoint == "") {
-		  setErrMessagePhoto("Please first insert partners name")
-		} else {
-		  var fs = []
-		  for (let i = 0; i < event.target.files.length; i++) {
-			images.push(URL.createObjectURL(event.target.files[i]));
-			var new_file = new File([event.target.files[i]], 'partner' + num + "---" + [event.target.files[i].name]);
-			fs.push(new_file)
-	
+			setPoints(newData)
+			setTitlePoint("")
+			setShortInfoPoint("")
+			setLongInfoPoint("")
+			setPointPrice("")
+			setPhone("")
+			setEmail("")
+			setResponsiblePerson("")
+			setVoucherDesc("")
+			setMondayClosed(false)
+			setTuesdayClosed(false)
+			setWednesdayClosed(false)
+			setThursdayClosed(false)
+			setFridayClosed(false)
+			setSaturdayClosed(false)
+			setSundayClosed(false)
+			setOfferName("")
+			setWebUrl("")
+			setLocation("")
+			setLongitude("")
+			setLatitude("")
+			setTitlePointTransl("")
+			
+			setShortInfoPointTransl("")
+			setLongInfoPointTransl("")
+			setVoucherDescTransl("")
+
+			setFiles(files.concat(selectedFiles))
+			setAudios(audios.concat(audio2))
+
+			setSelectedFiles([])
+			setAudio2(null)
+			setImagePreviews([])
+			num = num + 1
+
+
+			// });
+		}*/
+		var point = {
+			num: num,
+			name: JSON.parse(`{"english": "Name text", "slovenian": "naslovno besedilo" } `),
+			shortInfo: JSON.parse(`{"english": "Short description", "slovenian": "naslovno besedilo" } `),
+			longInfo: JSON.parse(`{"english": "Long description", "slovenian": "naslovno besedilo" } `),
+			price: 5,
+			offerName: "Offer name",
+			contact: { phone: "+38669617624", email: "email@gmail.com", webURL: "www.page.com", name: "Responsible person name" },
+			location: { latitude: "13.4125895", longitude: "49.8151515" },
+			workingHours: { monday: { from: mondayFrom, to: mondayTo }, tuesday: { from: tuesdayFrom, to: tuesdayTo }, wednesday: { from: wednesdayFrom, to: wednesdayTo }, thursday: { from: thursdayFrom, to: thursdayTo }, friday: { from: fridayFrom, to: fridayTo }, saturday: { from: saturdayFrom, to: saturdayTo }, sunday: { from: sundayFrom, to: sundayTo } },
+			bpartnerId: hotelId,
+			category: "NATURE"
 		  }
-	
-		  setSelectedFiles(selectedFiles.concat(fs))
-		  setImagePreviews(images);
-		  setProgressInfos({ val: [] });
-		  setMessage([]);
+	  
+		  if (voucherDesc == "") {
+			point.voucherDesc = JSON.parse(`{"english": "", "spanish": "", "serbian": "",  "slovenian": "" }`)
+			point.partner = false
+		  } else {
+			point.voucherDesc = JSON.parse(`{"english": "Voucher text", "slovenian": "naslovno besedilo" } `)
+			point.partner = true
+		  }
+		  const newData = [point, ...points];
+	  
+		  setPoints(newData)
+	}
+	const addFile2 = (e) => {
+		if (e.target.files[0]) {
+
+			var new_file = new File([e.target.files[0]], 'audio2' + num + "---" + [e.target.files[0].name]);
+
+			setAudio2(new_file);
 		}
-	  };
-	
-	
-  
+	};
 
-  const SuccessHandler = (e) => {
-
-    homeDataService.addPartner(true, dispatch);
-
-
-    //dispatch({ type: homeDataConstants.UPDATE_MENU_PHOTO_SUCCESS });
-  };
-  const ErrorHandler = () => {
-
-    //statusRef.current.innerHTML = "Upload failed";
-
-    //dispatch({ type: homeDataConstants.UPDATE_MENU_PHOTO_FAILURE });
-    homeDataService.addPartner(false, dispatch);
-  };
-  const AbortHandler = () => {
-
-    //statusRef.current.innerHTML = "Upload aborted";
-
-    homeDataService.insertData(false, dispatch);
-  };
-  const handleSubmit = (e) => {
-
-	if (points.length == 0) {
-		setErrMessage("Please add at least one partner")
-	} else {
+	const selectFiles = (event) => {
+		let images = [];
 
 		
+			var fs = []
+			for (let i = 0; i < event.target.files.length; i++) {
+				images.push(URL.createObjectURL(event.target.files[i]));
+				var new_file = new File([event.target.files[i]], 'partner' + num + "---" + [event.target.files[i].name]);
+				fs.push(new_file)
 
-    e.preventDefault();
-  
+			}
 
-		var tour = {
-			id: homeDataState.showAddPartnerModal.id,
-			points: points
-		}
+			setSelectedFiles(selectedFiles.concat(fs))
+			setImagePreviews(images);
+			setProgressInfos({ val: [] });
+			setMessage([]);
+		
+	};
 
-      const formData = new FormData();
 
-      for (var f of files) {
 
-        formData.append('file', f);
-      }
-      for (var a of audios) {
 
-        formData.append('file', a);
-      }
-      //formData.append('audio', audio);
-      formData.append('tour', JSON.stringify(tour));
+	const SuccessHandler = (e) => {
 
-      var xhr = new XMLHttpRequest();
-      xhr.addEventListener("load", SuccessHandler, false);
-      xhr.addEventListener("error", ErrorHandler, false);
-      xhr.addEventListener("abort", AbortHandler, false);
-      //************************************** */
-      xhr.open('POST', `${url}api/pnl/tour/addFull/partner`, true);
-      //xhr.setRequestHeader("Authorization", props.token);
-      xhr.onload = function () {
-        // do something to response
-      };
+		homeDataService.addPartner(true, dispatch);
 
-      xhr.send(formData);
+	};
+	const ErrorHandler = () => {
 
-      // homeDataService.addTour(tour, dispatch);
+		homeDataService.addPartner(false, dispatch);
+	};
+	const AbortHandler = () => {
 
-    
-}
-  };
+		homeDataService.insertData(false, dispatch);
+	};
+	const handleSubmit = (e) => {
+
+		/*if (points.length == 0) {
+			setErrMessage("Please add at least one partner")
+		} else {
+
+			e.preventDefault();
+
+
+			var tour = {
+				id: homeDataState.showAddPartnerModal.id,
+				points: points
+			}
+
+			const formData = new FormData();
+
+			for (var f of files) {
+
+				formData.append('file', f);
+			}
+			for (var a of audios) {
+
+				formData.append('file', a);
+			}
+			//formData.append('audio', audio);
+			formData.append('tour', JSON.stringify(tour));
+
+			var xhr = new XMLHttpRequest();
+			xhr.addEventListener("load", SuccessHandler, false);
+			xhr.addEventListener("error", ErrorHandler, false);
+			xhr.addEventListener("abort", AbortHandler, false);
+			xhr.open('POST', `${url}api/pnl/tour/addFull/partner`, true);
+			xhr.onload = function () {
+				// do something to response
+			};
+
+			xhr.send(formData);
+
+
+
+		}*/
+
+		SuccessHandler()
+
+	};
 
 	return (
 
@@ -343,9 +396,6 @@ const AddNewPartnerForm = (props) => {
 
 
 
-
-
-
 												<div>
 													{(partner || point) &&
 														<div><div className="control-group">
@@ -366,6 +416,35 @@ const AddNewPartnerForm = (props) => {
 																			value={titlePoint}
 																		/>
 
+																		<button
+																			style={{ background: "#0099ff", marginTop: "px", height: "35px" }}
+
+																			onClick={(e) => fetchData(titlePoint, 4)}
+																			className="btn btn-primary btn-xl"
+																			id="sendMessageButton"
+																			type="button"
+																		>
+																			Translate partners name
+																		</button>
+
+																		<div >
+
+																			<div class="form-group col-lg-10">
+																				<input
+
+																					className={"form-control"}
+																					placeholder='JSON FORMAT: { "language": "Text"}'
+																					aria-describedby="basic-addon1"
+																					id="name"
+																					type="text"
+																					style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
+
+																					onChange={(e) => setTitlePointTransl(e.target.value)}
+																					value={titlePointTransl}
+																				/>
+
+																			</div>
+																		</div>
 																	</div>
 																</div>
 															</div>
@@ -376,8 +455,37 @@ const AddNewPartnerForm = (props) => {
 																	<label><b>Short description* </b></label>
 																	<div class="row" >
 																		<div class="form-group col-lg-10">
-																			<textarea className="form-control" style={{ height: "100px", width: "1000px" }} type="textarea" required name="message" placeholder="Short description" value={shortInfoPoint} onChange={(e) => setShortInfoPoint(e.target.value)}></textarea>
+																			<textarea className="form-control" style={{ height: "100px", width: "1000px" }} type="textarea" required name="message" placeholder='Short description' value={shortInfoPoint} onChange={(e) => setShortInfoPoint(e.target.value)}></textarea>
 
+																			<button
+																				style={{ background: "#0099ff", marginTop: "px", height: "35px" }}
+
+																				onClick={(e) => fetchData(shortInfoPoint, 5)}
+																				className="btn btn-primary btn-xl"
+																				id="sendMessageButton"
+																				type="button"
+																			>
+																				Translate short description
+																			</button>
+
+																			<div >
+
+																				<div class="form-group col-lg-10">
+																					<input
+
+																						className={"form-control"}
+																						placeholder='JSON FORMAT: { "language": "Text"}'
+																						aria-describedby="basic-addon1"
+																						id="name"
+																						type="text"
+																						style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
+
+																						onChange={(e) => setShortInfoPointTransl(e.target.value)}
+																						value={shortInfoPointTransl}
+																					/>
+
+																				</div>
+																			</div>
 																		</div>
 																	</div>
 																</div>
@@ -388,8 +496,36 @@ const AddNewPartnerForm = (props) => {
 																	<label><b>Long description*</b></label>
 																	<div class="row" >
 																		<div class="form-group col-lg-10">
-																			<textarea className="form-control" style={{ height: "200px", width: "1000px" }} type="textarea" required name="message" placeholder="Long description" value={longInfoPoint} onChange={(e) => setLongInfoPoint(e.target.value)}></textarea>
+																			<textarea className="form-control" style={{ height: "200px", width: "1000px" }} type="textarea" required name="message" placeholder='Long description' value={longInfoPoint} onChange={(e) => setLongInfoPoint(e.target.value)}></textarea>
+																			<button
+																				style={{ background: "#0099ff", marginTop: "px", height: "35px" }}
 
+																				onClick={(e) => fetchData(longInfoPoint, 6)}
+																				className="btn btn-primary btn-xl"
+																				id="sendMessageButton"
+																				type="button"
+																			>
+																				Translate long description
+																			</button>
+
+																			<div >
+
+																				<div class="form-group col-lg-10">
+																					<input
+
+																						className={"form-control"}
+																						placeholder='JSON FORMAT: { "language": "Text"}'
+																						aria-describedby="basic-addon1"
+																						id="name"
+																						type="text"
+																						style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
+
+																						onChange={(e) => setLongInfoPointTransl(e.target.value)}
+																						value={longInfoPointTransl}
+																					/>
+
+																				</div>
+																			</div>
 																		</div>
 																	</div>
 																</div>
@@ -400,8 +536,36 @@ const AddNewPartnerForm = (props) => {
 																	<label><b>Voucher description*</b></label>
 																	<div class="row" >
 																		<div class="form-group col-lg-10">
-																			<textarea className="form-control" style={{ height: "200px", width: "1000px" }} type="textarea" required name="message" placeholder="Voucher description" value={voucherDesc} onChange={(e) => setVoucherDesc(e.target.value)}></textarea>
+																			<textarea className="form-control" style={{ height: "200px", width: "1000px" }} type="textarea" required name="message" placeholder='Voucher description' value={voucherDesc} onChange={(e) => setVoucherDesc(e.target.value)}></textarea>
+																			<button
+																				style={{ background: "#0099ff", marginTop: "px", height: "35px" }}
 
+																				onClick={(e) => fetchData(voucherDesc, 7)}
+																				className="btn btn-primary btn-xl"
+																				id="sendMessageButton"
+																				type="button"
+																			>
+																				Translate voucher description
+																			</button>
+
+																			<div >
+
+																				<div class="form-group col-lg-10">
+																					<input
+
+																						className={"form-control"}
+																						placeholder='JSON FORMAT: { "language": "Text"}'
+																						aria-describedby="basic-addon1"
+																						id="name"
+																						type="text"
+																						style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
+
+																						onChange={(e) => setVoucherDescTransl(e.target.value)}
+																						value={voucherDescTransl}
+																					/>
+
+																				</div>
+																			</div>
 																		</div>
 																	</div>
 																</div>
@@ -965,7 +1129,7 @@ const AddNewPartnerForm = (props) => {
 																			{point.contact.phone == "" ? <td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>/</td> : <td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>{point.contact.phone}</td>}
 																			{point.contact.webURL == "" ? <td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>/</td> : <td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>{point.contact.webURL}</td>}
 
-																			<td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>{`${point.location.street}  ${point.location.city} ${point.location.country} ${point.location.latitute}  ${point.location.longitude}`}</td>
+																			<td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>{`${point.location.latitude}  ${point.location.longitude}`}</td>
 
 																		</tr>
 																	</tbody>))
@@ -981,34 +1145,34 @@ const AddNewPartnerForm = (props) => {
 
 									</div>
 								}
-
-
-								<div className="form-group text-center" style={{ color: "red", fontSize: "0.8em", marginTop: "30px", marginRight: "40px" }} hidden={!errMessage}>
-									{errMessage}
+								<div className="paragraph-box2" style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }} hidden={!errMessagePartner}>
+									{errMessagePartner}
 								</div>
-								<div className="form-group text-center">
-									<button
-										style={{ background: "#1977cc", marginTop: "15px" }}
-
-										onClick={(e) => { handleSubmit(e) }}
-										className="btn btn-primary btn-xl"
-										id="sendMessageButton"
-										type="button"
-									>
-										Add partner
-									</button>
-								</div>
-
-								<br />
-
 							</div>
+
+						
+							<div className="form-group text-center">
+								<button
+									style={{ background: "#1977cc", marginTop: "15px" }}
+
+									onClick={(e) => { handleSubmit(e) }}
+									className="btn btn-primary btn-xl"
+									id="sendMessageButton"
+									type="button"
+								>
+									Add partner
+								</button>
+							</div>
+
+							<br />
+
 						</div>
 					</div>
-					</div>
-					}
 				</div>
+					}
+				</div >
 
 	);
 };
 
-			export default AddNewPartnerForm;
+export default AddNewPartnerForm;

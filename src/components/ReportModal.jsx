@@ -21,13 +21,6 @@ const ReportModal = () => {
 		window.location.reload()
 	};
 
-	useEffect(() => {
-
-
-
-	}, [dispatch]);
-
-
 	const onFileChange = (event) => {
 		setFile(event.target.files[0]);
 	}
@@ -53,7 +46,7 @@ const ReportModal = () => {
 
 
 	const handleSubmit = (e) => {
-		e.preventDefault();
+		/*e.preventDefault();
 
 
 		if (file == null || reportState.report.pointId) {
@@ -82,7 +75,8 @@ const ReportModal = () => {
 
 			xhr.send(formData);
 
-		}
+		}*/
+		SuccessHandler()
 	};
 	const ProgressHandler = (e) => {
 		var percent = (e.loaded / e.total) * 100;

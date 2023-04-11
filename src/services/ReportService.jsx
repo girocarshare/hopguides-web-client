@@ -12,9 +12,12 @@ export const reportService = {
 
 
 async function getReport(dispatch ,id) {
-	
-	
-	dispatch(request());
+	dispatch(success(""));
+	function success(data) {
+		
+		return { type: reportConstants.REPORT_GET_SUCCESS, data: data };
+	}
+	/*dispatch(request());
 	
 	await Axios.get(`${url}api/reports/` + id, { validateStatus: () => true })
 		.then((res) => {
@@ -40,13 +43,16 @@ async function getReport(dispatch ,id) {
 	}
 	function failure(message) {
 		return { type: reportConstants.REPORT_GET_FAILURE, errorMessage: message };
-	}
+	}*/
 }
 
 
 async function getReports(dispatch ,id) {
-
-	dispatch(request());
+	dispatch(success(""));
+	function success(data) {
+		return { type: reportConstants.PREVIOUS_REPORT_GET_SUCCESS, data: data };
+	}
+	/*dispatch(request());
 	
 	
 	await Axios.get(`${url}api/reports/previous/` + id, { validateStatus: () => true })
@@ -74,7 +80,7 @@ async function getReports(dispatch ,id) {
 	function failure(message) {
 
 		return { type: reportConstants.PREVIOUS_REPORT_GET_FAILURE, errorMessage: message };
-	}
+	}*/
 }
 
 
