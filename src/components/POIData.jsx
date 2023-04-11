@@ -7,6 +7,7 @@ import { YMaps, Map } from "react-yandex-maps";
 import { AiOutlineClose } from 'react-icons/ai';
 import ReactAudioPlayer from 'react-audio-player';
 import { StyledEngineProvider } from "@mui/material";
+import Axios from "axios";
 const mapState = {
 	center: [44, 21],
 	zoom: 8,
@@ -16,7 +17,15 @@ var url = process.env.REACT_APP_URL || "http://localhost:8080/";
 const POIData = () => {
 
 	const addressInput = React.createRef(null);
+
 	const [name, setName] = useState("");
+	const [nameTransl, setNameTransl] = useState("");
+	const [shortInfoPointTransl, setShortInfoPointTransl] = useState("");
+	const [longInfoPointTransl, setLongInfoPointTransl] = useState("");
+	const [voucherDescTransl, setVoucherDescTransl] = useState("");
+	const [voucherDesc, setVoucherDesc] = useState("");
+
+
 	const [shortInfo, setShortInfo] = useState("");
 	const [longInfo, setLongInfo] = useState("");
 	const [price, setPrice] = useState(0);
@@ -77,6 +86,45 @@ const POIData = () => {
 
 	const { homeDataState, dispatch } = useContext(HomeDataContext);
 
+
+
+
+	const fetchData = async (input, num) => {
+		const response = await Axios.post(
+			"https://api.openai.com/v1/completions",
+			{
+				prompt: `translate "${input}" to english, spanish, serbian and slovenian and make it as one json with lower case letters as keys`,
+				model: 'text-davinci-002',
+				max_tokens: 500,
+				n: 1,
+				stop: ".",
+			},
+			{
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer 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`,
+				},
+			}
+		);
+
+		if (num == 1) {
+
+			setNameTransl(response.data.choices[0].text)
+		} else if (num == 2) {
+
+			setShortInfoPointTransl(response.data.choices[0].text)
+		} else if (num == 3) {
+
+			setLongInfoPointTransl(response.data.choices[0].text)
+		} else if (num == 4) {
+
+			setVoucherDescTransl(response.data.choices[0].text)
+		}
+
+		return response.data.choices[0].text;
+	};
+
+
 	const selectFiles = (event) => {
 		let images = [];
 
@@ -99,14 +147,17 @@ const POIData = () => {
 		e.preventDefault();
 		var point = {}
 
-		if (name != "") {
-			point.name = JSON.parse(name)
+		if (nameTransl != "") {
+			point.name = JSON.parse(nameTransl)
 		}
-		if (shortInfo != "") {
-			point.shortInfo = JSON.parse(shortInfo)
+		if (shortInfoPointTransl != "") {
+			point.shortInfo = JSON.parse(shortInfoPointTransl)
 		}
-		if (longInfo != "") {
-			point.longInfo = JSON.parse(longInfo)
+		if (longInfoPointTransl != "") {
+			point.longInfo = JSON.parse(longInfoPointTransl)
+		}
+		if (voucherDescTransl != "") {
+			point.voucherDesc = voucherDescTransl
 		}
 		if (price != 0) {
 			point.price = price
@@ -140,8 +191,8 @@ const POIData = () => {
 		}
 
 		point.id = homeDataState.updatePointData.point.id
-		point.workingHours =  { monday: { from: mondayFrom, to: mondayTo }, tuesday: { from: tuesdayFrom, to: tuesdayTo }, wednesday: { from: wednesdayFrom, to: wednesdayTo }, thursday: { from: thursdayFrom, to: thursdayTo }, friday: { from: fridayFrom, to: fridayTo }, saturday: { from: saturdayFrom, to: saturdayTo }, sunday: { from: sundayFrom, to: sundayTo } }
-            
+		point.workingHours = { monday: { from: mondayFrom, to: mondayTo }, tuesday: { from: tuesdayFrom, to: tuesdayTo }, wednesday: { from: wednesdayFrom, to: wednesdayTo }, thursday: { from: thursdayFrom, to: thursdayTo }, friday: { from: fridayFrom, to: fridayTo }, saturday: { from: saturdayFrom, to: saturdayTo }, sunday: { from: sundayFrom, to: sundayTo } }
+
 
 		const formData = new FormData();
 
@@ -275,15 +326,40 @@ const POIData = () => {
 												<label><b>Name</b></label>
 												<div class="row" >
 													<div class="form-group col-lg-10">
+														{edit &&
+															<div>
+																<input
 
+																	className={"form-control"}
+																	placeholder="Name"
+																	aria-describedby="basic-addon1"
+																	id="name"
+																	type="text"
+																	style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
+
+																	onChange={(e) => setName(e.target.value)}
+																	value={name}
+																/>
+
+																<button
+																	style={{ background: "#0099ff", marginTop: "px", height: "35px" }}
+
+																	onClick={(e) => fetchData(name, 1)}
+																	className="btn btn-primary btn-xl"
+																	id="sendMessageButton"
+																	type="button"
+																>
+																	Translate partners name
+																</button>
+															</div>}
 														<input
 															readOnly={!edit}
 															aria-describedby="basic-addon1"
 															id="name"
 															type="text"
 															style={{ backgroundColor: edit === true ? '#DCDCDC' : 'white', outline: 'none' }}
-															onChange={(e) => setName(e.target.value)}
-															value={name === "" ? JSON.stringify(homeDataState.updatePointData.point.name) : name}
+															onChange={(e) => setNameTransl(e.target.value)}
+															value={nameTransl === "" ? JSON.stringify(homeDataState.updatePointData.point.name) : nameTransl}
 														/>
 
 													</div>
@@ -297,6 +373,22 @@ const POIData = () => {
 												<label><b>Short description</b></label>
 												<div class="row" >
 													<div class="form-group col-lg-10">
+														{edit &&
+															<div>
+																<textarea className="form-control" style={{ height: "100px", width: "1000px" }} type="textarea" required name="message" placeholder='Short description' value={shortInfo} onChange={(e) => setShortInfo(e.target.value)}></textarea>
+
+																<button
+																	style={{ background: "#0099ff", marginTop: "px", height: "35px" }}
+
+																	onClick={(e) => fetchData(shortInfo, 2)}
+																	className="btn btn-primary btn-xl"
+																	id="sendMessageButton"
+																	type="button"
+																>
+																	Translate short description
+																</button>
+
+															</div>}
 														<textarea
 															readOnly={!edit}
 															placeholder="Short description"
@@ -304,9 +396,10 @@ const POIData = () => {
 															id="name"
 															type="textarea"
 															style={{ backgroundColor: edit === true ? '#DCDCDC' : 'white', outline: 'none' }}
-															onChange={(e) => setShortInfo(e.target.value)}
-															value={shortInfo === "" ? JSON.stringify(homeDataState.updatePointData.point.shortInfo) : shortInfo}
+															onChange={(e) => setShortInfoPointTransl(e.target.value)}
+															value={shortInfoPointTransl === "" ? JSON.stringify(homeDataState.updatePointData.point.shortInfo) : shortInfoPointTransl}
 														/>
+
 													</div>
 												</div>
 											</div>
@@ -317,6 +410,19 @@ const POIData = () => {
 												<label><b>Long description</b></label>
 												<div class="row" >
 													<div class="form-group col-lg-10">
+														{edit &&
+															<div><textarea className="form-control" style={{ height: "200px", width: "1000px" }} type="textarea" required name="message" placeholder='Long description' value={longInfo} onChange={(e) => setLongInfo(e.target.value)}></textarea>
+																<button
+																	style={{ background: "#0099ff", marginTop: "px", height: "35px" }}
+
+																	onClick={(e) => fetchData(longInfo, 3)}
+																	className="btn btn-primary btn-xl"
+																	id="sendMessageButton"
+																	type="button"
+																>
+																	Translate long description
+																</button>
+															</div>}
 														<textarea
 															readOnly={!edit}
 															placeholder="Long description"
@@ -324,8 +430,8 @@ const POIData = () => {
 															id="name"
 															type="textarea"
 															style={{ backgroundColor: edit === true ? '#DCDCDC' : 'white', outline: 'none' }}
-															onChange={(e) => setLongInfo(e.target.value)}
-															value={longInfo === "" ? JSON.stringify(homeDataState.updatePointData.point.longInfo) : longInfo}
+															onChange={(e) => setLongInfoPointTransl(e.target.value)}
+															value={longInfoPointTransl === "" ? JSON.stringify(homeDataState.updatePointData.point.longInfo) : longInfoPointTransl}
 														/>
 													</div>
 												</div>
@@ -358,6 +464,47 @@ const POIData = () => {
 																		)};
 
 																	</select>}
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+
+												<div className="control-group">
+													<div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
+														<label><b>Voucher description*</b></label>
+														<div class="row" >
+															<div class="form-group col-lg-10">
+																{edit &&
+																	<div><textarea className="form-control" style={{ height: "200px", width: "1000px" }} type="textarea" required name="message" placeholder='Voucher description' value={voucherDesc} onChange={(e) => setVoucherDesc(e.target.value)}></textarea>
+																		<button
+																			style={{ background: "#0099ff", marginTop: "px", height: "35px" }}
+
+																			onClick={(e) => fetchData(voucherDesc, 4)}
+																			className="btn btn-primary btn-xl"
+																			id="sendMessageButton"
+																			type="button"
+																		>
+																			Translate voucher description
+																		</button>
+																	</div>}
+																<div >
+
+																	<div class="form-group col-lg-10">
+																		<input
+
+																			className={"form-control"}
+																			placeholder='Voucher description translated'
+																			aria-describedby="basic-addon1"
+																			id="name"
+																			type="text"
+																			style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
+
+																			onChange={(e) => setVoucherDescTransl(e.target.value)}
+																			value={voucherDescTransl}
+																		/>
+
+																	</div>
 																</div>
 															</div>
 														</div>

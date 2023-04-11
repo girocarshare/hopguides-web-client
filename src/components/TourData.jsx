@@ -7,6 +7,7 @@ import { YMaps, Map } from "react-yandex-maps";
 import { AiOutlineClose } from 'react-icons/ai';
 import ReactAudioPlayer from 'react-audio-player';
 import { StyledEngineProvider } from "@mui/material";
+import Axios from "axios";
 const mapState = {
 	center: [44, 21],
 	zoom: 8,
@@ -17,14 +18,19 @@ const TourData = () => {
 
 	const addressInput = React.createRef(null);
 	const [title, setTitle] = useState("");
+	const [place, setPlace] = useState("");
+	const [titleTransl, setTitleTransl] = useState("");
+	const [agreementTitle, setAgreementTitle] = useState("");
+	const [agreementTitleTransl, setAgreementTitleTransl] = useState("");
+	const [agreementDesc, setAgreementDesc] = useState("");
+	const [agreementDescTransl, setAgreementDescTransl] = useState("");
+	const [changeTermsAndConditions, setChangeTermsAndConditions] = useState(false);
 	const [shortInfo, setShortInfo] = useState("");
 	const [longInfo, setLongInfo] = useState("");
 	const [price, setPrice] = useState(0);
 
 	const [edit, setEdit] = useState(false);
 	const [titlePoint, setTitlePoint] = useState("");
-	const [agreementTitle, setAgreementTitle] = useState("");
-	const [agreementDesc, setAgreementDesc] = useState("");
 	const [currency, setCurrency] = useState("");
 	const [currencyList, setCurrencyList] = useState(["£", "€", "$"]);
 
@@ -42,21 +48,101 @@ const TourData = () => {
 	const [showModal, setShowModal] = useState(false);
 	const progressInfosRef = useRef(null);
 
-	
+
 
 	const { homeDataState, dispatch } = useContext(HomeDataContext);
+
+
+
+
+
+	const fetchData = async (input, num) => {
+		const response = await Axios.post(
+			"https://api.openai.com/v1/completions",
+			{
+				prompt: `translate "${input}" to english, spanish, serbian and slovenian and make it as one json with lower case letters as keys`,
+				model: 'text-davinci-002',
+				max_tokens: 500,
+				n: 1,
+				stop: ".",
+			},
+			{
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer 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`,
+				},
+			}
+		);
+
+		if (num == 1) {
+
+			setTitleTransl(response.data.choices[0].text)
+		} else if (num == 2) {
+
+			setAgreementTitleTransl(response.data.choices[0].text)
+		} else if (num == 3) {
+
+			setAgreementDescTransl(response.data.choices[0].text)
+		}
+
+		return response.data.choices[0].text;
+	};
+
+
+	const makeShortAndLongDesc = async (input) => {
+		const response = await Axios.post(
+			"https://api.openai.com/v1/completions",
+			{
+				prompt: `write me a short description about ${input}, translate it to english, spanish, serbian and slovenian and make it as one json with lower case letters as keys`,
+				model: 'text-davinci-003',
+				max_tokens: 2049,
+				n: 1,
+			},
+			{
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer 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`,
+				},
+			}
+		);
+
+		setShortInfo(response.data.choices[0].text)
+
+		const response2 = await Axios.post(
+			"https://api.openai.com/v1/completions",
+			{
+				prompt: `write me a long description about ${input}, translate it to to english, spanish, serbian and slovenian and make it as one json with lower case letters as keys`,
+				model: 'text-davinci-003',
+				max_tokens: 2049,
+				n: 1,
+			},
+			{
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer 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`,
+				},
+			}
+		);
+
+
+		setLongInfo(response2.data.choices[0].text)
+		return response.data.choices[0].text;
+	};
+
+
+
 	const editTermsAndConditions = () => {
 
 		setShowModal(true)
 
-		if(homeDataState.updateTourData.tour.termsAndConditions == ""){
-			
-		setTermsAndConditions(eval('`' + homeDataState.termsAndConditionsModal.text + '`'))
-		}else{
+		if (homeDataState.updateTourData.tour.termsAndConditions == "") {
+
+			setTermsAndConditions(eval('`' + homeDataState.termsAndConditionsModal.text + '`'))
+		} else {
 
 			setTermsAndConditions(eval('`' + homeDataState.updateTourData.tour.termsAndConditions + '`'))
 		}
-		
+
 
 
 	};
@@ -64,98 +150,98 @@ const TourData = () => {
 		e.preventDefault();
 		var tour = {}
 
-		if(title != ""){
-			tour.title = JSON.parse(title)
+		if (titleTransl != "") {
+			tour.title = JSON.parse(titleTransl)
 		}
-		 if(agreementTitle != ""){
-			tour.agreementTitle = JSON.parse(agreementTitle)
+		if (agreementTitleTransl != "") {
+			tour.agreementTitle = JSON.parse(agreementTitleTransl)
 		}
-		 if(agreementDesc != ""){
-			tour.agreementDesc = JSON.parse(agreementDesc)
+		if (agreementDescTransl != "") {
+			tour.agreementDesc = JSON.parse(agreementDescTransl)
 		}
-		 if(shortInfo != ""){
+		if (shortInfo != "") {
 			tour.shortInfo = JSON.parse(shortInfo)
 		}
-		 if(longInfo != ""){
+		if (longInfo != "") {
 			tour.longInfo = JSON.parse(longInfo)
 		}
-		 if(price != 0){
+		if (price != 0) {
 			tour.price = price
 		}
-		 if(currency != ""){
+		if (currency != "") {
 			tour.currency = currency
 		}
-		 if(duration != ""){
+		if (duration != "") {
 			tour.duration = duration
 		}
-		 if(length != ""){
+		if (length != "") {
 			tour.length = length
 		}
-		
-		if(highestPoint != ""){
+
+		if (highestPoint != "") {
 			tour.highestPoint = highestPoint
-		}	
-		if(currency != ""){
+		}
+		if (currency != "") {
 			tour.currency = currency
 		}
-		
-		tour.id =  homeDataState.updateTourData.tour.tourId
-		
-	
+
+		tour.id = homeDataState.updateTourData.tour.tourId
+
+
 		const formData = new FormData();
-		if(file!=null){
-			
+		if (file != null) {
+
 			formData.append('file', file);
 		}
 
-		if(audio!=null){
+		if (audio != null) {
 
 			formData.append('file', audio);
 		}
-	  
-	  
-			
-			formData.append('tour', JSON.stringify(tour));
-	  
-			console.log(formData)
-			var xhr = new XMLHttpRequest();
-			xhr.addEventListener("load", SuccessHandler, false);
-			xhr.addEventListener("error", ErrorHandler, false);
-			xhr.addEventListener("abort", AbortHandler, false);
-			//************************************** */
-			xhr.open('POST', `${url}api/pnl/tour/update/tour`, true);
-			//xhr.setRequestHeader("Authorization", props.token);
-			xhr.onload = function () {
-			  // do something to response
-			};
-	  
-			xhr.send(formData);
-	  
-			// homeDataService.addTour(tour, dispatch);
-	  
+
+
+
+		formData.append('tour', JSON.stringify(tour));
+
+		console.log(formData)
+		var xhr = new XMLHttpRequest();
+		xhr.addEventListener("load", SuccessHandler, false);
+		xhr.addEventListener("error", ErrorHandler, false);
+		xhr.addEventListener("abort", AbortHandler, false);
+		//************************************** */
+		xhr.open('POST', `${url}api/pnl/tour/update/tour`, true);
+		//xhr.setRequestHeader("Authorization", props.token);
+		xhr.onload = function () {
+			// do something to response
+		};
+
+		xhr.send(formData);
+
+		// homeDataService.addTour(tour, dispatch);
+
 	};
 
-	
-	  const SuccessHandler = (e) => {
-	
-		
+
+	const SuccessHandler = (e) => {
+
+
 		homeDataService.updateTour(true, dispatch);
-	
+
 		//dispatch({ type: homeDataConstants.UPDATE_MENU_PHOTO_SUCCESS });
-	  };
-	  const ErrorHandler = () => {
-	
+	};
+	const ErrorHandler = () => {
+
 		//statusRef.current.innerHTML = "Upload failed";
-	
+
 		//dispatch({ type: homeDataConstants.UPDATE_MENU_PHOTO_FAILURE });
 		homeDataService.updateTour(false, dispatch);
-	  };
-	  const AbortHandler = () => {
-	
+	};
+	const AbortHandler = () => {
+
 		//statusRef.current.innerHTML = "Upload aborted";
-	
+
 		homeDataService.insertData(false, dispatch);
-	  };
+	};
 	const handleModalClose = () => {
 		dispatch({ type: homeDataConstants.HIDE });
 		window.location.reload()
@@ -165,7 +251,7 @@ const TourData = () => {
 		if (e.target.files[0]) {
 
 			var new_file = new File([e.target.files[0]], 'audio1' + titlePoint + "---" + [e.target.files[0].name]);
-			
+
 			setAudio(new_file);
 
 		}
@@ -232,15 +318,38 @@ const TourData = () => {
 												<label><b>Title</b></label>
 												<div class="row" >
 													<div class="form-group col-lg-10">
+														{edit && 
+														<div><input
 
+															className={"form-control"}
+															placeholder='Title'
+															aria-describedby="basic-addon1"
+															id="name"
+															type="text"
+															style={{ backgroundColor: 'white', outline: 'none', width: "800px", height: "50px" }}
+
+															onChange={(e) => setTitle(e.target.value)}
+															value={title}
+														/>
+														<button
+															style={{ background: "#0099ff", marginTop: "px", height: "35px" }}
+
+															onClick={(e) => fetchData(title, 1)}
+															className="btn btn-primary btn-xl"
+															id="sendMessageButton"
+															type="button"
+														>
+															Translate title
+														</button>
+														</div>}
 														<input
 															readOnly={!edit}
 															aria-describedby="basic-addon1"
 															id="name"
 															type="text"
 															style={{ backgroundColor: edit === true ? '#DCDCDC' : 'white', outline: 'none' }}
-															onChange={(e) => setTitle(e.target.value)}
-															value={title === "" ? JSON.stringify(homeDataState.updateTourData.tour.title) : title}
+															onChange={(e) => setTitleTransl(e.target.value)}
+															value={titleTransl === "" ? JSON.stringify(homeDataState.updateTourData.tour.title) : titleTransl}
 														/>
 
 													</div>
@@ -253,6 +362,31 @@ const TourData = () => {
 												<label><b>Agreement title</b></label>
 												<div class="row" >
 													<div class="form-group col-lg-10">
+													{edit && <div>
+														<input
+
+															className={"form-control"}
+															placeholder='Agreement title'
+															aria-describedby="basic-addon1"
+															id="name"
+															type="text"
+															style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
+
+															onChange={(e) => setAgreementTitle(e.target.value)}
+															value={agreementTitle}
+														/>
+														<button
+															style={{ background: "#0099ff", marginTop: "px", height: "35px" }}
+
+															onClick={(e) => fetchData(agreementTitle, 2)}
+															className="btn btn-primary btn-xl"
+															id="sendMessageButton"
+															type="button"
+														>
+															Translate agreement title
+														</button>
+
+</div>}
 														<input
 															readOnly={!edit}
 															aria-describedby="basic-addon1"
@@ -260,8 +394,8 @@ const TourData = () => {
 															id="name"
 															type="text"
 															style={{ backgroundColor: edit === true ? '#DCDCDC' : 'white', outline: 'none' }}
-															onChange={(e) => setAgreementTitle(e.target.value)}
-															value={agreementTitle === "" ? JSON.stringify(homeDataState.updateTourData.tour.agreementTitle) : agreementTitle}
+															onChange={(e) => setAgreementTitleTransl(e.target.value)}
+															value={agreementTitleTransl === "" ? JSON.stringify(homeDataState.updateTourData.tour.agreementTitle) : agreementTitleTransl}
 														/>
 
 													</div>
@@ -275,6 +409,31 @@ const TourData = () => {
 												<label><b>Agreement description</b></label>
 												<div class="row" >
 													<div class="form-group col-lg-10">
+													{edit && <div>
+														<input
+
+															className={"form-control"}
+															placeholder='Agreement description'
+															aria-describedby="basic-addon1"
+															id="name"
+															type="text"
+															style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
+
+															onChange={(e) => setAgreementDesc(e.target.value)}
+															value={agreementDesc}
+														/>
+														<button
+															style={{ background: "#0099ff", marginTop: "px", height: "35px" }}
+
+															onClick={(e) => fetchData(agreementDesc, 3)}
+															className="btn btn-primary btn-xl"
+															id="sendMessageButton"
+															type="button"
+														>
+															Translate agreement description
+														</button>
+</div>}
+
 														<input
 															readOnly={!edit}
 															aria-describedby="basic-addon1"
@@ -282,9 +441,11 @@ const TourData = () => {
 															id="name"
 															type="text"
 															style={{ backgroundColor: edit === true ? '#DCDCDC' : 'white', outline: 'none' }}
-															onChange={(e) => setAgreementDesc(e.target.value)}
-															value={agreementDesc === "" ? JSON.stringify(homeDataState.updateTourData.tour.agreementDesc) : agreementDesc}
+															onChange={(e) => setAgreementDescTransl(e.target.value)}
+															value={agreementDescTransl === "" ? JSON.stringify(homeDataState.updateTourData.tour.agreementDesc) : agreementDescTransl}
 														/>
+
+
 
 													</div>
 												</div>
@@ -293,6 +454,38 @@ const TourData = () => {
 
 										<div className="control-group">
 											<div className="form-group controls mb-0 pb-2" style={{ color: "#6c757d", opacity: 1 }}>
+
+												{edit&& 
+												<div>
+													<label><b>Name of the place*</b></label>
+
+												<div >
+													<div >
+														<input
+
+															className={"form-control"}
+															placeholder='Title'
+															aria-describedby="basic-addon1"
+															id="name"
+															type="text"
+															style={{ backgroundColor: 'white', outline: 'none', width: "800px", height: "50px" }}
+
+															onChange={(e) => setPlace(e.target.value)}
+															value={place}
+														/>
+														<button
+															style={{ background: "#0099ff", marginTop: "px", height: "35px" }}
+
+															onClick={(e) => makeShortAndLongDesc(place)}
+															className="btn btn-primary btn-xl"
+															id="sendMessageButton"
+															type="button"
+														>
+															Generate short and long description
+														</button>
+													</div>
+												</div>
+												</div>}
 												<label><b>Short description</b></label>
 												<div class="row" >
 													<div class="form-group col-lg-10">
@@ -429,7 +622,7 @@ const TourData = () => {
 
 										<div className="control-group">
 											<div className="form-group controls mb-0 pb-2" style={{ color: "#6c757d", opacity: 1 }}>
-												
+
 												<div class="row" >
 													<div class="form-group col-lg-10">
 
@@ -472,7 +665,7 @@ const TourData = () => {
 
 																controls
 															/>}
-																			
+
 															{edit && <input type={"file"} accept={".mp3"} onChange={addFile} />}
 														</div>
 
