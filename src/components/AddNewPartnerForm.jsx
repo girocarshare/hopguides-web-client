@@ -121,7 +121,7 @@ const AddNewPartnerForm = (props) => {
 		 
 			  var point = {
 				num: num,
-				name: titlePoint,
+				name: JSON.parse(titlePoint),
 				shortInfo: JSON.parse(shortInfoPoint),
 				longInfo: JSON.parse(longInfoPoint),
 				price: pointPrice,
@@ -954,7 +954,7 @@ const AddNewPartnerForm = (props) => {
 																{points.map((point) => (
 																	<tbody>
 																		<tr class="border-b dark:border-neutral-500" >
-																			<td class="whitespace-nowrap px-6 py-4 font-medium" style={{ border: "1px solid gray" }}>{point.name}</td>
+																			<td class="whitespace-nowrap px-6 py-4 font-medium" style={{ border: "1px solid gray" }}>{point.name.english}</td>
 																			<td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>{point.shortInfo.english}</td>
 																			<td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>{point.longInfo.english}</td>
 																			<td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>{point.category}</td>
