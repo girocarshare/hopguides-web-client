@@ -100,7 +100,7 @@ const POIData = () => {
 		var point = {}
 
 		if (name != "") {
-			point.name = name
+			point.name = JSON.parse(name)
 		}
 		if (shortInfo != "") {
 			point.shortInfo = JSON.parse(shortInfo)
