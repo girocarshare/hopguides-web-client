@@ -737,7 +737,20 @@ export const homeDataReducer = (state, action) => {
 			case homeDataConstants.GET_BPARTNERS_SUCCESS:
 				prodCpy = { ...state };
 
-				prodCpy.bpartners.bpartners = action.data;
+				var array = [] 
+				var bpartner = {
+					id: "446a706b-baa6-4feb-bc0b-0bcd9b2d2e0b",
+					name: "Business Partner Name One"
+				}
+				var bpartner2 = {
+					id: "446a706b-baa6-4feb-bc0b-0bcd9b2d2e0a",
+					name: "Business Partner Name Two"
+				}
+	
+				array.push(bpartner)
+				array.push(bpartner2)
+
+				prodCpy.bpartners.bpartners = array//action.data;
 	
 				return prodCpy;
 			

@@ -2,9 +2,7 @@ import React, { useContext, useEffect, useState, forwardRef, useRef } from "reac
 import { businessPartnersService } from "../services/BusinessPartnersService";
 import { BusinessPartnersContext } from "../contexts/BusinessPartnersContext";
 import { businessPartnersConstants } from "../constants/BusinessPartnersConstants";
-import TimePicker from 'react-time-picker';
 import { AiOutlineClose } from 'react-icons/ai';
-import ReactAudioPlayer from 'react-audio-player';
 
 var url = process.env.REACT_APP_URL || "http://localhost:8080/";
 const BPartnerData = () => {
@@ -32,11 +30,9 @@ const BPartnerData = () => {
 	const onFileChange = (event) => {
 		var new_file = new File([event.target.files[0]], 'menu' + "---" + [event.target.files[0].name]);
 		setFile(new_file);
-		setImagePreview(URL.createObjectURL(event.target.files[0]));
-
+		setImagePreview(URL.createObjectURL(event.target.files[0]))
 
 	}
-
 
 	const fileData = () => {
 		if (file) {
@@ -54,12 +50,7 @@ const BPartnerData = () => {
 			);
 		}
 	};
-	const ProgressHandler = (e) => {
-		var percent = (e.loaded / e.total) * 100;
-		progressRef.current.value = Math.round(percent);
-		statusRef.current.innerHTML = Math.round(percent) + "% uploaded...";
 
-	};
 
 	const SuccessHandler = (e) => {
 
@@ -70,21 +61,18 @@ const BPartnerData = () => {
 
 		statusRef.current.innerHTML = "Upload failed";
 
-		//dispatch({ type: homeDataConstants.UPDATE_MENU_PHOTO_FAILURE });
-		//reportService.addMenu(false, dispatch);
 	};
 	const AbortHandler = () => {
 
 		statusRef.current.innerHTML = "Upload aborted";
 
-		//reportService.addMenu(false, dispatch);
 	};
 
 	const handleSubmit = (e) => {
 		
 		e.preventDefault();
 
-		var bpartner = {}
+	/*	var bpartner = {}
 
 		if (name != "") {
 			bpartner.name = name
@@ -136,24 +124,20 @@ const BPartnerData = () => {
 		xhr.addEventListener("load", SuccessHandler, false);
 		xhr.addEventListener("error", ErrorHandler, false);
 		xhr.addEventListener("abort", AbortHandler, false);
-		//************************************** */
 		xhr.open('POST', `${url}api/bp/update`, true);
-		//xhr.setRequestHeader("Authorization", props.token);
 		xhr.onload = function () {
 			// do something to response
 		};
 
-		xhr.send(formData);
+		xhr.send(formData);*/
 
-		// homeDataService.addTour(tour, dispatch);
-
-
+		SuccessHandler()
 
 	};
 
 	const handleModalClose = () => {
 		dispatch({ type: businessPartnersConstants.UPDATE_BPARTNER_DATA_MODAL_HIDE });
-		window.location.reload()
+		//window.location.reload()
 	};
 
 	return (
@@ -181,8 +165,6 @@ const BPartnerData = () => {
 								</button>
 							</div>
 							<form id="contactForm" >
-
-
 
 								<table style={{ marginLeft: "4rem", marginBottom: "4rem" }}>
 									<td width="600rem"  >

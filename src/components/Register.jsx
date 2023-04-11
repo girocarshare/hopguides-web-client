@@ -17,6 +17,7 @@ const Register = () => {
 	const [email, setEmail] = useState("");
 	const [name, setName] = useState("");
 	const [support, setSuppoprt] = useState("");
+	const [supportTransl, setSuppoprtTransl] = useState("");
 	const [phone, setPhone] = useState("");
 	const [phone2, setPhone2] = useState("");
 	const [height, setHeight] = useState("");
@@ -25,31 +26,41 @@ const Register = () => {
 	const [webURL, setWebURL] = useState("");
 	const [address, setAddress] = useState("");
 	const [errMessage, setErrMessage] = useState("");
-	const uploadRef = React.useRef();
 	const statusRef = React.useRef();
 	const progressRef = React.useRef();
 	const [file, setFile] = useState(null);
 	const [success, setSuccess] = useState(false);
 
-	const addressInput = React.createRef(null);
-	const [ymaps, setYmaps] = useState(null);
 
-	const onYmapsLoad = (ymaps) => {
-		setYmaps(ymaps)
-		new ymaps.SuggestView(addressInput.current, {
-			provider: {
-				suggest: (request, options) => ymaps.suggest(request),
+	const fetchData = async (input, num) => {
+		const response = await Axios.post(
+			"https://api.openai.com/v1/completions",
+			{
+				prompt: `translate "${input}" to english, spanish, serbian and slovenian and make it as one json with lower case letters as keys`,
+				model: 'text-davinci-002',
+				max_tokens: 500,
+				n: 1,
+				stop: ".",
 			},
-		});
-	};
+			{
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer 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`,
+				},
+			}
+		);
 
+		if (num == 1) {
+
+			setSuppoprtTransl(response.data.choices[0].text)
+		}
+
+		return response.data.choices[0].text;
+	};
 
 	const onFileChange = (event) => {
 		setFile(event.target.files[0]);
-
-
 	}
-
 
 	const fileData = () => {
 		if (file) {
@@ -68,11 +79,6 @@ const Register = () => {
 		}
 	};
 
-	const handleLogout = (event) => {
-
-		window.location = "#/login";
-	}
-
 	const ProgressHandler = (e) => {
 		var percent = (e.loaded / e.total) * 100;
 		progressRef.current.value = Math.round(percent);
@@ -81,113 +87,68 @@ const Register = () => {
 	};
 
 	const SuccessHandler = (e) => {
-
-		//statusRef.current.innerHTML = "Success";
-		//progressRef.current.value = 100;
-		//reportService.addMenu(true, dispatch);
-
-		//dispatch({ type: homeDataConstants.UPDATE_MENU_PHOTO_SUCCESS });
-		setSuccess(true)
+		
+		userService.sendRegistrationMail(true, dispatch);
 	};
+
 	const ErrorHandler = () => {
 
 		statusRef.current.innerHTML = "Upload failed";
-
-		//dispatch({ type: homeDataConstants.UPDATE_MENU_PHOTO_FAILURE });
-		//reportService.addMenu(false, dispatch);
 	};
 	const AbortHandler = () => {
 
 		statusRef.current.innerHTML = "Upload aborted";
 
-		//reportService.addMenu(false, dispatch);
 	};
 	const handleSubmitNew = (e) => {
 
 
 		e.preventDefault();
 
-
-	/*	let street;
-		let city;
-		let country;
-		let latitude;
-		let longitude;
-		let found = true;
-		ymaps.geocode(addressInput.current.value, {
-			results: 1,
-		})
-			.then(function (res) {
-
-				if (typeof res.geoObjects.get(0) === "undefined") found = false;
-				else {
-					var firstGeoObject = res.geoObjects.get(0),
-						coords = firstGeoObject.geometry.getCoordinates();
-
-					console.log(firstGeoObject)
-					latitude = coords[0];
-					longitude = coords[1];
-					country = firstGeoObject.getCountry();
-					street = firstGeoObject.getThoroughfare();
-					city = firstGeoObject.getLocalities().join(", ");
+/*
+		var sendEmailRequest = {
+			name: name,
+			support: JSON.parse(support),
+			dimensions: {
+				height: height,
+				width: width
+			},
+			contact: {
+				phone: phone,
+				phone2: phone2,
+				email: contactEmail,
+				webURL: webURL,
+				location: {
+					street: address,
 				}
-			})
-			.then((res) => {
+			},
+		}
 
-				console.log(height + width)*/
-				var sendEmailRequest = {
-					name: name,
-					support: JSON.parse(support),
-					dimensions: {
-						height: height,
-						width: width
-					},
-					contact: {
-						phone: phone,
-						phone2: phone2,
-						email: contactEmail,
-						webURL: webURL,
-						location: {
-							street: address,
-						}
-					},
-				}
-				
-				if (file == null) {
+		if (file == null) {
 
-					setErrMessage("Please pick a logo photo")
-				} else {
+			setErrMessage("Please pick a logo photo")
+		} else {
 
-					const formData = new FormData();
+			const formData = new FormData();
 
-					formData.append('file', file);
-					formData.append('request', JSON.stringify(sendEmailRequest));
+			formData.append('file', file);
+			formData.append('request', JSON.stringify(sendEmailRequest));
 
-					var xhr = new XMLHttpRequest();
-					xhr.upload.addEventListener("progress", ProgressHandler, false);
-					xhr.addEventListener("load", SuccessHandler, false);
-					xhr.addEventListener("error", ErrorHandler, false);
-					xhr.addEventListener("abort", AbortHandler, false);
-					//************************************** */
-					xhr.open('POST', `${url}api/users/sendRegistrationEmail`, true);
-					//xhr.setRequestHeader("Authorization", props.token);
-					xhr.onload = function () {
-						// do something to response
-					};
+			var xhr = new XMLHttpRequest();
+			xhr.upload.addEventListener("progress", ProgressHandler, false);
+			xhr.addEventListener("load", SuccessHandler, false);
+			xhr.addEventListener("error", ErrorHandler, false);
+			xhr.addEventListener("abort", AbortHandler, false);
+			xhr.open('POST', `${url}api/users/sendRegistrationEmail`, true);
+			xhr.onload = function () {
+			};
 
-					console.log(formData)
-
-					xhr.send(formData);
+			xhr.send(formData);
 
 
-				}
+		}*/
 
-
-			//});
-
-
-
-
+		SuccessHandler()
 	};
 
 
@@ -228,13 +189,53 @@ const Register = () => {
 								<div className="form-group">
 									<input className="form-control" type="text" style={{ height: "50px" }} required name="name" placeholder="Website" value={webURL} onChange={(e) => setWebURL(e.target.value)}></input>
 								</div>
+
+
 								<div className="form-group">
-									<input className="form-control" type="text" style={{ height: "50px" }} required name="name" placeholder='JSON FORMAT: { "language": "Text"}' value={support} onChange={(e) => setSuppoprt(e.target.value)}></input>
+
+
+									<div>
+										<input
+
+											className={"form-control"}
+											placeholder="Support"
+											aria-describedby="basic-addon1"
+											id="name"
+											type="text"
+											style={{ backgroundColor: 'white', outline: 'none', height: "50px" }}
+
+											onChange={(e) => setSuppoprt(e.target.value)}
+											value={support}
+										/>
+
+										<br />
+										<button
+											style={{ background: "#0099ff", marginTop: "px", height: "35px" }}
+
+											onClick={(e) => fetchData(support, 1)}
+											className="btn btn-primary btn-xl"
+											id="sendMessageButton"
+											type="button"
+										>
+											Translate support
+										</button>
+										<br />
+										<input
+											aria-describedby="basic-addon1"
+											id="name"
+											placeholder='JSON FORMAT: { "language": "Text"}'
+											type="text"
+											onChange={(e) => setSuppoprtTransl(e.target.value)}
+											value={supportTransl}
+										/>
+									</div>
+
+
 								</div>
 
 								<div className="form-group">
-								<input className="form-control" type="text" style={{ height: "50px" }} required name="name" placeholder="Address" value={address} onChange={(e) => setAddress(e.target.value)}></input>
-								
+									<input className="form-control" type="text" style={{ height: "50px" }} required name="name" placeholder="Address" value={address} onChange={(e) => setAddress(e.target.value)}></input>
+
 								</div>
 
 								<label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
@@ -249,12 +250,12 @@ const Register = () => {
 								{fileData()}
 
 								<div className="form-group">
-								<input className="form-control" type="text" style={{ height: "50px" }} required name="name" placeholder="Height" value={height} onChange={(e) => setHeight(e.target.value)}></input>
-								
+									<input className="form-control" type="text" style={{ height: "50px" }} required name="name" placeholder="Logo height" value={height} onChange={(e) => setHeight(e.target.value)}></input>
+
 								</div>
 								<div className="form-group">
-								<input className="form-control" type="text" style={{ height: "50px" }} required name="name" placeholder="Width" value={width} onChange={(e) => setWidth(e.target.value)}></input>
-								
+									<input className="form-control" type="text" style={{ height: "50px" }} required name="name" placeholder="Logo width" value={width} onChange={(e) => setWidth(e.target.value)}></input>
+
 								</div>
 
 								<br />

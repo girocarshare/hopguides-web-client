@@ -114,34 +114,19 @@ function forgotPassword(sendEmailRequest, dispatch) {
 	}
 }
 
-
-function sendRegistrationMail(sendEmailRequest, dispatch) {
+function sendRegistrationMail( tf, dispatch) {
 	
-
-	dispatch(request());
-	Axios.post(`${url}api/users/sendRegistrationEmail`, sendEmailRequest, { validateStatus: () => true })
-		.then((res) => {
-			if (res.status === 200) {
-				dispatch(success());
-							
-			} else {
-				dispatch(failure(res.data.error));
-			} 
-		})
-		.catch((err) =>{
-			
-			var error = "Unknown error, please try again later."
-				dispatch(failure(error));
-			})
-
-	function request() {
-		return { type: userConstants.REGISTRATION_MAIL_REQUEST };
+	if(tf){
+		dispatch(success());
+	}else{
+		dispatch(failure("Error while sending registration mail"));
 	}
+
 	function success() {
+		//window.location.reload()
 		return { type: userConstants.REGISTRATION_MAIL_SUCCESS };
 	}
 	function failure(error) {
-		
 		return { type: userConstants.REGISTRATION_MAIL_FAILURE, error };
 	}
 }

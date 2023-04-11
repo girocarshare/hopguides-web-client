@@ -127,7 +127,7 @@ const HomeData = forwardRef((props, ref) => {
     window.location = "#/report/" + data;
   };
 
-  
+
   const seeTermsAndConditions = (e, data) => {
 
     window.location = "#/termsAndConditions/" + data;
@@ -136,15 +136,15 @@ const HomeData = forwardRef((props, ref) => {
 
   const updateLogo = (e) => {
 
-    
+
     dispatch({ type: homeDataConstants.SHOW_UPDATE_LOGO_MODAL });
   };
 
-  
+
 
   const editLockCode = (e) => {
 
-    
+
     dispatch({ type: homeDataConstants.SHOW_CHANGE_LOCK_CODE_MODAL });
   };
 
@@ -156,7 +156,7 @@ const HomeData = forwardRef((props, ref) => {
   const addNewPartner = (e, id, bpartnerId) => {
 
     console.log(bpartnerId)
-    dispatch({ type: homeDataConstants.SHOW_ADD_PARTNER_MODAL, id: id, bpartnerId:bpartnerId });
+    dispatch({ type: homeDataConstants.SHOW_ADD_PARTNER_MODAL, id: id, bpartnerId: bpartnerId });
   };
 
 
@@ -189,15 +189,23 @@ const HomeData = forwardRef((props, ref) => {
     window.location.href = "#/register"
   };
 
+  const allBusinessPartners = () => {
+    window.location.href = "#/businesspartners"
+  };
+
+  const insertdata = () => {
+    window.location.href = "#/insertdata"
+  };
+
 
 
   const update = (e, tour) => {
 
 
 
-    dispatch({ type: homeDataConstants.UPDATE_TOUR_DATA_MODAL_SHOW, tour});
+    dispatch({ type: homeDataConstants.UPDATE_TOUR_DATA_MODAL_SHOW, tour });
 
-  
+
   };
 
   const deleteTour = async (e, tour) => {
@@ -205,7 +213,7 @@ const HomeData = forwardRef((props, ref) => {
 
     await homeDataService.deleteTour(dispatch, tour.tourId);
 
-  
+
   };
 
   const deletePoi = async (e, tour, poiId) => {
@@ -213,12 +221,12 @@ const HomeData = forwardRef((props, ref) => {
 
     await homeDataService.deletePoi(dispatch, tour.tourId, poiId);
 
-  
+
   };
 
   const updatePartnerPrice = (e, point, tour) => {
 
-    dispatch({ type: homeDataConstants.UPDATE_POINT_DATA_MODAL_SHOW, point});
+    dispatch({ type: homeDataConstants.UPDATE_POINT_DATA_MODAL_SHOW, point });
 
 
   };
@@ -243,7 +251,7 @@ const HomeData = forwardRef((props, ref) => {
       {homeDataState.updateTourData.show && <div >
         <TourData />
       </div>}
-      {role &&
+      {!role &&
         <div class="button-login">
 
           <button
@@ -257,7 +265,7 @@ const HomeData = forwardRef((props, ref) => {
         </div>
       }
 
-      {!role &&
+      {/*{role &&*/}
         <div class=" button-login">
           <button
             type="button"
@@ -268,8 +276,10 @@ const HomeData = forwardRef((props, ref) => {
             Log out
           </button>
         </div>
-      }
-      <br /> {!role &&
+     {/*}*/} 
+      <br /> 
+      
+      {/*{role &&*/}
         <div class=" button-login">
           <button
             type="button"
@@ -280,8 +290,10 @@ const HomeData = forwardRef((props, ref) => {
             Edit logo
           </button>
         </div>
-      }  
-      <br /> {!role &&
+      
+      {/*}*/}
+      <br /> 
+     {/*{role &&*/}
         <div class=" button-login">
           <button
             type="button"
@@ -292,9 +304,9 @@ const HomeData = forwardRef((props, ref) => {
             Edit lock code
           </button>
         </div>
-      }
+      {/*}*/}
       <br />
-      {adminOnly &&
+      {/*{adminOnly &&*/}
         <div class="button-login">
 
           <button
@@ -305,9 +317,34 @@ const HomeData = forwardRef((props, ref) => {
             Register new user
           </button>
         </div>
-      }
+      {/*}*/}
+      <br />
+      {/*{adminOnly &&*/}
+        <div class="button-login">
 
+          <button
+            type="button" style={{ background: "#0099ff", marginTop: "px", marginRight: "55px", padding: "5px 15px", height: "35px" }}
+            onClick={allBusinessPartners}
+            class="btn btn-primary btn-lg"
+          >
+            All business partners
+          </button>
+        </div>
+      {/*}*/}
 
+      <br />
+      {/*{adminOnly &&*/}
+        <div class="button-login">
+
+          <button
+            type="button" style={{ background: "#0099ff", marginTop: "px", marginRight: "55px", padding: "5px 15px", height: "35px" }}
+            onClick={insertdata}
+            class="btn btn-primary btn-lg"
+          >
+            Insert new data
+          </button>
+        </div>
+      {/*}*/}
 
 
 
@@ -352,8 +389,8 @@ const HomeData = forwardRef((props, ref) => {
                 <th style={{ border: "1px solid gray" }}>Number of executed tours for current month</th>
                 <th style={{ border: "1px solid gray" }}>Get monthly report</th>
                 <th style={{ border: "1px solid gray" }}>Update</th>
-                    <th style={{ border: "1px solid gray" }}>Delete</th>
-                    <th style={{ border: "1px solid gray" }}>See terms and conditions</th>
+                <th style={{ border: "1px solid gray" }}>Delete</th>
+                <th style={{ border: "1px solid gray" }}>See terms and conditions</th>
               </tr>
             </thead>
 
@@ -387,15 +424,15 @@ const HomeData = forwardRef((props, ref) => {
                   <td style={{ border: "1px solid gray" }}><button onClick={(e) => update(e, tour)} >{updateField}</button></td>
                   <td style={{ border: "1px solid gray" }}><button onClick={(e) => deleteTour(e, tour)} >Delete</button></td>
                   <td style={{ border: "1px solid gray" }}><button
-                        color="inherit"
-                        onClick={(event) => {
+                    color="inherit"
+                    onClick={(event) => {
 
-                          seeTermsAndConditions(event, tour.tourId)
-                        }}
-                      >
-                        <MdLaunch />
+                      seeTermsAndConditions(event, tour.tourId)
+                    }}
+                  >
+                    <MdLaunch />
 
-                      </button></td>
+                  </button></td>
 
                 </tr>
               </tbody>))
@@ -450,7 +487,7 @@ const HomeData = forwardRef((props, ref) => {
 
                       </button></td>
                       <td style={{ border: "1px solid gray" }}>{points.point.name.english}</td>
-                     
+
                       <td style={{ border: "1px solid gray" }}>
                         <input
                           readOnly={!editPartner || rowId != points.point.id}
@@ -476,8 +513,8 @@ const HomeData = forwardRef((props, ref) => {
                         />
                       </td>
 
-                      
-                  <td style={{ border: "1px solid gray" }}>{points.point.category}</td>
+
+                      <td style={{ border: "1px solid gray" }}>{points.point.category}</td>
 
                       <td style={{ border: "1px solid gray" }}>{points.monthlyUsed}</td>
 

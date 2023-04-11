@@ -12,7 +12,6 @@ var url = process.env.REACT_APP_URL || "http://localhost:8080/";
 
 var num = 1;
 const InsertData = (props) => {
-  const addressInput = React.createRef(null);
   const [place, setPlace] = useState("");
   const [title, setTitle] = useState("");
   const [titleTransl, setTitleTransl] = useState("");
@@ -27,6 +26,7 @@ const InsertData = (props) => {
   const [currencyList, setCurrencyList] = useState(["£", "€", "$"]);
   const [price, setPrice] = useState("");
   const [showModal, setShowModal] = useState(false);
+
 
   const [titlePoint, setTitlePoint] = useState("");
   const [titlePointTransl, setTitlePointTransl] = useState("");
@@ -46,7 +46,6 @@ const InsertData = (props) => {
   const [latitude, setLatitude] = useState("");
   const [phone, setPhone] = useState("");
   const [hotelId, setHotelId] = useState("");
-  const [ymaps, setYmaps] = useState(null);
   const [email, setEmail] = useState("");
   const [responsiblePerson, setResponsiblePerson] = useState("");
   const [webURL, setWebUrl] = useState("");
@@ -87,7 +86,6 @@ const InsertData = (props) => {
   const [audio, setAudio] = useState();
   const [audio2, setAudio2] = useState();
   const [audios, setAudios] = useState([]);
-  const uploadRef = React.useRef();
   const statusRef = React.useRef();
   const progressRef = React.useRef();
 
@@ -99,12 +97,10 @@ const InsertData = (props) => {
   const [progressInfos, setProgressInfos] = useState({ val: [] });
   const [message, setMessage] = useState([]);
   const [imageInfos, setImageInfos] = useState([]);
-  const progressInfosRef = useRef(null);
 
   const { homeDataState, dispatch } = useContext(HomeDataContext);
 
   const [termsAndConditions, setTermsAndConditions] = useState("");
-
 
 
   const fetchData = async (input, num) => {
@@ -192,8 +188,6 @@ const InsertData = (props) => {
     return response.data.choices[0].text;
   };
 
-
-
   const someFetchActionCreator = () => {
     const getDocumentsInfoHandler = async () => {
       await homeDataService.getBPartners(dispatch);
@@ -231,7 +225,7 @@ const InsertData = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (titleTransl == "" || agreementDescTransl == "" || agreementDescTransl == "" || audio == null || shortInfo == "" || longInfo == "" || price == "" || hotelId == "" || duration == "" || length == "" || highestPoint == "") {
+    /*if (titleTransl == "" || agreementDescTransl == "" || agreementDescTransl == "" || audio == null || shortInfo == "" || longInfo == "" || price == "" || hotelId == "" || duration == "" || length == "" || highestPoint == "") {
 
       setErrMessage("Please fill in the fileds marked with *")
     } else {
@@ -268,7 +262,6 @@ const InsertData = (props) => {
 
         formData.append('file', a);
       }
-      //formData.append('audio', audio);
       formData.append('tour', JSON.stringify(tour));
 
       console.log(tour)
@@ -277,17 +270,16 @@ const InsertData = (props) => {
       xhr.addEventListener("load", SuccessHandler, false);
       xhr.addEventListener("error", ErrorHandler, false);
       xhr.addEventListener("abort", AbortHandler, false);
-      //************************************** */
       xhr.open('POST', `${url}api/pnl/tour/addFull/add`, true);
-      //xhr.setRequestHeader("Authorization", props.token);
       xhr.onload = function () {
-        // do something to response
       };
 
       xhr.send(formData);
 
 
-    }
+    }*/
+    SuccessHandler()
+
   };
 
 
@@ -296,8 +288,6 @@ const InsertData = (props) => {
     setPoint(false)
 
   };
-
-
 
   const addPoint = () => {
     setPartner(false)
@@ -310,13 +300,11 @@ const InsertData = (props) => {
     setShowModal(true)
     setTermsAndConditions(eval('`' + homeDataState.termsAndConditionsModal.text + '`'))
 
-
   };
-
 
   const handleAdd = (e) => {
 
-    if (partner && (titlePointTransl == "" || shortInfoPointTransl == "" || longInfoPointTransl == "" || category == "" || pointPrice == "" || offerName == "" || responsiblePerson == "" || voucherDescTransl == "" || phone == "" || email == "" || longitude == "" || latitude == "" || audio2 == null || selectedFiles.length == 0 || (!mondayclosed && (mondayFrom == "" || mondayTo == "")) || (!tuesdayclosed && (tuesdayFrom == "" || tuesdayTo == "")) || (!wednesdayclosed && (wednesdayFrom == "" || wednesdayTo == "")) || (!thursdayclosed && (thursdayFrom == "" || thursdayTo == "")) || (!fridayclosed && (fridayFrom == "" || fridayTo == "")) || (!saturdayclosed && (saturdayFrom == "" || saturdayTo == "")) || (!sundayclosed && (sundayFrom == "" || sundayTo == "")))) {
+    /*if (partner && (titlePointTransl == "" || shortInfoPointTransl == "" || longInfoPointTransl == "" || category == "" || pointPrice == "" || offerName == "" || responsiblePerson == "" || voucherDescTransl == "" || phone == "" || email == "" || longitude == "" || latitude == "" || audio2 == null || selectedFiles.length == 0 || (!mondayclosed && (mondayFrom == "" || mondayTo == "")) || (!tuesdayclosed && (tuesdayFrom == "" || tuesdayTo == "")) || (!wednesdayclosed && (wednesdayFrom == "" || wednesdayTo == "")) || (!thursdayclosed && (thursdayFrom == "" || thursdayTo == "")) || (!fridayclosed && (fridayFrom == "" || fridayTo == "")) || (!saturdayclosed && (saturdayFrom == "" || saturdayTo == "")) || (!sundayclosed && (sundayFrom == "" || sundayTo == "")))) {
 
       setErrMessagePartner("Please insert mandatory fields for partner (marked with *)")
     } else if (point && (titlePointTransl == "" || shortInfoPointTransl == "" || longInfoPointTransl == "" || category == "" || longitude == "" || latitude == "" || audio2 == null || selectedFiles.length == 0)) {
@@ -339,8 +327,6 @@ const InsertData = (props) => {
         bpartnerId: hotelId,
         category: category
       }
-
-
 
       if (voucherDesc == "") {
         point.voucherDesc = JSON.parse(`{
@@ -390,7 +376,34 @@ const InsertData = (props) => {
       setImagePreviews([])
       num = num + 1
 
+    }*/
+
+    var point = {
+      num: num,
+      name: JSON.parse(`{"english": "Name text", "slovenian": "naslovno besedilo" } `),
+      shortInfo: JSON.parse(`{"english": "Short description", "slovenian": "naslovno besedilo" } `),
+      longInfo: JSON.parse(`{"english": "Long description", "slovenian": "naslovno besedilo" } `),
+      price: 5,
+      offerName: "Offer name",
+      contact: { phone: "+38669617624", email: "email@gmail.com", webURL: "www.page.com", name: "Responsible person name" },
+      location: { latitude: "13.4125895", longitude: "49.8151515" },
+      workingHours: { monday: { from: mondayFrom, to: mondayTo }, tuesday: { from: tuesdayFrom, to: tuesdayTo }, wednesday: { from: wednesdayFrom, to: wednesdayTo }, thursday: { from: thursdayFrom, to: thursdayTo }, friday: { from: fridayFrom, to: fridayTo }, saturday: { from: saturdayFrom, to: saturdayTo }, sunday: { from: sundayFrom, to: sundayTo } },
+      bpartnerId: hotelId,
+      category: "NATURE"
     }
+
+    if (voucherDesc == "") {
+      point.voucherDesc = JSON.parse(`{"english": "", "spanish": "", "serbian": "",  "slovenian": "" }`)
+      point.partner = false
+    } else {
+      point.voucherDesc = JSON.parse(`{"english": "Voucher text", "slovenian": "naslovno besedilo" } `)
+      point.partner = true
+    }
+    const newData = [point, ...points];
+
+    setPoints(newData)
+
+
   }
 
   const addFile = (e) => {
@@ -612,7 +625,7 @@ const InsertData = (props) => {
                       <input
 
                         className={"form-control"}
-                        placeholder='Title translated'
+                        placeholder='JSON FORMAT: { "language": "Text"}'
                         aria-describedby="basic-addon1"
                         id="name"
                         type="text"
@@ -724,7 +737,7 @@ const InsertData = (props) => {
                     <input
 
                       className={"form-control"}
-                      placeholder='Agreement title translated'
+                      placeholder='JSON FORMAT: { "language": "Text"}'
                       aria-describedby="basic-addon1"
                       id="name"
                       type="text"
@@ -774,7 +787,7 @@ const InsertData = (props) => {
                           <input
 
                             className={"form-control"}
-                            placeholder='Agreement description translated'
+                            placeholder='JSON FORMAT: { "language": "Text"}'
                             aria-describedby="basic-addon1"
                             id="name"
                             type="text"
@@ -1005,7 +1018,7 @@ const InsertData = (props) => {
                               <input
 
                                 className={"form-control"}
-                                placeholder='Partners name translated'
+                                placeholder='JSON FORMAT: { "language": "Text"}'
                                 aria-describedby="basic-addon1"
                                 id="name"
                                 type="text"
@@ -1046,7 +1059,7 @@ const InsertData = (props) => {
                               <input
 
                                 className={"form-control"}
-                                placeholder='Short description translated'
+                                placeholder='JSON FORMAT: { "language": "Text"}'
                                 aria-describedby="basic-addon1"
                                 id="name"
                                 type="text"
@@ -1086,7 +1099,7 @@ const InsertData = (props) => {
                               <input
 
                                 className={"form-control"}
-                                placeholder='Long description translated'
+                                placeholder='JSON FORMAT: { "language": "Text"}'
                                 aria-describedby="basic-addon1"
                                 id="name"
                                 type="text"
@@ -1126,7 +1139,7 @@ const InsertData = (props) => {
                               <input
 
                                 className={"form-control"}
-                                placeholder='Voucher description translated'
+                                placeholder='JSON FORMAT: { "language": "Text"}'
                                 aria-describedby="basic-addon1"
                                 id="name"
                                 type="text"
@@ -1701,7 +1714,7 @@ const InsertData = (props) => {
                             {point.contact.phone == "" ? <td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>/</td> : <td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>{point.contact.phone}</td>}
                             {point.contact.webURL == "" ? <td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>/</td> : <td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>{point.contact.webURL}</td>}
 
-                            <td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>{`${point.location.street}  ${point.location.city} ${point.location.country} ${point.location.latitute}  ${point.location.longitude}`}</td>
+                            <td class="whitespace-nowrap px-6 py-4" style={{ border: "1px solid gray" }}>{`${point.location.latitude}  ${point.location.longitude}`}</td>
 
                           </tr>
                         </tbody>))

@@ -5,7 +5,6 @@ import { authHeader } from "../helpers/auth-header";
 var url = process.env.REACT_APP_URL || "http://localhost:8080/";
 
 export const homeDataService = {
-	//getData,
 	getToursAndPointsData,
 	getPreviousMonthsData,
 	addTour,
@@ -382,8 +381,12 @@ async function getQrCode(dispatch,id) {
 
 
 async function getBPartners(dispatch ) {
+	dispatch(success([]));
+	function success(data) {
+		return { type: homeDataConstants.GET_BPARTNERS_SUCCESS, data: data };
+	}
 
-	await Axios.get(`${url}api/bp/all`, { validateStatus: () => true })
+	/*await Axios.get(`${url}api/bp/all`, { validateStatus: () => true })
 		.then((res) => {
 			if (res.status === 200) {
 				dispatch(success(res.data));
@@ -408,5 +411,5 @@ async function getBPartners(dispatch ) {
 	function failure(message) {
 
 		return { type: homeDataConstants.GET_BPARTNERS_FAILURE, errorMessage: message };
-	}
+	}*/
 }
