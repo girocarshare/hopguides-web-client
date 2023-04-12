@@ -35,7 +35,6 @@ const HomePageData = forwardRef((props, ref) => {
     return (
 
         <div>
-<button class="bg-red-500 ..."> DUGMEE</button>
              <HomeData 
             data = {homeDataState.toursWithPoints.toursWithPoints}
             tours = {tours}/>
