@@ -711,7 +711,18 @@ export const homeDataReducer = (state, action) => {
 
 			return prodCpy;
 
+			case homeDataConstants.HIDE_EDIT_LOGO_MODAL:
 
+
+			return {
+				...state,
+
+				showEditLogoModal: false,
+			
+
+			};
+
+			
 		case homeDataConstants.SHOW_ADD_PARTNER_MODAL:
 
 			return {

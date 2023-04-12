@@ -20,8 +20,6 @@ const AddNewPartnerForm = (props) => {
 
 	const addressInput = React.createRef(null);
 
-
-
 	const [titlePoint, setTitlePoint] = useState("");
 	const [shortInfoPoint, setShortInfoPoint] = useState("");
 	const [longInfoPoint, setLongInfoPoint] = useState("");
