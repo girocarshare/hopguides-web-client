@@ -614,6 +614,17 @@ export const homeDataReducer = (state, action) => {
 			};
 
 
+			case homeDataConstants.HIDE_EDIT_LOGO_MODAL:
+
+
+			return {
+				...state,
+
+				showEditLogoModal: false,
+			
+
+			};
+
 		case homeDataConstants.UPDATE_LOGO_PHOTO_SUCCESS:
 
 
