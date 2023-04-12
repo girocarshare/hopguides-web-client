@@ -14,6 +14,7 @@ var num = 1;
 const InsertData = (props) => {
   const [place, setPlace] = useState("");
   const [title, setTitle] = useState("");
+  const [imageTitles, setImageTitles] = useState([]);
   const [titleTransl, setTitleTransl] = useState("");
   const [agreementTitle, setAgreementTitle] = useState("");
   const [agreementTitleTransl, setAgreementTitleTransl] = useState("");
@@ -205,22 +206,19 @@ const InsertData = (props) => {
   const selectFiles = (event) => {
     let images = [];
 
-    if (titlePoint == "") {
-      setErrMessagePhoto("Please first insert partners name")
-    } else {
-      var fs = []
-      for (let i = 0; i < event.target.files.length; i++) {
-        images.push(URL.createObjectURL(event.target.files[i]));
-        var new_file = new File([event.target.files[i]], 'partner' + num + "---" + [event.target.files[i].name]);
-        fs.push(new_file)
+    var fs = []
+    for (let i = 0; i < event.target.files.length; i++) {
+      images.push(URL.createObjectURL(event.target.files[i]));
+      var new_file = new File([event.target.files[i]], i + 'partner' + num + "---" + [event.target.files[i].name]);
+      fs.push(new_file)
 
-      }
-
-      setSelectedFiles(selectedFiles.concat(fs))
-      setImagePreviews(images);
-      setProgressInfos({ val: [] });
-      setMessage([]);
     }
+
+    setSelectedFiles(selectedFiles.concat(fs))
+    setImagePreviews(images);
+    setProgressInfos({ val: [] });
+    setMessage([]);
+
   };
 
   const handleSubmit = (e) => {
@@ -283,6 +281,46 @@ const InsertData = (props) => {
   };
 
 
+  const changeImageTitle = (e, i) => {
+
+    var tf = false;
+    if (imageTitles.length == 0) {
+      var p = e + "---" + i
+      const newData = [p, ...imageTitles];
+      setImageTitles(newData)
+    } else {
+
+      for (var a of imageTitles) {
+        var h = a.split('---')
+        if (h[1] == i) {
+          tf = true
+        }
+      }
+
+      if (tf) {
+        for (var a of imageTitles) {
+
+          var h = a.split('---')
+          if (h[1] == i) {
+            var arr = imageTitles
+            arr.pop(a)
+            var p = e + "---" + i
+            arr.push(p)
+            setImageTitles(arr)
+          }
+
+        }
+      } else {
+        var p = e + "---" + i
+        var arr = imageTitles
+        arr.push(p)
+        setImageTitles(arr)
+
+      }
+
+    }
+  };
+
   const addPartner = () => {
     setPartner(true)
     setPoint(false)
@@ -325,7 +363,8 @@ const InsertData = (props) => {
         location: { latitude: latitude, longitude: longitude },
         workingHours: { monday: { from: mondayFrom, to: mondayTo }, tuesday: { from: tuesdayFrom, to: tuesdayTo }, wednesday: { from: wednesdayFrom, to: wednesdayTo }, thursday: { from: thursdayFrom, to: thursdayTo }, friday: { from: fridayFrom, to: fridayTo }, saturday: { from: saturdayFrom, to: saturdayTo }, sunday: { from: sundayFrom, to: sundayTo } },
         bpartnerId: hotelId,
-        category: category
+        category: category,
+        imageTitles: imageTitles,
       }
 
       if (voucherDesc == "") {
@@ -1514,6 +1553,17 @@ const InsertData = (props) => {
                               <div>
                                 <br />
                                 <img className="preview" src={img} alt={"image-" + i} key={i} />
+                                <input
+
+                                  className={"form-control"}
+                                  placeholder={i}
+                                  aria-describedby="basic-addon1"
+                                  id="name"
+                                  type="text"
+                                  style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
+
+                                  onChange={(e) => changeImageTitle(e.target.value, i)}
+                                />
                               </div>
                             );
                           })}
