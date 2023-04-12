@@ -57,6 +57,7 @@ const POIData = () => {
 	const [audio, setAudio] = useState(null);
 	const [imagePreview, setImagePreview] = useState(null);
 	const [errMessagePhoto, setErrMessagePhoto] = useState("");
+	const [imageTitles, setImageTitles] = useState([]);
 
 
 	const [mondayFrom, setMondayFrom] = useState("");
@@ -132,7 +133,7 @@ const POIData = () => {
 		var fs = []
 		for (let i = 0; i < event.target.files.length; i++) {
 			images.push(URL.createObjectURL(event.target.files[i]));
-			var new_file = new File([event.target.files[i]], 'partner' + titlePoint + "---" + [event.target.files[i].name]);
+			var new_file = new File([event.target.files[i]], i + 'partner' + titlePoint + "---" + [event.target.files[i].name]);
 			fs.push(new_file)
 
 		}
@@ -188,6 +189,8 @@ const POIData = () => {
 		}
 		if (category != "") {
 			point.category = category
+		}if (imageTitles != "") {
+			point.imageTitles = imageTitles
 		}
 
 		point.id = homeDataState.updatePointData.point.id
@@ -226,7 +229,7 @@ const POIData = () => {
 
 		xhr.send(formData);
 */
-SuccessHandler()
+		SuccessHandler()
 
 	};
 
@@ -265,7 +268,45 @@ SuccessHandler()
 		setFile(new_file);
 		setImagePreview(URL.createObjectURL(event.target.files[0]));
 	}
+	const changeImageTitle = (e, i) => {
 
+		var tf = false;
+		if (imageTitles.length == 0) {
+			var p = e + "---" + i
+			const newData = [p, ...imageTitles];
+			setImageTitles(newData)
+		} else {
+
+			for (var a of imageTitles) {
+				var h = a.split('---')
+				if (h[1] == i) {
+					tf = true
+				}
+			}
+
+			if (tf) {
+				for (var a of imageTitles) {
+
+					var h = a.split('---')
+					if (h[1] == i) {
+						var arr = imageTitles
+						arr.pop(a)
+						var p = e + "---" + i
+						arr.push(p)
+						setImageTitles(arr)
+					}
+
+				}
+			} else {
+				var p = e + "---" + i
+				var arr = imageTitles
+				arr.push(p)
+				setImageTitles(arr)
+
+			}
+
+		}
+	};
 	const fileData = () => {
 		if (file) {
 
@@ -1007,6 +1048,18 @@ SuccessHandler()
 															<div>
 																<br />
 																<img className="preview" src={img} alt={"image-" + i} key={i} />
+
+																<input
+
+																	className={"form-control"}
+																	placeholder={i}
+																	aria-describedby="basic-addon1"
+																	id="name"
+																	type="text"
+																	style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
+
+																	onChange={(e) => changeImageTitle(e.target.value, i)}
+																/>
 															</div>
 														);
 													})}

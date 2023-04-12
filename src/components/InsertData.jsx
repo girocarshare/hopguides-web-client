@@ -406,6 +406,7 @@ const InsertData = (props) => {
       setShortInfoPointTransl("")
       setLongInfoPointTransl("")
       setVoucherDescTransl("")
+      setImageTitles([])
 
       setFiles(files.concat(selectedFiles))
       setAudios(audios.concat(audio2))
@@ -538,6 +539,7 @@ const InsertData = (props) => {
     setAgreementTitleTransl("")
     setImagePreview(null)
     setImagePreviews([])
+    setImageTitles([])
     num = 0
 
   };

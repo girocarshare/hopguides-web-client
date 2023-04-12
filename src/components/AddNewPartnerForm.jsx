@@ -12,7 +12,7 @@ var num = 1;
 var url = process.env.REACT_APP_URL || "http://localhost:8080/";
 const AddNewPartnerForm = (props) => {
 
-	
+
 	const [titlePoint, setTitlePoint] = useState("");
 	const [titlePointTransl, setTitlePointTransl] = useState("");
 	const [shortInfoPoint, setShortInfoPoint] = useState("");
@@ -25,7 +25,7 @@ const AddNewPartnerForm = (props) => {
 	const [length, setLength] = useState("");
 	const [imagePreview, setImagePreview] = useState("");
 	const [highestPoint, setHighestPoint] = useState("");
-  
+
 	const [location, setLocation] = useState("");
 	const [longitude, setLongitude] = useState("");
 	const [latitude, setLatitude] = useState("");
@@ -34,7 +34,7 @@ const AddNewPartnerForm = (props) => {
 	const [email, setEmail] = useState("");
 	const [responsiblePerson, setResponsiblePerson] = useState("");
 	const [webURL, setWebUrl] = useState("");
-  
+
 	const [mondayFrom, setMondayFrom] = useState("");
 	const [mondayTo, setMondayTo] = useState("");
 	const [tuesdayFrom, setTuesdayFrom] = useState("");
@@ -51,7 +51,8 @@ const AddNewPartnerForm = (props) => {
 	const [sundayTo, setSundayTo] = useState("");
 	const [partner, setPartner] = useState(false);
 	const [point, setPoint] = useState(false);
-  
+	const [imageTitles, setImageTitles] = useState([]);
+
 	const [mondayclosed, setMondayClosed] = useState(false);
 	const [tuesdayclosed, setTuesdayClosed] = useState(false);
 	const [wednesdayclosed, setWednesdayClosed] = useState(false);
@@ -59,7 +60,7 @@ const AddNewPartnerForm = (props) => {
 	const [fridayclosed, setFridayClosed] = useState(false);
 	const [saturdayclosed, setSaturdayClosed] = useState(false);
 	const [sundayclosed, setSundayClosed] = useState(false);
-  
+
 	const [errMessagePartner, setErrMessagePartner] = useState("");
 	const [errMessage, setErrMessage] = useState("");
 	const [voucherDesc, setVoucherDesc] = useState("");
@@ -75,7 +76,7 @@ const AddNewPartnerForm = (props) => {
 	const progressRef = React.useRef();
 	const [currency, setCurrency] = useState("");
 	const [currencyList, setCurrencyList] = useState(["£", "€", "$"]);
-  
+
 	const [selectedFiles, setSelectedFiles] = useState([]);
 	const [files, setFiles] = useState([]);
 	const [categories, setCategories] = useState(["HISTORY", "DRINKS", "NATURE", "EATS", "BRIDGE", "MUSEUMS", "EXPERIENCE"]);
@@ -90,38 +91,38 @@ const AddNewPartnerForm = (props) => {
 
 	const fetchData = async (input, num) => {
 		const response = await Axios.post(
-		  "https://api.openai.com/v1/completions",
-		  {
-			prompt: `translate "${input}" to english, spanish, serbian and slovenian and make it as one json with lower case letters as keys`,
-			model: 'text-davinci-002',
-			max_tokens: 500,
-			n: 1,
-			stop: ".",
-		  },
-		  {
-			headers: {
-			  "Content-Type": "application/json",
-			  Authorization: `Bearer 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`,
+			"https://api.openai.com/v1/completions",
+			{
+				prompt: `translate "${input}" to english, spanish, serbian and slovenian and make it as one json with lower case letters as keys`,
+				model: 'text-davinci-002',
+				max_tokens: 500,
+				n: 1,
+				stop: ".",
 			},
-		  }
+			{
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer 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`,
+				},
+			}
 		);
-	
+
 		if (num == 4) {
-	
-		  setTitlePointTransl(response.data.choices[0].text)
+
+			setTitlePointTransl(response.data.choices[0].text)
 		} else if (num == 5) {
-	
-		  setShortInfoPointTransl(response.data.choices[0].text)
+
+			setShortInfoPointTransl(response.data.choices[0].text)
 		} else if (num == 6) {
-	
-		  setLongInfoPointTransl(response.data.choices[0].text)
+
+			setLongInfoPointTransl(response.data.choices[0].text)
 		} else if (num == 7) {
-	
-		  setVoucherDescTransl(response.data.choices[0].text)
+
+			setVoucherDescTransl(response.data.choices[0].text)
 		}
-	
+
 		return response.data.choices[0].text;
-	  };
+	};
 	const addPartner = () => {
 		setPartner(true)
 		setPoint(false)
@@ -165,7 +166,8 @@ const AddNewPartnerForm = (props) => {
 				location: { latitude: latitude, longitude: longitude },
 				workingHours: { monday: { from: mondayFrom, to: mondayTo }, tuesday: { from: tuesdayFrom, to: tuesdayTo }, wednesday: { from: wednesdayFrom, to: wednesdayTo }, thursday: { from: thursdayFrom, to: thursdayTo }, friday: { from: fridayFrom, to: fridayTo }, saturday: { from: saturdayFrom, to: saturdayTo }, sunday: { from: sundayFrom, to: sundayTo } },
 				category: category,
-				bpartnerId: homeDataState.showAddPartnerModal.bpartnerId
+				bpartnerId: homeDataState.showAddPartnerModal.bpartnerId,
+				imageTitles : imageTitles
 			}
 
 			if (voucherDesc == "") {
@@ -204,6 +206,7 @@ const AddNewPartnerForm = (props) => {
 			setLongitude("")
 			setLatitude("")
 			setTitlePointTransl("")
+			setImageTitles([])
 			
 			setShortInfoPointTransl("")
 			setLongInfoPointTransl("")
@@ -232,18 +235,18 @@ const AddNewPartnerForm = (props) => {
 			workingHours: { monday: { from: mondayFrom, to: mondayTo }, tuesday: { from: tuesdayFrom, to: tuesdayTo }, wednesday: { from: wednesdayFrom, to: wednesdayTo }, thursday: { from: thursdayFrom, to: thursdayTo }, friday: { from: fridayFrom, to: fridayTo }, saturday: { from: saturdayFrom, to: saturdayTo }, sunday: { from: sundayFrom, to: sundayTo } },
 			bpartnerId: hotelId,
 			category: "NATURE"
-		  }
-	  
-		  if (voucherDesc == "") {
+		}
+
+		if (voucherDesc == "") {
 			point.voucherDesc = JSON.parse(`{"english": "", "spanish": "", "serbian": "",  "slovenian": "" }`)
 			point.partner = false
-		  } else {
+		} else {
 			point.voucherDesc = JSON.parse(`{"english": "Voucher text", "slovenian": "naslovno besedilo" } `)
 			point.partner = true
-		  }
-		  const newData = [point, ...points];
-	  
-		  setPoints(newData)
+		}
+		const newData = [point, ...points];
+
+		setPoints(newData)
 	}
 	const addFile2 = (e) => {
 		if (e.target.files[0]) {
@@ -254,25 +257,24 @@ const AddNewPartnerForm = (props) => {
 		}
 	};
 
+
 	const selectFiles = (event) => {
 		let images = [];
 
-		
-			var fs = []
-			for (let i = 0; i < event.target.files.length; i++) {
-				images.push(URL.createObjectURL(event.target.files[i]));
-				var new_file = new File([event.target.files[i]], 'partner' + num + "---" + [event.target.files[i].name]);
-				fs.push(new_file)
+		var fs = []
+		for (let i = 0; i < event.target.files.length; i++) {
+			images.push(URL.createObjectURL(event.target.files[i]));
+			var new_file = new File([event.target.files[i]], i + 'partner' + num + "---" + [event.target.files[i].name]);
+			fs.push(new_file)
 
-			}
+		}
 
-			setSelectedFiles(selectedFiles.concat(fs))
-			setImagePreviews(images);
-			setProgressInfos({ val: [] });
-			setMessage([]);
-		
+		setSelectedFiles(selectedFiles.concat(fs))
+		setImagePreviews(images);
+		setProgressInfos({ val: [] });
+		setMessage([]);
+
 	};
-
 
 
 
@@ -335,6 +337,46 @@ const AddNewPartnerForm = (props) => {
 
 	};
 
+
+	const changeImageTitle = (e, i) => {
+
+		var tf = false;
+		if (imageTitles.length == 0) {
+			var p = e + "---" + i
+			const newData = [p, ...imageTitles];
+			setImageTitles(newData)
+		} else {
+
+			for (var a of imageTitles) {
+				var h = a.split('---')
+				if (h[1] == i) {
+					tf = true
+				}
+			}
+
+			if (tf) {
+				for (var a of imageTitles) {
+
+					var h = a.split('---')
+					if (h[1] == i) {
+						var arr = imageTitles
+						arr.pop(a)
+						var p = e + "---" + i
+						arr.push(p)
+						setImageTitles(arr)
+					}
+
+				}
+			} else {
+				var p = e + "---" + i
+				var arr = imageTitles
+				arr.push(p)
+				setImageTitles(arr)
+
+			}
+
+		}
+	};
 	return (
 
 
@@ -929,6 +971,18 @@ const AddNewPartnerForm = (props) => {
 																				<div>
 																					<br />
 																					<img className="preview" src={img} alt={"image-" + i} key={i} />
+
+																					<input
+
+																						className={"form-control"}
+																						placeholder={i}
+																						aria-describedby="basic-addon1"
+																						id="name"
+																						type="text"
+																						style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
+
+																						onChange={(e) => changeImageTitle(e.target.value, i)}
+																					/>
 																				</div>
 																			);
 																		})}
@@ -1150,7 +1204,7 @@ const AddNewPartnerForm = (props) => {
 								</div>
 							</div>
 
-						
+
 							<div className="form-group text-center">
 								<button
 									style={{ background: "#1977cc", marginTop: "15px" }}
@@ -1169,8 +1223,8 @@ const AddNewPartnerForm = (props) => {
 						</div>
 					</div>
 				</div>
-					}
-				</div >
+			}
+		</div >
 
 	);
 };
