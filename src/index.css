@@ -4,3 +4,7 @@
 body {
 	@apply overflow-x-hidden border border-red-500;
 }
+
+.table-frame {
+	@apply overflow-x-auto;
+}
