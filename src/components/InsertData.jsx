@@ -352,6 +352,19 @@ const InsertData = (props) => {
       setAdd(false)
       setErrMessagePartner("")
 
+  var jsonTitles = []
+    for(var ti of imageTitles){
+      var help = ti.split("---")
+
+      var titlee = JSON.parse(help[0])
+      var titleObj = {
+        number : help[1],
+        name: titlee
+        
+      }
+      jsonTitles.push(titleObj)
+    }
+
       var point = {
         num: num,
         name: JSON.parse(titlePointTransl),
@@ -364,7 +377,7 @@ const InsertData = (props) => {
         workingHours: { monday: { from: mondayFrom, to: mondayTo }, tuesday: { from: tuesdayFrom, to: tuesdayTo }, wednesday: { from: wednesdayFrom, to: wednesdayTo }, thursday: { from: thursdayFrom, to: thursdayTo }, friday: { from: fridayFrom, to: fridayTo }, saturday: { from: saturdayFrom, to: saturdayTo }, sunday: { from: sundayFrom, to: sundayTo } },
         bpartnerId: hotelId,
         category: category,
-        imageTitles: imageTitles,
+        imageTitles: jsonTitles,
       }
 
       if (voucherDesc == "") {
@@ -417,6 +430,8 @@ const InsertData = (props) => {
       num = num + 1
 
     }*/
+
+
 
     var point = {
       num: num,
@@ -1084,38 +1099,38 @@ const InsertData = (props) => {
                             <textarea className="form-control" style={{ height: "100px", width: "1000px" }} type="textarea" required name="message" placeholder='Short description' value={shortInfoPoint} onChange={(e) => setShortInfoPoint(e.target.value)}></textarea>
 
                             <button
-                            style={{ background: "#0099ff", marginTop: "px", height: "35px" }}
+                              style={{ background: "#0099ff", marginTop: "px", height: "35px" }}
 
-                            onClick={(e) => fetchData(shortInfoPoint, 5)}
-                            className="btn btn-primary btn-xl"
-                            id="sendMessageButton"
-                            type="button"
-                          >
-                            Translate short description
-                          </button>
+                              onClick={(e) => fetchData(shortInfoPoint, 5)}
+                              className="btn btn-primary btn-xl"
+                              id="sendMessageButton"
+                              type="button"
+                            >
+                              Translate short description
+                            </button>
 
-                          <div >
+                            <div >
 
-                            <div class="form-group col-lg-10">
-                              <input
+                              <div class="form-group col-lg-10">
+                                <input
 
-                                className={"form-control"}
-                                placeholder='JSON FORMAT: { "language": "Text"}'
-                                aria-describedby="basic-addon1"
-                                id="name"
-                                type="text"
-                                style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
+                                  className={"form-control"}
+                                  placeholder='JSON FORMAT: { "language": "Text"}'
+                                  aria-describedby="basic-addon1"
+                                  id="name"
+                                  type="text"
+                                  style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
 
-                                onChange={(e) => setShortInfoPointTransl(e.target.value)}
-                                value={shortInfoPointTransl}
-                              />
+                                  onChange={(e) => setShortInfoPointTransl(e.target.value)}
+                                  value={shortInfoPointTransl}
+                                />
 
+                              </div>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
 
                     <div className="control-group">
                       <div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
@@ -1124,38 +1139,38 @@ const InsertData = (props) => {
                           <div class="form-group col-lg-10">
                             <textarea className="form-control" style={{ height: "200px", width: "1000px" }} type="textarea" required name="message" placeholder='Long description' value={longInfoPoint} onChange={(e) => setLongInfoPoint(e.target.value)}></textarea>
                             <button
-                            style={{ background: "#0099ff", marginTop: "px", height: "35px" }}
+                              style={{ background: "#0099ff", marginTop: "px", height: "35px" }}
 
-                            onClick={(e) => fetchData(longInfoPoint, 6)}
-                            className="btn btn-primary btn-xl"
-                            id="sendMessageButton"
-                            type="button"
-                          >
-                            Translate long description
-                          </button>
+                              onClick={(e) => fetchData(longInfoPoint, 6)}
+                              className="btn btn-primary btn-xl"
+                              id="sendMessageButton"
+                              type="button"
+                            >
+                              Translate long description
+                            </button>
 
-                          <div >
+                            <div >
 
-                            <div class="form-group col-lg-10">
-                              <input
+                              <div class="form-group col-lg-10">
+                                <input
 
-                                className={"form-control"}
-                                placeholder='JSON FORMAT: { "language": "Text"}'
-                                aria-describedby="basic-addon1"
-                                id="name"
-                                type="text"
-                                style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
+                                  className={"form-control"}
+                                  placeholder='JSON FORMAT: { "language": "Text"}'
+                                  aria-describedby="basic-addon1"
+                                  id="name"
+                                  type="text"
+                                  style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
 
-                                onChange={(e) => setLongInfoPointTransl(e.target.value)}
-                                value={longInfoPointTransl}
-                              />
+                                  onChange={(e) => setLongInfoPointTransl(e.target.value)}
+                                  value={longInfoPointTransl}
+                                />
 
+                              </div>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
 
                     {partner && <div className="control-group">
                       <div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
@@ -1164,38 +1179,38 @@ const InsertData = (props) => {
                           <div class="form-group col-lg-10">
                             <textarea className="form-control" style={{ height: "200px", width: "1000px" }} type="textarea" required name="message" placeholder='Voucher description' value={voucherDesc} onChange={(e) => setVoucherDesc(e.target.value)}></textarea>
                             <button
-                            style={{ background: "#0099ff", marginTop: "px", height: "35px" }}
+                              style={{ background: "#0099ff", marginTop: "px", height: "35px" }}
 
-                            onClick={(e) => fetchData(voucherDesc, 7)}
-                            className="btn btn-primary btn-xl"
-                            id="sendMessageButton"
-                            type="button"
-                          >
-                            Translate voucher description
-                          </button>
+                              onClick={(e) => fetchData(voucherDesc, 7)}
+                              className="btn btn-primary btn-xl"
+                              id="sendMessageButton"
+                              type="button"
+                            >
+                              Translate voucher description
+                            </button>
 
-                          <div >
+                            <div >
 
-                            <div class="form-group col-lg-10">
-                              <input
+                              <div class="form-group col-lg-10">
+                                <input
 
-                                className={"form-control"}
-                                placeholder='JSON FORMAT: { "language": "Text"}'
-                                aria-describedby="basic-addon1"
-                                id="name"
-                                type="text"
-                                style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
+                                  className={"form-control"}
+                                  placeholder='JSON FORMAT: { "language": "Text"}'
+                                  aria-describedby="basic-addon1"
+                                  id="name"
+                                  type="text"
+                                  style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
 
-                                onChange={(e) => setVoucherDescTransl(e.target.value)}
-                                value={voucherDescTransl}
-                              />
+                                  onChange={(e) => setVoucherDescTransl(e.target.value)}
+                                  value={voucherDescTransl}
+                                />
 
+                              </div>
                             </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  </div>}
+                    </div>}
 
                     <div className="control-group">
                       <div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
@@ -1558,7 +1573,7 @@ const InsertData = (props) => {
                                 <input
 
                                   className={"form-control"}
-                                  placeholder={i}
+                                  placeholder={'JSON FORMAT: { "language": "Text"}'}
                                   aria-describedby="basic-addon1"
                                   id="name"
                                   type="text"

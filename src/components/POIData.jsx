@@ -190,7 +190,22 @@ const POIData = () => {
 		if (category != "") {
 			point.category = category
 		}if (imageTitles != "") {
-			point.imageTitles = imageTitles
+
+			var jsonTitles = []
+    for(var ti of imageTitles){
+      var help = ti.split("---")
+
+      var titlee = JSON.parse(help[0])
+      var titleObj = {
+        number : help[1],
+        name: titlee
+        
+      }
+      jsonTitles.push(titleObj)
+    }
+
+
+			point.imageTitles = jsonTitles
 		}
 
 		point.id = homeDataState.updatePointData.point.id
@@ -1052,7 +1067,7 @@ const POIData = () => {
 																<input
 
 																	className={"form-control"}
-																	placeholder={i}
+																	placeholder={'JSON FORMAT: { "language": "Text"}'}
 																	aria-describedby="basic-addon1"
 																	id="name"
 																	type="text"
