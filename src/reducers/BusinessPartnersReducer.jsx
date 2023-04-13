@@ -1,4 +1,4 @@
-import { InfoSharp } from "@mui/icons-material";
+
 import { businessPartnersConstants } from "../constants/BusinessPartnersConstants";
 
 var prodCpy = {};
