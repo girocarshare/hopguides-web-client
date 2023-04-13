@@ -5,7 +5,6 @@ import { homeDataConstants } from "../constants/HomeDataConstants";
 import TimePicker from 'react-time-picker';
 import { YMaps, Map } from "react-yandex-maps";
 import { AiOutlineClose } from 'react-icons/ai';
-import { ConstructionOutlined } from "@mui/icons-material";
 import Axios from "axios";
 
 var url = process.env.REACT_APP_URL || "http://localhost:8080/";
