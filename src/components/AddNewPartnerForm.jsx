@@ -117,6 +117,18 @@ const AddNewPartnerForm = (props) => {
 			setAdd(false)
 			setErrMessagePartner("")
 
+			var jsonTitles = []
+			for(var ti of imageTitles){
+			  var help = ti.split("---")
+		
+			  var titlee = JSON.parse(help[0])
+			  var titleObj = {
+				number : help[1],
+				name: titlee
+				
+			  }
+			  jsonTitles.push(titleObj)
+			}
 
 			var point = {
 				num: num,
@@ -130,7 +142,7 @@ const AddNewPartnerForm = (props) => {
 				workingHours: { monday: { from: mondayFrom, to: mondayTo }, tuesday: { from: tuesdayFrom, to: tuesdayTo }, wednesday: { from: wednesdayFrom, to: wednesdayTo }, thursday: { from: thursdayFrom, to: thursdayTo }, friday: { from: fridayFrom, to: fridayTo }, saturday: { from: saturdayFrom, to: saturdayTo }, sunday: { from: sundayFrom, to: sundayTo } },
 				category: category,
 				bpartnerId: homeDataState.showAddPartnerModal.bpartnerId,
-				imageTitles: imageTitles
+				imageTitles: jsonTitles
 			}
 
 			if (voucherDesc == "") {
@@ -811,7 +823,7 @@ const AddNewPartnerForm = (props) => {
 																					<input
 
 																						className={"form-control"}
-																						placeholder={i}
+																						placeholder={'JSON FORMAT: { "language": "Text"}'}
 																						aria-describedby="basic-addon1"
 																						id="name"
 																						type="text"
