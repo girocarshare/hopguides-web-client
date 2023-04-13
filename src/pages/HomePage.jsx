@@ -1,5 +1,4 @@
-
-import { React, useEffect } from "react";
+import {React, useEffect} from "react";
 
 import Report from "../components/Report";
 import HomeDataContextProvider from "../contexts/HomeDataContext";
@@ -14,16 +13,17 @@ import SuccessModal from "../components/SuccessModal";
 import FailureModal from "../components/FailureModal";
 import TourData from "../components/TourData";
 import POIData from "../components/POIData";
+
 const HomePage = () => {
 
 	return (
-		<div>
+		<div class="border border-red-500">
 			<HomeDataContextProvider>
-				<TourData />
-				<POIData />
-				<SuccessModal />
-				<FailureModal />
-				<HomePageData />
+				<TourData/>
+				<POIData/>
+				<SuccessModal/>
+				<FailureModal/>
+				<HomePageData/>
 				<PreviousReportTourModal/>
 				<AddNewTourForm/>
 				<AddNewPartnerForm/>
