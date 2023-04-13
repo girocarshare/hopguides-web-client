@@ -209,93 +209,96 @@ const HomeData = forwardRef((props, ref) => {
 
 	return (
 
-		<div>
+		<div className="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:px-8 lg:py-40">
 
-			{homeDataState.showModal && <div>
-				<AddNewTourForm/>
-			</div>}
+			<div class="flex flex-row items-center gap-4 mb-20">
+				{homeDataState.showModal && <div>
+					<AddNewTourForm/>
+				</div>}
 
-			{homeDataState.showEditLogoModal && <div>
-				<UpdateLogoModal/>
-			</div>}
+				{homeDataState.showEditLogoModal && <div>
+					<UpdateLogoModal/>
+				</div>}
 
-			{homeDataState.showEditLockCodeModal && <div>
-				<ChangeLockCodeModal/>
-			</div>}
+				{homeDataState.showEditLockCodeModal && <div>
+					<ChangeLockCodeModal/>
+				</div>}
 
-			{homeDataState.updateTourData.show && <div>
-				<TourData/>
-			</div>}
+				{homeDataState.updateTourData.show && <div>
+					<TourData/>
+				</div>}
 
-			{!role &&
+				{!role &&
+					<div>
+						<button class="bg-black text-white px-4 py-2 rounded-lg" type="button" onClick={handleLogin}>
+							Log in
+						</button>
+					</div>
+				}
+
+				{/*{role &&*/}
 				<div>
-					<button type="button" onClick={handleLogin}>
-						Log in
+					<button type="button" onClick={handleLogout}>
+						Log out
 					</button>
 				</div>
-			}
+				{/*}*/}
 
-			{/*{role &&*/}
-			<div>
-				<button type="button" onClick={handleLogout}>
-					Log out
-				</button>
+				{/*{role &&*/}
+				<div>
+					<button type="button" onClick={updateLogo}>
+						Edit logo
+					</button>
+				</div>
+				{/*}*/}
+
+				{/*{role &&*/}
+				<div>
+					<button type="button" onClick={editLockCode}>
+						Edit lock code
+					</button>
+				</div>
+				{/*}*/}
+
+				{/*{adminOnly &&*/}
+				<div>
+					<button type="button" onClick={handleRegister}>
+						Register new user
+					</button>
+				</div>
+				{/*}*/}
+
+				{/*{adminOnly &&*/}
+				<div>
+					<button type="button" onClick={allBusinessPartners}>
+						All business partners
+					</button>
+				</div>
+				{/*}*/}
+
+				{/*{adminOnly &&*/}
+				<div>
+					<button type="button" onClick={insertdata}>
+						Insert new data
+					</button>
+				</div>
+				{/*}*/}
 			</div>
-			{/*}*/}
 
-			{/*{role &&*/}
-			<div>
-				<button type="button" onClick={updateLogo}>
-					Edit logo
-				</button>
+			<div class="title title--lg">
+				<h1>
+					Tourism Ljubljana
+				</h1>
 			</div>
-			{/*}*/}
-
-			{/*{role &&*/}
-			<div>
-				<button type="button" onClick={editLockCode}>
-					Edit lock code
-				</button>
-			</div>
-			{/*}*/}
-
-			{/*{adminOnly &&*/}
-			<div>
-				<button type="button" onClick={handleRegister}>
-					Register new user
-				</button>
-			</div>
-			{/*}*/}
-
-			{/*{adminOnly &&*/}
-			<div>
-				<button type="button" onClick={allBusinessPartners}>
-					All business partners
-				</button>
-			</div>
-			{/*}*/}
-
-			{/*{adminOnly &&*/}
-			<div>
-				<button type="button" onClick={insertdata}>
-					Insert new data
-				</button>
-			</div>
-			{/*}*/}
-
-			<h1>
-				Tourism Ljubljana
-			</h1>
 
 			<div class="table-frame">
 
-				<table>
+				<table class="table-auto">
 					<thead>
 					<tr>
-						<th></th>
-						<th>Name</th>
+						<th>Contact name</th>
 						<th>Email</th>
-						<th>Number</th>
+						<th>Phone</th>
 					</tr>
 					</thead>
 
@@ -305,32 +308,32 @@ const HomeData = forwardRef((props, ref) => {
 							<td>{point.name}</td>
 							<td>{point.email}</td>
 							<td>{point.number}</td>
-
 						</tr>
-						</tbody>))
+						</tbody>
+					))
 					}
 				</table>
 
 			</div>
 
-			<h4>
-				Tours
-			</h4>
+			<div class="title title--sm">
+				<h4>
+					Tours
+				</h4>
+			</div>
 
 			<div class="table-frame">
 
 				<table>
 					<thead>
-
-
 					<tr>
-						<th>Name</th>
+						<th>Tour name</th>
 						<th>Price</th>
-						<th>Number of executed tours for current month</th>
-						<th>Get monthly report</th>
+						<th>Tours this month</th>
+						<th>Report</th>
 						<th>Update</th>
-						<th>Delete</th>
-						<th>See terms and conditions</th>
+						<th>Terms & conditions</th>
+						<th>Options</th>
 					</tr>
 					</thead>
 
@@ -365,64 +368,58 @@ const HomeData = forwardRef((props, ref) => {
 								<button onClick={(e) => update(e, tour)}>{updateField}</button>
 							</td>
 							<td>
-								<button onClick={(e) => deleteTour(e, tour)}>Delete</button>
+								<button onClick={(event) => {
+									seeTermsAndConditions(event, tour.tourId)
+								}}>
+									<MdLaunch/>
+								</button>
 							</td>
 							<td>
-								<button
-									color="inherit"
-									onClick={(event) => {
-
-										seeTermsAndConditions(event, tour.tourId)
-									}}
-								>
-									<MdLaunch/>
-
-								</button>
+								<button onClick={(e) => deleteTour(e, tour)}>Delete</button>
 							</td>
 
 						</tr>
-						</tbody>))
+						</tbody>
+					))
 					}
 				</table>
 
 			</div>
 
-			<h4>
-				Points of interest/Partners
-			</h4>
 
 			{homeDataState.toursWithPoints.toursWithPoints.map((tour, i) =>
 
 				<div id={tour.tourId}>
 
+					<div class="title title--sm">
+						<h4>
+							Points of interest/Partners
+						</h4>
+						<div>
+							{/* {admin && */}
+							<button variant="contained"
+									onClick={(e) => addNewPartner(e, tour.tourId, tour.bpartnerId)}>
+								Add partner
+							</button>
+							{/*}*/}
+						</div>
+					</div>
+
+
 					<div class="table-frame">
 
 						<table>
 							<thead>
-							<tr>
-								{/* {admin && */}
-								<button
-									color="primary"
-									variant="contained"
-									onClick={(e) => addNewPartner(e, tour.tourId, tour.bpartnerId)}
-								>
-									Add partner
-								</button>
-								{/*}*/}
-							</tr>
 
 							<tr>
-								<th>Visit website</th>
-								<th>POI name</th>
+								<th>Website</th>
+								<th>POI</th>
 								<th>Price</th>
 								<th>Offer name</th>
 								<th>Category</th>
-								<th>Coupons realized by partner in current
-									month
-								</th>
-								<th>Generate QR code</th>
-								<th>Update</th>
-								<th>Delete</th>
+								<th>Coupons this month</th>
+								<th>QR code</th>
+								<th>Options</th>
 							</tr>
 							</thead>
 
@@ -430,15 +427,10 @@ const HomeData = forwardRef((props, ref) => {
 								<tbody>
 								<tr>
 									<td>
-										<button
-											color="inherit"
-											onClick={(event) => {
-
-												visitWebsite(event, points.point.id)
-											}}
-										>
+										<button onClick={(event) => {
+											visitWebsite(event, points.point.id)
+										}}>
 											<MdLaunch/>
-
 										</button>
 									</td>
 									<td>{points.point.name.english}</td>
@@ -466,31 +458,31 @@ const HomeData = forwardRef((props, ref) => {
 										/>
 									</td>
 
-
 									<td>{points.point.category}</td>
 
 									<td>{points.monthlyUsed}</td>
 
 									<td>
-										<button
-											color="inherit"
-											onClick={(event) => {
-												getQrCode(event, points.point.id)
-											}}
-										>
+										<button onClick={(event) => {
+											getQrCode(event, points.point.id)
+										}}>
 											Get QR code
 										</button>
 									</td>
 									<td>
-										<button
-											onClick={(e) => updatePartnerPrice(e, points, tour)}>{updatePartner}</button>
-									</td>
-									<td>
-										<button onClick={(e) => deletePoi(e, tour, points.point.id)}>Delete</button>
+										<div class="flex flex-row items-center gap-4">
+											<button onClick={(e) => updatePartnerPrice(e, points, tour)}>
+												{updatePartner}
+											</button>
+											<button onClick={(e) => deletePoi(e, tour, points.point.id)}>
+												Delete
+											</button>
+										</div>
 									</td>
 
 								</tr>
-								</tbody>))}
+								</tbody>
+							))}
 						</table>
 
 					</div>

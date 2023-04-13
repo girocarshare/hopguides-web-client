@@ -17,7 +17,7 @@ import POIData from "../components/POIData";
 const HomePage = () => {
 
 	return (
-		<div class="border border-red-500">
+		<div>
 			<HomeDataContextProvider>
 				<TourData/>
 				<POIData/>

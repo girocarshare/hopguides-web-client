@@ -1,10 +1,86 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+html, body, #root, .App {
+	height: 100%;
+}
+
 body {
-	@apply overflow-x-hidden border border-red-500;
+	@apply h-full overflow-x-hidden text-black/60;
 }
 
 .table-frame {
-	@apply overflow-x-auto;
+	@apply overflow-x-auto border border-black/10 rounded-2xl shadow-lg shadow-black/[5%] mb-12;
+}
+
+table {
+	@apply min-w-full divide-y divide-black/10;
+}
+
+th {
+	@apply px-3 py-3.5 text-left text-sm font-semibold align-bottom text-black;
+}
+
+th:first-child {
+	@apply py-3.5 pl-4 pr-3 text-left text-sm font-semibold;
+}
+
+th:last-child {
+	@apply relative py-3.5 pl-3 pr-4 text-right;
+}
+
+tbody {
+
+}
+
+td {
+	@apply whitespace-nowrap px-3 py-4 text-sm;
+}
+
+td:first-child {
+	@apply whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium;
+}
+
+td:last-child {
+	@apply relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium;
+}
+
+tr:nth-child(2) td {
+	@apply bg-black/[3%];
+}
+
+/*tr:hover td {*/
+/*	@apply bg-black/[5%] transition;*/
+/*}*/
+
+.title {
+	@apply flex flex-row items-center justify-between gap-4 mb-6;
+}
+
+.title h1,
+.title h2,
+.title h3,
+.title h4,
+.title h5,
+.title h6 {
+	@apply text-2xl font-bold text-black;
+}
+
+.title--sm h1,
+.title--sm h2,
+.title--sm h3,
+.title--sm h4,
+.title--sm h5,
+.title--sm h6 {
+	@apply text-xl;
+}
+
+.title--lg h1,
+.title--lg h2,
+.title--lg h3,
+.title--lg h4,
+.title--lg h5,
+.title--lg h6 {
+	@apply text-4xl;
 }
