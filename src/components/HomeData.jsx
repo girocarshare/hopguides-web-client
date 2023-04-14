@@ -353,8 +353,7 @@ const HomeData = forwardRef((props, ref) => {
 								<th class="whitespace-nowrap">Price <span
 									class="text-sm font-normal text-black/60 ml-2">($incl tax)</span>
 								</th>
-								<th>Tours this month</th>
-								<th>Terms & conditions</th>
+								<th>Tours / month</th>
 								<th>Options</th>
 							</tr>
 							</thead>
@@ -387,14 +386,12 @@ const HomeData = forwardRef((props, ref) => {
 									</td>
 									<td>{tour.noOfRidesAMonth}</td>
 									<td>
-										<button onClick={(event) => {
-											seeTermsAndConditions(event, tour.tourId)
-										}}>
-											<MdLaunch/>
-										</button>
-									</td>
-									<td>
 										<div class="flex flex-row items-center gap-2 justify-end">
+											<button class="button button--secondary button--small" onClick={(event) => {
+												seeTermsAndConditions(event, tour.tourId)
+											}}>
+												Terms
+											</button>
 											<button class="button button--secondary button--small"
 													onClick={(e) => getHistory(e, tour.tourId)}>Get report
 											</button>
@@ -448,8 +445,7 @@ const HomeData = forwardRef((props, ref) => {
 										</th>
 										<th class="whitespace-nowrap">Offer name</th>
 										<th>Category</th>
-										<th>Coupons this month</th>
-										<th>Website</th>
+										<th>Coupons / month</th>
 										<th>Options</th>
 									</tr>
 									</thead>
@@ -492,19 +488,18 @@ const HomeData = forwardRef((props, ref) => {
 
 											<td>{points.monthlyUsed}</td>
 											<td>
-												<button onClick={(event) => {
-													visitWebsite(event, points.point.id)
-												}}>
-													<MdLaunch/>
-												</button>
-											</td>
-											<td>
 												<div class="flex flex-row items-center gap-2 justify-end">
+													<button class="button button--secondary button--small"
+															onClick={(event) => {
+																visitWebsite(event, points.point.id)
+															}}>
+														Web
+													</button>
 													<button class="button button--secondary button--small"
 															onClick={(event) => {
 																getQrCode(event, points.point.id)
 															}}>
-														Get QR code
+														Get QR
 													</button>
 													<button class="button button--secondary button--small"
 															onClick={(e) => updatePartnerPrice(e, points, tour)}>
@@ -531,7 +526,7 @@ const HomeData = forwardRef((props, ref) => {
 			</div>
 
 			<div class="text-sm text-black/40 border-t black/10">
-				<div class="container pt-8 pb-40 lg:pb-12">
+				<div class="container pt-8 pb-40 lg:pb-16">
 					<div
 						class="flex flex-col lg:flex-row items-center justify-start lg:justify-between gap-4">
 						<div class="flex items-center gap-2 lg:order-last mb-4 lg:mb-0">
