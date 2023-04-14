@@ -1,5 +1,5 @@
 .text-heading1 {
-    @apply font-extrabold text-6xl leading-none md:text-8xl md:leading-none text-black;
+	@apply font-extrabold text-6xl leading-none md:text-8xl md:leading-none text-black;
 }
 
 .text-heading2 {
@@ -19,33 +19,33 @@
 }
 
 .text-heading6 {
-	@apply font-bold text-base leading-none md:text-2xl md:leading-none text-black;
+	@apply font-bold text-xl leading-none md:text-2xl md:leading-none text-black;
 }
 
 .text-leading {
-    @apply text-xl;
+	@apply text-xl;
 }
 
 .text-subtitle1 {
-    @apply text-base font-bold;
+	@apply text-base font-bold;
 }
 
 .text-subtitle2 {
-    @apply text-sm font-bold;
+	@apply text-sm font-bold;
 }
 
 .text-body1 {
-    @apply text-base;
+	@apply text-base;
 }
 
 .text-body2 {
-    @apply text-sm;
+	@apply text-sm;
 }
 
 .text-caption {
-    @apply text-sm;
+	@apply text-sm;
 }
 
 .text-overline {
-    @apply font-semibold text-[10px] tracking-widest uppercase;
+	@apply font-semibold text-[10px] tracking-widest uppercase;
 }

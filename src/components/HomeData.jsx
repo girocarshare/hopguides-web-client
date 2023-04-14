@@ -210,7 +210,7 @@ const HomeData = forwardRef((props, ref) => {
 	return (
 
 		<div>
-			<div class="container pt-40 pb-8">
+			<div class="container pt-40 pb-16">
 
 				<div class="navbar">
 					<div class="navbar__content">
@@ -317,7 +317,9 @@ const HomeData = forwardRef((props, ref) => {
 							<tbody>
 							<tr>
 								<td>{point.name}</td>
-								<td>{point.email}</td>
+								<td>
+									<a class="link" href="mailto:'{point.email}'">{point.email}</a>
+								</td>
 								<td>{point.number}</td>
 							</tr>
 							</tbody>
@@ -339,7 +341,8 @@ const HomeData = forwardRef((props, ref) => {
 						<thead>
 						<tr>
 							<th>Name</th>
-							<th>Price</th>
+							<th class="whitespace-nowrap">Price <span class="text-sm font-normal text-black/60 ml-2">($incl tax)</span>
+							</th>
 							<th>Tours this month</th>
 							<th>Terms & conditions</th>
 							<th>Options</th>
@@ -367,7 +370,7 @@ const HomeData = forwardRef((props, ref) => {
 											   id="name"
 											   type="text"
 											   onChange={(e) => setTourPrice(e.target.value)}
-											   value={tourPrice === "" ? `${tour.price} ${tour.currency} incl tax` : tourPrice}
+											   value={tourPrice === "" ? `${tour.price} ${tour.currency}` : tourPrice}
 										/>
 									</div>
 
@@ -411,7 +414,7 @@ const HomeData = forwardRef((props, ref) => {
 							</h4>
 							<div>
 								{/* {admin && */}
-								<button class="button button--primary" variant="contained"
+								<button class="button button--primary button--small" variant="contained"
 										onClick={(e) => addNewPartner(e, tour.tourId, tour.bpartnerId)}>
 									Add partner
 								</button>
@@ -427,8 +430,10 @@ const HomeData = forwardRef((props, ref) => {
 
 								<tr>
 									<th>Name</th>
-									<th>Price</th>
-									<th>Offer name</th>
+									<th class="whitespace-nowrap">Price <span
+										class="text-sm font-normal text-black/60 ml-2">(incl tax)</span>
+									</th>
+									<th class="whitespace-nowrap">Offer name</th>
 									<th>Category</th>
 									<th>Coupons this month</th>
 									<th>Website</th>
@@ -451,7 +456,7 @@ const HomeData = forwardRef((props, ref) => {
 													id="name"
 													type="text"
 													onChange={(e) => setPartnerPrice(e.target.value)}
-													value={partnerPrice === "" ? `${points.point.price} ${tour.currency} incl tax` : partnerPrice}
+													value={partnerPrice === "" ? `${points.point.price} ${tour.currency}` : partnerPrice}
 												/>
 											</div>
 										</td>
@@ -511,10 +516,24 @@ const HomeData = forwardRef((props, ref) => {
 
 			</div>
 
-			<div>
-				<div class="container py-12">
-					<div>
-						Footer
+			<div class="text-sm text-black/40 border-t black/10">
+				<div class="container pt-8 pb-12">
+					<div
+						class="flex flex-col lg:flex-row items-center justify-start lg:justify-between gap-4">
+						<div class="flex items-center gap-4 lg:order-last mb-4 lg:mb-0">
+							<a class="button button--clear button--tiny" href="#" target="_blank">
+								Terms
+							</a>
+							<a class="button button--clear button--tiny" href="#" target="_blank">
+								Privacy
+							</a>
+							<a class="button button--clear button--tiny" target="_blank">
+								Contact
+							</a>
+						</div>
+						<div>
+							2023 © <span class="font-bold">Hopguides™</span> Ltd. All rights reserved.
+						</div>
 					</div>
 				</div>
 			</div>
