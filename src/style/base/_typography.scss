@@ -1,25 +1,25 @@
 .text-heading1 {
-    @apply font-extrabold text-6xl leading-none md:text-8xl md:leading-none;
+    @apply font-extrabold text-6xl leading-none md:text-8xl md:leading-none text-black;
 }
 
 .text-heading2 {
-    @apply font-extrabold text-5xl leading-none md:text-6xl md:leading-none;
+	@apply font-extrabold text-5xl leading-none md:text-6xl md:leading-none text-black;
 }
 
 .text-heading3 {
-    @apply font-extrabold text-4xl leading-none md:text-5xl md:leading-none;
+	@apply font-extrabold text-4xl leading-none md:text-5xl md:leading-none text-black;
 }
 
 .text-heading4 {
-    @apply font-extrabold text-3xl leading-none md:text-4xl md:leading-none;
+	@apply font-extrabold text-3xl leading-none md:text-4xl md:leading-none text-black;
 }
 
 .text-heading5 {
-    @apply font-bold text-2xl leading-none md:text-3xl md:leading-none;
+	@apply font-bold text-2xl leading-none md:text-3xl md:leading-none text-black;
 }
 
 .text-heading6 {
-    @apply font-bold text-base leading-none md:text-xl md:leading-none;
+	@apply font-bold text-base leading-none md:text-2xl md:leading-none text-black;
 }
 
 .text-leading {

@@ -49,30 +49,3 @@ body {
 .title {
 	@apply flex flex-row items-center justify-between gap-4 mb-6;
 }
-
-.title h1,
-.title h2,
-.title h3,
-.title h4,
-.title h5,
-.title h6 {
-	@apply text-2xl font-bold text-black;
-}
-
-.title--sm h1,
-.title--sm h2,
-.title--sm h3,
-.title--sm h4,
-.title--sm h5,
-.title--sm h6 {
-	@apply text-xl;
-}
-
-.title--lg h1,
-.title--lg h2,
-.title--lg h3,
-.title--lg h4,
-.title--lg h5,
-.title--lg h6 {
-	@apply text-4xl;
-}

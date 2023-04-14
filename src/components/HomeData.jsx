@@ -295,7 +295,7 @@ const HomeData = forwardRef((props, ref) => {
 
 
 			<div class="title title--lg">
-				<h1>
+				<h1 class="text-heading4">
 					Tourism Ljubljana
 				</h1>
 			</div>
@@ -326,7 +326,7 @@ const HomeData = forwardRef((props, ref) => {
 			</div>
 
 			<div class="title title--sm">
-				<h4>
+				<h4 class="text-heading6">
 					Tours
 				</h4>
 			</div>
@@ -405,7 +405,7 @@ const HomeData = forwardRef((props, ref) => {
 				<div id={tour.tourId}>
 
 					<div class="title title--sm">
-						<h4>
+						<h4 class="text-heading6">
 							POIs & Partners
 						</h4>
 						<div>
