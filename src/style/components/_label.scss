@@ -1,19 +1,19 @@
 .label {
-    @apply rounded-md inline-flex items-center px-2 h-6 text-overline gap-2;
+	@apply rounded-md inline-flex items-center px-2 h-6 text-overline gap-2;
 }
 
 .label--small {
-    @apply h-5;
+	@apply h-5;
 }
 
 .label--outlined-primary {
-    @apply border border-black/40 text-black/60;
+	@apply border border-black/40 text-black/60;
 }
 
 .label--primary-light {
-    @apply bg-black/10 text-black;
+	@apply bg-black/[5%] text-black;
 }
 
 .label--primary {
-    @apply bg-black text-white;
+	@apply bg-black text-white;
 }

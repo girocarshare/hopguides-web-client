@@ -122,8 +122,8 @@
 }
 
 .link {
-	@apply underline underline-offset-4 decoration-dotted transition;
+	@apply transition;
 	&:hover {
-		@apply no-underline text-black transition;
+		@apply underline underline-offset-4 decoration-dotted text-black transition;
 	}
 }

@@ -210,7 +210,7 @@ const HomeData = forwardRef((props, ref) => {
 	return (
 
 		<div>
-			<div class="container pt-40 pb-16">
+			<div class="container pt-20 lg:pt-40 pb-16">
 
 				<div class="navbar">
 					<div class="navbar__content">
@@ -296,238 +296,252 @@ const HomeData = forwardRef((props, ref) => {
 					</div>
 				</div>
 
-				<div class="title title--lg">
-					<h1 class="text-heading4">
-						Tourism Ljubljana
-					</h1>
-				</div>
+				<div class="grid grid-cols-12 mb-12 lg:mb-16 items-start justif-start gap-8">
 
-				<div class="table-frame">
+					<div class="col-span-12 lg:col-span-3">
+						&nbsp;
+					</div>
+					<div class="flex flex-col items-center justify-center gap-8 col-span-12 lg:col-span-6">
+						<div
+							class="w-48 h-48 rounded-full bg-white border border-black/10 oveflow-hidden bg-contain bg-center bg-no-repeat"
+							style={{backgroundImage: `url(${("assets/img/turizem-lj.jpg")})`,}}>
+						</div>
+						<h1 class=" text-heading4 text-center">
+							Tourism Ljubljana
+						</h1>
+					</div>
 
-					<table class="table-auto">
-						<thead>
-						<tr>
-							<th>Contact name</th>
-							<th>Email</th>
-							<th>Phone</th>
-						</tr>
-						</thead>
-
-						{users.map((point) => (
-							<tbody>
-							<tr>
-								<td>{point.name}</td>
-								<td>
-									<a class="link" href="mailto:'{point.email}'">{point.email}</a>
-								</td>
-								<td>{point.number}</td>
-							</tr>
-							</tbody>
-						))
-						}
-					</table>
-
-				</div>
-
-				<div class="title title--sm">
-					<h4 class="text-heading6">
-						Tours
-					</h4>
-				</div>
-
-				<div class="table-frame">
-
-					<table>
-						<thead>
-						<tr>
-							<th>Name</th>
-							<th class="whitespace-nowrap">Price <span class="text-sm font-normal text-black/60 ml-2">($incl tax)</span>
-							</th>
-							<th>Tours this month</th>
-							<th>Terms & conditions</th>
-							<th>Options</th>
-						</tr>
-						</thead>
-
-						{homeDataState.toursWithPoints.toursWithPoints.map((tour) => (
-							<tbody>
-							<tr>
-								<td id={tour.tourId} onClick={(e) => {
-
-									const element = document.getElementById(tour.tourId);
-									if (element) {
-										element.scrollIntoView({behavior: 'smooth'});
-									}
-
-
-								}}>{tour.title.english}</td>
-								<td>
-									<div class="form__group">
-										<input class="form__input"
-											   readOnly={!editTourPrice || rowIdTour != tour.tourId}
-											   placeholder={editTourPrice === true ? `${tour.price}` : "Insert price"}
-											   aria-describedby="basic-addon1"
-											   id="name"
-											   type="text"
-											   onChange={(e) => setTourPrice(e.target.value)}
-											   value={tourPrice === "" ? `${tour.price} ${tour.currency}` : tourPrice}
-										/>
-									</div>
-
-								</td>
-								<td>{tour.noOfRidesAMonth}</td>
-								<td>
-									<button onClick={(event) => {
-										seeTermsAndConditions(event, tour.tourId)
-									}}>
-										<MdLaunch/>
-									</button>
-								</td>
-								<td>
-									<div class="flex flex-row items-center gap-2 justify-end">
-										<button class="button button--secondary button--small"
-												onClick={(e) => getHistory(e, tour.tourId)}>Get report
-										</button>
-										<button class="button button--secondary button--small"
-												onClick={(e) => update(e, tour)}>{updateField}</button>
-										<button class="button button--secondary button--small"
-												onClick={(e) => deleteTour(e, tour)}>Delete
-										</button>
-									</div>
-								</td>
-
-							</tr>
-							</tbody>
-						))
-						}
-					</table>
-
-				</div>
-
-				{homeDataState.toursWithPoints.toursWithPoints.map((tour, i) =>
-
-					<div id={tour.tourId}>
-
-						<div class="title title--sm">
-							<h4 class="text-heading6">
-								POIs & Partners
-							</h4>
-							<div>
-								{/* {admin && */}
-								<button class="button button--primary button--small" variant="contained"
-										onClick={(e) => addNewPartner(e, tour.tourId, tour.bpartnerId)}>
-									Add partner
-								</button>
-								{/*}*/}
+					{/*Contact*/}
+					<div
+						class="fixed z-20 left-0 bottom-0 right-0 col-span-12 lg:col-span-3 lg:relative flex flex-col items-center justify-center bg-white/80 backdrop-blur border-t lg:border-none border-black/10 drop-shadow-[0_-2px_6px_rgba(0,0,0,0.15)] lg:drop-shadow-none">
+						<div
+							class="flex flex-row lg:flex-col items-center lg:items-start gap-0 lg:gap-4 p-3 lg:p-6 lg:rounded-2xl lg:border lg:border-black/
+						10 lg:shadow-2xl lg:shadow-black/10 w-full">
+							<div class="label label--primary -rotate-90 lg:rotate-0 -ml-7 lg:ml-0">
+								Contact
 							</div>
+							{users.map((point) => (
+								<div class="flex flex-col gap-1 lg:gap-2 w-full overflow-hidden -ml-2 lg:ml-0">
+									<div class="text-sm lg:text-xl font-bold text-black">
+										{point.name}
+									</div>
+									<div class="flex flex-col gap-1 lg:gap-2 text-xs lg:text-sm">
+										<a class="link" href="mailto:'{point.email}'">{point.email}</a>
+										<div>{point.number}</div>
+									</div>
+								</div>
+							))
+							}
 						</div>
+					</div>
 
+				</div>
 
-						<div class="table-frame">
+				<div class="p-4 bg-black/[3%] rounded-2xl mb-12">
+					<div class="py-4 px-2 pb-6">
+						<h4 class="text-heading6">
+							Tours
+						</h4>
+					</div>
 
-							<table>
-								<thead>
+					<div class="table-frame">
 
+						<table>
+							<thead>
+							<tr>
+								<th>Name</th>
+								<th class="whitespace-nowrap">Price <span
+									class="text-sm font-normal text-black/60 ml-2">($incl tax)</span>
+								</th>
+								<th>Tours this month</th>
+								<th>Terms & conditions</th>
+								<th>Options</th>
+							</tr>
+							</thead>
+
+							{homeDataState.toursWithPoints.toursWithPoints.map((tour) => (
+								<tbody>
 								<tr>
-									<th>Name</th>
-									<th class="whitespace-nowrap">Price <span
-										class="text-sm font-normal text-black/60 ml-2">(incl tax)</span>
-									</th>
-									<th class="whitespace-nowrap">Offer name</th>
-									<th>Category</th>
-									<th>Coupons this month</th>
-									<th>Website</th>
-									<th>Options</th>
-								</tr>
-								</thead>
+									<td id={tour.tourId} onClick={(e) => {
 
-								{tour.points.map((points) => (
-									<tbody>
-									<tr>
+										const element = document.getElementById(tour.tourId);
+										if (element) {
+											element.scrollIntoView({behavior: 'smooth'});
+										}
 
-										<td>{points.point.name.english}</td>
-										<td>
-											<div class="form__group">
-												<input
-													class="form__input"
-													readOnly={!editPartner || rowId != points.point.id}
-													placeholder={editPartner === true ? points.point.price : "Price"}
-													aria-describedby="basic-addon1"
-													id="name"
-													type="text"
-													onChange={(e) => setPartnerPrice(e.target.value)}
-													value={partnerPrice === "" ? `${points.point.price} ${tour.currency}` : partnerPrice}
-												/>
-											</div>
-										</td>
-										<td>
-											<div class="form__group">
-												<input
-													class="form__input"
-													readOnly={!editPartner || rowId != points.point.id}
-													placeholder={editPartner === true ? points.point.offerName : "Offer name"}
-													aria-describedby="basic-addon1"
-													id="name"
-													type="text"
-													onChange={(e) => setOfferName(e.target.value)}
-													value={offerName === "" ? `${points.point.offerName} ` : offerName}
-												/>
-											</div>
-										</td>
 
-										<td>{points.point.category}</td>
+									}}>{tour.title.english}</td>
+									<td>
+										<div class="form__group">
+											<input class="form__input"
+												   readOnly={!editTourPrice || rowIdTour != tour.tourId}
+												   placeholder={editTourPrice === true ? `${tour.price}` : "Insert price"}
+												   aria-describedby="basic-addon1"
+												   id="name"
+												   type="text"
+												   onChange={(e) => setTourPrice(e.target.value)}
+												   value={tourPrice === "" ? `${tour.price} ${tour.currency}` : tourPrice}
+											/>
+										</div>
 
-										<td>{points.monthlyUsed}</td>
-										<td>
-											<button onClick={(event) => {
-												visitWebsite(event, points.point.id)
-											}}>
-												<MdLaunch/>
+									</td>
+									<td>{tour.noOfRidesAMonth}</td>
+									<td>
+										<button onClick={(event) => {
+											seeTermsAndConditions(event, tour.tourId)
+										}}>
+											<MdLaunch/>
+										</button>
+									</td>
+									<td>
+										<div class="flex flex-row items-center gap-2 justify-end">
+											<button class="button button--secondary button--small"
+													onClick={(e) => getHistory(e, tour.tourId)}>Get report
 											</button>
-										</td>
-										<td>
-											<div class="flex flex-row items-center gap-2 justify-end">
-												<button class="button button--secondary button--small"
-														onClick={(event) => {
-															getQrCode(event, points.point.id)
-														}}>
-													Get QR code
-												</button>
-												<button class="button button--secondary button--small"
-														onClick={(e) => updatePartnerPrice(e, points, tour)}>
-													{updatePartner}
-												</button>
-												<button class="button button--secondary button--small"
-														onClick={(e) => deletePoi(e, tour, points.point.id)}>
-													Delete
-												</button>
-											</div>
-										</td>
+											<button class="button button--secondary button--small"
+													onClick={(e) => update(e, tour)}>{updateField}</button>
+											<button class="button button--secondary button--small"
+													onClick={(e) => deleteTour(e, tour)}>Delete
+											</button>
+										</div>
+									</td>
 
-									</tr>
-									</tbody>
-								))}
-							</table>
-
-						</div>
+								</tr>
+								</tbody>
+							))
+							}
+						</table>
 
 					</div>
-				)}
+				</div>
+
+				<div class="p-4 bg-black/[3%] rounded-2xl mb-12">
+
+					{homeDataState.toursWithPoints.toursWithPoints.map((tour, i) =>
+
+						<div id={tour.tourId}>
+
+							<div class="py-4 px-2 pb-6 flex flex-row items-center justify-between gap-4">
+								<h4 class="text-heading6">
+									POIs & Partners
+								</h4>
+								<div>
+									{/* {admin && */}
+									<button class="button button--secondary button--small" variant="contained"
+											onClick={(e) => addNewPartner(e, tour.tourId, tour.bpartnerId)}>
+										Add partner
+									</button>
+									{/*}*/}
+								</div>
+							</div>
+
+
+							<div class="table-frame">
+
+								<table>
+									<thead>
+
+									<tr>
+										<th>Name</th>
+										<th class="whitespace-nowrap">Price <span
+											class="text-sm font-normal text-black/60 ml-2">(incl tax)</span>
+										</th>
+										<th class="whitespace-nowrap">Offer name</th>
+										<th>Category</th>
+										<th>Coupons this month</th>
+										<th>Website</th>
+										<th>Options</th>
+									</tr>
+									</thead>
+
+									{tour.points.map((points) => (
+										<tbody>
+										<tr>
+
+											<td>{points.point.name.english}</td>
+											<td>
+												<div class="form__group">
+													<input
+														class="form__input"
+														readOnly={!editPartner || rowId != points.point.id}
+														placeholder={editPartner === true ? points.point.price : "Price"}
+														aria-describedby="basic-addon1"
+														id="name"
+														type="text"
+														onChange={(e) => setPartnerPrice(e.target.value)}
+														value={partnerPrice === "" ? `${points.point.price} ${tour.currency}` : partnerPrice}
+													/>
+												</div>
+											</td>
+											<td>
+												<div class="form__group">
+													<input
+														class="form__input"
+														readOnly={!editPartner || rowId != points.point.id}
+														placeholder={editPartner === true ? points.point.offerName : "Offer name"}
+														aria-describedby="basic-addon1"
+														id="name"
+														type="text"
+														onChange={(e) => setOfferName(e.target.value)}
+														value={offerName === "" ? `${points.point.offerName} ` : offerName}
+													/>
+												</div>
+											</td>
+
+											<td>{points.point.category}</td>
+
+											<td>{points.monthlyUsed}</td>
+											<td>
+												<button onClick={(event) => {
+													visitWebsite(event, points.point.id)
+												}}>
+													<MdLaunch/>
+												</button>
+											</td>
+											<td>
+												<div class="flex flex-row items-center gap-2 justify-end">
+													<button class="button button--secondary button--small"
+															onClick={(event) => {
+																getQrCode(event, points.point.id)
+															}}>
+														Get QR code
+													</button>
+													<button class="button button--secondary button--small"
+															onClick={(e) => updatePartnerPrice(e, points, tour)}>
+														{updatePartner}
+													</button>
+													<button class="button button--secondary button--small"
+															onClick={(e) => deletePoi(e, tour, points.point.id)}>
+														Delete
+													</button>
+												</div>
+											</td>
+
+										</tr>
+										</tbody>
+									))}
+								</table>
+
+							</div>
+
+						</div>
+					)}
+				</div>
 
 			</div>
 
 			<div class="text-sm text-black/40 border-t black/10">
-				<div class="container pt-8 pb-12">
+				<div class="container pt-8 pb-40 lg:pb-12">
 					<div
 						class="flex flex-col lg:flex-row items-center justify-start lg:justify-between gap-4">
-						<div class="flex items-center gap-4 lg:order-last mb-4 lg:mb-0">
-							<a class="button button--clear button--tiny" href="#" target="_blank">
+						<div class="flex items-center gap-2 lg:order-last mb-4 lg:mb-0">
+							<a class="button button--clear button--small" href="#" target="_blank">
 								Terms
 							</a>
-							<a class="button button--clear button--tiny" href="#" target="_blank">
+							<a class="button button--clear button--small" href="#" target="_blank">
 								Privacy
 							</a>
-							<a class="button button--clear button--tiny" target="_blank">
+							<a class="button button--clear button--small" target="_blank">
 								Contact
 							</a>
 						</div>
@@ -539,7 +553,8 @@ const HomeData = forwardRef((props, ref) => {
 			</div>
 		</div>
 
-	);
+	)
+		;
 });
 
 export default HomeData
