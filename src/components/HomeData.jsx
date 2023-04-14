@@ -209,304 +209,315 @@ const HomeData = forwardRef((props, ref) => {
 
 	return (
 
-		<div className="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:px-8 lg:py-40">
+		<div>
+			<div class="container pt-40 pb-8">
 
-			<div class="navbar">
-				<div class="navbar__content">
-					<div>
-						<img class="h-8 w-auto" src="assets/img/logo.svg" />
-					</div>
-					<div class="hidden lg:flex flex-row items-center gap-2">
-						{homeDataState.showModal && <div>
-							<AddNewTourForm/>
-						</div>}
+				<div class="navbar">
+					<div class="navbar__content">
+						<div>
+							<img class="h-8 w-auto" src="assets/img/logo.svg"/>
+						</div>
+						<div class="hidden lg:flex flex-row items-center gap-2">
+							{homeDataState.showModal && <div>
+								<AddNewTourForm/>
+							</div>}
 
-						{homeDataState.showEditLogoModal && <div>
-							<UpdateLogoModal/>
-						</div>}
+							{homeDataState.showEditLogoModal && <div>
+								<UpdateLogoModal/>
+							</div>}
 
-						{homeDataState.showEditLockCodeModal && <div>
-							<ChangeLockCodeModal/>
-						</div>}
+							{homeDataState.showEditLockCodeModal && <div>
+								<ChangeLockCodeModal/>
+							</div>}
 
-						{homeDataState.updateTourData.show && <div>
-							<TourData/>
-						</div>}
+							{homeDataState.updateTourData.show && <div>
+								<TourData/>
+							</div>}
 
-						{!role &&
+							{!role &&
+								<div>
+									<button class="button button--clear button--small" type="button"
+											onClick={handleLogin}>
+										Log in
+									</button>
+								</div>
+							}
+
+							{/*{role &&*/}
 							<div>
-								<button class="button button--clear button--small" type="button" onClick={handleLogin}>
-									Log in
+								<button class="button button--clear button--small" type="button" onClick={handleLogout}>
+									Log out
 								</button>
 							</div>
-						}
+							{/*}*/}
 
-						{/*{role &&*/}
-						<div>
-							<button class="button button--clear button--small" type="button" onClick={handleLogout}>
-								Log out
-							</button>
-						</div>
-						{/*}*/}
-
-						{/*{role &&*/}
-						<div>
-							<button class="button button--clear button--small" type="button" onClick={updateLogo}>
-								Edit logo
-							</button>
-						</div>
-						{/*}*/}
-
-						{/*{role &&*/}
-						<div>
-							<button class="button button--clear button--small" type="button" onClick={editLockCode}>
-								Edit lock code
-							</button>
-						</div>
-						{/*}*/}
-
-						{/*{adminOnly &&*/}
-						<div>
-							<button class="button button--clear button--small" type="button" onClick={handleRegister}>
-								New user
-							</button>
-						</div>
-						{/*}*/}
-
-						{/*{adminOnly &&*/}
-						<div>
-							<button class="button button--clear button--small" type="button"
-									onClick={allBusinessPartners}>
-								Partners
-							</button>
-						</div>
-						{/*}*/}
-
-						{/*{adminOnly &&*/}
-						<div>
-							<button class="button button--clear button--small" type="button" onClick={insertdata}>
-								New data
-							</button>
-						</div>
-						{/*}*/}
-					</div>
-				</div>
-			</div>
-
-
-			<div class="title title--lg">
-				<h1 class="text-heading4">
-					Tourism Ljubljana
-				</h1>
-			</div>
-
-			<div class="table-frame">
-
-				<table class="table-auto">
-					<thead>
-					<tr>
-						<th>Contact name</th>
-						<th>Email</th>
-						<th>Phone</th>
-					</tr>
-					</thead>
-
-					{users.map((point) => (
-						<tbody>
-						<tr>
-							<td>{point.name}</td>
-							<td>{point.email}</td>
-							<td>{point.number}</td>
-						</tr>
-						</tbody>
-					))
-					}
-				</table>
-
-			</div>
-
-			<div class="title title--sm">
-				<h4 class="text-heading6">
-					Tours
-				</h4>
-			</div>
-
-			<div class="table-frame">
-
-				<table>
-					<thead>
-					<tr>
-						<th>Name</th>
-						<th>Price</th>
-						<th>Tours this month</th>
-						<th>Terms & conditions</th>
-						<th>Options</th>
-					</tr>
-					</thead>
-
-					{homeDataState.toursWithPoints.toursWithPoints.map((tour) => (
-						<tbody>
-						<tr>
-							<td id={tour.tourId} onClick={(e) => {
-
-								const element = document.getElementById(tour.tourId);
-								if (element) {
-									element.scrollIntoView({behavior: 'smooth'});
-								}
-
-
-							}}>{tour.title.english}</td>
-							<td>
-								<div class="form__group">
-									<input class="form__input"
-										   readOnly={!editTourPrice || rowIdTour != tour.tourId}
-										   placeholder={editTourPrice === true ? `${tour.price}` : "Insert price"}
-										   aria-describedby="basic-addon1"
-										   id="name"
-										   type="text"
-										   onChange={(e) => setTourPrice(e.target.value)}
-										   value={tourPrice === "" ? `${tour.price} ${tour.currency} incl tax` : tourPrice}
-									/>
-								</div>
-
-							</td>
-							<td>{tour.noOfRidesAMonth}</td>
-							<td>
-								<button onClick={(event) => {
-									seeTermsAndConditions(event, tour.tourId)
-								}}>
-									<MdLaunch/>
+							{/*{role &&*/}
+							<div>
+								<button class="button button--clear button--small" type="button" onClick={updateLogo}>
+									Edit logo
 								</button>
-							</td>
-							<td>
-								<div class="flex flex-row items-center gap-2 justify-end">
-									<button class="button button--secondary button--small"
-											onClick={(e) => getHistory(e, tour.tourId)}>Get report
-									</button>
-									<button class="button button--secondary button--small"
-											onClick={(e) => update(e, tour)}>{updateField}</button>
-									<button class="button button--secondary button--small"
-											onClick={(e) => deleteTour(e, tour)}>Delete
-									</button>
-								</div>
-							</td>
+							</div>
+							{/*}*/}
 
-						</tr>
-						</tbody>
-					))
-					}
-				</table>
+							{/*{role &&*/}
+							<div>
+								<button class="button button--clear button--small" type="button" onClick={editLockCode}>
+									Edit lock code
+								</button>
+							</div>
+							{/*}*/}
 
-			</div>
+							{/*{adminOnly &&*/}
+							<div>
+								<button class="button button--clear button--small" type="button"
+										onClick={handleRegister}>
+									New user
+								</button>
+							</div>
+							{/*}*/}
 
+							{/*{adminOnly &&*/}
+							<div>
+								<button class="button button--clear button--small" type="button"
+										onClick={allBusinessPartners}>
+									Partners
+								</button>
+							</div>
+							{/*}*/}
 
-			{homeDataState.toursWithPoints.toursWithPoints.map((tour, i) =>
-
-				<div id={tour.tourId}>
-
-					<div class="title title--sm">
-						<h4 class="text-heading6">
-							POIs & Partners
-						</h4>
-						<div>
-							{/* {admin && */}
-							<button class="button button--primary" variant="contained"
-									onClick={(e) => addNewPartner(e, tour.tourId, tour.bpartnerId)}>
-								Add partner
-							</button>
+							{/*{adminOnly &&*/}
+							<div>
+								<button class="button button--clear button--small" type="button" onClick={insertdata}>
+									New data
+								</button>
+							</div>
 							{/*}*/}
 						</div>
 					</div>
+				</div>
 
+				<div class="title title--lg">
+					<h1 class="text-heading4">
+						Tourism Ljubljana
+					</h1>
+				</div>
 
-					<div class="table-frame">
+				<div class="table-frame">
 
-						<table>
-							<thead>
+					<table class="table-auto">
+						<thead>
+						<tr>
+							<th>Contact name</th>
+							<th>Email</th>
+							<th>Phone</th>
+						</tr>
+						</thead>
 
+						{users.map((point) => (
+							<tbody>
 							<tr>
-								<th>Name</th>
-								<th>Price</th>
-								<th>Offer name</th>
-								<th>Category</th>
-								<th>Coupons this month</th>
-								<th>Website</th>
-								<th>Options</th>
+								<td>{point.name}</td>
+								<td>{point.email}</td>
+								<td>{point.number}</td>
 							</tr>
-							</thead>
-
-							{tour.points.map((points) => (
-								<tbody>
-								<tr>
-
-									<td>{points.point.name.english}</td>
-									<td>
-										<div class="form__group">
-											<input
-												class="form__input"
-												readOnly={!editPartner || rowId != points.point.id}
-												placeholder={editPartner === true ? points.point.price : "Price"}
-												aria-describedby="basic-addon1"
-												id="name"
-												type="text"
-												onChange={(e) => setPartnerPrice(e.target.value)}
-												value={partnerPrice === "" ? `${points.point.price} ${tour.currency} incl tax` : partnerPrice}
-											/>
-										</div>
-									</td>
-									<td>
-										<div class="form__group">
-											<input
-												class="form__input"
-												readOnly={!editPartner || rowId != points.point.id}
-												placeholder={editPartner === true ? points.point.offerName : "Offer name"}
-												aria-describedby="basic-addon1"
-												id="name"
-												type="text"
-												onChange={(e) => setOfferName(e.target.value)}
-												value={offerName === "" ? `${points.point.offerName} ` : offerName}
-											/>
-										</div>
-									</td>
-
-									<td>{points.point.category}</td>
-
-									<td>{points.monthlyUsed}</td>
-									<td>
-										<button onClick={(event) => {
-											visitWebsite(event, points.point.id)
-										}}>
-											<MdLaunch/>
-										</button>
-									</td>
-									<td>
-										<div class="flex flex-row items-center gap-2 justify-end">
-											<button class="button button--secondary button--small" onClick={(event) => {
-												getQrCode(event, points.point.id)
-											}}>
-												Get QR code
-											</button>
-											<button class="button button--secondary button--small"
-													onClick={(e) => updatePartnerPrice(e, points, tour)}>
-												{updatePartner}
-											</button>
-											<button class="button button--secondary button--small"
-													onClick={(e) => deletePoi(e, tour, points.point.id)}>
-												Delete
-											</button>
-										</div>
-									</td>
-
-								</tr>
-								</tbody>
-							))}
-						</table>
-
-					</div>
+							</tbody>
+						))
+						}
+					</table>
 
 				</div>
-			)}
 
+				<div class="title title--sm">
+					<h4 class="text-heading6">
+						Tours
+					</h4>
+				</div>
+
+				<div class="table-frame">
+
+					<table>
+						<thead>
+						<tr>
+							<th>Name</th>
+							<th>Price</th>
+							<th>Tours this month</th>
+							<th>Terms & conditions</th>
+							<th>Options</th>
+						</tr>
+						</thead>
+
+						{homeDataState.toursWithPoints.toursWithPoints.map((tour) => (
+							<tbody>
+							<tr>
+								<td id={tour.tourId} onClick={(e) => {
+
+									const element = document.getElementById(tour.tourId);
+									if (element) {
+										element.scrollIntoView({behavior: 'smooth'});
+									}
+
+
+								}}>{tour.title.english}</td>
+								<td>
+									<div class="form__group">
+										<input class="form__input"
+											   readOnly={!editTourPrice || rowIdTour != tour.tourId}
+											   placeholder={editTourPrice === true ? `${tour.price}` : "Insert price"}
+											   aria-describedby="basic-addon1"
+											   id="name"
+											   type="text"
+											   onChange={(e) => setTourPrice(e.target.value)}
+											   value={tourPrice === "" ? `${tour.price} ${tour.currency} incl tax` : tourPrice}
+										/>
+									</div>
+
+								</td>
+								<td>{tour.noOfRidesAMonth}</td>
+								<td>
+									<button onClick={(event) => {
+										seeTermsAndConditions(event, tour.tourId)
+									}}>
+										<MdLaunch/>
+									</button>
+								</td>
+								<td>
+									<div class="flex flex-row items-center gap-2 justify-end">
+										<button class="button button--secondary button--small"
+												onClick={(e) => getHistory(e, tour.tourId)}>Get report
+										</button>
+										<button class="button button--secondary button--small"
+												onClick={(e) => update(e, tour)}>{updateField}</button>
+										<button class="button button--secondary button--small"
+												onClick={(e) => deleteTour(e, tour)}>Delete
+										</button>
+									</div>
+								</td>
+
+							</tr>
+							</tbody>
+						))
+						}
+					</table>
+
+				</div>
+
+				{homeDataState.toursWithPoints.toursWithPoints.map((tour, i) =>
+
+					<div id={tour.tourId}>
+
+						<div class="title title--sm">
+							<h4 class="text-heading6">
+								POIs & Partners
+							</h4>
+							<div>
+								{/* {admin && */}
+								<button class="button button--primary" variant="contained"
+										onClick={(e) => addNewPartner(e, tour.tourId, tour.bpartnerId)}>
+									Add partner
+								</button>
+								{/*}*/}
+							</div>
+						</div>
+
+
+						<div class="table-frame">
+
+							<table>
+								<thead>
+
+								<tr>
+									<th>Name</th>
+									<th>Price</th>
+									<th>Offer name</th>
+									<th>Category</th>
+									<th>Coupons this month</th>
+									<th>Website</th>
+									<th>Options</th>
+								</tr>
+								</thead>
+
+								{tour.points.map((points) => (
+									<tbody>
+									<tr>
+
+										<td>{points.point.name.english}</td>
+										<td>
+											<div class="form__group">
+												<input
+													class="form__input"
+													readOnly={!editPartner || rowId != points.point.id}
+													placeholder={editPartner === true ? points.point.price : "Price"}
+													aria-describedby="basic-addon1"
+													id="name"
+													type="text"
+													onChange={(e) => setPartnerPrice(e.target.value)}
+													value={partnerPrice === "" ? `${points.point.price} ${tour.currency} incl tax` : partnerPrice}
+												/>
+											</div>
+										</td>
+										<td>
+											<div class="form__group">
+												<input
+													class="form__input"
+													readOnly={!editPartner || rowId != points.point.id}
+													placeholder={editPartner === true ? points.point.offerName : "Offer name"}
+													aria-describedby="basic-addon1"
+													id="name"
+													type="text"
+													onChange={(e) => setOfferName(e.target.value)}
+													value={offerName === "" ? `${points.point.offerName} ` : offerName}
+												/>
+											</div>
+										</td>
+
+										<td>{points.point.category}</td>
+
+										<td>{points.monthlyUsed}</td>
+										<td>
+											<button onClick={(event) => {
+												visitWebsite(event, points.point.id)
+											}}>
+												<MdLaunch/>
+											</button>
+										</td>
+										<td>
+											<div class="flex flex-row items-center gap-2 justify-end">
+												<button class="button button--secondary button--small"
+														onClick={(event) => {
+															getQrCode(event, points.point.id)
+														}}>
+													Get QR code
+												</button>
+												<button class="button button--secondary button--small"
+														onClick={(e) => updatePartnerPrice(e, points, tour)}>
+													{updatePartner}
+												</button>
+												<button class="button button--secondary button--small"
+														onClick={(e) => deletePoi(e, tour, points.point.id)}>
+													Delete
+												</button>
+											</div>
+										</td>
+
+									</tr>
+									</tbody>
+								))}
+							</table>
+
+						</div>
+
+					</div>
+				)}
+
+			</div>
+
+			<div>
+				<div class="container py-12">
+					<div>
+						Footer
+					</div>
+				</div>
+			</div>
 		</div>
 
 	);
