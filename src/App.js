@@ -18,6 +18,7 @@ import SetPasswordPage from './pages/SetPasswordPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import TermsAndConditionsPage from './pages/TermsAndConditionsPage';
 import UnauthorizedPage from './pages/UnauthorizedPage.jsx';
+import LandingPage from './pages/LandingPage.jsx';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         <Route path="/register" component={RegisterPage} />
         <Route path="/termsAndConditions/:id" component={TermsAndConditionsPage} />
         <Route path="/insertdata" component={InsertDataPage} />
+        <Route path="/ui" component={LandingPage} />
         <Route path="/setPassword/:email" component={SetPasswordPage} />
         <Route path="/report/:id" component={ReportPage} />
         <Route path="/previousReports/:id" component={PreviousReportPage} />
