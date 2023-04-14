@@ -1,6 +1,6 @@
 import React, {Suspense} from 'react';
 import ReactDOM from "react-dom";
-import "./index.css";
+import "./style/main.scss";
 import App from "./App";
 
 ReactDOM.render(

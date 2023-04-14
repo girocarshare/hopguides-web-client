@@ -1,0 +1,163 @@
+.form {
+    @apply flex flex-col gap-8;
+}
+
+.form__group {
+    @apply relative;
+}
+
+.form__input-group {
+    @apply flex relative;
+}
+
+.form__input-group--with-action {
+    .form__input {
+        @apply pr-11;
+    }
+}
+
+.form__input-group--number {
+    > .form__input {
+        @apply rounded-tl-none rounded-bl-none z-20;
+    }
+}
+
+.form__icon-action {
+    @apply absolute right-0 z-10 w-[42px] h-[42px] flex items-center justify-center text-black/60 rounded-lg transition hover:text-black select-none focus:ring-2 focus:ring-black;
+}
+
+// Form Group: Error State
+
+.form__group--error {
+    .form__label,
+    .form__input,
+    .form__helper,
+    .form__helper strong {@apply text-red-900; }
+
+    .form__input {
+        @apply border-red-600 focus:ring-red-600 focus:border-red-600;
+
+        &::placeholder {
+            @apply text-red-900;
+        }
+    }
+}
+
+// Form Group: Checkbox
+
+.form__group--checkbox {
+    label {
+        @apply flex;
+    }
+
+    span {
+        @apply pl-2.5 pt-px text-xs text-black/60 cursor-pointer select-none;
+
+        a { @apply text-black underline; }
+    }
+
+    input {
+        @apply border-gray-300 w-4 h-4 border rounded text-black focus:border-black/60 focus:ring-black/20 flex-shrink-0 hover:cursor-pointer;
+    }
+}
+
+.form__group--toggle {
+    label:not(:first-child) { @apply cursor-pointer; }
+}
+
+// Form Group: Color
+.form__group--color {
+    .form__input-group {
+        @apply items-center;
+
+        > div {
+            @apply w-8 h-8 rounded-md border border-black/20 absolute left-[5px] overflow-hidden;
+        }
+
+        input[type=color] {
+            @apply absolute inset-0 opacity-0 cursor-pointer;
+        }
+    }
+}
+
+.form__label {
+   @apply block mb-2 text-sm font-semibold text-black/60;
+}
+
+.form__input-addon {
+    @apply px-3 py-2.5 inline-flex items-center text-sm border-l border-y border-black/20 rounded-l-lg text-black/40 bg-black/5 select-none;
+}
+
+.form__input {
+    @apply block w-full px-3 py-2 font-medium border border-black/20 rounded-lg bg-transparent placeholder-black/30 shadow-sm focus:ring-1 focus:ring-black focus:border-black;
+}
+
+.form__input--color {
+    @apply pl-12;
+}
+
+.form__helper {
+    @apply text-xs font-medium leading-tight text-black/40 mt-2;
+
+    strong { @apply text-black/60; }
+
+    .link {
+        @apply font-semibold text-black underline hover:text-black/60;
+    }
+}
+
+.form__toggle {
+    @apply relative select-none;
+}
+
+.form__toggle--small {
+    .form__toggle-bg {
+       @apply h-5 w-9;
+    }
+
+    .form__toggle-dot {
+        @apply h-4 w-4;
+    }
+}
+
+.form__toggle-bg {
+    @apply transition bg-neutral-300 w-12 h-7 rounded-full;
+}
+
+.form__toggle-dot {
+    @apply absolute left-0.5 top-0.5 bg-white w-6 h-6 rounded-full transition;
+}
+
+input:checked ~ .form__toggle-bg {
+    @apply bg-black;
+}
+
+input:checked ~ .form__toggle-dot {
+    transform: translateX(calc(100% - 4px));
+}
+
+input:checked ~ .form__toggle-dot--small {
+    transform: translateX(100%);
+}
+
+// -----------------------
+
+// Form Footer
+
+.form__footer {
+    @apply flex flex-col gap-4;
+}
+
+// Form Actions
+
+.form__actions {
+    @apply flex justify-end gap-2;
+}
+
+.form__actions--start {
+    @apply justify-start;
+}
+
+.form__actions--center {
+    @apply justify-center;
+}

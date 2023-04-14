@@ -1,0 +1,78 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+// Base
+@import 'base/default',
+'base/typography',
+'base/helpers';
+
+// Components
+@import 'components/container',
+'components/icon',
+'components/loader',
+'components/button',
+'components/label',
+'components/dropdown',
+'components/table',
+'components/menu',
+'components/navbar',
+'components/form';
+
+@media screen and (prefers-reduced-motion: reduce) {
+	html {
+		@apply scroll-auto;
+	}
+}
+
+@layer base {
+	html {
+		-webkit-tap-highlight-color: transparent;
+		@apply scroll-smooth;
+	}
+
+	a,
+	button,
+	[role="button"] {
+		@apply outline-none;
+	}
+}
+
+html, body, #root, .App {
+	height: 100%;
+}
+
+body {
+	@apply h-full overflow-x-hidden text-black/60;
+}
+
+.title {
+	@apply flex flex-row items-center justify-between gap-4 mb-6;
+}
+
+.title h1,
+.title h2,
+.title h3,
+.title h4,
+.title h5,
+.title h6 {
+	@apply text-2xl font-bold text-black;
+}
+
+.title--sm h1,
+.title--sm h2,
+.title--sm h3,
+.title--sm h4,
+.title--sm h5,
+.title--sm h6 {
+	@apply text-xl;
+}
+
+.title--lg h1,
+.title--lg h2,
+.title--lg h3,
+.title--lg h4,
+.title--lg h5,
+.title--lg h6 {
+	@apply text-4xl;
+}

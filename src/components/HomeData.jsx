@@ -211,79 +211,88 @@ const HomeData = forwardRef((props, ref) => {
 
 		<div className="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:px-8 lg:py-40">
 
-			<div class="flex flex-row items-center gap-4 mb-20">
-				{homeDataState.showModal && <div>
-					<AddNewTourForm/>
-				</div>}
-
-				{homeDataState.showEditLogoModal && <div>
-					<UpdateLogoModal/>
-				</div>}
-
-				{homeDataState.showEditLockCodeModal && <div>
-					<ChangeLockCodeModal/>
-				</div>}
-
-				{homeDataState.updateTourData.show && <div>
-					<TourData/>
-				</div>}
-
-				{!role &&
+			<div class="navbar">
+				<div class="navbar__content">
 					<div>
-						<button class="bg-black text-white px-4 py-2 rounded-lg" type="button" onClick={handleLogin}>
-							Log in
-						</button>
+						<img class="h-8 w-auto" src="assets/img/logo.svg" />
 					</div>
-				}
+					<div class="hidden lg:flex flex-row items-center gap-2">
+						{homeDataState.showModal && <div>
+							<AddNewTourForm/>
+						</div>}
 
-				{/*{role &&*/}
-				<div>
-					<button type="button" onClick={handleLogout}>
-						Log out
-					</button>
-				</div>
-				{/*}*/}
+						{homeDataState.showEditLogoModal && <div>
+							<UpdateLogoModal/>
+						</div>}
 
-				{/*{role &&*/}
-				<div>
-					<button type="button" onClick={updateLogo}>
-						Edit logo
-					</button>
-				</div>
-				{/*}*/}
+						{homeDataState.showEditLockCodeModal && <div>
+							<ChangeLockCodeModal/>
+						</div>}
 
-				{/*{role &&*/}
-				<div>
-					<button type="button" onClick={editLockCode}>
-						Edit lock code
-					</button>
-				</div>
-				{/*}*/}
+						{homeDataState.updateTourData.show && <div>
+							<TourData/>
+						</div>}
 
-				{/*{adminOnly &&*/}
-				<div>
-					<button type="button" onClick={handleRegister}>
-						Register new user
-					</button>
-				</div>
-				{/*}*/}
+						{!role &&
+							<div>
+								<button class="button button--clear button--small" type="button" onClick={handleLogin}>
+									Log in
+								</button>
+							</div>
+						}
 
-				{/*{adminOnly &&*/}
-				<div>
-					<button type="button" onClick={allBusinessPartners}>
-						All business partners
-					</button>
-				</div>
-				{/*}*/}
+						{/*{role &&*/}
+						<div>
+							<button class="button button--clear button--small" type="button" onClick={handleLogout}>
+								Log out
+							</button>
+						</div>
+						{/*}*/}
 
-				{/*{adminOnly &&*/}
-				<div>
-					<button type="button" onClick={insertdata}>
-						Insert new data
-					</button>
+						{/*{role &&*/}
+						<div>
+							<button class="button button--clear button--small" type="button" onClick={updateLogo}>
+								Edit logo
+							</button>
+						</div>
+						{/*}*/}
+
+						{/*{role &&*/}
+						<div>
+							<button class="button button--clear button--small" type="button" onClick={editLockCode}>
+								Edit lock code
+							</button>
+						</div>
+						{/*}*/}
+
+						{/*{adminOnly &&*/}
+						<div>
+							<button class="button button--clear button--small" type="button" onClick={handleRegister}>
+								New user
+							</button>
+						</div>
+						{/*}*/}
+
+						{/*{adminOnly &&*/}
+						<div>
+							<button class="button button--clear button--small" type="button"
+									onClick={allBusinessPartners}>
+								Partners
+							</button>
+						</div>
+						{/*}*/}
+
+						{/*{adminOnly &&*/}
+						<div>
+							<button class="button button--clear button--small" type="button" onClick={insertdata}>
+								New data
+							</button>
+						</div>
+						{/*}*/}
+					</div>
 				</div>
-				{/*}*/}
 			</div>
+
 
 			<div class="title title--lg">
 				<h1>
@@ -327,11 +336,9 @@ const HomeData = forwardRef((props, ref) => {
 				<table>
 					<thead>
 					<tr>
-						<th>Tour name</th>
+						<th>Name</th>
 						<th>Price</th>
 						<th>Tours this month</th>
-						<th>Report</th>
-						<th>Update</th>
 						<th>Terms & conditions</th>
 						<th>Options</th>
 					</tr>
@@ -350,23 +357,20 @@ const HomeData = forwardRef((props, ref) => {
 
 							}}>{tour.title.english}</td>
 							<td>
-								<input
-									readOnly={!editTourPrice || rowIdTour != tour.tourId}
-									placeholder={editTourPrice === true ? `${tour.price}` : "Insert price"}
-									aria-describedby="basic-addon1"
-									id="name"
-									type="text"
-									onChange={(e) => setTourPrice(e.target.value)}
-									value={tourPrice === "" ? `${tour.price} ${tour.currency} incl tax` : tourPrice}
-								/>
+								<div class="form__group">
+									<input class="form__input"
+										   readOnly={!editTourPrice || rowIdTour != tour.tourId}
+										   placeholder={editTourPrice === true ? `${tour.price}` : "Insert price"}
+										   aria-describedby="basic-addon1"
+										   id="name"
+										   type="text"
+										   onChange={(e) => setTourPrice(e.target.value)}
+										   value={tourPrice === "" ? `${tour.price} ${tour.currency} incl tax` : tourPrice}
+									/>
+								</div>
+
 							</td>
 							<td>{tour.noOfRidesAMonth}</td>
-							<td>
-								<button onClick={(e) => getHistory(e, tour.tourId)}>Get report</button>
-							</td>
-							<td>
-								<button onClick={(e) => update(e, tour)}>{updateField}</button>
-							</td>
 							<td>
 								<button onClick={(event) => {
 									seeTermsAndConditions(event, tour.tourId)
@@ -375,7 +379,16 @@ const HomeData = forwardRef((props, ref) => {
 								</button>
 							</td>
 							<td>
-								<button onClick={(e) => deleteTour(e, tour)}>Delete</button>
+								<div class="flex flex-row items-center gap-2 justify-end">
+									<button class="button button--secondary button--small"
+											onClick={(e) => getHistory(e, tour.tourId)}>Get report
+									</button>
+									<button class="button button--secondary button--small"
+											onClick={(e) => update(e, tour)}>{updateField}</button>
+									<button class="button button--secondary button--small"
+											onClick={(e) => deleteTour(e, tour)}>Delete
+									</button>
+								</div>
 							</td>
 
 						</tr>
@@ -393,11 +406,11 @@ const HomeData = forwardRef((props, ref) => {
 
 					<div class="title title--sm">
 						<h4>
-							Points of interest/Partners
+							POIs & Partners
 						</h4>
 						<div>
 							{/* {admin && */}
-							<button variant="contained"
+							<button class="button button--primary" variant="contained"
 									onClick={(e) => addNewPartner(e, tour.tourId, tour.bpartnerId)}>
 								Add partner
 							</button>
@@ -412,13 +425,12 @@ const HomeData = forwardRef((props, ref) => {
 							<thead>
 
 							<tr>
-								<th>Website</th>
-								<th>POI</th>
+								<th>Name</th>
 								<th>Price</th>
 								<th>Offer name</th>
 								<th>Category</th>
 								<th>Coupons this month</th>
-								<th>QR code</th>
+								<th>Website</th>
 								<th>Options</th>
 							</tr>
 							</thead>
@@ -426,6 +438,40 @@ const HomeData = forwardRef((props, ref) => {
 							{tour.points.map((points) => (
 								<tbody>
 								<tr>
+
+									<td>{points.point.name.english}</td>
+									<td>
+										<div class="form__group">
+											<input
+												class="form__input"
+												readOnly={!editPartner || rowId != points.point.id}
+												placeholder={editPartner === true ? points.point.price : "Price"}
+												aria-describedby="basic-addon1"
+												id="name"
+												type="text"
+												onChange={(e) => setPartnerPrice(e.target.value)}
+												value={partnerPrice === "" ? `${points.point.price} ${tour.currency} incl tax` : partnerPrice}
+											/>
+										</div>
+									</td>
+									<td>
+										<div class="form__group">
+											<input
+												class="form__input"
+												readOnly={!editPartner || rowId != points.point.id}
+												placeholder={editPartner === true ? points.point.offerName : "Offer name"}
+												aria-describedby="basic-addon1"
+												id="name"
+												type="text"
+												onChange={(e) => setOfferName(e.target.value)}
+												value={offerName === "" ? `${points.point.offerName} ` : offerName}
+											/>
+										</div>
+									</td>
+
+									<td>{points.point.category}</td>
+
+									<td>{points.monthlyUsed}</td>
 									<td>
 										<button onClick={(event) => {
 											visitWebsite(event, points.point.id)
@@ -433,48 +479,19 @@ const HomeData = forwardRef((props, ref) => {
 											<MdLaunch/>
 										</button>
 									</td>
-									<td>{points.point.name.english}</td>
-
 									<td>
-										<input
-											readOnly={!editPartner || rowId != points.point.id}
-											placeholder={editPartner === true ? points.point.price : "Price"}
-											aria-describedby="basic-addon1"
-											id="name"
-											type="text"
-											onChange={(e) => setPartnerPrice(e.target.value)}
-											value={partnerPrice === "" ? `${points.point.price} ${tour.currency} incl tax` : partnerPrice}
-										/>
-									</td>
-									<td>
-										<input
-											readOnly={!editPartner || rowId != points.point.id}
-											placeholder={editPartner === true ? points.point.offerName : "Offer name"}
-											aria-describedby="basic-addon1"
-											id="name"
-											type="text"
-											onChange={(e) => setOfferName(e.target.value)}
-											value={offerName === "" ? `${points.point.offerName} ` : offerName}
-										/>
-									</td>
-
-									<td>{points.point.category}</td>
-
-									<td>{points.monthlyUsed}</td>
-
-									<td>
-										<button onClick={(event) => {
-											getQrCode(event, points.point.id)
-										}}>
-											Get QR code
-										</button>
-									</td>
-									<td>
-										<div class="flex flex-row items-center gap-4">
-											<button onClick={(e) => updatePartnerPrice(e, points, tour)}>
+										<div class="flex flex-row items-center gap-2 justify-end">
+											<button class="button button--secondary button--small" onClick={(event) => {
+												getQrCode(event, points.point.id)
+											}}>
+												Get QR code
+											</button>
+											<button class="button button--secondary button--small"
+													onClick={(e) => updatePartnerPrice(e, points, tour)}>
 												{updatePartner}
 											</button>
-											<button onClick={(e) => deletePoi(e, tour, points.point.id)}>
+											<button class="button button--secondary button--small"
+													onClick={(e) => deletePoi(e, tour, points.point.id)}>
 												Delete
 											</button>
 										</div>

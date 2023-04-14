@@ -1,0 +1,39 @@
+// Only for screen readers
+.sr-only {
+    @apply absolute w-px h-px p-0 -m-px overflow-hidden whitespace-nowrap border-0 border-none;
+    clip: rect(0,0,0,0);
+}
+
+.social-icon-crossfade {
+    img {
+        animation: social-crossfade 7.5s ease-in-out infinite;
+
+        &:nth-of-type(1) {
+            animation-delay: 6s;
+        }
+
+        &:nth-of-type(2) {
+            animation-delay: 4.5s;
+        }
+
+        &:nth-of-type(3) {
+            animation-delay: 3s;
+        }
+
+        &:nth-of-type(4) {
+            animation-delay: 1.5s;
+        }
+
+        &:nth-of-type(5) {
+            animation-delay: 0s;
+        }
+    }
+}
+
+.progress-circle {
+    @apply stroke-2 stroke-black;
+    stroke-dasharray: 106px;
+    stroke-dashoffset: calc(106px - (106px * var(--percent)) / 100);
+    stroke-linecap: round;
+    transition: stroke-dashoffset .25s linear;
+}
