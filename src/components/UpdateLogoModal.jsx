@@ -171,10 +171,11 @@ const UpdateLogoModal = () => {
 										</div>
 
 										<div class="form__group">
-											<label>
-												File progress: <progress ref={progressRef} value="0" max="100"/>
+											<label class="text-sm">
+												File progress: <progress class="ml-2" ref={progressRef} value="0"
+																		 max="100"/>
 											</label>
-											<p ref={statusRef}></p>
+											<p class="text-sm" ref={statusRef}></p>
 										</div>
 
 									</form>
