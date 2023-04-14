@@ -189,19 +189,19 @@ const POIData = () => {
 		if (category != "") {
 			point.category = category
 		} if (imageTitles != "") {
-			
-var jsonTitles = []
-for(var ti of imageTitles){
-  var help = ti.split("---")
 
-  var titlee = JSON.parse(help[0])
-  var titleObj = {
-	number : help[1],
-	name: titlee
-	
-  }
-  jsonTitles.push(titleObj)
-}
+			var jsonTitles = []
+			for (var ti of imageTitles) {
+				var help = ti.split("---")
+
+				var titlee = JSON.parse(help[0])
+				var titleObj = {
+					number: help[1],
+					name: titlee
+
+				}
+				jsonTitles.push(titleObj)
+			}
 			point.imageTitles = jsonTitles
 		}
 
@@ -1093,7 +1093,7 @@ for(var ti of imageTitles){
 														return (
 															<div>
 																<br />
-																<img className="preview" src={img} alt={"image-" + img} key={i} />
+																<img className="preview" src={img.image} alt={"image-" + img} key={i} />
 															</div>
 														);
 													})}

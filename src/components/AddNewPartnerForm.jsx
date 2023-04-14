@@ -253,7 +253,7 @@ const AddNewPartnerForm = (props) => {
 		var fs = []
 		for (let i = 0; i < event.target.files.length; i++) {
 			images.push(URL.createObjectURL(event.target.files[i]));
-			var new_file = new File([event.target.files[i]], 'partner' + num + "---" + [event.target.files[i].name]);
+			var new_file = new File([event.target.files[i]], i + 'partner' + num + "---" + [event.target.files[i].name]);
 			fs.push(new_file)
 
 		}
