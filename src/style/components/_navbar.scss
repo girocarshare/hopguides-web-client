@@ -1,8 +1,9 @@
 .navbar {
-	@apply fixed z-50 left-0 right-0 top-0 shadow-sm;
+	@apply fixed z-50 left-0 right-0 top-0 shadow-sm bg-white/80 backdrop-blur;
 }
+
 .navbar__content {
-	@apply mx-auto max-w-7xl px-6 lg:px-8 py-4 flex flex-row items-center justify-between gap-2 bg-white/80 backdrop-blur;
+	@apply mx-auto max-w-7xl px-6 lg:px-8 py-4 flex flex-row items-center justify-between gap-2;
 }
 
 .navbar--vertical {

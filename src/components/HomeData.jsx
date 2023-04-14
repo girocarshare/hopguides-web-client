@@ -210,6 +210,23 @@ const HomeData = forwardRef((props, ref) => {
 	return (
 
 		<div>
+
+			{homeDataState.showModal && <div>
+				<AddNewTourForm/>
+			</div>}
+
+			{homeDataState.showEditLogoModal && <div>
+				<UpdateLogoModal/>
+			</div>}
+
+			{homeDataState.showEditLockCodeModal && <div>
+				<ChangeLockCodeModal/>
+			</div>}
+
+			{homeDataState.updateTourData.show && <div>
+				<TourData/>
+			</div>}
+
 			<div class="container pt-20 lg:pt-40 pb-16">
 
 				<div class="navbar">
@@ -218,21 +235,6 @@ const HomeData = forwardRef((props, ref) => {
 							<img class="h-8 w-auto" src="assets/img/logo.svg"/>
 						</div>
 						<div class="hidden lg:flex flex-row items-center gap-2">
-							{homeDataState.showModal && <div>
-								<AddNewTourForm/>
-							</div>}
-
-							{homeDataState.showEditLogoModal && <div>
-								<UpdateLogoModal/>
-							</div>}
-
-							{homeDataState.showEditLockCodeModal && <div>
-								<ChangeLockCodeModal/>
-							</div>}
-
-							{homeDataState.updateTourData.show && <div>
-								<TourData/>
-							</div>}
 
 							{!role &&
 								<div>
@@ -350,10 +352,11 @@ const HomeData = forwardRef((props, ref) => {
 							<thead>
 							<tr>
 								<th>Name</th>
-								<th class="whitespace-nowrap">Price <span
-									class="text-sm font-normal text-black/60 ml-2">($incl tax)</span>
+								<th class="whitespace-nowrap">Price<span
+									class="text-xs font-normal text-black/60 ml-1">/ $incl tax</span>
 								</th>
-								<th>Tours / month</th>
+								<th class="whitespace-nowrap">Tours<span
+									class="text-xs font-normal text-black/60 ml-1">/ this month</span></th>
 								<th>Options</th>
 							</tr>
 							</thead>
@@ -440,12 +443,13 @@ const HomeData = forwardRef((props, ref) => {
 
 									<tr>
 										<th>Name</th>
-										<th class="whitespace-nowrap">Price <span
-											class="text-sm font-normal text-black/60 ml-2">(incl tax)</span>
+										<th class="whitespace-nowrap">Price<span
+											class="text-xs font-normal text-black/60 ml-1">/ incl tax</span>
 										</th>
 										<th class="whitespace-nowrap">Offer name</th>
 										<th>Category</th>
-										<th>Coupons / month</th>
+										<th class="whitespace-nowrap">Coupons<span
+											class="text-xs font-normal text-black/60 ml-1">/ this month</span></th>
 										<th>Options</th>
 									</tr>
 									</thead>

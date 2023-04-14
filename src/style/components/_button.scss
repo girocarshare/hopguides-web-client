@@ -6,6 +6,7 @@
 	}
 
 	&:hover {
+		@apply cursor-pointer;
 		.button__icon {
 			@apply scale-110;
 		}
@@ -126,4 +127,8 @@
 	&:hover {
 		@apply underline underline-offset-4 decoration-dotted text-black transition;
 	}
+}
+
+input.button#file-upload-button {
+	@apply hidden;
 }
