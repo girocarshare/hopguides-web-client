@@ -17,21 +17,19 @@ import POIData from "../components/POIData";
 const HomePage = () => {
 
 	return (
-		<div>
-			<HomeDataContextProvider>
-				<TourData/>
-				<POIData/>
-				<SuccessModal/>
-				<FailureModal/>
-				<HomePageData/>
-				<PreviousReportTourModal/>
-				<AddNewTourForm/>
-				<AddNewPartnerForm/>
-				<UpdateMenuModal/>
-				<ChangeLockCodeModal/>
-				<UpdateLogoModal/>
-			</HomeDataContextProvider>
-		</div>
+		<HomeDataContextProvider>
+			<TourData/>
+			<POIData/>
+			<SuccessModal/>
+			<FailureModal/>
+			<HomePageData/>
+			<PreviousReportTourModal/>
+			<AddNewTourForm/>
+			<AddNewPartnerForm/>
+			<UpdateMenuModal/>
+			<ChangeLockCodeModal/>
+			<UpdateLogoModal/>
+		</HomeDataContextProvider>
 	);
 };
 

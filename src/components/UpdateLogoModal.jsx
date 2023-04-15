@@ -149,10 +149,10 @@ const UpdateLogoModal = () => {
 
 										<div class="form__group">
 											<div class="flex flex-row items-start justify-start gap-4">
-												<input class="form__input" type="text" required name="name"
+												<input class="form__input" type="number" required name="name"
 													   placeholder="Height" value={height}
 													   onChange={(e) => setHeight(e.target.value)}></input>
-												<input class="form__input" type="text" required name="name"
+												<input class="form__input" type="number" required name="name"
 													   placeholder="Width" value={width}
 													   onChange={(e) => setWidth(e.target.value)}></input>
 											</div>

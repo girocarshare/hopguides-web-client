@@ -11,8 +11,8 @@ const LoginPage = () => {
 
 	return (
 	
-			<div style={{ background: "#387499", backgroundSize:"cover", height:"100%"}}>
-				<section className="login-clean">
+			<div>
+				<section>
 					<UserContextProvider>
 						<LoginForm />
 					</UserContextProvider>
