@@ -339,8 +339,8 @@ const HomeData = forwardRef((props, ref) => {
 
 				</div>
 
-				<div class="p-4 bg-black/[3%] rounded-2xl mb-12">
-					<div class="py-4 px-2 pb-6">
+				<div class="p-2 md:p-4 bg-black/[3%] rounded-2xl mb-12">
+					<div class="py-3 px-2 pb-4 md:pb-6">
 						<h4 class="text-heading6">
 							Tours
 						</h4>
@@ -415,13 +415,13 @@ const HomeData = forwardRef((props, ref) => {
 					</div>
 				</div>
 
-				<div class="p-4 bg-black/[3%] rounded-2xl mb-12">
+				<div class="p-2 md:p-4 bg-black/[3%] rounded-2xl mb-12">
 
 					{homeDataState.toursWithPoints.toursWithPoints.map((tour, i) =>
 
 						<div id={tour.tourId}>
 
-							<div class="py-4 px-2 pb-6 flex flex-row items-center justify-between gap-4">
+							<div class="py-3 px-2 pb-4 md:pb-6 flex flex-row items-center justify-between gap-4">
 								<h4 class="text-heading6">
 									POIs & Partners
 								</h4>
