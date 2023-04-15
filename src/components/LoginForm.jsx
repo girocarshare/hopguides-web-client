@@ -94,7 +94,7 @@ const LoginForm = () => {
 										</div>
 										<div class="form__group flex flex-col items-center">
 											<button
-												className="button button--primary min-w-[12rem]"
+												className="button button--primary min-w-[8rem]"
 												type="submit"
 												id="kayitol"
 												value="Log in"

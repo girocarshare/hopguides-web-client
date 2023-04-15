@@ -1,16 +1,18 @@
-import React, { useContext, useEffect, useImperativeHandle, forwardRef, useState } from "react";
-import { UserContext } from "../contexts/UserContext";
-import { userService } from "../services/UserService";
+import React, {useContext, useEffect, useImperativeHandle, forwardRef, useState} from "react";
+import {UserContext} from "../contexts/UserContext";
+import {userService} from "../services/UserService";
 import UserContextProvider from "../contexts/UserContext";
+import {AiOutlineClose} from 'react-icons/ai';
+
 const ForgotPassword = () => {
 
-	const { userState, dispatch } = useContext(UserContext);
+	const {userState, dispatch} = useContext(UserContext);
 	const [email, setEmail] = useState("");
-	
+
 
 	const handleSubmitNew = (e) => {
 
-	
+
 		e.preventDefault();
 
 		let sendEmailRequest = {}
@@ -23,58 +25,73 @@ const ForgotPassword = () => {
 		userService.forgotPassword(sendEmailRequest, dispatch);
 	};
 
+	const handleClose = () => {
+		dispatch({type: useContext.HIDE_SUCCESS_FAILURE_MODAL});
+	};
+
 
 	return (
-		<body style={{ height: "750px" }}>
-			<div>
+		<UserContextProvider>
+			<div class="relative z-50" aria-labelledby="modal-title" role="dialog" aria-modal="true">
 
-				<UserContextProvider>
-					<div class="wrapper">
+				<div class="modal-overlay"></div>
+
+				<div class="fixed inset-0 z-10 overflow-y-auto">
+
+					<div class="modal-frame">
+
+						<div id="myModal" class="modal">
+
+							<div class="modal__header">
+								<h2 class="text-leading">
+									Forgot password
+								</h2>
+								<button class="button button--circle button--clear justify-self-end" type="button"
+										onClick={handleClose}>
+									<AiOutlineClose/>
+								</button>
+							</div>
+
+							<div class="modal__body">
+								<form class="form" method="post" onSubmit={handleSubmitNew}>
+									<div className="form__group">
+										<label class="form__label">Reset password for email:</label>
+										<input className="form__input" type="email" style={{height: "50px"}} required
+											   name="email" placeholder="Email" value={email}
+											   onChange={(e) => setEmail(e.target.value)}></input>
+									</div>
+									<div
+										className="form-group text-center"
+										style={{color: "green", fontSize: "0.8em"}}
+										hidden={!userState.successForgotPassword}
+									>
+										Success
+									</div>
+
+									<div
+										className="form__group"
+										hidden={!userState.errorForgotPassword}
+									>
+										Error
+									</div>
+
+									<div className="form__group flex flex-col items-center">
+										<input className="button button--primary min-w-[8rem]" id="kayitol" type="submit"
+											   value="Send"/>
+									</div>
 
 
-						<div style={{ display: "flex", justifyContent: "center", marginLeft: "338px", marginTop: "100px" }}>
-							<form method="post" onSubmit={handleSubmitNew} style={{ width: "100%", marginRight: "338px" }} >
-
-
-							<h1 class="paragraph-box" style={{ fontSize: 28 }} ><b>Reset password for email: </b></h1>
-
-								<div className="form-group">
-									<input className="form-control" type="email" style={{ height: "50px" }} required name="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)}></input>
-								</div>
-
-								<label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-
-							
-								<div
-									className="form-group text-center"
-									style={{ color: "green", fontSize: "0.8em" }}
-									hidden={!userState.successForgotPassword}
-								>
-									Success
-								</div>
-
-								<div
-									className="form-group text-center"
-									style={{ color: "red", fontSize: "0.8em" }}
-									hidden={!userState.errorForgotPassword}
-								>
-									Error
-								</div>
-						
-								<div className="form-group">
-									<input className="btn btn-primary btn-block" id="kayitol" type="submit" style={{ background: "#5e90f6" }} value="Send" />
-								</div>
-
-
-
-							</form>
+								</form>
+							</div>
 						</div>
 
-
 					</div>
-				</UserContextProvider>
+
+				</div>
+
+
 			</div>
-		</body>
+		</UserContextProvider>
 	);
 };
 export default ForgotPassword;

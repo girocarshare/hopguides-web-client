@@ -427,7 +427,7 @@ const HomeData = forwardRef((props, ref) => {
 								</h4>
 								<div>
 									{/* {admin && */}
-									<button class="button button--secondary button--small" variant="contained"
+									<button class="button button--primary button--small" variant="contained"
 											onClick={(e) => addNewPartner(e, tour.tourId, tour.bpartnerId)}>
 										Add partner
 									</button>
