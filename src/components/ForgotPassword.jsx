@@ -75,7 +75,7 @@ const ForgotPassword = () => {
 										Error
 									</div>
 
-									<div className="form__group flex flex-col items-center">
+									<div className="form__group">
 										<input className="button button--primary min-w-[8rem]" id="kayitol" type="submit"
 											   value="Send"/>
 									</div>
