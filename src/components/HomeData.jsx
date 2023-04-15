@@ -227,7 +227,7 @@ const HomeData = forwardRef((props, ref) => {
 				<TourData/>
 			</div>}
 
-			<div class="container pt-20 lg:pt-40 pb-16">
+			<div class="container pt-20 lg:pt-40 pb-12">
 
 				<div class="navbar">
 					<div class="navbar__content">
@@ -529,11 +529,11 @@ const HomeData = forwardRef((props, ref) => {
 
 			</div>
 
-			<div class="text-sm text-black/40 border-t black/10">
-				<div class="container pt-8 pb-40 lg:pb-16">
+			<div class="text-sm text-black/40">
+				<div class="container pb-40 lg:pb-16">
 					<div
-						class="flex flex-col lg:flex-row items-center justify-start lg:justify-between gap-4">
-						<div class="flex items-center gap-2 lg:order-last mb-4 lg:mb-0">
+						class="flex flex-col lg:flex-row items-center justify-start lg:justify-between gap-4 border-t black/10 pt-6">
+						<div class="flex items-center gap-2 lg:order-last mb-2 lg:mb-0">
 							<a class="button button--clear button--small" href="#" target="_blank">
 								Terms
 							</a>
