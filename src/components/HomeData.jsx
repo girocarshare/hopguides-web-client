@@ -353,7 +353,7 @@ const HomeData = forwardRef((props, ref) => {
 							<tr>
 								<th>Name</th>
 								<th class="whitespace-nowrap">Price<span
-									class="text-xs font-normal text-black/60 ml-1">/ $incl tax</span>
+									class="text-xs font-normal text-black/60 ml-1">/ incl tax</span>
 								</th>
 								<th class="whitespace-nowrap">Tours<span
 									class="text-xs font-normal text-black/60 ml-1">/ this month</span></th>
