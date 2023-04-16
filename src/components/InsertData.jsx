@@ -715,27 +715,24 @@ const InsertData = (props) => {
 													<button
 
 														onClick={(e) => fetchData(title, 1)}
-														className="btn btn-primary btn-xl"
+														className="button button--primary"
 														id="sendMessageButton"
 														type="button"
 													>
 														Translate
 													</button>
 												</div>
+												<input
 
-												<div>
-													<input
-
-														className={"form__input"}
-														placeholder='JSON FORMAT: { "language": "Text"}'
-														aria-describedby="basic-addon1"
-														id="name"
-														type="text"
-
-														onChange={(e) => setTitleTransl(e.target.value)}
-														value={titleTransl}
-													/>
-												</div>
+													className={"form__input text-sm"}
+													placeholder='JSON FORMAT: { "language": "Text"}'
+													aria-describedby="basic-addon1"
+													id="name"
+													type="text"
+													disabled
+													onChange={(e) => setTitleTransl(e.target.value)}
+													value={titleTransl}
+												/>
 											</div>
 										</div>
 
@@ -757,39 +754,43 @@ const InsertData = (props) => {
 												<button
 
 													onClick={(e) => makeShortAndLongDesc(place)}
-													className="btn btn-primary btn-xl"
+													className="button button--primary"
 													id="sendMessageButton"
 													type="button"
 												>
 													Generate short and long description
 												</button>
 											</div>
-										</div>
 
-										<div className="form__group">
-											<label class="form__label">Short description*</label>
-											<textarea className="form__input"
-													  type="textarea"
-													  required name="message"
-													  placeholder='JSON FORMAT: { "language": "Text"}'
-													  value={shortInfo}
-													  onChange={(e) => setShortInfo(e.target.value)}></textarea>
-										</div>
+											<div>
+												<div className="form__group">
+													<label class="form__label">Short description*</label>
+													<textarea className="form__input text-sm h-32"
+															  type="textarea"
+														required name="message"
+														disabled
+															  placeholder='JSON FORMAT: { "language": "Text"}'
+															  value={shortInfo}
+															  onChange={(e) => setShortInfo(e.target.value)}></textarea>
+												</div>
 
-										<div className="form__group">
-											<label class="form__label">Long description*</label>
-											<textarea className="form__input"
-													  type="textarea"
-													  required name="message"
-													  placeholder='JSON FORMAT: { "language": "Text"}'
-													  value={longInfo}
-													  onChange={(e) => setLongInfo(e.target.value)}></textarea>
+												<div className="form__group">
+													<label class="form__label">Long description*</label>
+													<textarea className="form__input text-sm h-32"
+															  type="textarea"
+														required name="message"
+														disabled
+															  placeholder='JSON FORMAT: { "language": "Text"}'
+															  value={longInfo}
+															  onChange={(e) => setLongInfo(e.target.value)}></textarea>
+												</div>
+											</div>
 										</div>
 
 
 										<div className="form__group">
 											<label class="form__label">Agreement title*</label>
-											<div class="form-group col-lg-10">
+											<div class="flex flex-row items-center gap-2">
 												<input
 
 													className={"form__input"}
@@ -804,73 +805,64 @@ const InsertData = (props) => {
 												<button
 
 													onClick={(e) => fetchData(agreementTitle, 2)}
-													className="btn btn-primary btn-xl"
+													className="button button--primary"
 													id="sendMessageButton"
 													type="button"
 												>
-													Translate agreement title
+													Translate
 												</button>
 											</div>
-										</div>
-
-										<div class="form__groupgroup">
 											<input
 
-												className={"form__input"}
+												className={"form__input text-sm"}
 												placeholder='JSON FORMAT: { "language": "Text"}'
 												aria-describedby="basic-addon1"
 												id="name"
 												type="text"
 
+												disabled
 												onChange={(e) => setAgreementTitleTransl(e.target.value)}
 												value={agreementTitleTransl}
 											/>
-
 										</div>
 
 
 										<div className="form__group">
 											<label class="form__label">Agreement description*</label>
-											<div className="form-group controls mb-0 pb-2" style={{opacity: 1}}>
+											<div class="flex flex-row items-center gap-2">
+												<input
 
-												<div>
-													<input
+													className={"form__input"}
+													placeholder='Agreement description'
+													aria-describedby="basic-addon1"
+													id="name"
+													type="text"
 
-														className={"form__input"}
-														placeholder='Agreement description'
-														aria-describedby="basic-addon1"
-														id="name"
-														type="text"
+													onChange={(e) => setAgreementDesc(e.target.value)}
+													value={agreementDesc}
+												/>
+												<button
 
-														onChange={(e) => setAgreementDesc(e.target.value)}
-														value={agreementDesc}
-													/>
-													<button
-
-														onClick={(e) => fetchData(agreementDesc, 3)}
-														className="btn btn-primary btn-xl"
-														id="sendMessageButton"
-														type="button"
-													>
-														Translate agreement description
-													</button>
-												</div>
+													onClick={(e) => fetchData(agreementDesc, 3)}
+													className="button button--primary"
+													id="sendMessageButton"
+													type="button"
+												>
+													Translate
+												</button>
 											</div>
-										</div>
-
-										<div class="form__group">
 											<input
 
-												className={"form__input"}
+												className={"form__input text-sm"}
 												placeholder='JSON FORMAT: { "language": "Text"}'
 												aria-describedby="basic-addon1"
 												id="name"
 												type="text"
 
+												disabled
 												onChange={(e) => setAgreementDescTransl(e.target.value)}
 												value={agreementDescTransl}
 											/>
-
 										</div>
 
 										<div className="form__group">
@@ -985,7 +977,7 @@ const InsertData = (props) => {
 													onClick={(e) => {
 														editTermsAndConditions(e)
 													}}
-													className="btn btn-primary btn-xl"
+													className="button button--primary"
 													id="sendMessageButton"
 													type="button"
 												>
@@ -995,7 +987,7 @@ const InsertData = (props) => {
 													onClick={(e) => {
 														addPartner(e)
 													}}
-													className="btn btn-primary btn-xl"
+													className="button button--primary"
 													id="sendMessageButton"
 													type="button"
 												>
@@ -1006,7 +998,7 @@ const InsertData = (props) => {
 													onClick={(e) => {
 														addPoint(e)
 													}}
-													className="btn btn-primary btn-xl"
+													className="button button--primary"
 													id="sendMessageButton"
 													type="button"
 												>
@@ -1021,42 +1013,41 @@ const InsertData = (props) => {
 												<div>
 													<div className="form__group">
 														<label class="form__label">Name *</label>
+														<div class="flex flex-row items-center gap-2">
+															<input
+
+																className={"form__input"}
+																placeholder="Name"
+																aria-describedby="basic-addon1"
+																id="name"
+																type="text"
+
+																onChange={(e) => setTitlePoint(e.target.value)}
+																value={titlePoint}
+															/>
+
+															<button
+
+																onClick={(e) => fetchData(titlePoint, 4)}
+																className="button button--primary"
+																id="sendMessageButton"
+																type="button"
+																>
+																Translate
+															</button>
+														</div>
 														<input
 
-															className={"form__input"}
-															placeholder="Name"
-															aria-describedby="basic-addon1"
-															id="name"
-															type="text"
-
-															onChange={(e) => setTitlePoint(e.target.value)}
-															value={titlePoint}
-														/>
-
-														<button
-
-															onClick={(e) => fetchData(titlePoint, 4)}
-															className="btn btn-primary btn-xl"
-															id="sendMessageButton"
-															type="button"
-														>
-															Translate partners name
-														</button>
-													</div>
-
-													<div class="form__group">
-														<input
-
-															className={"form__input"}
+															className={"form__input text-sm"}
 															placeholder='JSON FORMAT: { "language": "Text"}'
 															aria-describedby="basic-addon1"
 															id="name"
 															type="text"
 
+															disabled
 															onChange={(e) => setTitlePointTransl(e.target.value)}
 															value={titlePointTransl}
 														/>
-
 													</div>
 
 													<div className="form__group">
@@ -1069,24 +1060,21 @@ const InsertData = (props) => {
 														<button
 
 															onClick={(e) => fetchData(shortInfoPoint, 5)}
-															className="btn btn-primary btn-xl"
+															className="button button--primary"
 															id="sendMessageButton"
 															type="button"
 														>
-															Translate short description
+															Translate
 														</button>
+														<textarea
 
-													</div>
-
-													<div className="form__group">
-														<input
-
-															className={"form__input"}
+															className={"form__input text-sm h-32"}
 															placeholder='JSON FORMAT: { "language": "Text"}'
 															aria-describedby="basic-addon1"
 															id="name"
 															type="text"
 
+															disabled
 															onChange={(e) => setShortInfoPointTransl(e.target.value)}
 															value={shortInfoPointTransl}
 														/>
@@ -1095,35 +1083,31 @@ const InsertData = (props) => {
 
 													<div className="form__group">
 														<label class="form__label">Long description*</label>
-														<textarea className="form__input"
+														<textarea className="form__input h-32"
 																  type="textarea" required name="message"
 																  placeholder='Long description' value={longInfoPoint}
 																  onChange={(e) => setLongInfoPoint(e.target.value)}></textarea>
 														<button
 
 															onClick={(e) => fetchData(longInfoPoint, 6)}
-															className="btn btn-primary btn-xl"
+															className="button button--primary"
 															id="sendMessageButton"
 															type="button"
 														>
-															Translate long description
+															Translate
 														</button>
+														<textarea
 
-													</div>
+														className={"form__input text-sm h-32"}
+														placeholder='JSON FORMAT: { "language": "Text"}'
+														aria-describedby="basic-addon1"
+														id="name"
+														type="text"
 
-													<div class="form__group">
-														<input
-
-															className={"form__input"}
-															placeholder='JSON FORMAT: { "language": "Text"}'
-															aria-describedby="basic-addon1"
-															id="name"
-															type="text"
-
-															onChange={(e) => setLongInfoPointTransl(e.target.value)}
-															value={longInfoPointTransl}
+															disabled
+														onChange={(e) => setLongInfoPointTransl(e.target.value)}
+														value={longInfoPointTransl}
 														/>
-
 													</div>
 
 													{partner &&
@@ -1131,7 +1115,7 @@ const InsertData = (props) => {
 														<div>
 															<div className="form__group">
 																<label class="form__label">Voucher description*</label>
-																<textarea className="form__input"
+																<textarea className="form__input h-32"
 																		  type="textarea" required name="message"
 																		  placeholder='Voucher description'
 																		  value={voucherDesc}
@@ -1139,28 +1123,23 @@ const InsertData = (props) => {
 																<button
 
 																	onClick={(e) => fetchData(voucherDesc, 7)}
-																	className="btn btn-primary btn-xl"
+																	className="button button--primary"
 																	id="sendMessageButton"
 																	type="button"
 																>
-																	Translate voucher description
+																	Translate
 																</button>
-															</div>
+																<textarea
 
-
-															<div class="form__group">
-																<input
-
-																	className={"form__input"}
+																	className={"form__input text-sm h-32"}
 																	placeholder='JSON FORMAT: { "language": "Text"}'
 																	aria-describedby="basic-addon1"
 																	id="name"
 																	type="text"
-
+																	disabled
 																	onChange={(e) => setVoucherDescTransl(e.target.value)}
 																	value={voucherDescTransl}
 																/>
-
 															</div>
 														</div>
 
@@ -1709,12 +1688,12 @@ const InsertData = (props) => {
 										<button
 
 											onClick={(e) => {
-											handleSubmit(e)
-										}}
+												handleSubmit(e)
+											}}
 											className="button button--primary"
 											id="sendMessageButton"
 											type="button"
-											>
+										>
 											Add tour
 										</button>
 									</div>
