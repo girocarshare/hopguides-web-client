@@ -1,12 +1,13 @@
-import React, { useContext, useEffect, useState, forwardRef, useRef } from "react";
-import { homeDataService } from "../services/HomeDataService";
-import { HomeDataContext } from "../contexts/HomeDataContext";
-import { homeDataConstants } from "../constants/HomeDataConstants";
+import React, {useContext, useEffect, useState, forwardRef, useRef} from "react";
+import {homeDataService} from "../services/HomeDataService";
+import {HomeDataContext} from "../contexts/HomeDataContext";
+import {homeDataConstants} from "../constants/HomeDataConstants";
 import TimePicker from 'react-time-picker';
-import { YMaps, Map } from "react-yandex-maps";
-import { AiOutlineClose } from 'react-icons/ai';
+import {YMaps, Map} from "react-yandex-maps";
+import {AiOutlineClose} from 'react-icons/ai';
 import ReactAudioPlayer from 'react-audio-player';
 import Axios from "axios";
+
 const mapState = {
 	center: [44, 21],
 	zoom: 8,
@@ -40,7 +41,7 @@ const TourData = () => {
 	const [highestPoint, setHighestPoint] = useState("");
 	const [termsAndConditions, setTermsAndConditions] = useState("");
 	const [showModal, setShowModal] = useState(false);
-	const { homeDataState, dispatch } = useContext(HomeDataContext);
+	const {homeDataState, dispatch} = useContext(HomeDataContext);
 
 
 	const fetchData = async (input, num) => {
@@ -117,7 +118,6 @@ const TourData = () => {
 	};
 
 
-
 	const editTermsAndConditions = () => {
 
 		setShowModal(true)
@@ -129,7 +129,6 @@ const TourData = () => {
 
 			setTermsAndConditions(eval('`' + homeDataState.updateTourData.tour.termsAndConditions + '`'))
 		}
-
 
 
 	};
@@ -210,7 +209,7 @@ const TourData = () => {
 
 		homeDataService.updateTour(true, dispatch);
 
-	
+
 	};
 	const ErrorHandler = () => {
 
@@ -226,7 +225,7 @@ const TourData = () => {
 		homeDataService.insertData(false, dispatch);
 	};
 	const handleModalClose = () => {
-		dispatch({ type: homeDataConstants.HIDE });
+		dispatch({type: homeDataConstants.HIDE});
 		window.location.reload()
 	};
 
@@ -252,7 +251,7 @@ const TourData = () => {
 
 			return (
 				<div>
-					<h2 style={{ marginTop: "20px" }}>File details</h2>
+					<h2 style={{marginTop: "20px"}}>File details</h2>
 					<p>File name: {file.name}</p>
 					<p>File type: {file.type}</p>
 					<p>
@@ -265,407 +264,298 @@ const TourData = () => {
 	};
 
 
-
 	return (
 
-		<div  >
+		<div>
 
-			{homeDataState.updateTourData.show && <div class="overlay" >
+			{homeDataState.updateTourData.show &&
 
+				<div class="relative z-50" aria-labelledby="modal-title" role="dialog" aria-modal="true">
 
-				<div id="myModal" class="modal" style={{ background: "white" }}>
+					<div class="modal-overlay"></div>
 
+					<div class="fixed inset-0 z-10 overflow-y-auto">
 
-					<div className="containerModal"  >
+						<div class="modal-frame">
 
-						<div className="row mt-5">
-							<div class="button-login">
+							<div id="myModal" class="modal modal--3xl">
 
-								<button
-									type="button"
-									style={{ background: "#0099ff", marginTop: "px", marginRight: "55px", padding: "5px 15px", height: "35px" }}
-									onClick={handleModalClose}
-									class="btn btn-primary btn-lg"
-								>
-									<AiOutlineClose />
-								</button>
-							</div>
-							<form id="contactForm" >
+								<div class="modal__header">
+									<h2 class="text-leading">
+										Update Partner
+									</h2>
+									<button class="button button--circle button--clear justify-self-end" type="button"
+											onClick={handleModalClose}>
+										<AiOutlineClose/>
+									</button>
+								</div>
 
+								<div className="modal__body">
+									<form class="form" id="contactForm">
+										<div className="form__group">
+											<label class="form__label">Title</label>
+											{edit &&
+												<div><input
 
+													className={"form__input"}
+													placeholder='Title'
+													aria-describedby="basic-addon1"
+													id="name"
+													type="text"
 
-								<table style={{ marginLeft: "4rem", marginBottom: "4rem" }}>
-									<td width="600rem"  >
-										<div className="control-group">
-											<div className="form-group controls mb-0 pb-2" style={{ color: "#6c757d", opacity: 1 }}>
-												<label><b>Title</b></label>
-												<div class="row" >
-													<div class="form-group col-lg-10">
-														{edit &&
-															<div><input
+													onChange={(e) => setTitle(e.target.value)}
+													value={title}
+												/>
+													<button
 
-																className={"form-control"}
-																placeholder='Title'
-																aria-describedby="basic-addon1"
-																id="name"
-																type="text"
-																style={{ backgroundColor: 'white', outline: 'none', width: "800px", height: "50px" }}
-
-																onChange={(e) => setTitle(e.target.value)}
-																value={title}
-															/>
-																<button
-																	style={{ background: "#0099ff", marginTop: "px", height: "35px" }}
-
-																	onClick={(e) => fetchData(title, 1)}
-																	className="btn btn-primary btn-xl"
-																	id="sendMessageButton"
-																	type="button"
-																>
-																	Translate title
-																</button>
-															</div>}
-														<input
-															readOnly={!edit}
-															aria-describedby="basic-addon1"
-															id="name"
-															type="text"
-															style={{ backgroundColor: edit === true ? '#DCDCDC' : 'white', outline: 'none' }}
-															onChange={(e) => setTitleTransl(e.target.value)}
-															value={titleTransl === "" ? JSON.stringify(homeDataState.updateTourData.tour.title) : titleTransl}
-														/>
-
-													</div>
-												</div>
-											</div>
+														onClick={(e) => fetchData(title, 1)}
+														className="button button--primary"
+														id="sendMessageButton"
+														type="button"
+													>
+														Translate title
+													</button>
+												</div>}
+											<input
+												readOnly={!edit}
+												aria-describedby="basic-addon1"
+												id="name"
+												type="text"
+												onChange={(e) => setTitleTransl(e.target.value)}
+												value={titleTransl === "" ? JSON.stringify(homeDataState.updateTourData.tour.title) : titleTransl}
+											/>
 										</div>
 
-										<div className="control-group">
-											<div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
-												<label><b>Agreement title</b></label>
-												<div class="row" >
-													<div class="form-group col-lg-10">
-														{edit && <div>
-															<input
+										<div className="form__group">
+											<label class="form__label">Agreement title</label>
+											{edit && <div>
+												<input
 
-																className={"form-control"}
-																placeholder='Agreement title'
-																aria-describedby="basic-addon1"
-																id="name"
-																type="text"
-																style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
+													className={"form__input"}
+													placeholder='Agreement title'
+													aria-describedby="basic-addon1"
+													id="name"
+													type="text"
 
-																onChange={(e) => setAgreementTitle(e.target.value)}
-																value={agreementTitle}
-															/>
-															<button
-																style={{ background: "#0099ff", marginTop: "px", height: "35px" }}
+													onChange={(e) => setAgreementTitle(e.target.value)}
+													value={agreementTitle}
+												/>
+												<button
 
-																onClick={(e) => fetchData(agreementTitle, 2)}
-																className="btn btn-primary btn-xl"
-																id="sendMessageButton"
-																type="button"
-															>
-																Translate agreement title
-															</button>
+													onClick={(e) => fetchData(agreementTitle, 2)}
+													className="button button--primary"
+													id="sendMessageButton"
+													type="button"
+												>
+													Translate
+												</button>
 
-														</div>}
-														<input
-															readOnly={!edit}
-															aria-describedby="basic-addon1"
-															placeholder="Agreement title"
-															id="name"
-															type="text"
-															style={{ backgroundColor: edit === true ? '#DCDCDC' : 'white', outline: 'none' }}
-															onChange={(e) => setAgreementTitleTransl(e.target.value)}
-															value={agreementTitleTransl === "" ? JSON.stringify(homeDataState.updateTourData.tour.agreementTitle) : agreementTitleTransl}
-														/>
-
-													</div>
-												</div>
-											</div>
+											</div>}
+											<input
+												readOnly={!edit}
+												aria-describedby="basic-addon1"
+												placeholder="Agreement title"
+												id="name"
+												type="text"
+												onChange={(e) => setAgreementTitleTransl(e.target.value)}
+												value={agreementTitleTransl === "" ? JSON.stringify(homeDataState.updateTourData.tour.agreementTitle) : agreementTitleTransl}
+											/>
 										</div>
 
-										<div className="control-group">
+										<div className="form__group">
 
-											<div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
-												<label><b>Agreement description</b></label>
-												<div class="row" >
-													<div class="form-group col-lg-10">
-														{edit && <div>
-															<input
+											<label class="form__label">Agreement description</label>
+											{edit && <div>
+												<input
 
-																className={"form-control"}
-																placeholder='Agreement description'
-																aria-describedby="basic-addon1"
-																id="name"
-																type="text"
-																style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
+													className={"form__input"}
+													placeholder='Agreement description'
+													aria-describedby="basic-addon1"
+													id="name"
+													type="text"
 
-																onChange={(e) => setAgreementDesc(e.target.value)}
-																value={agreementDesc}
-															/>
-															<button
-																style={{ background: "#0099ff", marginTop: "px", height: "35px" }}
+													onChange={(e) => setAgreementDesc(e.target.value)}
+													value={agreementDesc}
+												/>
+												<button
 
-																onClick={(e) => fetchData(agreementDesc, 3)}
-																className="btn btn-primary btn-xl"
-																id="sendMessageButton"
-																type="button"
-															>
-																Translate agreement description
-															</button>
-														</div>}
+													onClick={(e) => fetchData(agreementDesc, 3)}
+													className="button button--primary"
+													id="sendMessageButton"
+													type="button"
+												>
+													Translate
+												</button>
+											</div>}
 
-														<input
-															readOnly={!edit}
-															aria-describedby="basic-addon1"
-															placeholder="Agreement description"
-															id="name"
-															type="text"
-															style={{ backgroundColor: edit === true ? '#DCDCDC' : 'white', outline: 'none' }}
-															onChange={(e) => setAgreementDescTransl(e.target.value)}
-															value={agreementDescTransl === "" ? JSON.stringify(homeDataState.updateTourData.tour.agreementDesc) : agreementDescTransl}
-														/>
-
-
-
-													</div>
-												</div>
-											</div>
+											<input
+												className={"form__input"}
+												readOnly={!edit}
+												aria-describedby="basic-addon1"
+												placeholder="Agreement description"
+												id="name"
+												type="text"
+												onChange={(e) => setAgreementDescTransl(e.target.value)}
+												value={agreementDescTransl === "" ? JSON.stringify(homeDataState.updateTourData.tour.agreementDesc) : agreementDescTransl}
+											/>
 										</div>
 
-										<div className="control-group">
-											<div className="form-group controls mb-0 pb-2" style={{ color: "#6c757d", opacity: 1 }}>
+										<div className="form__group">
+											{edit &&
+												<div>
+													<label class="form__label">Name of the place*</label>
 
-												{edit &&
-													<div>
-														<label><b>Name of the place*</b></label>
+													<input
 
-														<div >
-															<div >
-																<input
+														className={"form__input"}
+														placeholder='Title'
+														aria-describedby="basic-addon1"
+														id="name"
+														type="text"
 
-																	className={"form-control"}
-																	placeholder='Title'
-																	aria-describedby="basic-addon1"
-																	id="name"
-																	type="text"
-																	style={{ backgroundColor: 'white', outline: 'none', width: "800px", height: "50px" }}
+														onChange={(e) => setPlace(e.target.value)}
+														value={place}
+													/>
+													<button
 
-																	onChange={(e) => setPlace(e.target.value)}
-																	value={place}
-																/>
-																<button
-																	style={{ background: "#0099ff", marginTop: "px", height: "35px" }}
-
-																	onClick={(e) => makeShortAndLongDesc(place)}
-																	className="btn btn-primary btn-xl"
-																	id="sendMessageButton"
-																	type="button"
-																>
-																	Generate short and long description
-																</button>
-															</div>
-														</div>
-													</div>}
-												<label><b>Short description</b></label>
-												<div class="row" >
-													<div class="form-group col-lg-10">
-														<textarea
-															readOnly={!edit}
-															placeholder="Short description"
-															aria-describedby="basic-addon1"
-															id="name"
-															type="textarea"
-															style={{ backgroundColor: edit === true ? '#DCDCDC' : 'white', outline: 'none' }}
-															onChange={(e) => setShortInfo(e.target.value)}
-															value={shortInfo === "" ? JSON.stringify(homeDataState.updateTourData.tour.shortInfo) : shortInfo}
-														/>
-													</div>
+														onClick={(e) => makeShortAndLongDesc(place)}
+														className="button button--primary"
+														id="sendMessageButton"
+														type="button"
+													>
+														Generate short and long description
+													</button>
 												</div>
-											</div>
+											}
+											<label class="form__label">Short description</label>
+											<textarea
+												className={"form__input"}
+												readOnly={!edit}
+												placeholder="Short description"
+												aria-describedby="basic-addon1"
+												id="name"
+												type="textarea"
+												onChange={(e) => setShortInfo(e.target.value)}
+												value={shortInfo === "" ? JSON.stringify(homeDataState.updateTourData.tour.shortInfo) : shortInfo}
+											/>
 										</div>
 
-										<div className="control-group">
-											<div className="form-group controls mb-0 pb-2" style={{ color: "#6c757d", opacity: 1 }}>
-												<label><b>Long description</b></label>
-												<div class="row" >
-													<div class="form-group col-lg-10">
-														<textarea
-															readOnly={!edit}
-															placeholder="Long description"
-															aria-describedby="basic-addon1"
-															id="name"
-															type="textarea"
-															style={{ backgroundColor: edit === true ? '#DCDCDC' : 'white', outline: 'none' }}
-															onChange={(e) => setLongInfo(e.target.value)}
-															value={longInfo === "" ? JSON.stringify(homeDataState.updateTourData.tour.longInfo) : longInfo}
-														/>
-													</div>
-												</div>
-											</div>
+										<div className="form__group">
+											<label class="form__label">Long description</label>
+
+											<textarea
+												className={"form__input"}
+												readOnly={!edit}
+												placeholder="Long description"
+												aria-describedby="basic-addon1"
+												id="name"
+												type="textarea"
+												onChange={(e) => setLongInfo(e.target.value)}
+												value={longInfo === "" ? JSON.stringify(homeDataState.updateTourData.tour.longInfo) : longInfo}
+											/>
 										</div>
 
-										<div className="control-group">
-											<div className="form-group controls mb-0 pb-2" style={{ color: "#6c757d", opacity: 1 }}>
-												<label><b>Price</b></label>
-												<div class="row" >
-													<div class="form-group col-lg-10">
-														<div class="button-login">
+										<div className="form__group">
+											<label class="form__label">Price</label>
+											<input
+												readOnly={!edit}
+												placeholder="Price"
+												class="form__input"
+												aria-describedby="basic-addon1"
+												id="name"
+												type="text"
+												onChange={(e) => setPrice(e.target.value)}
+												value={price === 0 ? `${homeDataState.updateTourData.tour.price} ${homeDataState.updateTourData.tour.currency} incl tax` : price}
+											/>
+											{edit &&
+												<select onChange={(e) => setCurrency(e.target.value)}
+														name="currency" class="form__input"
+												>
+													{currencyList.map(item =>
+														<option key={item} value={item}>{item}</option>
+													)};
 
-
-															<input
-																readOnly={!edit}
-																placeholder="Price"
-																aria-describedby="basic-addon1"
-																id="name"
-																type="text"
-																style={{ backgroundColor: edit === true ? '#DCDCDC' : 'white', outline: 'none' }}
-																onChange={(e) => setPrice(e.target.value)}
-																value={price === 0 ? `${homeDataState.updateTourData.tour.price} ${homeDataState.updateTourData.tour.currency} incl tax` : price}
-															/>
-															{edit && <select onChange={(e) => setCurrency(e.target.value)} name="currency" class="custom-select" style={{ height: "50px", width: "200px" }}>
-																{currencyList.map(item =>
-																	<option key={item} value={item} >{item}</option>
-																)};
-
-															</select>}
-														</div>
-													</div>
-												</div>
-											</div>
+												</select>}
 										</div>
 
-										<div className="control-group">
-											<div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
-												<label><b>Tour duration</b></label>
-												<div class="row" >
-													<div class="form-group col-lg-10">
-														<input
-															readOnly={!edit}
-															placeholder="Tour duration"
-															aria-describedby="basic-addon1"
-															id="name"
-															type="text"
-															style={{ backgroundColor: edit === true ? '#DCDCDC' : 'white', outline: 'none' }}
-															onChange={(e) => setDuration(e.target.value)}
-															value={duration === "" ? homeDataState.updateTourData.tour.duration : duration}
-														/>
-
-													</div>
-												</div>
-											</div>
+										<div className="form__group">
+											<label class="form__label">Tour duration</label>
+											<input
+												class="form__input"
+												readOnly={!edit}
+												placeholder="Tour duration"
+												aria-describedby="basic-addon1"
+												id="name"
+												type="text"
+												onChange={(e) => setDuration(e.target.value)}
+												value={duration === "" ? homeDataState.updateTourData.tour.duration : duration}
+											/>
 										</div>
 
-										<div className="control-group">
-											<div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
-												<label><b>Tour lenght (km)</b></label>
-												<div class="row" >
-													<div class="form-group col-lg-10">
-														<input
-															readOnly={!edit}
-															placeholder="Tour lenght (km)"
-															aria-describedby="basic-addon1"
-															id="name"
-															type="text"
-															style={{ backgroundColor: edit === true ? '#DCDCDC' : 'white', outline: 'none' }}
-															onChange={(e) => setLength(e.target.value)}
-															value={length === "" ? homeDataState.updateTourData.tour.length : length}
-														/>
-
-
-													</div>
-												</div>
-											</div>
+										<div className="form__group">
+											<label class="form__label">Tour lenght (km)</label>
+											<input
+												class="form__input"
+												readOnly={!edit}
+												placeholder="Tour lenght (km)"
+												aria-describedby="basic-addon1"
+												id="name"
+												type="text"
+												onChange={(e) => setLength(e.target.value)}
+												value={length === "" ? homeDataState.updateTourData.tour.length : length}
+											/>
 										</div>
 
 
-										<div className="control-group">
-											<div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
-												<label><b>Highest point*</b></label>
-												<div class="row" >
-													<div class="form-group col-lg-10">
-														<input
-															readOnly={!edit}
-															placeholder="Highest point"
-															aria-describedby="basic-addon1"
-															id="name"
-															type="text"
-															style={{ backgroundColor: edit === true ? '#DCDCDC' : 'white', outline: 'none' }}
-															onChange={(e) => setHighestPoint(e.target.value)}
-															value={highestPoint === "" ? homeDataState.updateTourData.tour.highestPoint : highestPoint}
-														/>
-
-
-													</div>
-												</div>
-											</div>
+										<div className="form__group">
+											<label class="form__label">Highest point*</label>
+											<input
+												class="form__input"
+												readOnly={!edit}
+												placeholder="Highest point"
+												aria-describedby="basic-addon1"
+												id="name"
+												type="text"
+												onChange={(e) => setHighestPoint(e.target.value)}
+												value={highestPoint === "" ? homeDataState.updateTourData.tour.highestPoint : highestPoint}
+											/>
 										</div>
 
-										<div className="control-group">
-											<div className="form-group controls mb-0 pb-2" style={{ color: "#6c757d", opacity: 1 }}>
+										<div className="form__group">
+											<label class="form__label">Background tour image</label>
+											{edit && <input type={"file"} name="file"
+															onChange={onFileChange}/>}
 
-												<div class="row" >
-													<div class="form-group col-lg-10">
+											{fileData()}
 
-
-
-														<div style={{ marginTop: "15px" }}>
-															<label><b>Background tour image</b></label>
-															<br />   <br />
-															{edit && <input type={"file"} name="file" onChange={onFileChange} />}
-
-														</div>
-
-														{fileData()}
-
-														{imagePreview && <img className="preview" src={imagePreview} alt={"image-"} />}
-														{!imagePreview && <img className="preview" src={homeDataState.updateTourData.tour.image} alt={"image-"} />}
-
-
-														<br />
-													</div>
-												</div>
-											</div>
+											{imagePreview && <img className="image__preview" src={imagePreview}
+																  alt={"image-"}/>}
+											{!imagePreview && <img className="image__preview"
+																   src={homeDataState.updateTourData.tour.image}
+																   alt={"image-"}/>}
 										</div>
 
 
+										<div className="form__group">
 
-										<div className="control-group">
-											<div className="form-group controls mb-0 pb-2" style={{ color: "#6c757d", opacity: 1 }}>
+											<label class="form__label">Text to speach audio</label>
+											{!audio && <ReactAudioPlayer
+												src={homeDataState.updateTourData.tour.audio}
 
-												<div class="row" >
-													<div class="form-group col-lg-10">
+												controls
+											/>}
 
-
-														<div style={{ marginTop: "15px" }}>
-
-															<label><b>Text to speach audio</b></label>
-															<br />   <br />
-															{!audio && <ReactAudioPlayer
-																src={homeDataState.updateTourData.tour.audio}
-
-																controls
-															/>}
-
-															{edit && <input type={"file"} accept={".mp3"} onChange={addFile} />}
-														</div>
-
-														<br />
-													</div>
-												</div>
-											</div>
+											{edit && <input type={"file"} accept={".mp3"}
+															onChange={addFile}/>}
 										</div>
 
 
-
-										<div className="form-group text-center">
+										<div className="form__group">
 											<button
-												style={{ background: "#f0f0f0", marginTop: "px", marginRight: "55px", border: "1px solid black", padding: "5px 15px", height: "35px" }}
-
-												onClick={(e) => { editTermsAndConditions(e) }}
-												className="btn btn-primary btn-xl"
+												onClick={(e) => {
+													editTermsAndConditions(e)
+												}}
+												className="button button--primary"
 												id="sendMessageButton"
 												type="button"
 											>
@@ -673,60 +563,60 @@ const TourData = () => {
 											</button>
 										</div>
 
-										{showModal && <div >
+										{showModal && <div>
 
 
 											<textarea
+												class="form__input"
 												readOnly={!edit}
 												placeholder="Terms and conditions"
 												aria-describedby="basic-addon1"
 												id="name"
 												type="textarea"
-												style={{ backgroundColor: edit === true ? '#DCDCDC' : 'white', outline: 'none' }}
 												onChange={(e) => setTermsAndConditions(e.target.value)}
 												value={termsAndConditions === "" ? homeDataState.updateTourData.tour.termsAndConditions : termsAndConditions}
 											/>
 										</div>
 										}
-										<div className="form-group text-center" style={{ color: "red", fontSize: "0.8em", marginTop: "30px", marginRight: "40px" }} hidden={!errMessage}>
+										<div className="form__group" hidden={!errMessage}>
 											{errMessage}
 										</div>
-										{!edit && <div className="form-group text-center">
+										{!edit && <div className="form__group">
 											<button
-												style={{ background: "#1977cc", marginTop: "15px" }}
 
-												onClick={(e) => { setEdit(!edit) }}
-												className="btn btn-primary btn-xl"
+
+												onClick={(e) => {
+													setEdit(!edit)
+												}}
+												className="button button--primary"
 												id="sendMessageButton"
 												type="button"
 											>
 												Edit
 											</button>
 										</div>}
-										{edit && <div className="form-group text-center">
+										{edit && <div className="form__group">
 											<button
-												style={{ background: "#1977cc", marginTop: "15px" }}
 
-												onClick={(e) => { handleSubmit(e) }}
-												className="btn btn-primary btn-xl"
+
+												onClick={(e) => {
+													handleSubmit(e)
+												}}
+												className="button button--primary"
 												id="sendMessageButton"
 												type="button"
 											>
 												Update tour
 											</button>
 										</div>}
-
-										<br />
-
-									</td>
-								</table>
-							</form>
+									</form>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
 			}
-		</div >
+		</div>
 
 	);
 };

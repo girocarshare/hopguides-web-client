@@ -147,7 +147,7 @@ const BPartnerData = () => {
 			{businessPartnersState.updateBPartner.show && <div class="overlay" >
 
 
-				<div id="myModal" class="modal" style={{ background: "white" }}>
+				<div id="myModal" class="modal" style={{ background: "red" }}>
 
 
 					<div className="containerModal"  >

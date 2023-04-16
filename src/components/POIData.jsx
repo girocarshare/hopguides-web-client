@@ -1,11 +1,12 @@
-import React, { useContext, useEffect, useState, forwardRef, useRef } from "react";
-import { homeDataService } from "../services/HomeDataService";
-import { HomeDataContext } from "../contexts/HomeDataContext";
-import { homeDataConstants } from "../constants/HomeDataConstants";
+import React, {useContext, useEffect, useState, forwardRef, useRef} from "react";
+import {homeDataService} from "../services/HomeDataService";
+import {HomeDataContext} from "../contexts/HomeDataContext";
+import {homeDataConstants} from "../constants/HomeDataConstants";
 import TimePicker from 'react-time-picker';
-import { AiOutlineClose } from 'react-icons/ai';
+import {AiOutlineClose} from 'react-icons/ai';
 import ReactAudioPlayer from 'react-audio-player';
 import Axios from "axios";
+
 const mapState = {
 	center: [44, 21],
 	zoom: 8,
@@ -30,7 +31,7 @@ const POIData = () => {
 	const [selectedFiles, setSelectedFiles] = useState([]);
 	const [files, setFiles] = useState([]);
 	const [imagePreviews, setImagePreviews] = useState([]);
-	const [progressInfos, setProgressInfos] = useState({ val: [] });
+	const [progressInfos, setProgressInfos] = useState({val: []});
 
 	const [edit, setEdit] = useState(false);
 	const [titlePoint, setTitlePoint] = useState("");
@@ -82,10 +83,7 @@ const POIData = () => {
 	const [sundayclosed, setSundayClosed] = useState(false);
 
 
-
-	const { homeDataState, dispatch } = useContext(HomeDataContext);
-
-
+	const {homeDataState, dispatch} = useContext(HomeDataContext);
 
 
 	const fetchData = async (input, num) => {
@@ -138,7 +136,7 @@ const POIData = () => {
 
 		setSelectedFiles(selectedFiles.concat(fs))
 		setImagePreviews(images);
-		setProgressInfos({ val: [] });
+		setProgressInfos({val: []});
 
 	};
 
@@ -262,7 +260,7 @@ const POIData = () => {
 		homeDataService.insertData(false, dispatch);
 	};
 	const handleModalClose = () => {
-		dispatch({ type: homeDataConstants.HIDE });
+		dispatch({type: homeDataConstants.HIDE});
 		window.location.reload()
 	};
 
@@ -325,7 +323,7 @@ const POIData = () => {
 
 			return (
 				<div>
-					<h2 style={{ marginTop: "20px" }}>File details</h2>
+					<h2 style={{marginTop: "20px"}}>File details</h2>
 					<p>File name: {file.name}</p>
 					<p>File type: {file.type}</p>
 					<p>
@@ -340,713 +338,627 @@ const POIData = () => {
 
 	return (
 
-		<div  >
+		<div>
 
-			{homeDataState.updatePointData.show && <div class="overlay" >
-
-
-				<div id="myModal" class="modal" style={{ background: "white" }}>
+			{homeDataState.updatePointData.show &&
 
 
-					<div className="containerModal"  >
+				<div class="relative z-50" aria-labelledby="modal-title" role="dialog" aria-modal="true">
 
-						<div className="row mt-5">
-							<div class="button-login">
+					<div class="modal-overlay"></div>
 
-								<button
-									type="button"
-									style={{ background: "#0099ff", marginTop: "px", marginRight: "55px", padding: "5px 15px", height: "35px" }}
-									onClick={handleModalClose}
-									class="btn btn-primary btn-lg"
-								>
-									<AiOutlineClose />
-								</button>
-							</div>
-							<form id="contactForm" >
+					<div class="fixed inset-0 z-10 overflow-y-auto">
 
+						<div class="modal-frame">
 
+							<div id="myModal" class="modal modal--3xl">
 
-								<table style={{ marginLeft: "4rem", marginBottom: "4rem" }}>
-									<td width="600rem"  >
-										<div className="control-group">
-											<div className="form-group controls mb-0 pb-2" style={{ color: "#6c757d", opacity: 1 }}>
-												<label><b>Name</b></label>
-												<div class="row" >
-													<div class="form-group col-lg-10">
-														{edit &&
-															<div>
-																<input
+								<div class="modal__header">
+									<h2 class="text-leading">
+										Update POI
+									</h2>
+									<button class="button button--circle button--clear justify-self-end" type="button"
+											onClick={handleModalClose}>
+										<AiOutlineClose/>
+									</button>
+								</div>
 
-																	className={"form-control"}
-																	placeholder="Name"
-																	aria-describedby="basic-addon1"
-																	id="name"
-																	type="text"
-																	style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
+								<div className="modal__body">
+									<form class="form" id="contactForm">
+										<div className="form__group">
+											<label class="form__label">Name</label>
+											{edit &&
+												<div>
+													<input
 
-																	onChange={(e) => setName(e.target.value)}
-																	value={name}
-																/>
+														className={"form__input"}
+														placeholder="Name"
+														aria-describedby="basic-addon1"
+														id="name"
+														type="text"
 
-																<button
-																	style={{ background: "#0099ff", marginTop: "px", height: "35px" }}
+														onChange={(e) => setName(e.target.value)}
+														value={name}
+													/>
 
-																	onClick={(e) => fetchData(name, 1)}
-																	className="btn btn-primary btn-xl"
-																	id="sendMessageButton"
-																	type="button"
-																>
-																	Translate partners name
-																</button>
-															</div>}
-														<input
-															readOnly={!edit}
-															aria-describedby="basic-addon1"
-															id="name"
-															type="text"
-															style={{ backgroundColor: edit === true ? '#DCDCDC' : 'white', outline: 'none' }}
-															onChange={(e) => setNameTransl(e.target.value)}
-															value={nameTransl === "" ? JSON.stringify(homeDataState.updatePointData.point.name) : nameTransl}
-														/>
+													<button
 
-													</div>
-												</div>
-											</div>
+														onClick={(e) => fetchData(name, 1)}
+														className="button button--primary"
+														id="sendMessageButton"
+														type="button"
+													>
+														Translate
+													</button>
+												</div>}
+											<input
+												className={"form__input"}
+												readOnly={!edit}
+												aria-describedby="basic-addon1"
+												id="name"
+												type="text"
+												onChange={(e) => setNameTransl(e.target.value)}
+												value={nameTransl === "" ? JSON.stringify(homeDataState.updatePointData.point.name) : nameTransl}
+											/>
 										</div>
 
 
-										<div className="control-group">
-											<div className="form-group controls mb-0 pb-2" style={{ color: "#6c757d", opacity: 1 }}>
-												<label><b>Short description</b></label>
-												<div class="row" >
-													<div class="form-group col-lg-10">
-														{edit &&
-															<div>
-																<textarea className="form-control" style={{ height: "100px", width: "1000px" }} type="textarea" required name="message" placeholder='Short description' value={shortInfo} onChange={(e) => setShortInfo(e.target.value)}></textarea>
+										<div className="form__group">
+											<label class="form__label">Short description</label>
+											{edit &&
+												<div>
+																<textarea className="form__input"
+																		  type="textarea" required name="message"
+																		  placeholder='Short description'
+																		  value={shortInfo}
+																		  onChange={(e) => setShortInfo(e.target.value)}></textarea>
 
-																<button
-																	style={{ background: "#0099ff", marginTop: "px", height: "35px" }}
+													<button
 
-																	onClick={(e) => fetchData(shortInfo, 2)}
-																	className="btn btn-primary btn-xl"
-																	id="sendMessageButton"
-																	type="button"
-																>
-																	Translate short description
-																</button>
+														onClick={(e) => fetchData(shortInfo, 2)}
+														className="button button--primary"
+														id="sendMessageButton"
+														type="button"
+													>
+														Translate short description
+													</button>
 
-															</div>}
-														<textarea
-															readOnly={!edit}
-															placeholder="Short description"
-															aria-describedby="basic-addon1"
-															id="name"
-															type="textarea"
-															style={{ backgroundColor: edit === true ? '#DCDCDC' : 'white', outline: 'none' }}
-															onChange={(e) => setShortInfoPointTransl(e.target.value)}
-															value={shortInfoPointTransl === "" ? JSON.stringify(homeDataState.updatePointData.point.shortInfo) : shortInfoPointTransl}
-														/>
-
-													</div>
-												</div>
-											</div>
+												</div>}
+											<textarea
+												readOnly={!edit}
+												className="form__input"
+												placeholder="Short description"
+												aria-describedby="basic-addon1"
+												id="name"
+												type="textarea"
+												onChange={(e) => setShortInfoPointTransl(e.target.value)}
+												value={shortInfoPointTransl === "" ? JSON.stringify(homeDataState.updatePointData.point.shortInfo) : shortInfoPointTransl}
+											/>
 										</div>
 
-										<div className="control-group">
-											<div className="form-group controls mb-0 pb-2" style={{ color: "#6c757d", opacity: 1 }}>
-												<label><b>Long description</b></label>
-												<div class="row" >
-													<div class="form-group col-lg-10">
-														{edit &&
-															<div><textarea className="form-control" style={{ height: "200px", width: "1000px" }} type="textarea" required name="message" placeholder='Long description' value={longInfo} onChange={(e) => setLongInfo(e.target.value)}></textarea>
-																<button
-																	style={{ background: "#0099ff", marginTop: "px", height: "35px" }}
+										<div className="form__group">
+											<label class="form__label">Long description</label>
+											{edit &&
+												<div>
+													<textarea className="form__input" type="textarea" required
+															  name="message"
+															  placeholder='Long description'
+															  value={longInfo}
+															  onChange={(e) => setLongInfo(e.target.value)}></textarea>
+													<button
 
-																	onClick={(e) => fetchData(longInfo, 3)}
-																	className="btn btn-primary btn-xl"
-																	id="sendMessageButton"
-																	type="button"
-																>
-																	Translate long description
-																</button>
-															</div>}
-														<textarea
-															readOnly={!edit}
-															placeholder="Long description"
-															aria-describedby="basic-addon1"
-															id="name"
-															type="textarea"
-															style={{ backgroundColor: edit === true ? '#DCDCDC' : 'white', outline: 'none' }}
-															onChange={(e) => setLongInfoPointTransl(e.target.value)}
-															value={longInfoPointTransl === "" ? JSON.stringify(homeDataState.updatePointData.point.longInfo) : longInfoPointTransl}
-														/>
-													</div>
-												</div>
-											</div>
+														onClick={(e) => fetchData(longInfo, 3)}
+														className="button button--primary"
+														id="sendMessageButton"
+														type="button"
+													>
+														Translate
+													</button>
+												</div>}
+											<textarea
+												readOnly={!edit}
+												className="form__input"
+												placeholder="Long description"
+												aria-describedby="basic-addon1"
+												id="name"
+												type="textarea"
+												onChange={(e) => setLongInfoPointTransl(e.target.value)}
+												value={longInfoPointTransl === "" ? JSON.stringify(homeDataState.updatePointData.point.longInfo) : longInfoPointTransl}
+											/>
 										</div>
 
 										{homeDataState.updatePointData.point.partner &&
-											<div>
-												<div className="control-group">
-													<div className="form-group controls mb-0 pb-2" style={{ color: "#6c757d", opacity: 1 }}>
-														<label><b>Price</b></label>
-														<div class="row" >
-															<div class="form-group col-lg-10">
-																<div class="button-login">
+											<div class="form">
+												<div className="form__group">
+													<label class="form__label">Price</label>
+													<div class="button-login">
 
 
-																	<input
-																		readOnly={!edit}
-																		placeholder="Price"
-																		aria-describedby="basic-addon1"
-																		id="name"
-																		type="text"
-																		style={{ backgroundColor: edit === true ? '#DCDCDC' : 'white', outline: 'none' }}
-																		onChange={(e) => setPrice(e.target.value)}
-																		value={price === 0 ? `${homeDataState.updatePointData.point.price} ${homeDataState.updatePointData.point.currency} incl tax` : price}
-																	/>
-																	{edit && <select onChange={(e) => setCurrency(e.target.value)} name="currency" class="custom-select" style={{ height: "50px", width: "200px" }}>
-																		{currencyList.map(item =>
-																			<option key={item} value={item} >{item}</option>
-																		)};
-
-																	</select>}
-																</div>
-															</div>
-														</div>
-													</div>
-												</div>
-
-												<div className="control-group">
-													<div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
-														<label><b>Voucher description*</b></label>
-														<div class="row" >
-															<div class="form-group col-lg-10">
-																{edit &&
-																	<div><textarea className="form-control" style={{ height: "200px", width: "1000px" }} type="textarea" required name="message" placeholder='Voucher description' value={voucherDesc} onChange={(e) => setVoucherDesc(e.target.value)}></textarea>
-																		<button
-																			style={{ background: "#0099ff", marginTop: "px", height: "35px" }}
-
-																			onClick={(e) => fetchData(voucherDesc, 4)}
-																			className="btn btn-primary btn-xl"
-																			id="sendMessageButton"
-																			type="button"
-																		>
-																			Translate voucher description
-																		</button>
-																	</div>}
-																<div >
-
-																	<div class="form-group col-lg-10">
-																		<input
-
-																			className={"form-control"}
-																			placeholder='Voucher description translated'
-																			aria-describedby="basic-addon1"
-																			id="name"
-																			type="text"
-																			style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
-
-																			onChange={(e) => setVoucherDescTransl(e.target.value)}
-																			value={voucherDescTransl}
-																		/>
-
-																	</div>
-																</div>
-															</div>
-														</div>
-													</div>
-												</div>
-
-
-												<div className="control-group">
-													<div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
-														<label><b>Offer name</b></label>
-														<div class="row" >
-															<div class="form-group col-lg-10">
-																<input
-																	readOnly={!edit}
-																	placeholder="Offer name"
-																	aria-describedby="basic-addon1"
-																	id="name"
-																	type="text"
-																	style={{ backgroundColor: edit === true ? '#DCDCDC' : 'white', outline: 'none' }}
-																	onChange={(e) => setOfferName(e.target.value)}
-																	value={offerName === "" ? homeDataState.updatePointData.point.offerName : offerName}
-																/>
-
-
-															</div>
-														</div>
-													</div>
-												</div>
-
-
-												<div className="control-group">
-													<div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
-														<label><b>Contact: responsible person</b></label>
-														<div class="row" >
-															<div class="form-group col-lg-10">
-																{homeDataState.updatePointData.point.contact.name != "" && <input
-																	readOnly={!edit}
-																	placeholder="Contact: responsible person"
-																	aria-describedby="basic-addon1"
-																	id="name"
-																	type="text"
-																	style={{ backgroundColor: edit === true ? '#DCDCDC' : 'white', outline: 'none' }}
-																	onChange={(e) => setResponsiblePerson(e.target.value)}
-																	value={responsiblePerson === "" ? homeDataState.updatePointData.point.contact.name : responsiblePerson}
-																/>}
-																1
-
-															</div>
-														</div>
-													</div>
-												</div>
-
-												<div className="control-group">
-													<div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
-														<label><b>Contact: phone</b></label>
-														<div class="row" >
-															<div class="form-group col-lg-10">
-																<input
-																	readOnly={!edit}
-																	placeholder="Contact: phone"
-																	aria-describedby="basic-addon1"
-																	id="name"
-																	type="text"
-																	style={{ backgroundColor: edit === true ? '#DCDCDC' : 'white', outline: 'none' }}
-																	onChange={(e) => setPhone(e.target.value)}
-																	value={phone === "" ? homeDataState.updatePointData.point.contact.phone : phone}
-																/>
-
-
-															</div>
-														</div>
-													</div>
-												</div>
-
-												<div className="control-group">
-													<div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
-														<label><b>Contact: email</b></label>
-														<div class="row" >
-															<div class="form-group col-lg-10">
-																<input
-																	readOnly={!edit}
-																	placeholder="Contact: email"
-																	aria-describedby="basic-addon1"
-																	id="name"
-																	type="text"
-																	style={{ backgroundColor: edit === true ? '#DCDCDC' : 'white', outline: 'none' }}
-																	onChange={(e) => setEmail(e.target.value)}
-																	value={email === "" ? homeDataState.updatePointData.point.contact.email : email}
-																/>
-
-
-															</div>
-														</div>
-													</div>
-												</div>
-												<div className="control-group">
-													<div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
-														<label><b>Contact: website</b></label>
-														<div class="row" >
-															<div class="form-group col-lg-10">
-																<input
-																	readOnly={!edit}
-																	placeholder="Contact: website"
-																	aria-describedby="basic-addon1"
-																	id="name"
-																	type="text"
-																	style={{ backgroundColor: edit === true ? '#DCDCDC' : 'white', outline: 'none' }}
-																	onChange={(e) => setWebURL(e.target.value)}
-																	value={weburl === "" ? homeDataState.updatePointData.point.contact.weburl : weburl}
-																/>
-
-
-															</div>
-														</div>
-													</div>
-												</div></div>}
-
-										<div className="control-group">
-											<div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
-												<label><b>Location</b></label>
-												<div class="row" >
-													<div class="form-group col-lg-10">
 														<input
 															readOnly={!edit}
-															placeholder="Longitude"
+															placeholder="Price"
+															aria-describedby="basic-addon1"
+															className="form__input"
+															id="name"
+															type="text"
+															onChange={(e) => setPrice(e.target.value)}
+															value={price === 0 ? `${homeDataState.updatePointData.point.price} ${homeDataState.updatePointData.point.currency} incl tax` : price}
+														/>
+														{edit && <select
+															onChange={(e) => setCurrency(e.target.value)}
+															name="currency" class="form__input"
+														>
+															{currencyList.map(item =>
+																<option key={item}
+																		value={item}>{item}</option>
+															)};
+
+														</select>}
+													</div>
+												</div>
+
+												<div className="form__group">
+													<label class="form__label">Voucher description*</label>
+													{edit &&
+														<div>
+															<textarea className="form__input"
+																	  type="textarea" required
+																	  name="message"
+																	  placeholder='Voucher description'
+																	  value={voucherDesc}
+																	  onChange={(e) => setVoucherDesc(e.target.value)}></textarea>
+															<button
+
+																onClick={(e) => fetchData(voucherDesc, 4)}
+																className="button button--primary"
+																id="sendMessageButton"
+																type="button"
+															>
+																Translate
+															</button>
+														</div>}
+													<input
+
+														className={"form__input"}
+														placeholder='Voucher description translated'
+														aria-describedby="basic-addon1"
+														id="name"
+														type="text"
+
+														onChange={(e) => setVoucherDescTransl(e.target.value)}
+														value={voucherDescTransl}
+													/>
+												</div>
+
+
+												<div className="form__group">
+													<label class="form__label">Offer name</label>
+													<input
+
+														className={"form__input"}
+														readOnly={!edit}
+														placeholder="Offer name"
+														aria-describedby="basic-addon1"
+														id="name"
+														type="text"
+														onChange={(e) => setOfferName(e.target.value)}
+														value={offerName === "" ? homeDataState.updatePointData.point.offerName : offerName}
+													/>
+												</div>
+
+
+												<div className="form__group">
+													<label class="form__label">Contact: responsible person</label>
+													{homeDataState.updatePointData.point.contact.name != "" &&
+														<input
+															className={"form__input"}
+															readOnly={!edit}
+															placeholder="Contact: responsible person"
 															aria-describedby="basic-addon1"
 															id="name"
 															type="text"
-															style={{ backgroundColor: edit === true ? '#DCDCDC' : 'white', outline: 'none' }}
-															onChange={(e) => setLongitude(e.target.value)}
-															value={longitude === "" ? homeDataState.updatePointData.point.location.longitude : longitude}
-														/>
-														<input
-															readOnly={!edit}
-															placeholder="Latitude"
-															aria-describedby="basic-addon1"
-															id="name"
-															type="text"
-															style={{ backgroundColor: edit === true ? '#DCDCDC' : 'white', outline: 'none' }}
-															onChange={(e) => setLatitude(e.target.value)}
-															value={latitude === "" ? homeDataState.updatePointData.point.location.latitude : latitude}
-														/>
-
-
-													</div>
+															onChange={(e) => setResponsiblePerson(e.target.value)}
+															value={responsiblePerson === "" ? homeDataState.updatePointData.point.contact.name : responsiblePerson}
+														/>}
 												</div>
-											</div>
+
+												<div className="form__group">
+													<label class="form__label">Contact: phone</label>
+													<input
+														className={"form__input"}
+														readOnly={!edit}
+														placeholder="Contact: phone"
+														aria-describedby="basic-addon1"
+														id="name"
+														type="text"
+														onChange={(e) => setPhone(e.target.value)}
+														value={phone === "" ? homeDataState.updatePointData.point.contact.phone : phone}
+													/>
+												</div>
+
+												<div className="form__group">
+													<label class="form__label">Contact: email</label>
+													<input
+														className={"form__input"}
+														readOnly={!edit}
+														placeholder="Contact: email"
+														aria-describedby="basic-addon1"
+														id="name"
+														type="text"
+														onChange={(e) => setEmail(e.target.value)}
+														value={email === "" ? homeDataState.updatePointData.point.contact.email : email}
+													/>
+												</div>
+												<div className="form__group">
+													<label class="form__label">Contact: website</label>
+													<input
+														className={"form__input"}
+														readOnly={!edit}
+														placeholder="Contact: website"
+														aria-describedby="basic-addon1"
+														id="name"
+														type="text"
+														onChange={(e) => setWebURL(e.target.value)}
+														value={weburl === "" ? homeDataState.updatePointData.point.contact.weburl : weburl}
+													/>
+												</div>
+											</div>}
+
+										<div className="form__group">
+											<label class="form__label">Location</label>
+											<input
+												className={"form__input"}
+												readOnly={!edit}
+												placeholder="Longitude"
+												aria-describedby="basic-addon1"
+												id="name"
+												type="text"
+												onChange={(e) => setLongitude(e.target.value)}
+												value={longitude === "" ? homeDataState.updatePointData.point.location.longitude : longitude}
+											/>
+											<input
+												className={"form__input"}
+												readOnly={!edit}
+												placeholder="Latitude"
+												aria-describedby="basic-addon1"
+												id="name"
+												type="text"
+												onChange={(e) => setLatitude(e.target.value)}
+												value={latitude === "" ? homeDataState.updatePointData.point.location.latitude : latitude}
+											/>
 										</div>
-										<div className="control-group">
-											<div className="form-group controls mb-0 pb-2" style={{ color: "#6c757d", opacity: 1 }}>
-												<label><b>Category</b></label>
-												<div class="row" >
-													<div class="form-group col-lg-10">
-														<div class="button-login">
-
-
-															{!edit && <input
-																readOnly={!edit}
-																placeholder="Category"
-																aria-describedby="basic-addon1"
-																id="name"
-																type="text"
-																style={{ backgroundColor: edit === true ? '#DCDCDC' : 'white', outline: 'none' }}
-																onChange={(e) => setCategory(e.target.value)}
-																value={category === "" ? homeDataState.updatePointData.point.category : category}
-															/>}
-															{edit && <select onChange={(e) => setCategory(e.target.value)} name="currency" class="custom-select" style={{ height: "50px", width: "200px" }}>
-																{categories.map(item =>
-																	<option key={item} value={item} >{item}</option>
-																)};
-
-															</select>}
-														</div>
-													</div>
-												</div>
-											</div>
+										<div className="form__group">
+											<label class="form__label">Category</label>
+											{!edit &&
+												<input
+													className={"form__input"}
+													readOnly={!edit}
+													placeholder="Category"
+													aria-describedby="basic-addon1"
+													id="name"
+													type="text"
+													onChange={(e) => setCategory(e.target.value)}
+													value={category === "" ? homeDataState.updatePointData.point.category : category}
+												/>}
+											{edit &&
+												<select
+													onChange={(e) => setCategory(e.target.value)}
+													name="currency" class="form__input"
+												>
+													{categories.map(item =>
+														<option key={item}
+																value={item}>{item}</option>
+													)};
+												</select>}
 										</div>
 										{homeDataState.updatePointData.point.partner &&
-											<div>
+											<div class="bg-black/[3%] p-4 rounded-xl gap-2 divide-y">
 
-												<h6><b>Working hours *</b></h6>
-
-
-												{!edit && <div>
+												<label class="form__label">Working hours *</label>
 
 
-													<br />
-													<label>
-														Monday:
-													</label>
-													<label>
-														{homeDataState.updatePointData.point.workingHours.monday.from} - {homeDataState.updatePointData.point.workingHours.monday.to}
-													</label>
-													<br />
-													<label>
-														Tuesday:
-													</label>
-													<label>
-														{homeDataState.updatePointData.point.workingHours.tuesday.from} - {homeDataState.updatePointData.point.workingHours.tuesday.to}
-													</label>	<br />
-													<label>
-														Wednesday:
-													</label>
-													<label>
-														{homeDataState.updatePointData.point.workingHours.wednesday.from} - {homeDataState.updatePointData.point.workingHours.wednesday.to}
-													</label>
-													<br />
-													<label>
-														Thursday:
-													</label>
-													<label>
-														{homeDataState.updatePointData.point.workingHours.thursday.from} - {homeDataState.updatePointData.point.workingHours.thursday.to}
-													</label>
-													<br />
-													<label>
-														Friday:
-													</label>
-													<label>
-														{homeDataState.updatePointData.point.workingHours.friday.from} - {homeDataState.updatePointData.point.workingHours.friday.to}
-													</label>
-													<br />
-													<label>
-														Saturday:
-													</label>
-													<label>
-														{homeDataState.updatePointData.point.workingHours.saturday.from} - {homeDataState.updatePointData.point.workingHours.saturday.to}
-													</label>
-													<br />
-													<label>
-														Sunday:
-													</label>
-													<label>
-														{homeDataState.updatePointData.point.workingHours.sunday.from} - {homeDataState.updatePointData.point.workingHours.sunday.to}
-													</label>
-												</div>
+												{!edit &&
+													<div class="form pt-6">
+														<div className="form__group">
+															<label class="form__label">
+																Monday:
+															</label>
+															<label>
+																{homeDataState.updatePointData.point.workingHours.monday.from} - {homeDataState.updatePointData.point.workingHours.monday.to}
+															</label>
+														</div>
+														<div className="form__group">
+															<label class="form__label">
+																Tuesday:
+															</label>
+															<label>
+																{homeDataState.updatePointData.point.workingHours.tuesday.from} - {homeDataState.updatePointData.point.workingHours.tuesday.to}
+															</label>
+														</div>
+														<div className="form__group">
+															<label class="form__label">
+																Wednesday:
+															</label>
+															<label>
+																{homeDataState.updatePointData.point.workingHours.wednesday.from} - {homeDataState.updatePointData.point.workingHours.wednesday.to}
+															</label>
+														</div>
+														<div className="form__group">
+															<label class="form__label">
+																Thursday:
+															</label>
+															<label>
+																{homeDataState.updatePointData.point.workingHours.thursday.from} - {homeDataState.updatePointData.point.workingHours.thursday.to}
+															</label>
+														</div>
+														<div className="form__group">
+															<label class="form__label">
+																Friday:
+															</label>
+															<label>
+																{homeDataState.updatePointData.point.workingHours.friday.from} - {homeDataState.updatePointData.point.workingHours.friday.to}
+															</label>
+														</div>
+														<div className="form__group">
+															<label class="form__label">
+																Saturday:
+															</label>
+															<label>
+																{homeDataState.updatePointData.point.workingHours.saturday.from} - {homeDataState.updatePointData.point.workingHours.saturday.to}
+															</label>
+														</div>
+														<div className="form__group">
+															<label class="form__label">
+																Sunday:
+															</label>
+															<label>
+																{homeDataState.updatePointData.point.workingHours.sunday.from} - {homeDataState.updatePointData.point.workingHours.sunday.to}
+															</label>
+														</div>
+													</div>
 												}
 
 												{edit &&
 													<div>
-														<br />
 
-														<div className="control-group">
-															<div className="form-group controls mb-0 pb-2" style={{ opacity: 1, marginLeft: "300px" }}>
-																<label><b>Monday</b></label>
+														<div className="form__group">
 
-																<br />
-																<label>
-																	<input
-																		type="checkbox"
-																		checked={mondayclosed}
-																		onChange={(e) => setMondayClosed(!mondayclosed)}
-																	/>
-																	closed
-																</label>
-																{!mondayclosed && <div class="row"  >
-																	<span style={{ marginLeft: "20px", marginRight: "30px" }}>
-																		<TimePicker disableClock={true} onChange={(newValue) => {
-																			setMondayFrom(newValue);
-																		}} value={mondayFrom} />
-																	</span>  <span >
-																		<TimePicker disableClock={true} onChange={(newValue) => {
-																			setMondayTo(newValue);
-																		}} value={mondayTo} /></span>
-
-
-																</div>}
-															</div>
+															<label class="form__label">Monday</label>
+															<label>
+																<input
+																	type="checkbox"
+																	checked={mondayclosed}
+																	onChange={(e) => setMondayClosed(!mondayclosed)}
+																/>
+																closed
+															</label>
+															{!mondayclosed &&
+																<div>
+																	<span>
+																		<TimePicker disableClock={true}
+																					onChange={(newValue) => {
+																						setMondayFrom(newValue);
+																					}} value={mondayFrom}/>
+																	</span>
+																	<span>
+																		<TimePicker disableClock={true}
+																					onChange={(newValue) => {
+																						setMondayTo(newValue);
+																					}} value={mondayTo}/>
+																	</span>
+																</div>
+															}
 														</div>
 
-														<div className="control-group">
-															<div className="form-group controls mb-0 pb-2" style={{ opacity: 1, marginLeft: "300px" }}>
-																<label><b>Tuesday</b></label>
-																<br />
-																<label>
-																	<input
-																		type="checkbox"
-																		checked={tuesdayclosed}
-																		onChange={(e) => setTuesdayClosed(!tuesdayclosed)}
-																	/>
-																	closed
-																</label>
-																{!tuesdayclosed && <div class="row" >
-																	<span style={{ marginLeft: "20px", marginRight: "30px" }}>
-																		<TimePicker disableClock={true} onChange={(newValue) => {
-																			setTuesdayFrom(newValue);
-																		}} value={tuesdayFrom} />
-																	</span>  <span >
-																		<TimePicker disableClock={true} onChange={(newValue) => {
-																			setTuesdayTo(newValue);
-																		}} value={tuesdayTo} /></span>
-																</div>}
-															</div>
+														<div className="form__group">
+															<label class="form__label">Tuesday</label>
+															<label>
+																<input
+																	type="checkbox"
+																	checked={tuesdayclosed}
+																	onChange={(e) => setTuesdayClosed(!tuesdayclosed)}
+																/>
+																closed
+															</label>
+															{!tuesdayclosed &&
+																<div>
+																	<span>
+																		<TimePicker disableClock={true}
+																					onChange={(newValue) => {
+																						setTuesdayFrom(newValue);
+																					}} value={tuesdayFrom}/>
+																	</span>
+																	<span>
+																		<TimePicker disableClock={true}
+																					onChange={(newValue) => {
+																						setTuesdayTo(newValue);
+																					}} value={tuesdayTo}/>
+																	</span>
+																</div>
+															}
 														</div>
 
-														<div className="control-group">
-															<div className="form-group controls mb-0 pb-2" style={{ opacity: 1, marginLeft: "300px" }}>
-																<label><b>Wednesday</b></label>
-																<br />
-																<label>
-																	<input
-																		type="checkbox"
-																		checked={wednesdayclosed}
-																		onChange={(e) => setWednesdayClosed(!wednesdayclosed)}
-																	/>
-																	closed
-																</label>
-																{!wednesdayclosed && <div class="row" >
-																	<span style={{ marginLeft: "20px", marginRight: "30px" }}>
-																		<TimePicker disableClock={true} onChange={(newValue) => {
-																			setWednesdayFrom(newValue);
-																		}} value={wednesdayFrom} />
-																	</span>  <span >
-																		<TimePicker disableClock={true} onChange={(newValue) => {
-																			setWednesdayTo(newValue);
-																		}} value={wednesdayTo} /></span>
-
-
-																</div>}
-															</div>
+														<div className="form__group">
+															<label class="form__label">Wednesday</label>
+															<label>
+																<input
+																	type="checkbox"
+																	checked={wednesdayclosed}
+																	onChange={(e) => setWednesdayClosed(!wednesdayclosed)}
+																/>
+																closed
+															</label>
+															{!wednesdayclosed &&
+																<div>
+																	<span>
+																		<TimePicker disableClock={true}
+																					onChange={(newValue) => {
+																						setWednesdayFrom(newValue);
+																					}} value={wednesdayFrom}/>
+																	</span>
+																	<span>
+																	<TimePicker disableClock={true}
+																				onChange={(newValue) => {
+																					setWednesdayTo(newValue);
+																				}} value={wednesdayTo}/>
+																	</span>
+																</div>
+															}
 														</div>
 
-														<div className="control-group">
-															<div className="form-group controls mb-0 pb-2" style={{ opacity: 1, marginLeft: "300px" }}>
-																<label><b>Thursday</b></label>
-																<br />
-																<label>
-																	<input
-																		type="checkbox"
-																		checked={thursdayclosed}
-																		onChange={(e) => setThursdayClosed(!thursdayclosed)}
-																	/>
-																	closed
-																</label>
-																{!thursdayclosed && <div class="row" >
+														<div className="form__group">
+															<label class="form__label">Thursday</label>
+															<label>
+																<input
+																	type="checkbox"
+																	checked={thursdayclosed}
+																	onChange={(e) => setThursdayClosed(!thursdayclosed)}
+																/>
+																closed
+															</label>
+															{!thursdayclosed &&
+																<div>
 
-																	<span style={{ marginLeft: "20px", marginRight: "30px" }}>
-																		<TimePicker disableClock={true} onChange={(newValue) => {
-																			setThursdayFrom(newValue);
-																		}} value={thursdayFrom} />
-																	</span>  <span >
-																		<TimePicker disableClock={true} onChange={(newValue) => {
-																			setThursdayTo(newValue);
-																		}} value={thursdayTo} /></span>
-
-
-																</div>}
-															</div>
+																	<span>
+																		<TimePicker disableClock={true}
+																					onChange={(newValue) => {
+																						setThursdayFrom(newValue);
+																					}} value={thursdayFrom}/>
+																	</span>
+																	<span>
+																		<TimePicker disableClock={true}
+																					onChange={(newValue) => {
+																						setThursdayTo(newValue);
+																					}} value={thursdayTo}/>
+																</span>
+																</div>
+															}
 														</div>
 
-														<div className="control-group">
-															<div className="form-group controls mb-0 pb-2" style={{ opacity: 1, marginLeft: "300px" }}>
-																<label><b>Friday</b></label>
-																<br />
-																<label>
-																	<input
-																		type="checkbox"
-																		checked={fridayclosed}
-																		onChange={(e) => setFridayClosed(!fridayclosed)}
-																	/>
-																	closed
-																</label>
-																{!fridayclosed && <div class="row" >
+														<div className="form__group">
+															<label class="form__label">Friday</label>
+															<label>
+																<input
+																	type="checkbox"
+																	checked={fridayclosed}
+																	onChange={(e) => setFridayClosed(!fridayclosed)}
+																/>
+																closed
+															</label>
+															{!fridayclosed &&
+																<div>
 
-																	<span style={{ marginLeft: "20px", marginRight: "30px" }}>
-																		<TimePicker disableClock={true} onChange={(newValue) => {
-																			setFridayFrom(newValue);
-																		}} value={fridayFrom} />
-																	</span>  <span >
-																		<TimePicker disableClock={true} onChange={(newValue) => {
-																			setFridayTo(newValue);
-																		}} value={fridayTo} /></span>
+																	<span>
+																		<TimePicker disableClock={true}
+																					onChange={(newValue) => {
+																						setFridayFrom(newValue);
+																					}} value={fridayFrom}/>
+																	</span> <span>
+																		<TimePicker disableClock={true}
+																					onChange={(newValue) => {
+																						setFridayTo(newValue);
+																					}} value={fridayTo}/></span>
 
 
 																</div>}
-															</div>
 														</div>
 
-														<div className="control-group">
-															<div className="form-group controls mb-0 pb-2" style={{ opacity: 1, marginLeft: "300px" }}>
-																<label><b>Saturday</b></label>
-																<br />
-																<label>
-																	<input
-																		type="checkbox"
-																		checked={saturdayclosed}
-																		onChange={(e) => setSaturdayClosed(!saturdayclosed)}
-																	/>
-																	closed
-																</label>
-																{!saturdayclosed && <div class="row" >
+														<div className="form__group">
+															<label class="form__label">Saturday</label>
+															<label>
+																<input
+																	type="checkbox"
+																	checked={saturdayclosed}
+																	onChange={(e) => setSaturdayClosed(!saturdayclosed)}
+																/>
+																closed
+															</label>
+															{!saturdayclosed && <div>
 
 
-																	<span style={{ marginLeft: "20px", marginRight: "30px" }}>
-																		<TimePicker disableClock={true} onChange={(newValue) => {
-																			setSaturdayFrom(newValue);
-																		}} value={saturdayFrom} />
-																	</span>  <span >
-																		<TimePicker disableClock={true} onChange={(newValue) => {
-																			setSaturdayTo(newValue);
-																		}} value={saturdayTo} /></span>
+																	<span>
+																		<TimePicker disableClock={true}
+																					onChange={(newValue) => {
+																						setSaturdayFrom(newValue);
+																					}} value={saturdayFrom}/>
+																	</span> <span>
+																		<TimePicker disableClock={true}
+																					onChange={(newValue) => {
+																						setSaturdayTo(newValue);
+																					}} value={saturdayTo}/></span>
 
-																</div>}
-															</div>
+															</div>}
 														</div>
 
-														<div className="control-group">
-															<div className="form-group controls mb-0 pb-2" style={{ opacity: 1, marginLeft: "300px" }}>
-																<label><b>Sunday</b></label>
-																<br />
-																<label>
-																	<input
-																		type="checkbox"
-																		checked={sundayclosed}
-																		onChange={(e) => setSundayClosed(!sundayclosed)}
-																	/>
-																	closed
-																</label>
-																{!sundayclosed && <div class="row" >
+														<div className="form__group">
+															<label class="form__label">Sunday</label>
+															<label>
+																<input
+																	type="checkbox"
+																	checked={sundayclosed}
+																	onChange={(e) => setSundayClosed(!sundayclosed)}
+																/>
+																closed
+															</label>
+															{!sundayclosed && <div>
 
 
-																	<span style={{ marginLeft: "20px", marginRight: "30px" }}>
-																		<TimePicker disableClock={true} onChange={(newValue) => {
-																			setSundayFrom(newValue);
-																		}} value={sundayFrom} />
-																	</span>  <span >
-																		<TimePicker disableClock={true} onChange={(newValue) => {
-																			setSundayTo(newValue);
-																		}} value={sundayTo} /></span>
+																<span>
+																	<TimePicker disableClock={true}
+																				onChange={(newValue) => {
+																					setSundayFrom(newValue);
+																				}} value={sundayFrom}/>
+																</span> <span>
+																<TimePicker disableClock={true}
+																			onChange={(newValue) => {
+																				setSundayTo(newValue);
+																			}} value={sundayTo}/></span>
 
-																</div>}
-															</div>
+															</div>}
 														</div>
 
 													</div>}
 											</div>}
 
-										<div className="control-group">
-											<div className="form-group controls mb-0 pb-2" style={{ color: "#6c757d", opacity: 1 }}>
+										<div className="form__group">
+											<label class="form__label">Menu image</label>
+											{edit && <input type={"file"} name="file"
+															onChange={onFileChange}/>}
 
-												<div class="row" >
-													<div class="form-group col-lg-10">
+											{fileData()}
 
-
-
-														<div style={{ marginTop: "15px" }}>
-															<label><b>Menu image</b></label>
-															<br />   <br />
-															{edit && <input type={"file"} name="file" onChange={onFileChange} />}
-
-														</div>
-
-														{fileData()}
-
-														{imagePreview && <img className="preview" src={imagePreview} alt={"image-"} />}
-														{!imagePreview && <img className="preview" src={homeDataState.updatePointData.point.menu} alt={"image-"} />}
-
-
-														<br />
-													</div>
-												</div>
-											</div>
+											{imagePreview &&
+												<img className="preview" src={imagePreview}
+													 alt={"image-"}/>}
+											{!imagePreview && <img className="preview"
+																   src={homeDataState.updatePointData.point.menu}
+																   alt={"image-"}/>}
 										</div>
 
 										<div>
 
-											<label><b>Image gallery</b></label>
-											<br /><br />
-											{edit && <div className="row">
-												<div className="col-8">
-													<label className="btn btn-default p-0">
-														<input
-															type="file"
-															multiple
-															accept="image/*"
-															onChange={selectFiles}
-														/>
-													</label>
-												</div>
-
-
-											</div>}
+											<label class="form__label">Image gallery</label>
+											{edit &&
+												<input
+													type="file"
+													multiple
+													accept="image/*"
+													onChange={selectFiles}
+												/>
+											}
 
 											{progressInfos &&
 												progressInfos.val.length > 0 &&
 												progressInfos.val.map((progressInfo, index) => (
-													<div className="mb-2" key={index}>
+													<div key={index}>
 														<span>{progressInfo.fileName}</span>
-														<div className="progress">
+														<div>
 															<div
-																className="progress-bar progress-bar-info"
 																role="progressbar"
 																aria-valuenow={progressInfo.percentage}
 																aria-valuemin="0"
 																aria-valuemax="100"
-																style={{ width: progressInfo.percentage + "%" }}
+																style={{width: progressInfo.percentage + "%"}}
 															>
 																{progressInfo.percentage}%
 															</div>
@@ -1059,17 +971,16 @@ const POIData = () => {
 													{imagePreviews.map((img, i) => {
 														return (
 															<div>
-																<br />
-																<img className="preview" src={img} alt={"image-" + i} key={i} />
+																<img className="image__preview" src={img}
+																	 alt={"image-" + i} key={i}/>
 
 																<input
 
-																	className={"form-control"}
+																	className={"form__input"}
 																	placeholder={'JSON FORMAT: { "language": "Text"}'}
 																	aria-describedby="basic-addon1"
 																	id="name"
 																	type="text"
-																	style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
 
 																	onChange={(e) => changeImageTitle(e.target.value, i)}
 																/>
@@ -1083,8 +994,8 @@ const POIData = () => {
 													{homeDataState.updatePointData.point.images.map((img, i) => {
 														return (
 															<div>
-																<br />
-																<img className="preview" src={img} alt={"image-" + img} key={i} />
+																<img className="image__preview" src={img}
+																	 alt={"image-" + img} key={i}/>
 															</div>
 														);
 													})}
@@ -1094,73 +1005,58 @@ const POIData = () => {
 
 										</div>
 
-										<div className="control-group">
-											<div className="form-group controls mb-0 pb-2" style={{ color: "#6c757d", opacity: 1 }}>
+										<div className="form__group">
 
-												<div class="row" >
-													<div class="form-group col-lg-10">
+											<label class="form__label">Text to speach audio</label>
+											{!audio && <ReactAudioPlayer
+												src={homeDataState.updatePointData.point.audio}
 
+												controls
+											/>}
 
-														<div style={{ marginTop: "15px" }}>
-
-															<label><b>Text to speach audio</b></label>
-															<br />   <br />
-															{!audio && <ReactAudioPlayer
-																src={homeDataState.updatePointData.point.audio}
-
-																controls
-															/>}
-
-															{edit && <input type={"file"} accept={".mp3"} onChange={addFile} />}
-														</div>
-
-														<br />
-													</div>
-												</div>
-											</div>
+											{edit && <input type={"file"} accept={".mp3"}
+															onChange={addFile}/>}
 										</div>
 
 
-
-										<div className="form-group text-center" style={{ color: "red", fontSize: "0.8em", marginTop: "30px", marginRight: "40px" }} hidden={!errMessage}>
+										<div className="form__group" hidden={!errMessage}>
 											{errMessage}
 										</div>
-										{!edit && <div className="form-group text-center">
-											<button
-												style={{ background: "#1977cc", marginTop: "15px" }}
 
-												onClick={(e) => { setEdit(!edit) }}
-												className="btn btn-primary btn-xl"
-												id="sendMessageButton"
-												type="button"
-											>
-												Edit
-											</button>
-										</div>}
-										{edit && <div className="form-group text-center">
-											<button
-												style={{ background: "#1977cc", marginTop: "15px" }}
-
-												onClick={(e) => { handleSubmit(e) }}
-												className="btn btn-primary btn-xl"
-												id="sendMessageButton"
-												type="button"
-											>
-												Update point
-											</button>
-										</div>}
-
-										<br />
-
-									</td>
-								</table>
-							</form>
+										{!edit &&
+											<div className="form__group">
+												<button
+													onClick={(e) => {
+														setEdit(!edit)
+													}}
+													className="button button--primary"
+													id="sendMessageButton"
+													type="button"
+												>
+													Edit
+												</button>
+											</div>}
+										{edit &&
+											<div className="form__group">
+												<button
+													onClick={(e) => {
+														handleSubmit(e)
+													}}
+													className="button button--primary"
+													id="sendMessageButton"
+													type="button"
+												>
+													Update point
+												</button>
+											</div>}
+									</form>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
 			}
-		</div >
+		</div>
 
 	);
 };
