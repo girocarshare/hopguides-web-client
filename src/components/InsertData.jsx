@@ -686,7 +686,7 @@ const InsertData = (props) => {
 
 								<div class="modal__header">
 									<h2 class="text-leading">
-										Add new toursss
+										Add new tour
 									</h2>
 									<button class="button button--circle button--clear justify-self-end"
 											type="button"
@@ -1011,609 +1011,706 @@ const InsertData = (props) => {
 
 										<div>
 											{(partner || point) &&
-												<div class="form">
-													<div className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
-														<div className="form__group">
-															<label class="form__label">Name *</label>
-															<div class="flex flex-row items-center gap-2">
-																<input
+												<div class="relative z-50" aria-labelledby="modal-title" role="dialog"
+													 aria-modal="true">
 
-																	className={"form__input"}
-																	placeholder="Name"
-																	aria-describedby="basic-addon1"
-																	id="name"
-																	type="text"
+													<div class="modal-overlay"></div>
 
-																	onChange={(e) => setTitlePoint(e.target.value)}
-																	value={titlePoint}
-																/>
+													<div class="fixed inset-0 z-10 overflow-y-auto">
 
-																<button
+														<div class="modal-frame">
 
-																	onClick={(e) => fetchData(titlePoint, 4)}
-																	className="button button--primary"
-																	id="sendMessageButton"
-																	type="button"
-																>
-																	Translate
-																</button>
-															</div>
-														</div>
-														<input
+															<div id="myModal" class="modal modal--2xl">
 
-															className={"form__input text-sm"}
-															placeholder='JSON FORMAT: { "language": "Text"}'
-															aria-describedby="basic-addon1"
-															id="name"
-															type="text"
-
-															disabled
-															onChange={(e) => setTitlePointTransl(e.target.value)}
-															value={titlePointTransl}
-														/>
-													</div>
-
-													<div className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
-														<div className="form__group">
-															<label class="form__label">Short description* </label>
-															<textarea className="form__input h-32"
-																	  type="textarea" required name="message"
-																	  placeholder='Short description'
-																	  value={shortInfoPoint}
-																	  onChange={(e) => setShortInfoPoint(e.target.value)}></textarea>
-
-															<button
-
-																onClick={(e) => fetchData(shortInfoPoint, 5)}
-																className="button button--primary mt-2"
-																id="sendMessageButton"
-																type="button"
-															>
-																Translate
-															</button>
-
-														</div>
-														<textarea
-
-															className={"form__input text-sm h-32"}
-															placeholder='JSON FORMAT: { "language": "Text"}'
-															aria-describedby="basic-addon1"
-															id="name"
-															type="text"
-
-															disabled
-															onChange={(e) => setShortInfoPointTransl(e.target.value)}
-															value={shortInfoPointTransl}
-														/>
-													</div>
-
-													<div className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
-														<div className="form__group">
-															<label class="form__label">Long description*</label>
-															<textarea className="form__input h-32"
-																	  type="textarea" required name="message"
-																	  placeholder='Long description'
-																	  value={longInfoPoint}
-																	  onChange={(e) => setLongInfoPoint(e.target.value)}></textarea>
-															<button
-
-																onClick={(e) => fetchData(longInfoPoint, 6)}
-																className="button button--primary mt-2"
-																id="sendMessageButton"
-																type="button"
-															>
-																Translate
-															</button>
-														</div>
-														<textarea
-
-															className={"form__input text-sm h-32"}
-															placeholder='JSON FORMAT: { "language": "Text"}'
-															aria-describedby="basic-addon1"
-															id="name"
-															type="text"
-
-															disabled
-															onChange={(e) => setLongInfoPointTransl(e.target.value)}
-															value={longInfoPointTransl}
-														/>
-													</div>
-
-													{partner &&
-
-														<div
-															className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
-															<div className="form__group">
-																<label class="form__label">Voucher description*</label>
-																<textarea className="form__input h-32"
-																		  type="textarea" required name="message"
-																		  placeholder='Voucher description'
-																		  value={voucherDesc}
-																		  onChange={(e) => setVoucherDesc(e.target.value)}></textarea>
-																<button
-
-																	onClick={(e) => fetchData(voucherDesc, 7)}
-																	className="button button--primary mt-2"
-																	id="sendMessageButton"
-																	type="button"
-																>
-																	Translate
-																</button>
-															</div>
-															<textarea
-
-																className={"form__input text-sm h-32"}
-																placeholder='JSON FORMAT: { "language": "Text"}'
-																aria-describedby="basic-addon1"
-																id="name"
-																type="text"
-																disabled
-																onChange={(e) => setVoucherDescTransl(e.target.value)}
-																value={voucherDescTransl}
-															/>
-														</div>
-
-
-													}
-
-													<div className="form__group">
-														<label class="form__label">Category*</label>
-														<select
-															onChange={(e) => setCategory(e.target.value)}
-															name="category" class="form__input"
-														>
-															{categories.map(item =>
-																<option key={item}
-																		value={item}>{item}</option>
-															)};
-
-														</select>
-													</div>
-
-													{partner && <div className="form__group">
-														<label class="form__label">Price*</label>
-														<div class="flex flex-row items-center gap-2">
-															<input
-
-																className={"form__input"}
-																placeholder="Price"
-																aria-describedby="basic-addon1"
-																id="name"
-																type="text"
-
-																onChange={(e) => setPointPrice(e.target.value)}
-																value={pointPrice}
-															/>
-
-															<select
-																onChange={(e) => setCurrency(e.target.value)}
-																name="currency" class="form__input"
-															>
-																{currencyList.map(item =>
-																	<option key={item}
-																			value={item}>{item}</option>
-																)};
-
-															</select>
-														</div>
-													</div>}
-													{partner && <div className="form__group">
-
-														<label class="form__label">Offer name*</label>
-														<input
-
-															className={"form__input"}
-															placeholder="Offer name"
-															aria-describedby="basic-addon1"
-															id="name"
-															type="text"
-
-															onChange={(e) => setOfferName(e.target.value)}
-															value={offerName}
-														/>
-													</div>}
-
-													<div className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
-														<div className="form__group">
-
-															<label class="form__label">Address *</label>
-															<input
-
-																className={"form__input"}
-																placeholder="Longitude"
-																aria-describedby="basic-addon1"
-																id="name"
-																type="text"
-
-																onChange={(e) => setLongitude(e.target.value)}
-																value={longitude}
-															/>
-														</div>
-														<input
-
-															className={"form__input"}
-															placeholder="Latitude"
-															aria-describedby="basic-addon1"
-															id="name"
-															type="text"
-
-															onChange={(e) => setLatitude(e.target.value)}
-															value={latitude}
-														/>
-													</div>
-
-													{partner &&
-														<div
-															className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
-															<div className="form__group">
-																<label class="form__label">Working hours *</label>
-
-																<div className="form__group">
-																	<label class="form__label">Monday</label>
-																	<label>
-																		<input
-																			type="checkbox"
-																			checked={mondayclosed}
-																			onChange={(e) => setMondayClosed(!mondayclosed)}
-																		/>
-																		closed
-																	</label>
-																	{!mondayclosed &&
-																		<div>
-																			<TimePicker disableClock={true}
-																						onChange={(newValue) => {
-																							setMondayFrom(newValue);
-																						}} value={mondayFrom}/>
-																			<TimePicker disableClock={true}
-																						onChange={(newValue) => {
-																							setMondayTo(newValue);
-																						}} value={mondayTo}/>
-																		</div>
-																	}
+																<div class="modal__header">
+																	<h2 class="text-leading">
+																		New partner "or" POI
+																	</h2>
+																	<button
+																		class="button button--circle button--clear justify-self-end"
+																		type="button"
+																		onClick={handleClose}>
+																		<AiOutlineClose/>
+																	</button>
 																</div>
 
-																<div className="form__group">
-																	<label class="form__label">Tuesday</label>
-																	<label>
-																		<input
-																			type="checkbox"
-																			checked={tuesdayclosed}
-																			onChange={(e) => setTuesdayClosed(!tuesdayclosed)}
-																		/>
-																		closed
-																	</label>
-																	{!tuesdayclosed &&
-																		<div>
-																			<TimePicker disableClock={true}
-																						onChange={(newValue) => {
-																							setTuesdayFrom(newValue);
-																						}} value={tuesdayFrom}/>
-																			<TimePicker disableClock={true}
-																						onChange={(newValue) => {
-																							setTuesdayTo(newValue);
-																						}} value={tuesdayTo}/>
-																		</div>
-																	}
-																</div>
-
-																<div className="form__group">
-																	<label class="form__label">Wednesday</label>
-																	<label>
-																		<input
-																			type="checkbox"
-																			checked={wednesdayclosed}
-																			onChange={(e) => setWednesdayClosed(!wednesdayclosed)}
-																		/>
-																		closed
-																	</label>
-																	{!wednesdayclosed &&
-																		<div>
-
-																			<TimePicker disableClock={true}
-																						onChange={(newValue) => {
-																							setWednesdayFrom(newValue);
-																						}} value={wednesdayFrom}/>
-																			<TimePicker disableClock={true}
-																						onChange={(newValue) => {
-																							setWednesdayTo(newValue);
-																						}} value={wednesdayTo}/>
-																		</div>
-																	}
-																</div>
-
-																<div className="form__group">
-																	<label class="form__label">Thursday</label>
-																	<label>
-																		<input
-																			type="checkbox"
-																			checked={thursdayclosed}
-																			onChange={(e) => setThursdayClosed(!thursdayclosed)}
-																		/>
-																		closed
-																	</label>
-																	{!thursdayclosed &&
-																		<div>
-																			<TimePicker disableClock={true}
-																						onChange={(newValue) => {
-																							setThursdayFrom(newValue);
-																						}} value={thursdayFrom}/>
-																			<TimePicker disableClock={true}
-																						onChange={(newValue) => {
-																							setThursdayTo(newValue);
-																						}} value={thursdayTo}/>
-																		</div>
-																	}
-																</div>
-
-																<div className="form__group">
-																	<label class="form__label">Friday</label>
-																	<label>
-																		<input
-																			type="checkbox"
-																			checked={fridayclosed}
-																			onChange={(e) => setFridayClosed(!fridayclosed)}
-																		/>
-																		closed
-																	</label>
-																	{!fridayclosed &&
-																		<div>
-																			<TimePicker disableClock={true}
-																						onChange={(newValue) => {
-																							setFridayFrom(newValue);
-																						}} value={fridayFrom}/>
-																			<TimePicker disableClock={true}
-																						onChange={(newValue) => {
-																							setFridayTo(newValue);
-																						}} value={fridayTo}/>
-																		</div>
-																	}
-																</div>
-
-																<div className="form__group">
-																	<label class="form__label">Saturday</label>
-																	<label>
-																		<input
-																			type="checkbox"
-																			checked={saturdayclosed}
-																			onChange={(e) => setSaturdayClosed(!saturdayclosed)}
-																		/>
-																		closed
-																	</label>
-																	{!saturdayclosed &&
-																		<div>
-																			<TimePicker disableClock={true}
-																						onChange={(newValue) => {
-																							setSaturdayFrom(newValue);
-																						}} value={saturdayFrom}/>
-																			<TimePicker disableClock={true}
-																						onChange={(newValue) => {
-																							setSaturdayTo(newValue);
-																						}} value={saturdayTo}/>
-																		</div>
-																	}
-																</div>
-
-																<div className="form__group">
-																	<label class="form__label">Sunday</label>
-																	<label>
-																		<input
-																			type="checkbox"
-																			checked={sundayclosed}
-																			onChange={(e) => setSundayClosed(!sundayclosed)}
-																		/>
-																		closed
-																	</label>
-																	{!sundayclosed &&
-																		<div>
-																			<TimePicker disableClock={true}
-																						onChange={(newValue) => {
-																							setSundayFrom(newValue);
-																						}} value={sundayFrom}/>
-																			<TimePicker disableClock={true}
-																						onChange={(newValue) => {
-																							setSundayTo(newValue);
-																						}} value={sundayTo}/>
-																		</div>
-																	}
-																</div>
-															</div>
-														</div>
-													}
-
-													<div className="form__group">
-														<label class="form__label">Text to speach audio*</label>
-														<input type={"file"} accept={".mp3"} onChange={addFile2}/>
-													</div>
-
-													<div className="form__group">
-														<label class="form__label">Image gallery*</label>
-														<label className="btn btn-default p-0">
-															<input
-																type="file"
-																multiple
-																accept="image/*"
-																onChange={selectFiles}
-															/>
-														</label>
-
-														{progressInfos &&
-															progressInfos.val.length > 0 &&
-															progressInfos.val.map((progressInfo, index) => (
-																<div key={index}>
-																	<span>{progressInfo.fileName}</span>
-																	<div className="progress">
+																<div class="modal__body">
+																	<div class="form">
 																		<div
-																			className="progress-bar progress-bar-info"
-																			role="progressbar"
-																			aria-valuenow={progressInfo.percentage}
-																			aria-valuemin="0"
-																			aria-valuemax="100"
-																			style={{width: progressInfo.percentage + "%"}}
-																		>
-																			{progressInfo.percentage}%
-																		</div>
-																	</div>
-																</div>
-															))}
+																			className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
+																			<div className="form__group">
+																				<label class="form__label">Name
+																					*</label>
+																				<div
+																					class="flex flex-row items-center gap-2">
+																					<input
 
-														{imagePreviews && (
-															<div>
-																{imagePreviews.map((img, i) => {
-																	return (
-																		<div>
-																			<br/>
-																			<img className="preview" src={img}
-																				 alt={"image-" + i}
-																				 key={i}/>
+																						className={"form__input"}
+																						placeholder="Name"
+																						aria-describedby="basic-addon1"
+																						id="name"
+																						type="text"
+
+																						onChange={(e) => setTitlePoint(e.target.value)}
+																						value={titlePoint}
+																					/>
+
+																					<button
+
+																						onClick={(e) => fetchData(titlePoint, 4)}
+																						className="button button--primary"
+																						id="sendMessageButton"
+																						type="button"
+																					>
+																						Translate
+																					</button>
+																				</div>
+																			</div>
 																			<input
 
-																				className={"form__input"}
-																				placeholder={'JSON FORMAT: { "language": "Text"}'}
+																				className={"form__input text-sm"}
+																				placeholder='JSON FORMAT: { "language": "Text"}'
 																				aria-describedby="basic-addon1"
 																				id="name"
 																				type="text"
 
-																				onChange={(e) => changeImageTitle(e.target.value, i)}
+																				disabled
+																				onChange={(e) => setTitlePointTransl(e.target.value)}
+																				value={titlePointTransl}
 																			/>
 																		</div>
-																	);
-																})}
-															</div>
-														)}
 
-														{message.length > 0 && (
-															<div className="alert alert-secondary mt-2"
-																 role="alert">
-																<ul>
-																	{message.map((item, i) => {
-																		return <li key={i}>{item}</li>;
-																	})}
-																</ul>
-															</div>
-														)}
+																		<div
+																			className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
+																			<div className="form__group">
+																				<label class="form__label">Short
+																					description* </label>
+																				<textarea className="form__input h-32"
+																						  type="textarea" required
+																						  name="message"
+																						  placeholder='Short description'
+																						  value={shortInfoPoint}
+																						  onChange={(e) => setShortInfoPoint(e.target.value)}></textarea>
 
-														{imageInfos.length > 0 && (
-															<div className="card mt-3">
-																<br/>
-																<div className="card-header">List of Images</div>
-																<ul className="list-group list-group-flush">
-																	{imageInfos &&
-																		imageInfos.map((img, index) => (
-																			<li className="list-group-item"
-																				key={index}>
-																				<p>
-																					<a href={img.url}>{img.name}</a>
-																				</p>
-																				<img src={img.url} alt={img.name}
-																					 height="80px"/>
-																			</li>
-																		))}
-																</ul>
-															</div>
-														)}
-													</div>
+																				<button
 
+																					onClick={(e) => fetchData(shortInfoPoint, 5)}
+																					className="button button--primary mt-2"
+																					id="sendMessageButton"
+																					type="button"
+																				>
+																					Translate
+																				</button>
 
-													{titlePoint.length == 0 &&
-														<div className="paragraph-box2" style={{
-															color: "red",
-															fontSize: "0.8em",
-															marginTop: "30px"
-														}} hidden={!errMessagePhoto}>
-															{errMessagePhoto}
-														</div>}
+																			</div>
+																			<textarea
 
-													{partner &&
-														<div
-															className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
-															<div className="form__group">
-																<label class="form__label">Contact information about
-																	partner*</label>
-																<div className="form__group">
-																	<label class="form__label">Responsible person
-																		name*</label>
-																	<div>
-																		<div class="form__group">
-																			<input
-
-																				className={"form__input"}
-																				placeholder="Responsible person name"
+																				className={"form__input text-sm h-32"}
+																				placeholder='JSON FORMAT: { "language": "Text"}'
 																				aria-describedby="basic-addon1"
 																				id="name"
 																				type="text"
 
-																				onChange={(e) => setResponsiblePerson(e.target.value)}
-																				value={responsiblePerson}
+																				disabled
+																				onChange={(e) => setShortInfoPointTransl(e.target.value)}
+																				value={shortInfoPointTransl}
 																			/>
 																		</div>
+
+																		<div
+																			className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
+																			<div className="form__group">
+																				<label class="form__label">Long
+																					description*</label>
+																				<textarea className="form__input h-32"
+																						  type="textarea" required
+																						  name="message"
+																						  placeholder='Long description'
+																						  value={longInfoPoint}
+																						  onChange={(e) => setLongInfoPoint(e.target.value)}></textarea>
+																				<button
+
+																					onClick={(e) => fetchData(longInfoPoint, 6)}
+																					className="button button--primary mt-2"
+																					id="sendMessageButton"
+																					type="button"
+																				>
+																					Translate
+																				</button>
+																			</div>
+																			<textarea
+
+																				className={"form__input text-sm h-32"}
+																				placeholder='JSON FORMAT: { "language": "Text"}'
+																				aria-describedby="basic-addon1"
+																				id="name"
+																				type="text"
+
+																				disabled
+																				onChange={(e) => setLongInfoPointTransl(e.target.value)}
+																				value={longInfoPointTransl}
+																			/>
+																		</div>
+
+																		{partner &&
+
+																			<div
+																				className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
+																				<div className="form__group">
+																					<label class="form__label">Voucher
+																						description*</label>
+																					<textarea
+																						className="form__input h-32"
+																						type="textarea" required
+																						name="message"
+																						placeholder='Voucher description'
+																						value={voucherDesc}
+																						onChange={(e) => setVoucherDesc(e.target.value)}></textarea>
+																					<button
+
+																						onClick={(e) => fetchData(voucherDesc, 7)}
+																						className="button button--primary mt-2"
+																						id="sendMessageButton"
+																						type="button"
+																					>
+																						Translate
+																					</button>
+																				</div>
+																				<textarea
+
+																					className={"form__input text-sm h-32"}
+																					placeholder='JSON FORMAT: { "language": "Text"}'
+																					aria-describedby="basic-addon1"
+																					id="name"
+																					type="text"
+																					disabled
+																					onChange={(e) => setVoucherDescTransl(e.target.value)}
+																					value={voucherDescTransl}
+																				/>
+																			</div>
+
+
+																		}
+
+																		<div className="form__group">
+																			<label class="form__label">Category*</label>
+																			<select
+																				onChange={(e) => setCategory(e.target.value)}
+																				name="category" class="form__input"
+																			>
+																				{categories.map(item =>
+																					<option key={item}
+																							value={item}>{item}</option>
+																				)};
+
+																			</select>
+																		</div>
+
+																		{partner && <div className="form__group">
+																			<label class="form__label">Price*</label>
+																			<div
+																				class="flex flex-row items-center gap-2">
+																				<input
+
+																					className={"form__input"}
+																					placeholder="Price"
+																					aria-describedby="basic-addon1"
+																					id="name"
+																					type="text"
+
+																					onChange={(e) => setPointPrice(e.target.value)}
+																					value={pointPrice}
+																				/>
+
+																				<select
+																					onChange={(e) => setCurrency(e.target.value)}
+																					name="currency" class="form__input"
+																				>
+																					{currencyList.map(item =>
+																						<option key={item}
+																								value={item}>{item}</option>
+																					)};
+
+																				</select>
+																			</div>
+																		</div>}
+																		{partner && <div className="form__group">
+
+																			<label class="form__label">Offer
+																				name*</label>
+																			<input
+
+																				className={"form__input"}
+																				placeholder="Offer name"
+																				aria-describedby="basic-addon1"
+																				id="name"
+																				type="text"
+
+																				onChange={(e) => setOfferName(e.target.value)}
+																				value={offerName}
+																			/>
+																		</div>}
+
+																		<div
+																			className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
+																			<div className="form__group">
+
+																				<label class="form__label">Address
+																					*</label>
+																				<input
+
+																					className={"form__input"}
+																					placeholder="Longitude"
+																					aria-describedby="basic-addon1"
+																					id="name"
+																					type="text"
+
+																					onChange={(e) => setLongitude(e.target.value)}
+																					value={longitude}
+																				/>
+																			</div>
+																			<input
+
+																				className={"form__input"}
+																				placeholder="Latitude"
+																				aria-describedby="basic-addon1"
+																				id="name"
+																				type="text"
+
+																				onChange={(e) => setLatitude(e.target.value)}
+																				value={latitude}
+																			/>
+																		</div>
+
+																		{partner &&
+																			<div
+																				className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
+																				<div className="form__group">
+																					<label class="form__label">Working
+																						hours
+																						*</label>
+
+																					<div className="form__group">
+																						<label
+																							class="form__label">Monday</label>
+																						<label>
+																							<input
+																								type="checkbox"
+																								checked={mondayclosed}
+																								onChange={(e) => setMondayClosed(!mondayclosed)}
+																							/>
+																							closed
+																						</label>
+																						{!mondayclosed &&
+																							<div>
+																								<TimePicker
+																									disableClock={true}
+																									onChange={(newValue) => {
+																										setMondayFrom(newValue);
+																									}}
+																									value={mondayFrom}/>
+																								<TimePicker
+																									disableClock={true}
+																									onChange={(newValue) => {
+																										setMondayTo(newValue);
+																									}}
+																									value={mondayTo}/>
+																							</div>
+																						}
+																					</div>
+
+																					<div className="form__group">
+																						<label
+																							class="form__label">Tuesday</label>
+																						<label>
+																							<input
+																								type="checkbox"
+																								checked={tuesdayclosed}
+																								onChange={(e) => setTuesdayClosed(!tuesdayclosed)}
+																							/>
+																							closed
+																						</label>
+																						{!tuesdayclosed &&
+																							<div>
+																								<TimePicker
+																									disableClock={true}
+																									onChange={(newValue) => {
+																										setTuesdayFrom(newValue);
+																									}}
+																									value={tuesdayFrom}/>
+																								<TimePicker
+																									disableClock={true}
+																									onChange={(newValue) => {
+																										setTuesdayTo(newValue);
+																									}}
+																									value={tuesdayTo}/>
+																							</div>
+																						}
+																					</div>
+
+																					<div className="form__group">
+																						<label
+																							class="form__label">Wednesday</label>
+																						<label>
+																							<input
+																								type="checkbox"
+																								checked={wednesdayclosed}
+																								onChange={(e) => setWednesdayClosed(!wednesdayclosed)}
+																							/>
+																							closed
+																						</label>
+																						{!wednesdayclosed &&
+																							<div>
+
+																								<TimePicker
+																									disableClock={true}
+																									onChange={(newValue) => {
+																										setWednesdayFrom(newValue);
+																									}}
+																									value={wednesdayFrom}/>
+																								<TimePicker
+																									disableClock={true}
+																									onChange={(newValue) => {
+																										setWednesdayTo(newValue);
+																									}}
+																									value={wednesdayTo}/>
+																							</div>
+																						}
+																					</div>
+
+																					<div className="form__group">
+																						<label
+																							class="form__label">Thursday</label>
+																						<label>
+																							<input
+																								type="checkbox"
+																								checked={thursdayclosed}
+																								onChange={(e) => setThursdayClosed(!thursdayclosed)}
+																							/>
+																							closed
+																						</label>
+																						{!thursdayclosed &&
+																							<div>
+																								<TimePicker
+																									disableClock={true}
+																									onChange={(newValue) => {
+																										setThursdayFrom(newValue);
+																									}}
+																									value={thursdayFrom}/>
+																								<TimePicker
+																									disableClock={true}
+																									onChange={(newValue) => {
+																										setThursdayTo(newValue);
+																									}}
+																									value={thursdayTo}/>
+																							</div>
+																						}
+																					</div>
+
+																					<div className="form__group">
+																						<label
+																							class="form__label">Friday</label>
+																						<label>
+																							<input
+																								type="checkbox"
+																								checked={fridayclosed}
+																								onChange={(e) => setFridayClosed(!fridayclosed)}
+																							/>
+																							closed
+																						</label>
+																						{!fridayclosed &&
+																							<div>
+																								<TimePicker
+																									disableClock={true}
+																									onChange={(newValue) => {
+																										setFridayFrom(newValue);
+																									}}
+																									value={fridayFrom}/>
+																								<TimePicker
+																									disableClock={true}
+																									onChange={(newValue) => {
+																										setFridayTo(newValue);
+																									}}
+																									value={fridayTo}/>
+																							</div>
+																						}
+																					</div>
+
+																					<div className="form__group">
+																						<label
+																							class="form__label">Saturday</label>
+																						<label>
+																							<input
+																								type="checkbox"
+																								checked={saturdayclosed}
+																								onChange={(e) => setSaturdayClosed(!saturdayclosed)}
+																							/>
+																							closed
+																						</label>
+																						{!saturdayclosed &&
+																							<div>
+																								<TimePicker
+																									disableClock={true}
+																									onChange={(newValue) => {
+																										setSaturdayFrom(newValue);
+																									}}
+																									value={saturdayFrom}/>
+																								<TimePicker
+																									disableClock={true}
+																									onChange={(newValue) => {
+																										setSaturdayTo(newValue);
+																									}}
+																									value={saturdayTo}/>
+																							</div>
+																						}
+																					</div>
+
+																					<div className="form__group">
+																						<label
+																							class="form__label">Sunday</label>
+																						<label>
+																							<input
+																								type="checkbox"
+																								checked={sundayclosed}
+																								onChange={(e) => setSundayClosed(!sundayclosed)}
+																							/>
+																							closed
+																						</label>
+																						{!sundayclosed &&
+																							<div>
+																								<TimePicker
+																									disableClock={true}
+																									onChange={(newValue) => {
+																										setSundayFrom(newValue);
+																									}}
+																									value={sundayFrom}/>
+																								<TimePicker
+																									disableClock={true}
+																									onChange={(newValue) => {
+																										setSundayTo(newValue);
+																									}}
+																									value={sundayTo}/>
+																							</div>
+																						}
+																					</div>
+																				</div>
+																			</div>
+																		}
+
+																		<div className="form__group">
+																			<label class="form__label">Text to speach
+																				audio*</label>
+																			<input type={"file"} accept={".mp3"}
+																				   onChange={addFile2}/>
+																		</div>
+
+																		<div className="form__group">
+																			<label class="form__label">Image
+																				gallery*</label>
+																			<label className="btn btn-default p-0">
+																				<input
+																					type="file"
+																					multiple
+																					accept="image/*"
+																					onChange={selectFiles}
+																				/>
+																			</label>
+
+																			{progressInfos &&
+																				progressInfos.val.length > 0 &&
+																				progressInfos.val.map((progressInfo, index) => (
+																					<div key={index}>
+																						<span>{progressInfo.fileName}</span>
+																						<div className="progress">
+																							<div
+																								className="progress-bar progress-bar-info"
+																								role="progressbar"
+																								aria-valuenow={progressInfo.percentage}
+																								aria-valuemin="0"
+																								aria-valuemax="100"
+																								style={{width: progressInfo.percentage + "%"}}
+																							>
+																								{progressInfo.percentage}%
+																							</div>
+																						</div>
+																					</div>
+																				))}
+
+																			{imagePreviews && (
+																				<div>
+																					{imagePreviews.map((img, i) => {
+																						return (
+																							<div>
+																								<br/>
+																								<img className="preview"
+																									 src={img}
+																									 alt={"image-" + i}
+																									 key={i}/>
+																								<input
+
+																									className={"form__input"}
+																									placeholder={'JSON FORMAT: { "language": "Text"}'}
+																									aria-describedby="basic-addon1"
+																									id="name"
+																									type="text"
+
+																									onChange={(e) => changeImageTitle(e.target.value, i)}
+																								/>
+																							</div>
+																						);
+																					})}
+																				</div>
+																			)}
+
+																			{message.length > 0 && (
+																				<div
+																					className="alert alert-secondary mt-2"
+																					role="alert">
+																					<ul>
+																						{message.map((item, i) => {
+																							return <li
+																								key={i}>{item}</li>;
+																						})}
+																					</ul>
+																				</div>
+																			)}
+
+																			{imageInfos.length > 0 && (
+																				<div className="card mt-3">
+																					<br/>
+																					<div className="card-header">List of
+																						Images
+																					</div>
+																					<ul className="list-group list-group-flush">
+																						{imageInfos &&
+																							imageInfos.map((img, index) => (
+																								<li className="list-group-item"
+																									key={index}>
+																									<p>
+																										<a href={img.url}>{img.name}</a>
+																									</p>
+																									<img src={img.url}
+																										 alt={img.name}
+																										 height="80px"/>
+																								</li>
+																							))}
+																					</ul>
+																				</div>
+																			)}
+																		</div>
+
+
+																		{titlePoint.length == 0 &&
+																			<div className="paragraph-box2" style={{
+																				color: "red",
+																				fontSize: "0.8em",
+																				marginTop: "30px"
+																			}} hidden={!errMessagePhoto}>
+																				{errMessagePhoto}
+																			</div>}
+
+																		{partner &&
+																			<div
+																				className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
+																				<div className="form__group">
+																					<label class="form__label">Contact
+																						information about
+																						partner*</label>
+																					<div className="form__group">
+																						<label class="form__label">Responsible
+																							person
+																							name*</label>
+																						<div>
+																							<div class="form__group">
+																								<input
+
+																									className={"form__input"}
+																									placeholder="Responsible person name"
+																									aria-describedby="basic-addon1"
+																									id="name"
+																									type="text"
+
+																									onChange={(e) => setResponsiblePerson(e.target.value)}
+																									value={responsiblePerson}
+																								/>
+																							</div>
+																						</div>
+																					</div>
+
+
+																				</div>
+																				<div className="form__group">
+																					<label
+																						class="form__label">Phone*</label>
+																					<input
+																						className={"form__input"}
+																						placeholder="Phone"
+																						aria-describedby="basic-addon1"
+																						id="name"
+																						type="text"
+
+																						onChange={(e) => setPhone(e.target.value)}
+																						value={phone}
+																					/>
+																				</div>
+
+																				<div className="form__group">
+																					<label
+																						class="form__label">Email*</label>
+																					<input
+
+																						className={"form__input"}
+																						placeholder="Email"
+																						aria-describedby="basic-addon1"
+																						id="name"
+																						type="email"
+
+																						onChange={(e) => setEmail(e.target.value)}
+																						value={email}
+																					/>
+																				</div>
+
+																				<div className="form__group">
+																					<label class="form__label">Web
+																						page*</label>
+																					<input
+
+																						className={"form__input"}
+																						placeholder="Web page"
+																						aria-describedby="basic-addon1"
+																						id="name"
+																						type="text"
+
+																						onChange={(e) => setWebUrl(e.target.value)}
+																						value={webURL}
+																					/>
+																				</div>
+																			</div>
+																		}
+
+
+																		<div className="form__group">
+																			<button
+
+																				onClick={(e) => {
+																					handleAdd(e)
+																				}}
+																				className="button button--primary"
+																				id="sendMessageButton"
+																				type="button"
+																			>
+																				Add
+																			</button>
+																		</div>
+
 																	</div>
 																</div>
-
-
-															</div>
-															<div className="form__group">
-																<label class="form__label">Phone*</label>
-																<input
-																	className={"form__input"}
-																	placeholder="Phone"
-																	aria-describedby="basic-addon1"
-																	id="name"
-																	type="text"
-
-																	onChange={(e) => setPhone(e.target.value)}
-																	value={phone}
-																/>
-															</div>
-
-															<div className="form__group">
-																<label class="form__label">Email*</label>
-																<input
-
-																	className={"form__input"}
-																	placeholder="Email"
-																	aria-describedby="basic-addon1"
-																	id="name"
-																	type="email"
-
-																	onChange={(e) => setEmail(e.target.value)}
-																	value={email}
-																/>
-															</div>
-
-															<div className="form__group">
-																<label class="form__label">Web page*</label>
-																<input
-
-																	className={"form__input"}
-																	placeholder="Web page"
-																	aria-describedby="basic-addon1"
-																	id="name"
-																	type="text"
-
-																	onChange={(e) => setWebUrl(e.target.value)}
-																	value={webURL}
-																/>
 															</div>
 														</div>
-													}
-
-
-													<div className="form__group">
-														<button
-
-															onClick={(e) => {
-																handleAdd(e)
-															}}
-															className="button button--primary"
-															id="sendMessageButton"
-															type="button"
-														>
-															Add
-														</button>
 													</div>
-
 												</div>
-											}</div>
+											}
+										</div>
 									</form>
 									<div className="paragraph-box2"
 										 style={{color: "red", fontSize: "0.8em", marginTop: "30px"}}
