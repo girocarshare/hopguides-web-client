@@ -501,14 +501,20 @@ const InsertData = (props) => {
 		if (file) {
 
 			return (
-				<div>
-					<h2 style={{marginTop: "20px"}}>File details</h2>
-					<p>File name: {file.name}</p>
-					<p>File type: {file.type}</p>
-					<p>
-						LAst modified:{" "}
-						{file.lastModifiedDate.toDateString()}
-					</p>
+				<div class="bg-black/[3%] rounded-xl p-4">
+					<h2 class="form__label">File details</h2>
+					<ul class="list text-sm">
+						<li>
+							File name: {file.name}
+						</li>
+						<li>
+							File type: {file.type}
+						</li>
+						<li>
+							LAst modified:{" "}
+							{file.lastModifiedDate.toDateString()}
+						</li>
+					</ul>
 				</div>
 			);
 		}
@@ -882,7 +888,7 @@ const InsertData = (props) => {
 												/>
 												<select onChange={(e) => setCurrency(e.target.value)}
 														name="currency"
-														class="form__input shrink"
+														class="form__input shrink max-w-4"
 												>
 													{currencyList.map(item =>
 														<option key={item} value={item}>{item}</option>
@@ -955,21 +961,36 @@ const InsertData = (props) => {
 												value={highestPoint}
 											/>
 										</div>
+
 										<div>
 
 											<label class="form__label">Text to speach audio*</label>
-											<input type={"file"} accept={".mp3"} onChange={addFile}/>
+
+											<label class="button button--secondary button--small">
+												<span>Upload audio</span>
+												<input type={"file"} accept={".mp3"} onChange={addFile}
+													   class="sr-only"/>
+											</label>
+
 										</div>
 										<div>
 											<label class="form__label">Background tour image</label>
-											<input type={"file"} name="file" onChange={onFileChange}/>
 
+											<label class="button button--secondary button--small">
+												<span>Upload image</span>
+												<input type={"file"} name="file" onChange={onFileChange}
+													   class="sr-only"/>
+											</label>
 										</div>
 
-										{fileData()}
+										<div>
+											{fileData()}
+										</div>
 
 										{imagePreview &&
-											<img className="preview" src={imagePreview} alt={"image-"}/>}
+
+
+											<img className="image__preview" src={imagePreview} alt={"image-"}/>}
 
 										<div className="form__group">
 											<div class="flex flex-row items-center gap-4">
@@ -1285,213 +1306,258 @@ const InsertData = (props) => {
 																		{partner &&
 																			<div
 																				className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
-																				<div className="form__group">
+																				<div className="form__group divide-y">
 																					<label class="form__label">Working
-																						hours
-																						*</label>
+																						hours*</label>
 
-																					<div className="form__group">
-																						<label
-																							class="form__label">Monday</label>
-																						<label>
-																							<input
-																								type="checkbox"
-																								checked={mondayclosed}
-																								onChange={(e) => setMondayClosed(!mondayclosed)}
-																							/>
-																							closed
-																						</label>
-																						{!mondayclosed &&
-																							<div>
-																								<TimePicker
-																									disableClock={true}
-																									onChange={(newValue) => {
-																										setMondayFrom(newValue);
-																									}}
-																									value={mondayFrom}/>
-																								<TimePicker
-																									disableClock={true}
-																									onChange={(newValue) => {
-																										setMondayTo(newValue);
-																									}}
-																									value={mondayTo}/>
+																					<div class="form pt-6">
+
+																						<div className="form__group">
+																							<label
+																								class="form__label">Monday</label>
+																							<div
+																								class="flex flex-row items-center justify-between gap-2">
+
+																								<label
+																									class="form__group--checkbox">
+																									<input
+																										type="checkbox"
+																										checked={mondayclosed}
+																										onChange={(e) => setMondayClosed(!mondayclosed)}
+																									/>
+																									<span>
+																										Closed
+																									</span>
+																								</label>
+																								{!mondayclosed &&
+																									<div>
+																										<TimePicker
+																											disableClock={true}
+																											onChange={(newValue) => {
+																												setMondayFrom(newValue);
+																											}}
+																											value={mondayFrom}/>
+																										<TimePicker
+																											disableClock={true}
+																											onChange={(newValue) => {
+																												setMondayTo(newValue);
+																											}}
+																											value={mondayTo}/>
+																									</div>
+																								}
 																							</div>
-																						}
-																					</div>
+																						</div>
 
-																					<div className="form__group">
-																						<label
-																							class="form__label">Tuesday</label>
-																						<label>
-																							<input
-																								type="checkbox"
-																								checked={tuesdayclosed}
-																								onChange={(e) => setTuesdayClosed(!tuesdayclosed)}
-																							/>
-																							closed
-																						</label>
-																						{!tuesdayclosed &&
-																							<div>
-																								<TimePicker
-																									disableClock={true}
-																									onChange={(newValue) => {
-																										setTuesdayFrom(newValue);
-																									}}
-																									value={tuesdayFrom}/>
-																								<TimePicker
-																									disableClock={true}
-																									onChange={(newValue) => {
-																										setTuesdayTo(newValue);
-																									}}
-																									value={tuesdayTo}/>
+																						<div className="form__group">
+																							<label
+																								class="form__label">Tuesday</label>
+																							<div
+																								class="flex flex-row items-center justify-between gap-2">
+																								<label
+																									class="form__group--checkbox">
+																									<input
+																										type="checkbox"
+																										checked={tuesdayclosed}
+																										onChange={(e) => setTuesdayClosed(!tuesdayclosed)}
+																									/>
+																									<span>
+																										Closed
+																									</span>
+																								</label>
+																								{!tuesdayclosed &&
+																									<div>
+																										<TimePicker
+																											disableClock={true}
+																											onChange={(newValue) => {
+																												setTuesdayFrom(newValue);
+																											}}
+																											value={tuesdayFrom}/>
+																										<TimePicker
+																											disableClock={true}
+																											onChange={(newValue) => {
+																												setTuesdayTo(newValue);
+																											}}
+																											value={tuesdayTo}/>
+																									</div>
+																								}
 																							</div>
-																						}
-																					</div>
+																						</div>
 
-																					<div className="form__group">
-																						<label
-																							class="form__label">Wednesday</label>
-																						<label>
-																							<input
-																								type="checkbox"
-																								checked={wednesdayclosed}
-																								onChange={(e) => setWednesdayClosed(!wednesdayclosed)}
-																							/>
-																							closed
-																						</label>
-																						{!wednesdayclosed &&
-																							<div>
+																						<div className="form__group">
+																							<label
+																								class="form__label">Wednesday</label>
+																							<div
+																								class="flex flex-row items-center justify-between gap-2">
+																								<label
+																									class="form__group--checkbox">
+																									<input
+																										type="checkbox"
+																										checked={wednesdayclosed}
+																										onChange={(e) => setWednesdayClosed(!wednesdayclosed)}
+																									/>
+																									<span>
+																										Closed
+																									</span>
+																								</label>
+																								{!wednesdayclosed &&
+																									<div>
 
-																								<TimePicker
-																									disableClock={true}
-																									onChange={(newValue) => {
-																										setWednesdayFrom(newValue);
-																									}}
-																									value={wednesdayFrom}/>
-																								<TimePicker
-																									disableClock={true}
-																									onChange={(newValue) => {
-																										setWednesdayTo(newValue);
-																									}}
-																									value={wednesdayTo}/>
+																										<TimePicker
+																											disableClock={true}
+																											onChange={(newValue) => {
+																												setWednesdayFrom(newValue);
+																											}}
+																											value={wednesdayFrom}/>
+																										<TimePicker
+																											disableClock={true}
+																											onChange={(newValue) => {
+																												setWednesdayTo(newValue);
+																											}}
+																											value={wednesdayTo}/>
+																									</div>
+																								}
 																							</div>
-																						}
-																					</div>
+																						</div>
 
-																					<div className="form__group">
-																						<label
-																							class="form__label">Thursday</label>
-																						<label>
-																							<input
-																								type="checkbox"
-																								checked={thursdayclosed}
-																								onChange={(e) => setThursdayClosed(!thursdayclosed)}
-																							/>
-																							closed
-																						</label>
-																						{!thursdayclosed &&
-																							<div>
-																								<TimePicker
-																									disableClock={true}
-																									onChange={(newValue) => {
-																										setThursdayFrom(newValue);
-																									}}
-																									value={thursdayFrom}/>
-																								<TimePicker
-																									disableClock={true}
-																									onChange={(newValue) => {
-																										setThursdayTo(newValue);
-																									}}
-																									value={thursdayTo}/>
+																						<div className="form__group">
+																							<label
+																								class="form__label">Thursday</label>
+																							<div
+																								class="flex flex-row items-center justify-between gap-2">
+																								<label
+																									class="form__group--checkbox">
+																									<input
+																										type="checkbox"
+																										checked={thursdayclosed}
+																										onChange={(e) => setThursdayClosed(!thursdayclosed)}
+																									/>
+																									<span>
+																										Closed
+																									</span>
+																								</label>
+																								{!thursdayclosed &&
+																									<div>
+																										<TimePicker
+																											disableClock={true}
+																											onChange={(newValue) => {
+																												setThursdayFrom(newValue);
+																											}}
+																											value={thursdayFrom}/>
+																										<TimePicker
+																											disableClock={true}
+																											onChange={(newValue) => {
+																												setThursdayTo(newValue);
+																											}}
+																											value={thursdayTo}/>
+																									</div>
+																								}
 																							</div>
-																						}
-																					</div>
+																						</div>
 
-																					<div className="form__group">
-																						<label
-																							class="form__label">Friday</label>
-																						<label>
-																							<input
-																								type="checkbox"
-																								checked={fridayclosed}
-																								onChange={(e) => setFridayClosed(!fridayclosed)}
-																							/>
-																							closed
-																						</label>
-																						{!fridayclosed &&
-																							<div>
-																								<TimePicker
-																									disableClock={true}
-																									onChange={(newValue) => {
-																										setFridayFrom(newValue);
-																									}}
-																									value={fridayFrom}/>
-																								<TimePicker
-																									disableClock={true}
-																									onChange={(newValue) => {
-																										setFridayTo(newValue);
-																									}}
-																									value={fridayTo}/>
+																						<div className="form__group">
+																							<label
+																								class="form__label">Friday</label>
+																							<div
+																								class="flex flex-row items-center justify-between gap-2">
+																								<label
+																									class="form__group--checkbox">
+																									<input
+																										type="checkbox"
+																										checked={fridayclosed}
+																										onChange={(e) => setFridayClosed(!fridayclosed)}
+																									/>
+																									<span>
+																										Closed
+																									</span>
+																								</label>
+																								{!fridayclosed &&
+																									<div>
+																										<TimePicker
+																											disableClock={true}
+																											onChange={(newValue) => {
+																												setFridayFrom(newValue);
+																											}}
+																											value={fridayFrom}/>
+																										<TimePicker
+																											disableClock={true}
+																											onChange={(newValue) => {
+																												setFridayTo(newValue);
+																											}}
+																											value={fridayTo}/>
+																									</div>
+																								}
 																							</div>
-																						}
-																					</div>
+																						</div>
 
-																					<div className="form__group">
-																						<label
-																							class="form__label">Saturday</label>
-																						<label>
-																							<input
-																								type="checkbox"
-																								checked={saturdayclosed}
-																								onChange={(e) => setSaturdayClosed(!saturdayclosed)}
-																							/>
-																							closed
-																						</label>
-																						{!saturdayclosed &&
-																							<div>
-																								<TimePicker
-																									disableClock={true}
-																									onChange={(newValue) => {
-																										setSaturdayFrom(newValue);
-																									}}
-																									value={saturdayFrom}/>
-																								<TimePicker
-																									disableClock={true}
-																									onChange={(newValue) => {
-																										setSaturdayTo(newValue);
-																									}}
-																									value={saturdayTo}/>
+																						<div className="form__group">
+																							<label
+																								class="form__label">Saturday</label>
+																							<div
+																								class="flex flex-row items-center justify-between gap-2">
+																								<label
+																									class="form__group--checkbox">
+																									<input
+																										type="checkbox"
+																										checked={saturdayclosed}
+																										onChange={(e) => setSaturdayClosed(!saturdayclosed)}
+																									/>
+																									<span>
+																										Closed
+																									</span>
+																								</label>
+																								{!saturdayclosed &&
+																									<div>
+																										<TimePicker
+																											disableClock={true}
+																											onChange={(newValue) => {
+																												setSaturdayFrom(newValue);
+																											}}
+																											value={saturdayFrom}/>
+																										<TimePicker
+																											disableClock={true}
+																											onChange={(newValue) => {
+																												setSaturdayTo(newValue);
+																											}}
+																											value={saturdayTo}/>
+																									</div>
+																								}
 																							</div>
-																						}
-																					</div>
+																						</div>
 
-																					<div className="form__group">
-																						<label
-																							class="form__label">Sunday</label>
-																						<label>
-																							<input
-																								type="checkbox"
-																								checked={sundayclosed}
-																								onChange={(e) => setSundayClosed(!sundayclosed)}
-																							/>
-																							closed
-																						</label>
-																						{!sundayclosed &&
-																							<div>
-																								<TimePicker
-																									disableClock={true}
-																									onChange={(newValue) => {
-																										setSundayFrom(newValue);
-																									}}
-																									value={sundayFrom}/>
-																								<TimePicker
-																									disableClock={true}
-																									onChange={(newValue) => {
-																										setSundayTo(newValue);
-																									}}
-																									value={sundayTo}/>
+																						<div className="form__group">
+																							<label
+																								class="form__label">Sunday</label>
+																							<div
+																								class="flex flex-row items-center justify-between gap-2">
+																								<label
+																									class="form__group--checkbox">
+																									<input
+																										type="checkbox"
+																										checked={sundayclosed}
+																										onChange={(e) => setSundayClosed(!sundayclosed)}
+																									/>
+																									<span>
+																										Closed
+																									</span>
+																								</label>
+																								{!sundayclosed &&
+																									<div>
+																										<TimePicker
+																											disableClock={true}
+																											onChange={(newValue) => {
+																												setSundayFrom(newValue);
+																											}}
+																											value={sundayFrom}/>
+																										<TimePicker
+																											disableClock={true}
+																											onChange={(newValue) => {
+																												setSundayTo(newValue);
+																											}}
+																											value={sundayTo}/>
+																									</div>
+																								}
 																							</div>
-																						}
+																						</div>
 																					</div>
 																				</div>
 																			</div>
@@ -1500,20 +1566,26 @@ const InsertData = (props) => {
 																		<div className="form__group">
 																			<label class="form__label">Text to speach
 																				audio*</label>
-																			<input type={"file"} accept={".mp3"}
-																				   onChange={addFile2}/>
+
+																			<label
+																				class="button button--secondary button--small">
+																				<span>Upload audio</span>
+																				<input type={"file"} accept={".mp3"}
+																					   onChange={addFile2}
+																					   class="sr-only"/>
+																			</label>
 																		</div>
 
 																		<div className="form__group">
 																			<label class="form__label">Image
 																				gallery*</label>
-																			<label className="btn btn-default p-0">
-																				<input
-																					type="file"
-																					multiple
-																					accept="image/*"
-																					onChange={selectFiles}
-																				/>
+
+																			<label
+																				class="button button--secondary button--small">
+																				<span>Upload image</span>
+																				<input type={"file"} accept="image/*"
+																					   onChange={selectFiles}
+																					   class="sr-only"/>
 																			</label>
 
 																			{progressInfos &&
