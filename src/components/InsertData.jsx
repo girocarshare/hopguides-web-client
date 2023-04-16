@@ -698,7 +698,7 @@ const InsertData = (props) => {
 									<form class="form" id="contactForm">
 										<div className="form__group">
 
-											<div className="form-group controls mb-0 pb-2" style={{opacity: 1}}>
+											<div className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
 												<label class="form__label">Title*</label>
 												<div class="flex flex-row gap-2">
 													<input
@@ -736,81 +736,81 @@ const InsertData = (props) => {
 											</div>
 										</div>
 
+										<div className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
+											<div className="form__group">
+												<label class="form__label">Name of the place*</label>
+												<div class="flex flex-col gap-2">
+													<input
 
-										<div className="form__group">
-											<label class="form__label">Name of the place*</label>
-											<div>
-												<input
+														className={"form__input"}
+														placeholder='Title'
+														aria-describedby="basic-addon1"
+														id="name"
+														type="text"
 
-													className={"form__input"}
-													placeholder='Title'
-													aria-describedby="basic-addon1"
-													id="name"
-													type="text"
+														onChange={(e) => setPlace(e.target.value)}
+														value={place}
+													/>
+													<button
 
-													onChange={(e) => setPlace(e.target.value)}
-													value={place}
-												/>
-												<button
-
-													onClick={(e) => makeShortAndLongDesc(place)}
-													className="button button--primary"
-													id="sendMessageButton"
-													type="button"
-												>
-													Generate short and long description
-												</button>
-											</div>
-
-											<div>
-												<div className="form__group">
-													<label class="form__label">Short description*</label>
-													<textarea className="form__input text-sm h-32"
-															  type="textarea"
-														required name="message"
-														disabled
-															  placeholder='JSON FORMAT: { "language": "Text"}'
-															  value={shortInfo}
-															  onChange={(e) => setShortInfo(e.target.value)}></textarea>
-												</div>
-
-												<div className="form__group">
-													<label class="form__label">Long description*</label>
-													<textarea className="form__input text-sm h-32"
-															  type="textarea"
-														required name="message"
-														disabled
-															  placeholder='JSON FORMAT: { "language": "Text"}'
-															  value={longInfo}
-															  onChange={(e) => setLongInfo(e.target.value)}></textarea>
+														onClick={(e) => makeShortAndLongDesc(place)}
+														className="button button--primary"
+														id="sendMessageButton"
+														type="button"
+													>
+														Generate short and long description
+													</button>
 												</div>
 											</div>
+											<div className="form__group">
+												<label class="form__label">Short description*</label>
+												<textarea className="form__input text-sm h-32"
+														  type="textarea"
+														  required name="message"
+														  disabled
+														  placeholder='JSON FORMAT: { "language": "Text"}'
+														  value={shortInfo}
+														  onChange={(e) => setShortInfo(e.target.value)}></textarea>
+											</div>
+
+											<div className="form__group">
+												<label class="form__label">Long description*</label>
+												<textarea className="form__input text-sm h-32"
+														  type="textarea"
+														  required name="message"
+														  disabled
+														  placeholder='JSON FORMAT: { "language": "Text"}'
+														  value={longInfo}
+														  onChange={(e) => setLongInfo(e.target.value)}></textarea>
+											</div>
+
 										</div>
 
+										<div className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
+											<div className="form__group">
+												<label class="form__label">Agreement title*</label>
+												<div class="flex flex-row items-center gap-2">
+													<input
 
-										<div className="form__group">
-											<label class="form__label">Agreement title*</label>
-											<div class="flex flex-row items-center gap-2">
-												<input
+														className={"form__input"}
+														placeholder='Agreement title'
+														aria-describedby="basic-addon1"
+														id="name"
+														type="text"
 
-													className={"form__input"}
-													placeholder='Agreement title'
-													aria-describedby="basic-addon1"
-													id="name"
-													type="text"
+														onChange={(e) => setAgreementTitle(e.target.value)}
+														value={agreementTitle}
+													/>
+													<button
 
-													onChange={(e) => setAgreementTitle(e.target.value)}
-													value={agreementTitle}
-												/>
-												<button
-
-													onClick={(e) => fetchData(agreementTitle, 2)}
-													className="button button--primary"
-													id="sendMessageButton"
-													type="button"
-												>
-													Translate
-												</button>
+														onClick={(e) => fetchData(agreementTitle, 2)}
+														className="button button--primary"
+														id="sendMessageButton"
+														type="button"
+													>
+														Translate
+													</button>
+												</div>
 											</div>
 											<input
 
@@ -826,30 +826,31 @@ const InsertData = (props) => {
 											/>
 										</div>
 
+										<div className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
+											<div className="form__group">
+												<label class="form__label">Agreement description*</label>
+												<div class="flex flex-row items-center gap-2">
+													<input
 
-										<div className="form__group">
-											<label class="form__label">Agreement description*</label>
-											<div class="flex flex-row items-center gap-2">
-												<input
+														className={"form__input"}
+														placeholder='Agreement description'
+														aria-describedby="basic-addon1"
+														id="name"
+														type="text"
 
-													className={"form__input"}
-													placeholder='Agreement description'
-													aria-describedby="basic-addon1"
-													id="name"
-													type="text"
+														onChange={(e) => setAgreementDesc(e.target.value)}
+														value={agreementDesc}
+													/>
+													<button
 
-													onChange={(e) => setAgreementDesc(e.target.value)}
-													value={agreementDesc}
-												/>
-												<button
-
-													onClick={(e) => fetchData(agreementDesc, 3)}
-													className="button button--primary"
-													id="sendMessageButton"
-													type="button"
-												>
-													Translate
-												</button>
+														onClick={(e) => fetchData(agreementDesc, 3)}
+														className="button button--primary"
+														id="sendMessageButton"
+														type="button"
+													>
+														Translate
+													</button>
+												</div>
 											</div>
 											<input
 
@@ -1010,31 +1011,33 @@ const InsertData = (props) => {
 
 										<div>
 											{(partner || point) &&
-												<div>
-													<div className="form__group">
-														<label class="form__label">Name *</label>
-														<div class="flex flex-row items-center gap-2">
-															<input
+												<div class="form">
+													<div className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
+														<div className="form__group">
+															<label class="form__label">Name *</label>
+															<div class="flex flex-row items-center gap-2">
+																<input
 
-																className={"form__input"}
-																placeholder="Name"
-																aria-describedby="basic-addon1"
-																id="name"
-																type="text"
+																	className={"form__input"}
+																	placeholder="Name"
+																	aria-describedby="basic-addon1"
+																	id="name"
+																	type="text"
 
-																onChange={(e) => setTitlePoint(e.target.value)}
-																value={titlePoint}
-															/>
+																	onChange={(e) => setTitlePoint(e.target.value)}
+																	value={titlePoint}
+																/>
 
-															<button
+																<button
 
-																onClick={(e) => fetchData(titlePoint, 4)}
-																className="button button--primary"
-																id="sendMessageButton"
-																type="button"
+																	onClick={(e) => fetchData(titlePoint, 4)}
+																	className="button button--primary"
+																	id="sendMessageButton"
+																	type="button"
 																>
-																Translate
-															</button>
+																	Translate
+																</button>
+															</div>
 														</div>
 														<input
 
@@ -1050,22 +1053,26 @@ const InsertData = (props) => {
 														/>
 													</div>
 
-													<div className="form__group">
-														<label class="form__label">Short description* </label>
-														<textarea className="form__input"
-																  type="textarea" required name="message"
-																  placeholder='Short description' value={shortInfoPoint}
-																  onChange={(e) => setShortInfoPoint(e.target.value)}></textarea>
+													<div className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
+														<div className="form__group">
+															<label class="form__label">Short description* </label>
+															<textarea className="form__input h-32"
+																	  type="textarea" required name="message"
+																	  placeholder='Short description'
+																	  value={shortInfoPoint}
+																	  onChange={(e) => setShortInfoPoint(e.target.value)}></textarea>
 
-														<button
+															<button
 
-															onClick={(e) => fetchData(shortInfoPoint, 5)}
-															className="button button--primary"
-															id="sendMessageButton"
-															type="button"
-														>
-															Translate
-														</button>
+																onClick={(e) => fetchData(shortInfoPoint, 5)}
+																className="button button--primary mt-2"
+																id="sendMessageButton"
+																type="button"
+															>
+																Translate
+															</button>
+
+														</div>
 														<textarea
 
 															className={"form__input text-sm h-32"}
@@ -1078,41 +1085,44 @@ const InsertData = (props) => {
 															onChange={(e) => setShortInfoPointTransl(e.target.value)}
 															value={shortInfoPointTransl}
 														/>
-
 													</div>
 
-													<div className="form__group">
-														<label class="form__label">Long description*</label>
-														<textarea className="form__input h-32"
-																  type="textarea" required name="message"
-																  placeholder='Long description' value={longInfoPoint}
-																  onChange={(e) => setLongInfoPoint(e.target.value)}></textarea>
-														<button
+													<div className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
+														<div className="form__group">
+															<label class="form__label">Long description*</label>
+															<textarea className="form__input h-32"
+																	  type="textarea" required name="message"
+																	  placeholder='Long description'
+																	  value={longInfoPoint}
+																	  onChange={(e) => setLongInfoPoint(e.target.value)}></textarea>
+															<button
 
-															onClick={(e) => fetchData(longInfoPoint, 6)}
-															className="button button--primary"
-															id="sendMessageButton"
-															type="button"
-														>
-															Translate
-														</button>
+																onClick={(e) => fetchData(longInfoPoint, 6)}
+																className="button button--primary mt-2"
+																id="sendMessageButton"
+																type="button"
+															>
+																Translate
+															</button>
+														</div>
 														<textarea
 
-														className={"form__input text-sm h-32"}
-														placeholder='JSON FORMAT: { "language": "Text"}'
-														aria-describedby="basic-addon1"
-														id="name"
-														type="text"
+															className={"form__input text-sm h-32"}
+															placeholder='JSON FORMAT: { "language": "Text"}'
+															aria-describedby="basic-addon1"
+															id="name"
+															type="text"
 
 															disabled
-														onChange={(e) => setLongInfoPointTransl(e.target.value)}
-														value={longInfoPointTransl}
+															onChange={(e) => setLongInfoPointTransl(e.target.value)}
+															value={longInfoPointTransl}
 														/>
 													</div>
 
 													{partner &&
 
-														<div>
+														<div
+															className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
 															<div className="form__group">
 																<label class="form__label">Voucher description*</label>
 																<textarea className="form__input h-32"
@@ -1123,24 +1133,24 @@ const InsertData = (props) => {
 																<button
 
 																	onClick={(e) => fetchData(voucherDesc, 7)}
-																	className="button button--primary"
+																	className="button button--primary mt-2"
 																	id="sendMessageButton"
 																	type="button"
 																>
 																	Translate
 																</button>
-																<textarea
-
-																	className={"form__input text-sm h-32"}
-																	placeholder='JSON FORMAT: { "language": "Text"}'
-																	aria-describedby="basic-addon1"
-																	id="name"
-																	type="text"
-																	disabled
-																	onChange={(e) => setVoucherDescTransl(e.target.value)}
-																	value={voucherDescTransl}
-																/>
 															</div>
+															<textarea
+
+																className={"form__input text-sm h-32"}
+																placeholder='JSON FORMAT: { "language": "Text"}'
+																aria-describedby="basic-addon1"
+																id="name"
+																type="text"
+																disabled
+																onChange={(e) => setVoucherDescTransl(e.target.value)}
+																value={voucherDescTransl}
+															/>
 														</div>
 
 
@@ -1203,20 +1213,22 @@ const InsertData = (props) => {
 														/>
 													</div>}
 
-													<div className="form__group">
+													<div className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
+														<div className="form__group">
 
-														<label class="form__label">Address *</label>
-														<input
+															<label class="form__label">Address *</label>
+															<input
 
-															className={"form__input"}
-															placeholder="Longitude"
-															aria-describedby="basic-addon1"
-															id="name"
-															type="text"
+																className={"form__input"}
+																placeholder="Longitude"
+																aria-describedby="basic-addon1"
+																id="name"
+																type="text"
 
-															onChange={(e) => setLongitude(e.target.value)}
-															value={longitude}
-														/>
+																onChange={(e) => setLongitude(e.target.value)}
+																value={longitude}
+															/>
+														</div>
 														<input
 
 															className={"form__input"}
@@ -1231,176 +1243,179 @@ const InsertData = (props) => {
 													</div>
 
 													{partner &&
-														<div className="form__group">
-															<label class="form__label">Working hours *</label>
-
+														<div
+															className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
 															<div className="form__group">
-																<label class="form__label">Monday</label>
-																<label>
-																	<input
-																		type="checkbox"
-																		checked={mondayclosed}
-																		onChange={(e) => setMondayClosed(!mondayclosed)}
-																	/>
-																	closed
-																</label>
-																{!mondayclosed &&
-																	<div>
-																		<TimePicker disableClock={true}
-																					onChange={(newValue) => {
-																						setMondayFrom(newValue);
-																					}} value={mondayFrom}/>
-																		<TimePicker disableClock={true}
-																					onChange={(newValue) => {
-																						setMondayTo(newValue);
-																					}} value={mondayTo}/>
-																	</div>
-																}
-															</div>
+																<label class="form__label">Working hours *</label>
 
-															<div className="form__group">
-																<label class="form__label">Tuesday</label>
-																<label>
-																	<input
-																		type="checkbox"
-																		checked={tuesdayclosed}
-																		onChange={(e) => setTuesdayClosed(!tuesdayclosed)}
-																	/>
-																	closed
-																</label>
-																{!tuesdayclosed &&
-																	<div>
-																		<TimePicker disableClock={true}
-																					onChange={(newValue) => {
-																						setTuesdayFrom(newValue);
-																					}} value={tuesdayFrom}/>
-																		<TimePicker disableClock={true}
-																					onChange={(newValue) => {
-																						setTuesdayTo(newValue);
-																					}} value={tuesdayTo}/>
-																	</div>
-																}
-															</div>
+																<div className="form__group">
+																	<label class="form__label">Monday</label>
+																	<label>
+																		<input
+																			type="checkbox"
+																			checked={mondayclosed}
+																			onChange={(e) => setMondayClosed(!mondayclosed)}
+																		/>
+																		closed
+																	</label>
+																	{!mondayclosed &&
+																		<div>
+																			<TimePicker disableClock={true}
+																						onChange={(newValue) => {
+																							setMondayFrom(newValue);
+																						}} value={mondayFrom}/>
+																			<TimePicker disableClock={true}
+																						onChange={(newValue) => {
+																							setMondayTo(newValue);
+																						}} value={mondayTo}/>
+																		</div>
+																	}
+																</div>
 
-															<div className="form__group">
-																<label class="form__label">Wednesday</label>
-																<label>
-																	<input
-																		type="checkbox"
-																		checked={wednesdayclosed}
-																		onChange={(e) => setWednesdayClosed(!wednesdayclosed)}
-																	/>
-																	closed
-																</label>
-																{!wednesdayclosed &&
-																	<div>
+																<div className="form__group">
+																	<label class="form__label">Tuesday</label>
+																	<label>
+																		<input
+																			type="checkbox"
+																			checked={tuesdayclosed}
+																			onChange={(e) => setTuesdayClosed(!tuesdayclosed)}
+																		/>
+																		closed
+																	</label>
+																	{!tuesdayclosed &&
+																		<div>
+																			<TimePicker disableClock={true}
+																						onChange={(newValue) => {
+																							setTuesdayFrom(newValue);
+																						}} value={tuesdayFrom}/>
+																			<TimePicker disableClock={true}
+																						onChange={(newValue) => {
+																							setTuesdayTo(newValue);
+																						}} value={tuesdayTo}/>
+																		</div>
+																	}
+																</div>
 
-																		<TimePicker disableClock={true}
-																					onChange={(newValue) => {
-																						setWednesdayFrom(newValue);
-																					}} value={wednesdayFrom}/>
-																		<TimePicker disableClock={true}
-																					onChange={(newValue) => {
-																						setWednesdayTo(newValue);
-																					}} value={wednesdayTo}/>
-																	</div>
-																}
-															</div>
+																<div className="form__group">
+																	<label class="form__label">Wednesday</label>
+																	<label>
+																		<input
+																			type="checkbox"
+																			checked={wednesdayclosed}
+																			onChange={(e) => setWednesdayClosed(!wednesdayclosed)}
+																		/>
+																		closed
+																	</label>
+																	{!wednesdayclosed &&
+																		<div>
 
-															<div className="form__group">
-																<label class="form__label">Thursday</label>
-																<label>
-																	<input
-																		type="checkbox"
-																		checked={thursdayclosed}
-																		onChange={(e) => setThursdayClosed(!thursdayclosed)}
-																	/>
-																	closed
-																</label>
-																{!thursdayclosed &&
-																	<div>
-																		<TimePicker disableClock={true}
-																					onChange={(newValue) => {
-																						setThursdayFrom(newValue);
-																					}} value={thursdayFrom}/>
-																		<TimePicker disableClock={true}
-																					onChange={(newValue) => {
-																						setThursdayTo(newValue);
-																					}} value={thursdayTo}/>
-																	</div>
-																}
-															</div>
+																			<TimePicker disableClock={true}
+																						onChange={(newValue) => {
+																							setWednesdayFrom(newValue);
+																						}} value={wednesdayFrom}/>
+																			<TimePicker disableClock={true}
+																						onChange={(newValue) => {
+																							setWednesdayTo(newValue);
+																						}} value={wednesdayTo}/>
+																		</div>
+																	}
+																</div>
 
-															<div className="form__group">
-																<label class="form__label">Friday</label>
-																<label>
-																	<input
-																		type="checkbox"
-																		checked={fridayclosed}
-																		onChange={(e) => setFridayClosed(!fridayclosed)}
-																	/>
-																	closed
-																</label>
-																{!fridayclosed &&
-																	<div>
-																		<TimePicker disableClock={true}
-																					onChange={(newValue) => {
-																						setFridayFrom(newValue);
-																					}} value={fridayFrom}/>
-																		<TimePicker disableClock={true}
-																					onChange={(newValue) => {
-																						setFridayTo(newValue);
-																					}} value={fridayTo}/>
-																	</div>
-																}
-															</div>
+																<div className="form__group">
+																	<label class="form__label">Thursday</label>
+																	<label>
+																		<input
+																			type="checkbox"
+																			checked={thursdayclosed}
+																			onChange={(e) => setThursdayClosed(!thursdayclosed)}
+																		/>
+																		closed
+																	</label>
+																	{!thursdayclosed &&
+																		<div>
+																			<TimePicker disableClock={true}
+																						onChange={(newValue) => {
+																							setThursdayFrom(newValue);
+																						}} value={thursdayFrom}/>
+																			<TimePicker disableClock={true}
+																						onChange={(newValue) => {
+																							setThursdayTo(newValue);
+																						}} value={thursdayTo}/>
+																		</div>
+																	}
+																</div>
 
-															<div className="form__group">
-																<label class="form__label">Saturday</label>
-																<label>
-																	<input
-																		type="checkbox"
-																		checked={saturdayclosed}
-																		onChange={(e) => setSaturdayClosed(!saturdayclosed)}
-																	/>
-																	closed
-																</label>
-																{!saturdayclosed &&
-																	<div>
-																		<TimePicker disableClock={true}
-																					onChange={(newValue) => {
-																						setSaturdayFrom(newValue);
-																					}} value={saturdayFrom}/>
-																		<TimePicker disableClock={true}
-																					onChange={(newValue) => {
-																						setSaturdayTo(newValue);
-																					}} value={saturdayTo}/>
-																	</div>
-																}
-															</div>
+																<div className="form__group">
+																	<label class="form__label">Friday</label>
+																	<label>
+																		<input
+																			type="checkbox"
+																			checked={fridayclosed}
+																			onChange={(e) => setFridayClosed(!fridayclosed)}
+																		/>
+																		closed
+																	</label>
+																	{!fridayclosed &&
+																		<div>
+																			<TimePicker disableClock={true}
+																						onChange={(newValue) => {
+																							setFridayFrom(newValue);
+																						}} value={fridayFrom}/>
+																			<TimePicker disableClock={true}
+																						onChange={(newValue) => {
+																							setFridayTo(newValue);
+																						}} value={fridayTo}/>
+																		</div>
+																	}
+																</div>
 
-															<div className="form__group">
-																<label class="form__label">Sunday</label>
-																<label>
-																	<input
-																		type="checkbox"
-																		checked={sundayclosed}
-																		onChange={(e) => setSundayClosed(!sundayclosed)}
-																	/>
-																	closed
-																</label>
-																{!sundayclosed &&
-																	<div>
-																		<TimePicker disableClock={true}
-																					onChange={(newValue) => {
-																						setSundayFrom(newValue);
-																					}} value={sundayFrom}/>
-																		<TimePicker disableClock={true}
-																					onChange={(newValue) => {
-																						setSundayTo(newValue);
-																					}} value={sundayTo}/>
-																	</div>
-																}
+																<div className="form__group">
+																	<label class="form__label">Saturday</label>
+																	<label>
+																		<input
+																			type="checkbox"
+																			checked={saturdayclosed}
+																			onChange={(e) => setSaturdayClosed(!saturdayclosed)}
+																		/>
+																		closed
+																	</label>
+																	{!saturdayclosed &&
+																		<div>
+																			<TimePicker disableClock={true}
+																						onChange={(newValue) => {
+																							setSaturdayFrom(newValue);
+																						}} value={saturdayFrom}/>
+																			<TimePicker disableClock={true}
+																						onChange={(newValue) => {
+																							setSaturdayTo(newValue);
+																						}} value={saturdayTo}/>
+																		</div>
+																	}
+																</div>
+
+																<div className="form__group">
+																	<label class="form__label">Sunday</label>
+																	<label>
+																		<input
+																			type="checkbox"
+																			checked={sundayclosed}
+																			onChange={(e) => setSundayClosed(!sundayclosed)}
+																		/>
+																		closed
+																	</label>
+																	{!sundayclosed &&
+																		<div>
+																			<TimePicker disableClock={true}
+																						onChange={(newValue) => {
+																							setSundayFrom(newValue);
+																						}} value={sundayFrom}/>
+																			<TimePicker disableClock={true}
+																						onChange={(newValue) => {
+																							setSundayTo(newValue);
+																						}} value={sundayTo}/>
+																		</div>
+																	}
+																</div>
 															</div>
 														</div>
 													}
@@ -1509,27 +1524,32 @@ const InsertData = (props) => {
 														</div>}
 
 													{partner &&
-														<div className="form__group">
-															<label class="form__label">Contact information about
-																partner*</label>
+														<div
+															className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
 															<div className="form__group">
-																<label class="form__label">Responsible person
-																	name*</label>
-																<div>
-																	<div class="form__group">
-																		<input
+																<label class="form__label">Contact information about
+																	partner*</label>
+																<div className="form__group">
+																	<label class="form__label">Responsible person
+																		name*</label>
+																	<div>
+																		<div class="form__group">
+																			<input
 
-																			className={"form__input"}
-																			placeholder="Responsible person name"
-																			aria-describedby="basic-addon1"
-																			id="name"
-																			type="text"
+																				className={"form__input"}
+																				placeholder="Responsible person name"
+																				aria-describedby="basic-addon1"
+																				id="name"
+																				type="text"
 
-																			onChange={(e) => setResponsiblePerson(e.target.value)}
-																			value={responsiblePerson}
-																		/>
+																				onChange={(e) => setResponsiblePerson(e.target.value)}
+																				value={responsiblePerson}
+																			/>
+																		</div>
 																	</div>
 																</div>
+
+
 															</div>
 															<div className="form__group">
 																<label class="form__label">Phone*</label>
@@ -1574,9 +1594,8 @@ const InsertData = (props) => {
 																	value={webURL}
 																/>
 															</div>
-
-
-														</div>}
+														</div>
+													}
 
 
 													<div className="form__group">
