@@ -1,13 +1,14 @@
-import { useContext, useState, useEffect, useRef, React } from "react";
-import { homeDataConstants } from "../constants/HomeDataConstants";
-import { HomeDataContext } from "../contexts/HomeDataContext";
+import {useContext, useState, useEffect, useRef, React} from "react";
+import {homeDataConstants} from "../constants/HomeDataConstants";
+import {HomeDataContext} from "../contexts/HomeDataContext";
 import PreviousReportTourForm from "./PreviousReportTourForm";
-import { AiOutlineClose } from 'react-icons/ai';
+import {AiOutlineClose} from 'react-icons/ai';
+
 const PreviousReportTourModal = () => {
 
-	const { homeDataState, dispatch } = useContext(HomeDataContext);
+	const {homeDataState, dispatch} = useContext(HomeDataContext);
 	const handleModalClose = () => {
-		dispatch({ type: homeDataConstants.HIDE_MODAL });
+		dispatch({type: homeDataConstants.HIDE_MODAL});
 	};
 
 	return (
@@ -15,25 +16,35 @@ const PreviousReportTourModal = () => {
 
 		<div>
 
-			{homeDataState.previousReports.showModal && <div class="overlay" >
-				<div id="myModal" class="modal" style={{ background: "white" }}>
-					<div class="button-login">
+			{homeDataState.previousReports.showModal &&
+				<div class="relative z-50" aria-labelledby="modal-title" role="dialog" aria-modal="true">
 
-						<button
-							type="button"
-							style={{ background: "#0099ff", marginTop: "px", marginRight: "55px", padding: "5px 15px", height: "35px" }}
-							onClick={handleModalClose}
-							class="btn btn-primary btn-lg"
-						>
-							<AiOutlineClose />
-						</button>
+					<div class="modal-overlay"></div>
+
+					<div class="fixed inset-0 z-10 overflow-y-auto">
+
+						<div class="modal-frame">
+
+							<div id="myModal" class="modal modal--3xl">
+
+								<div class="modal__header">
+									<h2 class="text-leading">
+										Previous reports
+									</h2>
+									<button class="button button--circle button--clear justify-self-end" type="button"
+										onClick={handleModalClose}>
+										<AiOutlineClose/>
+									</button>
+								</div>
+								<div class="modal__body">
+									<PreviousReportTourForm
+										homeDataState={homeDataState}
+										dispatch={dispatch}/>
+								</div>
+							</div>
+						</div>
 					</div>
-					<h1>Previous resports</h1>
-					<PreviousReportTourForm
-						homeDataState={homeDataState}
-						dispatch={dispatch} />
 				</div>
-			</div>
 
 			}
 		</div>

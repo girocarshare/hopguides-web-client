@@ -236,22 +236,6 @@ const HomeData = forwardRef((props, ref) => {
 						</div>
 						<div class="hidden lg:flex flex-row items-center gap-2">
 
-							{!role &&
-								<div>
-									<button class="button button--clear button--small" type="button"
-											onClick={handleLogin}>
-										Log in
-									</button>
-								</div>
-							}
-
-							{/*{role &&*/}
-							<div>
-								<button class="button button--clear button--small" type="button" onClick={handleLogout}>
-									Log out
-								</button>
-							</div>
-							{/*}*/}
 
 							{/*{role &&*/}
 							<div>
@@ -294,6 +278,24 @@ const HomeData = forwardRef((props, ref) => {
 								</button>
 							</div>
 							{/*}*/}
+
+							{!role &&
+								<div>
+									<button class="button button--clear button--small" type="button"
+											onClick={handleLogin}>
+										Log in
+									</button>
+								</div>
+							}
+
+							{/*{role &&*/}
+							<div>
+								<button class="button button--clear button--small" type="button" onClick={handleLogout}>
+									Log out
+								</button>
+							</div>
+							{/*}*/}
+
 						</div>
 					</div>
 				</div>

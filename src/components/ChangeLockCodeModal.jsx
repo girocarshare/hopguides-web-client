@@ -39,7 +39,7 @@ const ChangeLockCodeModal = () => {
 					<div class="fixed inset-0 z-10 overflow-y-auto">
 
 						<div class="modal-frame">
-							<div id="myModal" class="modal">
+							<div id="myModal" class="modal modal--sm">
 
 								<div class="modal__header">
 									<h2 class="text-leading">

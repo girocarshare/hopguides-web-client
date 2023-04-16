@@ -111,7 +111,7 @@ const UpdateLogoModal = () => {
 
 						<div class="modal-frame">
 
-							<div id="myModal" class="modal">
+							<div id="myModal" class="modal modal--sm">
 
 								<div class="modal__header">
 									<h2 class="text-leading">
