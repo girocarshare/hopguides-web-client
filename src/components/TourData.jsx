@@ -294,115 +294,126 @@ const TourData = () => {
 									<form class="form" id="contactForm">
 										<div className="form__group">
 											<label class="form__label">Title</label>
-											{edit &&
-												<div><input
+											<div class="flex flex-col gap-2">
+												{edit &&
+													<div class="flex flex-row gap-2 items-center">
+														<input
 
-													className={"form__input"}
-													placeholder='Title'
+															className={"form__input"}
+															placeholder='Title'
+															aria-describedby="basic-addon1"
+															id="name"
+															type="text"
+
+															onChange={(e) => setTitle(e.target.value)}
+															value={title}
+														/>
+														<button
+
+															onClick={(e) => fetchData(title, 1)}
+															className="button button--primary"
+															id="sendMessageButton"
+															type="button"
+														>
+															Translate
+														</button>
+													</div>}
+												<input
+													className={"form__input text-sm"}
+													readOnly={!edit}
 													aria-describedby="basic-addon1"
 													id="name"
 													type="text"
-
-													onChange={(e) => setTitle(e.target.value)}
-													value={title}
+													onChange={(e) => setTitleTransl(e.target.value)}
+													value={titleTransl === "" ? JSON.stringify(homeDataState.updateTourData.tour.title) : titleTransl}
 												/>
-													<button
-
-														onClick={(e) => fetchData(title, 1)}
-														className="button button--primary"
-														id="sendMessageButton"
-														type="button"
-													>
-														Translate title
-													</button>
-												</div>}
-											<input
-												readOnly={!edit}
-												aria-describedby="basic-addon1"
-												id="name"
-												type="text"
-												onChange={(e) => setTitleTransl(e.target.value)}
-												value={titleTransl === "" ? JSON.stringify(homeDataState.updateTourData.tour.title) : titleTransl}
-											/>
+											</div>
 										</div>
 
 										<div className="form__group">
 											<label class="form__label">Agreement title</label>
-											{edit && <div>
-												<input
+											<div class="flex flex-col gap-2">
+												{edit &&
+													<div class="flex flex-row gap-2 items-center">
+														<input
 
-													className={"form__input"}
-													placeholder='Agreement title'
+															className={"form__input"}
+															placeholder='Agreement title'
+															aria-describedby="basic-addon1"
+															id="name"
+															type="text"
+
+															onChange={(e) => setAgreementTitle(e.target.value)}
+															value={agreementTitle}
+														/>
+														<button
+
+															onClick={(e) => fetchData(agreementTitle, 2)}
+															className="button button--primary"
+															id="sendMessageButton"
+															type="button"
+														>
+															Translate
+														</button>
+
+													</div>}
+												<input
+													className={"form__input text-sm"}
+													readOnly={!edit}
 													aria-describedby="basic-addon1"
+													placeholder="Agreement title"
 													id="name"
 													type="text"
-
-													onChange={(e) => setAgreementTitle(e.target.value)}
-													value={agreementTitle}
+													onChange={(e) => setAgreementTitleTransl(e.target.value)}
+													value={agreementTitleTransl === "" ? JSON.stringify(homeDataState.updateTourData.tour.agreementTitle) : agreementTitleTransl}
 												/>
-												<button
-
-													onClick={(e) => fetchData(agreementTitle, 2)}
-													className="button button--primary"
-													id="sendMessageButton"
-													type="button"
-												>
-													Translate
-												</button>
-
-											</div>}
-											<input
-												readOnly={!edit}
-												aria-describedby="basic-addon1"
-												placeholder="Agreement title"
-												id="name"
-												type="text"
-												onChange={(e) => setAgreementTitleTransl(e.target.value)}
-												value={agreementTitleTransl === "" ? JSON.stringify(homeDataState.updateTourData.tour.agreementTitle) : agreementTitleTransl}
-											/>
+											</div>
 										</div>
 
 										<div className="form__group">
 
 											<label class="form__label">Agreement description</label>
-											{edit && <div>
-												<input
+											<div class="flex flex-col gap-2">
+												{edit &&
+													<div class="flex flex-row gap-2 items-center">
+														<input
 
-													className={"form__input"}
-													placeholder='Agreement description'
+															className={"form__input"}
+															placeholder='Agreement description'
+															aria-describedby="basic-addon1"
+															id="name"
+															type="text"
+
+															onChange={(e) => setAgreementDesc(e.target.value)}
+															value={agreementDesc}
+														/>
+														<button
+
+															onClick={(e) => fetchData(agreementDesc, 3)}
+															className="button button--primary"
+															id="sendMessageButton"
+															type="button"
+														>
+															Translate
+														</button>
+													</div>}
+
+												<input
+													className={"form__input text-sm"}
+													readOnly={!edit}
 													aria-describedby="basic-addon1"
+													placeholder="Agreement description"
 													id="name"
 													type="text"
-
-													onChange={(e) => setAgreementDesc(e.target.value)}
-													value={agreementDesc}
+													onChange={(e) => setAgreementDescTransl(e.target.value)}
+													value={agreementDescTransl === "" ? JSON.stringify(homeDataState.updateTourData.tour.agreementDesc) : agreementDescTransl}
 												/>
-												<button
-
-													onClick={(e) => fetchData(agreementDesc, 3)}
-													className="button button--primary"
-													id="sendMessageButton"
-													type="button"
-												>
-													Translate
-												</button>
-											</div>}
-
-											<input
-												className={"form__input"}
-												readOnly={!edit}
-												aria-describedby="basic-addon1"
-												placeholder="Agreement description"
-												id="name"
-												type="text"
-												onChange={(e) => setAgreementDescTransl(e.target.value)}
-												value={agreementDescTransl === "" ? JSON.stringify(homeDataState.updateTourData.tour.agreementDesc) : agreementDescTransl}
-											/>
+											</div>
 										</div>
 
 										<div className="form__group">
 											{edit &&
-												<div>
+												<div class="flex flex-col gap-2">
 													<label class="form__label">Name of the place*</label>
 
 													<input
@@ -427,24 +438,26 @@ const TourData = () => {
 													</button>
 												</div>
 											}
-											<label class="form__label">Short description</label>
-											<textarea
-												className={"form__input"}
-												readOnly={!edit}
-												placeholder="Short description"
-												aria-describedby="basic-addon1"
-												id="name"
-												type="textarea"
-												onChange={(e) => setShortInfo(e.target.value)}
-												value={shortInfo === "" ? JSON.stringify(homeDataState.updateTourData.tour.shortInfo) : shortInfo}
-											/>
+											<div class="form__group mt-4">
+												<label class="form__label">Short description</label>
+												<textarea
+													className={"form__input h-32"}
+													readOnly={!edit}
+													placeholder="Short description"
+													aria-describedby="basic-addon1"
+													id="name"
+													type="textarea"
+													onChange={(e) => setShortInfo(e.target.value)}
+													value={shortInfo === "" ? JSON.stringify(homeDataState.updateTourData.tour.shortInfo) : shortInfo}
+												/>
+											</div>
 										</div>
 
 										<div className="form__group">
 											<label class="form__label">Long description</label>
 
 											<textarea
-												className={"form__input"}
+												className={"form__input h-32"}
 												readOnly={!edit}
 												placeholder="Long description"
 												aria-describedby="basic-addon1"
@@ -457,25 +470,27 @@ const TourData = () => {
 
 										<div className="form__group">
 											<label class="form__label">Price</label>
-											<input
-												readOnly={!edit}
-												placeholder="Price"
-												class="form__input"
-												aria-describedby="basic-addon1"
-												id="name"
-												type="text"
-												onChange={(e) => setPrice(e.target.value)}
-												value={price === 0 ? `${homeDataState.updateTourData.tour.price} ${homeDataState.updateTourData.tour.currency} incl tax` : price}
-											/>
-											{edit &&
-												<select onChange={(e) => setCurrency(e.target.value)}
-														name="currency" class="form__input"
-												>
-													{currencyList.map(item =>
-														<option key={item} value={item}>{item}</option>
-													)};
+											<div class="flex flex-row items-center gap-2">
+												<input
+													readOnly={!edit}
+													placeholder="Price"
+													class="form__input"
+													aria-describedby="basic-addon1"
+													id="name"
+													type="text"
+													onChange={(e) => setPrice(e.target.value)}
+													value={price === 0 ? `${homeDataState.updateTourData.tour.price} ${homeDataState.updateTourData.tour.currency} incl tax` : price}
+												/>
+												{edit &&
+													<select onChange={(e) => setCurrency(e.target.value)}
+															name="currency" class="form__input"
+													>
+														{currencyList.map(item =>
+															<option key={item} value={item}>{item}</option>
+														)};
 
-												</select>}
+													</select>}
+											</div>
 										</div>
 
 										<div className="form__group">
@@ -523,30 +538,56 @@ const TourData = () => {
 
 										<div className="form__group">
 											<label class="form__label">Background tour image</label>
-											{edit && <input type={"file"} name="file"
-															onChange={onFileChange}/>}
+											{edit &&
+												<label
+													class="button button--secondary button--small">
+													<span>Upload audio</span>
+													<input type={"file"} name={"file"}
+														   onChange={onFileChange}
+														   class="sr-only"/>
+												</label>
+											}
 
-											{fileData()}
 
-											{imagePreview && <img className="image__preview" src={imagePreview}
-																  alt={"image-"}/>}
-											{!imagePreview && <img className="image__preview"
-																   src={homeDataState.updateTourData.tour.image}
-																   alt={"image-"}/>}
+											<div>
+												{fileData()}
+											</div>
+
+											<div class="mt-2">
+												{imagePreview && <img className="image__preview" src={imagePreview}
+																	  alt={"image-"}/>}
+												{!imagePreview && <img className="image__preview"
+																	   src={homeDataState.updateTourData.tour.image}
+																	   alt={"image-"}/>}
+											</div>
 										</div>
 
 
 										<div className="form__group">
 
 											<label class="form__label">Text to speach audio</label>
-											{!audio && <ReactAudioPlayer
-												src={homeDataState.updateTourData.tour.audio}
 
-												controls
+											<div>
+												{!audio && <ReactAudioPlayer
+													src={homeDataState.updateTourData.tour.audio}
+
+													controls
 											/>}
+											</div>
 
-											{edit && <input type={"file"} accept={".mp3"}
-															onChange={addFile}/>}
+											<div class="mt-2">
+												{edit &&
+												<label
+													class="button button--secondary button--small">
+													<span>Upload audio</span>
+													<input type={"file"} accept={".mp3"}
+														onChange={addFile}
+														class="sr-only"/>
+												</label>
+
+
+											}
+											</div>
 										</div>
 
 
