@@ -5,7 +5,6 @@ import { homeDataConstants } from "../constants/HomeDataConstants";
 import TimePicker from 'react-time-picker';
 import { YMaps, Map } from "react-yandex-maps";
 import { AiOutlineClose } from 'react-icons/ai';
-import { ConstructionOutlined } from "@mui/icons-material";
 import Axios from "axios";
 
 var url = process.env.REACT_APP_URL || "http://localhost:8080/";
@@ -14,7 +13,9 @@ var num = 1;
 const InsertData = (props) => {
   const addressInput = React.createRef(null);
   const [place, setPlace] = useState("");
-  const [title, setTitle] = useState("");
+  const [title, setTitle] = useState([]);
+  const [imageTitle, setImageTitle] = useState([]);
+  const [imageTitles, setImageTitles] = useState([]);
   const [titleTransl, setTitleTransl] = useState("");
   const [agreementTitle, setAgreementTitle] = useState("");
   const [agreementTitleTransl, setAgreementTitleTransl] = useState("");
@@ -211,22 +212,19 @@ const InsertData = (props) => {
   const selectFiles = (event) => {
     let images = [];
 
-    if (titlePoint == "") {
-      setErrMessagePhoto("Please first insert partners name")
-    } else {
-      var fs = []
-      for (let i = 0; i < event.target.files.length; i++) {
-        images.push(URL.createObjectURL(event.target.files[i]));
-        var new_file = new File([event.target.files[i]], 'partner' + num + "---" + [event.target.files[i].name]);
-        fs.push(new_file)
+    var fs = []
+    for (let i = 0; i < event.target.files.length; i++) {
+      images.push(URL.createObjectURL(event.target.files[i]));
+      var new_file = new File([event.target.files[i]], i + 'partner' + num + "---" + [event.target.files[i].name]);
+      fs.push(new_file)
 
-      }
-
-      setSelectedFiles(selectedFiles.concat(fs))
-      setImagePreviews(images);
-      setProgressInfos({ val: [] });
-      setMessage([]);
     }
+
+    setSelectedFiles(selectedFiles.concat(fs))
+    setImagePreviews(images);
+    setProgressInfos({ val: [] });
+    setMessage([]);
+
   };
 
   const handleSubmit = (e) => {
@@ -297,7 +295,45 @@ const InsertData = (props) => {
 
   };
 
+  const changeImageTitle = (e, i) => {
 
+    var tf = false;
+    if (imageTitles.length == 0) {
+      var p = e + "---" + i
+      const newData = [p, ...imageTitles];
+      setImageTitles(newData)
+    } else {
+
+      for (var a of imageTitles) {
+        var h = a.split('---')
+        if (h[1] == i) {
+          tf = true
+        }
+      }
+
+      if (tf) {
+        for (var a of imageTitles) {
+
+          var h = a.split('---')
+          if (h[1] == i) {
+            var arr = imageTitles
+            arr.pop(a)
+            var p = e + "---" + i
+            arr.push(p)
+            setImageTitles(arr)
+          }
+
+        }
+      } else {
+        var p = e + "---" + i
+        var arr = imageTitles
+        arr.push(p)
+        setImageTitles(arr)
+
+      }
+
+    }
+  };
 
   const addPoint = () => {
     setPartner(false)
@@ -326,6 +362,18 @@ const InsertData = (props) => {
       setAdd(false)
       setErrMessagePartner("")
 
+      var jsonTitles = []
+      for(var ti of imageTitles){
+        var help = ti.split("---")
+  
+        var titlee = JSON.parse(help[0])
+        var titleObj = {
+          number : help[1],
+          name: titlee
+          
+        }
+        jsonTitles.push(titleObj)
+      }
       var point = {
         num: num,
         name: JSON.parse(titlePointTransl),
@@ -337,10 +385,12 @@ const InsertData = (props) => {
         location: { latitude: latitude, longitude: longitude },
         workingHours: { monday: { from: mondayFrom, to: mondayTo }, tuesday: { from: tuesdayFrom, to: tuesdayTo }, wednesday: { from: wednesdayFrom, to: wednesdayTo }, thursday: { from: thursdayFrom, to: thursdayTo }, friday: { from: fridayFrom, to: fridayTo }, saturday: { from: saturdayFrom, to: saturdayTo }, sunday: { from: sundayFrom, to: sundayTo } },
         bpartnerId: hotelId,
-        category: category
+        category: category,
+        imageTitles: jsonTitles,
       }
 
 
+      console.log(point)
 
       if (voucherDesc == "") {
         point.voucherDesc = JSON.parse(`{
@@ -381,6 +431,7 @@ const InsertData = (props) => {
       setShortInfoPointTransl("")
       setLongInfoPointTransl("")
       setVoucherDescTransl("")
+      setImageTitles([])
 
       setFiles(files.concat(selectedFiles))
       setAudios(audios.concat(audio2))
@@ -484,6 +535,7 @@ const InsertData = (props) => {
     setTitleTransl("")
     setAgreementDescTransl("")
     setAgreementTitleTransl("")
+    setImageTitles([])
     setImagePreview(null)
     setImagePreviews([])
     num = 0
@@ -1030,38 +1082,38 @@ const InsertData = (props) => {
                             <textarea className="form-control" style={{ height: "100px", width: "1000px" }} type="textarea" required name="message" placeholder='Short description' value={shortInfoPoint} onChange={(e) => setShortInfoPoint(e.target.value)}></textarea>
 
                             <button
-                            style={{ background: "#0099ff", marginTop: "px", height: "35px" }}
+                              style={{ background: "#0099ff", marginTop: "px", height: "35px" }}
 
-                            onClick={(e) => fetchData(shortInfoPoint, 5)}
-                            className="btn btn-primary btn-xl"
-                            id="sendMessageButton"
-                            type="button"
-                          >
-                            Translate short description
-                          </button>
+                              onClick={(e) => fetchData(shortInfoPoint, 5)}
+                              className="btn btn-primary btn-xl"
+                              id="sendMessageButton"
+                              type="button"
+                            >
+                              Translate short description
+                            </button>
 
-                          <div >
+                            <div >
 
-                            <div class="form-group col-lg-10">
-                              <input
+                              <div class="form-group col-lg-10">
+                                <input
 
-                                className={"form-control"}
-                                placeholder='Short description translated'
-                                aria-describedby="basic-addon1"
-                                id="name"
-                                type="text"
-                                style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
+                                  className={"form-control"}
+                                  placeholder='Short description translated'
+                                  aria-describedby="basic-addon1"
+                                  id="name"
+                                  type="text"
+                                  style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
 
-                                onChange={(e) => setShortInfoPointTransl(e.target.value)}
-                                value={shortInfoPointTransl}
-                              />
+                                  onChange={(e) => setShortInfoPointTransl(e.target.value)}
+                                  value={shortInfoPointTransl}
+                                />
 
+                              </div>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
 
                     <div className="control-group">
                       <div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
@@ -1070,38 +1122,38 @@ const InsertData = (props) => {
                           <div class="form-group col-lg-10">
                             <textarea className="form-control" style={{ height: "200px", width: "1000px" }} type="textarea" required name="message" placeholder='Long description' value={longInfoPoint} onChange={(e) => setLongInfoPoint(e.target.value)}></textarea>
                             <button
-                            style={{ background: "#0099ff", marginTop: "px", height: "35px" }}
+                              style={{ background: "#0099ff", marginTop: "px", height: "35px" }}
 
-                            onClick={(e) => fetchData(longInfoPoint, 6)}
-                            className="btn btn-primary btn-xl"
-                            id="sendMessageButton"
-                            type="button"
-                          >
-                            Translate long description
-                          </button>
+                              onClick={(e) => fetchData(longInfoPoint, 6)}
+                              className="btn btn-primary btn-xl"
+                              id="sendMessageButton"
+                              type="button"
+                            >
+                              Translate long description
+                            </button>
 
-                          <div >
+                            <div >
 
-                            <div class="form-group col-lg-10">
-                              <input
+                              <div class="form-group col-lg-10">
+                                <input
 
-                                className={"form-control"}
-                                placeholder='Long description translated'
-                                aria-describedby="basic-addon1"
-                                id="name"
-                                type="text"
-                                style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
+                                  className={"form-control"}
+                                  placeholder='Long description translated'
+                                  aria-describedby="basic-addon1"
+                                  id="name"
+                                  type="text"
+                                  style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
 
-                                onChange={(e) => setLongInfoPointTransl(e.target.value)}
-                                value={longInfoPointTransl}
-                              />
+                                  onChange={(e) => setLongInfoPointTransl(e.target.value)}
+                                  value={longInfoPointTransl}
+                                />
 
+                              </div>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
 
                     {partner && <div className="control-group">
                       <div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
@@ -1110,38 +1162,38 @@ const InsertData = (props) => {
                           <div class="form-group col-lg-10">
                             <textarea className="form-control" style={{ height: "200px", width: "1000px" }} type="textarea" required name="message" placeholder='Voucher description' value={voucherDesc} onChange={(e) => setVoucherDesc(e.target.value)}></textarea>
                             <button
-                            style={{ background: "#0099ff", marginTop: "px", height: "35px" }}
+                              style={{ background: "#0099ff", marginTop: "px", height: "35px" }}
 
-                            onClick={(e) => fetchData(voucherDesc, 7)}
-                            className="btn btn-primary btn-xl"
-                            id="sendMessageButton"
-                            type="button"
-                          >
-                            Translate voucher description
-                          </button>
+                              onClick={(e) => fetchData(voucherDesc, 7)}
+                              className="btn btn-primary btn-xl"
+                              id="sendMessageButton"
+                              type="button"
+                            >
+                              Translate voucher description
+                            </button>
 
-                          <div >
+                            <div >
 
-                            <div class="form-group col-lg-10">
-                              <input
+                              <div class="form-group col-lg-10">
+                                <input
 
-                                className={"form-control"}
-                                placeholder='Voucher description translated'
-                                aria-describedby="basic-addon1"
-                                id="name"
-                                type="text"
-                                style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
+                                  className={"form-control"}
+                                  placeholder='Voucher description translated'
+                                  aria-describedby="basic-addon1"
+                                  id="name"
+                                  type="text"
+                                  style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
 
-                                onChange={(e) => setVoucherDescTransl(e.target.value)}
-                                value={voucherDescTransl}
-                              />
+                                  onChange={(e) => setVoucherDescTransl(e.target.value)}
+                                  value={voucherDescTransl}
+                                />
 
+                              </div>
                             </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  </div>}
+                    </div>}
 
                     <div className="control-group">
                       <div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
@@ -1501,6 +1553,17 @@ const InsertData = (props) => {
                               <div>
                                 <br />
                                 <img className="preview" src={img} alt={"image-" + i} key={i} />
+                                <input
+
+                                  className={"form-control"}
+                                  placeholder={'JSON FORMAT: { "language": "Text"}'}
+                                  aria-describedby="basic-addon1"
+                                  id="name"
+                                  type="text"
+                                  style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
+
+                                  onChange={(e) => changeImageTitle(e.target.value, i)}
+                                />
                               </div>
                             );
                           })}

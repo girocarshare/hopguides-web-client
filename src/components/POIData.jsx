@@ -6,7 +6,6 @@ import TimePicker from 'react-time-picker';
 import { YMaps, Map } from "react-yandex-maps";
 import { AiOutlineClose } from 'react-icons/ai';
 import ReactAudioPlayer from 'react-audio-player';
-import { StyledEngineProvider } from "@mui/material";
 import Axios from "axios";
 const mapState = {
 	center: [44, 21],
@@ -81,6 +80,7 @@ const POIData = () => {
 	const [fridayclosed, setFridayClosed] = useState(false);
 	const [saturdayclosed, setSaturdayClosed] = useState(false);
 	const [sundayclosed, setSundayClosed] = useState(false);
+	const [imageTitles, setImageTitles] = useState([]);
 
 
 
@@ -132,7 +132,7 @@ const POIData = () => {
 		var fs = []
 		for (let i = 0; i < event.target.files.length; i++) {
 			images.push(URL.createObjectURL(event.target.files[i]));
-			var new_file = new File([event.target.files[i]], 'partner' + titlePoint + "---" + [event.target.files[i].name]);
+			var new_file = new File([event.target.files[i]], i + 'partner' + titlePoint + "---" + [event.target.files[i].name]);
 			fs.push(new_file)
 
 		}
@@ -188,6 +188,21 @@ const POIData = () => {
 		}
 		if (category != "") {
 			point.category = category
+		} if (imageTitles != "") {
+
+			var jsonTitles = []
+			for (var ti of imageTitles) {
+				var help = ti.split("---")
+
+				var titlee = JSON.parse(help[0])
+				var titleObj = {
+					number: help[1],
+					name: titlee
+
+				}
+				jsonTitles.push(titleObj)
+			}
+			point.imageTitles = jsonTitles
 		}
 
 		point.id = homeDataState.updatePointData.point.id
@@ -289,6 +304,47 @@ const POIData = () => {
 			);
 		}
 	};
+
+	const changeImageTitle = (e, i) => {
+
+		var tf = false;
+		if (imageTitles.length == 0) {
+			var p = e + "---" + i
+			const newData = [p, ...imageTitles];
+			setImageTitles(newData)
+		} else {
+
+			for (var a of imageTitles) {
+				var h = a.split('---')
+				if (h[1] == i) {
+					tf = true
+				}
+			}
+
+			if (tf) {
+				for (var a of imageTitles) {
+
+					var h = a.split('---')
+					if (h[1] == i) {
+						var arr = imageTitles
+						arr.pop(a)
+						var p = e + "---" + i
+						arr.push(p)
+						setImageTitles(arr)
+					}
+
+				}
+			} else {
+				var p = e + "---" + i
+				var arr = imageTitles
+				arr.push(p)
+				setImageTitles(arr)
+
+			}
+
+		}
+	};
+
 
 
 	return (
@@ -1014,6 +1070,18 @@ const POIData = () => {
 															<div>
 																<br />
 																<img className="preview" src={img} alt={"image-" + i} key={i} />
+
+																<input
+
+																	className={"form-control"}
+																	placeholder={'JSON FORMAT: { "language": "Text"}'}
+																	aria-describedby="basic-addon1"
+																	id="name"
+																	type="text"
+																	style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
+
+																	onChange={(e) => changeImageTitle(e.target.value, i)}
+																/>
 															</div>
 														);
 													})}
@@ -1025,7 +1093,7 @@ const POIData = () => {
 														return (
 															<div>
 																<br />
-																<img className="preview" src={img} alt={"image-" + img} key={i} />
+																<img className="preview" src={img.image} alt={"image-" + img} key={i} />
 															</div>
 														);
 													})}

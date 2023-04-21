@@ -20,9 +20,8 @@ const AddNewPartnerForm = (props) => {
 
 	const addressInput = React.createRef(null);
 
-
-
 	const [titlePoint, setTitlePoint] = useState("");
+	const [imageTitles, setImageTitles] = useState([]);
 	const [shortInfoPoint, setShortInfoPoint] = useState("");
 	const [longInfoPoint, setLongInfoPoint] = useState("");
 	const [pointPrice, setPointPrice] = useState("");
@@ -43,7 +42,7 @@ const AddNewPartnerForm = (props) => {
 	const [files, setFiles] = useState([]);
 	const [categories, setCategories] = useState(["HISTORY", "DRINKS", "NATURE", "EATS", "BRIDGE", "MUSEUMS", "EXPERIENCE"]);
 	const [category, setCategory] = useState(categories[0]);
-	
+
 	const [location, setLocation] = useState("");
 	const [phone, setPhone] = useState("");
 	const [ymaps, setYmaps] = useState(null);
@@ -90,16 +89,16 @@ const AddNewPartnerForm = (props) => {
 	const addPartner = () => {
 		setPartner(true)
 		setPoint(false)
-	
-	  };
-	
-	
-	
-	  const addPoint = () => {
+
+	};
+
+
+
+	const addPoint = () => {
 		setPartner(false)
 		setPoint(true)
-	
-	  };
+
+	};
 
 	const handleModalClose = () => {
 		dispatch({ type: homeDataConstants.HIDE_ADD_PARTNER_MODAL });
@@ -108,18 +107,30 @@ const AddNewPartnerForm = (props) => {
 
 	const handleAdd = (e) => {
 
-		if (partner && (titlePoint == "" || shortInfoPoint == "" || longInfoPoint == "" || category == "" || pointPrice == "" || offerName == "" || responsiblePerson == "" || voucherDesc == "" || phone == "" || email == ""  ||  longitude == "" || latitude == "" || audio2 == null || selectedFiles.length == 0 || (!mondayclosed && (mondayFrom == "" || mondayTo == "")) || (!tuesdayclosed && (tuesdayFrom == "" || tuesdayTo == "")) || (!wednesdayclosed && (wednesdayFrom == "" || wednesdayTo == "")) || (!thursdayclosed && (thursdayFrom == "" || thursdayTo == "")) || (!fridayclosed && (fridayFrom == "" || fridayTo == "")) || (!saturdayclosed && (saturdayFrom == "" || saturdayTo == "")) || (!sundayclosed && (sundayFrom == "" || sundayTo == "")))) {
-	
-		  setErrMessagePartner("Please insert mandatory fields for partner (marked with *)")
+		if (partner && (titlePoint == "" || shortInfoPoint == "" || longInfoPoint == "" || category == "" || pointPrice == "" || offerName == "" || responsiblePerson == "" || voucherDesc == "" || phone == "" || email == "" || longitude == "" || latitude == "" || audio2 == null || selectedFiles.length == 0 || (!mondayclosed && (mondayFrom == "" || mondayTo == "")) || (!tuesdayclosed && (tuesdayFrom == "" || tuesdayTo == "")) || (!wednesdayclosed && (wednesdayFrom == "" || wednesdayTo == "")) || (!thursdayclosed && (thursdayFrom == "" || thursdayTo == "")) || (!fridayclosed && (fridayFrom == "" || fridayTo == "")) || (!saturdayclosed && (saturdayFrom == "" || saturdayTo == "")) || (!sundayclosed && (sundayFrom == "" || sundayTo == "")))) {
+
+			setErrMessagePartner("Please insert mandatory fields for partner (marked with *)")
 		} else if (point && (titlePoint == "" || shortInfoPoint == "" || longInfoPoint == "" || category == "" || longitude == "" || latitude == "" || audio2 == null || selectedFiles.length == 0)) {
-		 
-		  setErrMessagePartner("Please insert mandatory fields for point of interest (marked with *)")
+
+			setErrMessagePartner("Please insert mandatory fields for point of interest (marked with *)")
 		} else {
-		  setAdd(false)
-		  setErrMessagePartner("")
-	
-		 
-			  var point = {
+			setAdd(false)
+			setErrMessagePartner("")
+
+			var jsonTitles = []
+			for(var ti of imageTitles){
+			  var help = ti.split("---")
+		
+			  var titlee = JSON.parse(help[0])
+			  var titleObj = {
+				number : help[1],
+				name: titlee
+				
+			  }
+			  jsonTitles.push(titleObj)
+			}
+
+			var point = {
 				num: num,
 				name: JSON.parse(titlePoint),
 				shortInfo: JSON.parse(shortInfoPoint),
@@ -130,10 +141,11 @@ const AddNewPartnerForm = (props) => {
 				location: { latitude: latitude, longitude: longitude },
 				workingHours: { monday: { from: mondayFrom, to: mondayTo }, tuesday: { from: tuesdayFrom, to: tuesdayTo }, wednesday: { from: wednesdayFrom, to: wednesdayTo }, thursday: { from: thursdayFrom, to: thursdayTo }, friday: { from: fridayFrom, to: fridayTo }, saturday: { from: saturdayFrom, to: saturdayTo }, sunday: { from: sundayFrom, to: sundayTo } },
 				category: category,
-				bpartnerId: homeDataState.showAddPartnerModal.bpartnerId
-			  }
-	
-			  if(voucherDesc == ""){
+				bpartnerId: homeDataState.showAddPartnerModal.bpartnerId,
+				imageTitles: jsonTitles
+			}
+
+			if (voucherDesc == "") {
 				point.voucherDesc = JSON.parse(`{
 				  "english": "",
 				  "spanish": "",
@@ -141,146 +153,188 @@ const AddNewPartnerForm = (props) => {
 				  "slovenian": ""
 				  }`)
 				point.partner = false
-			  }else{
+			} else {
 				point.voucherDesc = JSON.parse(voucherDesc)
 				point.partner = true
-			  }
-			  const newData = [point, ...points];
-	
-			  setPoints(newData)
-			  setTitlePoint("")
-			  setShortInfoPoint("")
-			  setLongInfoPoint("")
-			  setPointPrice("")
-			  setPhone("")
-			  setEmail("")
-			  setResponsiblePerson("")
-			  setVoucherDesc("")
-			  setMondayClosed(false)
-			  setTuesdayClosed(false)
-			  setWednesdayClosed(false)
-			  setThursdayClosed(false)
-			  setFridayClosed(false)
-			  setSaturdayClosed(false)
-			  setSundayClosed(false)
-			  setOfferName("")
-			  setWebUrl("")
-			  setLocation("")
-			  setLongitude("")
-			  setLatitude("")
-	
-			  setFiles(files.concat(selectedFiles))
-			  setAudios(audios.concat(audio2))
-	
-			  setSelectedFiles([])
-			  setAudio2(null)
-			  setImagePreviews([])
-			  num = num+1
-	
-	
-		   // });
+			}
+			const newData = [point, ...points];
+
+			setPoints(newData)
+			setTitlePoint("")
+			setShortInfoPoint("")
+			setLongInfoPoint("")
+			setPointPrice("")
+			setPhone("")
+			setEmail("")
+			setResponsiblePerson("")
+			setVoucherDesc("")
+			setMondayClosed(false)
+			setTuesdayClosed(false)
+			setWednesdayClosed(false)
+			setThursdayClosed(false)
+			setFridayClosed(false)
+			setSaturdayClosed(false)
+			setSundayClosed(false)
+			setOfferName("")
+			setWebUrl("")
+			setLocation("")
+			setLongitude("")
+			setLatitude("")
+			setImageTitles([])
+
+			setFiles(files.concat(selectedFiles))
+			setAudios(audios.concat(audio2))
+
+			setSelectedFiles([])
+			setAudio2(null)
+			setImagePreviews([])
+			num = num + 1
+
+
+			// });
 		}
-	  }
-	  const addFile2 = (e) => {
+	}
+	const addFile2 = (e) => {
 		if (e.target.files[0]) {
-	
-		  var new_file = new File([e.target.files[0]], 'audio2' + num + "---" + [e.target.files[0].name]);
-	
-		  setAudio2(new_file);
-		}
-	  };
 
-	  const selectFiles = (event) => {
-		let images = [];
-	
-		if (titlePoint == "") {
-		  setErrMessagePhoto("Please first insert partners name")
+			var new_file = new File([e.target.files[0]], 'audio2' + num + "---" + [e.target.files[0].name]);
+
+			setAudio2(new_file);
+		}
+	};
+
+
+	const changeImageTitle = (e, i) => {
+
+		var tf = false;
+		if (imageTitles.length == 0) {
+			var p = e + "---" + i
+			const newData = [p, ...imageTitles];
+			setImageTitles(newData)
 		} else {
-		  var fs = []
-		  for (let i = 0; i < event.target.files.length; i++) {
+
+			for (var a of imageTitles) {
+				var h = a.split('---')
+				if (h[1] == i) {
+					tf = true
+				}
+			}
+
+			if (tf) {
+				for (var a of imageTitles) {
+
+					var h = a.split('---')
+					if (h[1] == i) {
+						var arr = imageTitles
+						arr.pop(a)
+						var p = e + "---" + i
+						arr.push(p)
+						setImageTitles(arr)
+					}
+
+				}
+			} else {
+				var p = e + "---" + i
+				var arr = imageTitles
+				arr.push(p)
+				setImageTitles(arr)
+
+			}
+
+		}
+	};
+
+
+
+	const selectFiles = (event) => {
+		let images = [];
+
+
+		var fs = []
+		for (let i = 0; i < event.target.files.length; i++) {
 			images.push(URL.createObjectURL(event.target.files[i]));
-			var new_file = new File([event.target.files[i]], 'partner' + num + "---" + [event.target.files[i].name]);
+			var new_file = new File([event.target.files[i]], i + 'partner' + num + "---" + [event.target.files[i].name]);
 			fs.push(new_file)
-	
-		  }
-	
-		  setSelectedFiles(selectedFiles.concat(fs))
-		  setImagePreviews(images);
-		  setProgressInfos({ val: [] });
-		  setMessage([]);
-		}
-	  };
-	
-	
-  
 
-  const SuccessHandler = (e) => {
-
-    homeDataService.addPartner(true, dispatch);
-
-
-    //dispatch({ type: homeDataConstants.UPDATE_MENU_PHOTO_SUCCESS });
-  };
-  const ErrorHandler = () => {
-
-    //statusRef.current.innerHTML = "Upload failed";
-
-    //dispatch({ type: homeDataConstants.UPDATE_MENU_PHOTO_FAILURE });
-    homeDataService.addPartner(false, dispatch);
-  };
-  const AbortHandler = () => {
-
-    //statusRef.current.innerHTML = "Upload aborted";
-
-    homeDataService.insertData(false, dispatch);
-  };
-  const handleSubmit = (e) => {
-
-	if (points.length == 0) {
-		setErrMessage("Please add at least one partner")
-	} else {
-
-		
-
-    e.preventDefault();
-  
-
-		var tour = {
-			id: homeDataState.showAddPartnerModal.id,
-			points: points
 		}
 
-      const formData = new FormData();
+		setSelectedFiles(selectedFiles.concat(fs))
+		setImagePreviews(images);
+		setProgressInfos({ val: [] });
+		setMessage([]);
 
-      for (var f of files) {
+	};
 
-        formData.append('file', f);
-      }
-      for (var a of audios) {
 
-        formData.append('file', a);
-      }
-      //formData.append('audio', audio);
-      formData.append('tour', JSON.stringify(tour));
 
-      var xhr = new XMLHttpRequest();
-      xhr.addEventListener("load", SuccessHandler, false);
-      xhr.addEventListener("error", ErrorHandler, false);
-      xhr.addEventListener("abort", AbortHandler, false);
-      //************************************** */
-      xhr.open('POST', `${url}api/pnl/tour/addFull/partner`, true);
-      //xhr.setRequestHeader("Authorization", props.token);
-      xhr.onload = function () {
-        // do something to response
-      };
 
-      xhr.send(formData);
+	const SuccessHandler = (e) => {
 
-      // homeDataService.addTour(tour, dispatch);
+		homeDataService.addPartner(true, dispatch);
 
-    
-}
-  };
+
+		//dispatch({ type: homeDataConstants.UPDATE_MENU_PHOTO_SUCCESS });
+	};
+	const ErrorHandler = () => {
+
+		//statusRef.current.innerHTML = "Upload failed";
+
+		//dispatch({ type: homeDataConstants.UPDATE_MENU_PHOTO_FAILURE });
+		homeDataService.addPartner(false, dispatch);
+	};
+	const AbortHandler = () => {
+
+		//statusRef.current.innerHTML = "Upload aborted";
+
+		homeDataService.insertData(false, dispatch);
+	};
+	const handleSubmit = (e) => {
+
+		if (points.length == 0) {
+			setErrMessage("Please add at least one partner")
+		} else {
+
+
+
+			e.preventDefault();
+
+
+			var tour = {
+				id: homeDataState.showAddPartnerModal.id,
+				points: points
+			}
+
+			const formData = new FormData();
+
+			for (var f of files) {
+
+				formData.append('file', f);
+			}
+			for (var a of audios) {
+
+				formData.append('file', a);
+			}
+			//formData.append('audio', audio);
+			formData.append('tour', JSON.stringify(tour));
+
+			var xhr = new XMLHttpRequest();
+			xhr.addEventListener("load", SuccessHandler, false);
+			xhr.addEventListener("error", ErrorHandler, false);
+			xhr.addEventListener("abort", AbortHandler, false);
+			//************************************** */
+			xhr.open('POST', `${url}api/pnl/tour/addFull/partner`, true);
+			//xhr.setRequestHeader("Authorization", props.token);
+			xhr.onload = function () {
+				// do something to response
+			};
+
+			xhr.send(formData);
+
+			// homeDataService.addTour(tour, dispatch);
+
+
+		}
+	};
 
 	return (
 
@@ -765,6 +819,18 @@ const AddNewPartnerForm = (props) => {
 																				<div>
 																					<br />
 																					<img className="preview" src={img} alt={"image-" + i} key={i} />
+
+																					<input
+
+																						className={"form-control"}
+																						placeholder={'JSON FORMAT: { "language": "Text"}'}
+																						aria-describedby="basic-addon1"
+																						id="name"
+																						type="text"
+																						style={{ backgroundColor: 'white', outline: 'none', width: "1000px", height: "50px" }}
+
+																						onChange={(e) => changeImageTitle(e.target.value, i)}
+																					/>
 																				</div>
 																			);
 																		})}
@@ -1004,11 +1070,11 @@ const AddNewPartnerForm = (props) => {
 							</div>
 						</div>
 					</div>
-					</div>
-					}
 				</div>
+			}
+		</div>
 
 	);
 };
 
-			export default AddNewPartnerForm;
+export default AddNewPartnerForm;
