@@ -785,11 +785,11 @@ export const homeDataReducer = (state, action) => {
 
 			prodCpy = { ...state };
 
-			console.log(action.data)
 			//prodCpy.toursWithPoints.toursWithPoints = action.data;//array;
 			prodCpy.modalData.success = true;
 			prodCpy.modalData.text = "You have successfully updated partners data.";
 
+			
 			return prodCpy;
 
 		case homeDataConstants.POI_UPDATE_FAILURE:
@@ -806,7 +806,7 @@ export const homeDataReducer = (state, action) => {
 
 		case homeDataConstants.HIDE_SUCCESS_FAILURE_MODAL:
 			prodCpy = { ...state };
-
+			prodCpy.updatePointData.show = false;
 			prodCpy.modalData.success = false;
 			prodCpy.modalData.failure = false;
 			prodCpy.modalData.text = "";
@@ -869,16 +869,16 @@ export const homeDataReducer = (state, action) => {
 
 		case homeDataConstants.INSERT_DATA_SUCCESS:
 
-			return {
-				...state,
+		prodCpy = { ...state };
 
-				modalData: {
-					success: true,
-					failure: false,
-					text: "You have successfully added new data.",
-				},
+		
+			prodCpy.modalData.success = true;
+			prodCpy.modalData.success = true;
+			prodCpy.modalData.failure = false;
+			prodCpy.modalData.text = "You have successfully added new data.";
 
-			};
+			return prodCpy;
+			
 
 		case homeDataConstants.INSERT_DATA_FAILURE:
 

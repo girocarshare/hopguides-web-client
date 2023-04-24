@@ -47,7 +47,7 @@ const BusinessPartnersData = forwardRef((props, ref) => {
 
 
 	const handleModalClose = () => {
-		window.location.reload()
+		window.location = "#/"
 	};
 
 	return (

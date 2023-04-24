@@ -137,7 +137,7 @@ const AddNewPartnerForm = (props) => {
 
 	const handleModalClose = () => {
 		dispatch({type: homeDataConstants.HIDE_ADD_PARTNER_MODAL});
-		window.location.reload()
+		
 	};
 
 	const handleAdd = (e) => {

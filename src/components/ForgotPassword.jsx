@@ -26,7 +26,8 @@ const ForgotPassword = () => {
 	};
 
 	const handleClose = () => {
-		dispatch({type: useContext.HIDE_SUCCESS_FAILURE_MODAL});
+		window.location = "#/login"
+		//dispatch({type: useContext.HIDE_SUCCESS_FAILURE_MODAL});
 	};
 
 

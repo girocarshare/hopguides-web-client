@@ -375,20 +375,8 @@ const HomeData = forwardRef((props, ref) => {
 
 
 									}}>{tour.title.english}</td>
-									<td>
-										<div class="form__group">
-											<input class="form__input"
-												   readOnly={!editTourPrice || rowIdTour != tour.tourId}
-												   placeholder={editTourPrice === true ? `${tour.price}` : "Insert price"}
-												   aria-describedby="basic-addon1"
-												   id="name"
-												   type="text"
-												   onChange={(e) => setTourPrice(e.target.value)}
-												   value={tourPrice === "" ? `${tour.price} ${tour.currency}` : tourPrice}
-											/>
-										</div>
-
-									</td>
+									<td>{`${tour.price} ${tour.currency} including tax`}</td>
+										
 									<td>{tour.noOfRidesAMonth}</td>
 									<td>
 										<div class="flex flex-row items-center gap-2 justify-end">
@@ -462,32 +450,10 @@ const HomeData = forwardRef((props, ref) => {
 
 											<td>{points.point.name.english}</td>
 											<td>
-												<div class="form__group">
-													<input
-														class="form__input"
-														readOnly={!editPartner || rowId != points.point.id}
-														placeholder={editPartner === true ? points.point.price : "Price"}
-														aria-describedby="basic-addon1"
-														id="name"
-														type="text"
-														onChange={(e) => setPartnerPrice(e.target.value)}
-														value={partnerPrice === "" ? `${points.point.price} ${tour.currency}` : partnerPrice}
-													/>
-												</div>
+												{`${points.point.price} ${tour.currency} icluding tax`}
 											</td>
 											<td>
-												<div class="form__group">
-													<input
-														class="form__input"
-														readOnly={!editPartner || rowId != points.point.id}
-														placeholder={editPartner === true ? points.point.offerName : "Offer name"}
-														aria-describedby="basic-addon1"
-														id="name"
-														type="text"
-														onChange={(e) => setOfferName(e.target.value)}
-														value={offerName === "" ? `${points.point.offerName} ` : offerName}
-													/>
-												</div>
+											{`${points.point.offerName} `}
 											</td>
 
 											<td>{points.point.category}</td>

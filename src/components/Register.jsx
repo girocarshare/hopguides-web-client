@@ -154,7 +154,7 @@ const Register = () => {
 	};
 
 	const handleClose = () => {
-		dispatch({type: useContext.HIDE_SUCCESS_FAILURE_MODAL});
+		window.location = "#/"
 	};
 
 
