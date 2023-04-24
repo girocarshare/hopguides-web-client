@@ -16,6 +16,7 @@ import LoginPage from './pages/LoginPage.jsx';
 import RegisterPage from './pages/RegisterPage';
 import SetPasswordPage from './pages/SetPasswordPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
+import ConfirmationPage from './pages/ConfirmationPage';
 import TermsAndConditionsPage from './pages/TermsAndConditionsPage';
 import UnauthorizedPage from './pages/UnauthorizedPage.jsx';
 
@@ -24,6 +25,7 @@ function App() {
     <Router>
       <Switch>
         <Route path="/register" component={RegisterPage} />
+        <Route path="/confirmation/:bookingId/:pointId" component={ConfirmationPage} />
         <Route path="/termsAndConditions/:id" component={TermsAndConditionsPage} />
         <Route path="/insertdata" component={InsertDataPage} />
         <Route path="/setPassword/:email" component={SetPasswordPage} />
