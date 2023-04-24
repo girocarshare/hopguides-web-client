@@ -540,7 +540,7 @@ const TourData = () => {
 											{edit &&
 												<label
 													class="button button--secondary button--small">
-													<span>Upload audio</span>
+													<span>Upload image</span>
 													<input type={"file"} name={"file"}
 														   onChange={onFileChange}
 														   class="sr-only"/>
