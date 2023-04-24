@@ -160,7 +160,7 @@ export const homeDataReducer = (state, action) => {
 				}
 			}
 			points.push(point1)
-			
+
 
 			var tour = {
 				tourId: "446a706b-baa6-4feb-bc0b-0bcd9b2d2e0b",
@@ -171,11 +171,11 @@ export const homeDataReducer = (state, action) => {
 				shortInfo: {
 					english: "Cerkno is a tiny town located in the west of Slovenia. It is a great destination for outdoor activities like skiing and mountain biking, as well as for exploring the local culture and heritage.",
 					slovenian: "Cerkno je majhno mesto, ki se nahaja na zahodu Slovenije. Je odlična destinacija za aktivnosti na prostem, kot so smučanje in gorsko kolesarjenje, ter za raziskovanje lokalne kulture in dediščine.",
-						},
+				},
 				longInfo: {
 					english: "Cerkno is a small town in northwestern Slovenia. It is known for its Alpine mountains, pristine valleys, and unspoiled nature. The snow-covered Jalovec mountain range and the Cerknica Plain provide a unique backdrop to the town. Beside wonderful nature, the town offers a range of cultural and historical sites. Here you can see some interesting architecture, such as the Cerkno Museum and the first Slovenian Chapel. You can also explore the many local churches in the area such as the Church of St. Leonard or the Parish Church of St. Martin. In addition, the town has some great restaurants and pubs where you can enjoy traditional Slovenian food. During your visit, don't forget to explore the surrounding area, which includes the Logar Valley, the Krvavec Ski Area, and the Škofja Loka region.",
 					slovenian: "Cerkno je majhno mesto v Severni Sloveniji. Znano je po svojih alpskih gorah, čistih dolinah in nedotaknjeni naravi. Snopkopana planina Jalovec in Cerkniška kotlina ponujata edinstveno ozadje mestu. Ob čudoviti naravi ponuja tudi mesto različne kulturne in zgodovinske znamenitosti. Tu lahko vidite zanimivo arhitekturo, kot so Cerkniški muzej in prva slovenska kapela. Poleg tega lahko obiskovalci raziščejo množico lokalnih cerkva, kot so cerkvica sv. Leona ali župnijska cerkev sv. Martina. Poleg tega ima mesto tudi odlične restavracije in kavarne, kjer lahko uživate v tradicionalni slovenski hrani. Med obiskom ne pozabite obiskati tudi okolja, ki obsega Logarsko dolino, smučišče Krvavec in Škofjo Loko regijo.",
-						},
+				},
 				currency: "$",
 				price: "89",
 				image: "https://hopguides.s3.amazonaws.com/tours/fVPDcUI2IM.jpg",
@@ -196,7 +196,7 @@ export const homeDataReducer = (state, action) => {
 				bpartnerId: "b95afd04-cd69-4d6e-939c-c4b40aff2c6f",
 				points: points
 			}
-		
+
 			array.push(tour)
 			prodCpy = { ...state };
 
@@ -438,7 +438,7 @@ export const homeDataReducer = (state, action) => {
 				},
 
 			};
-			case homeDataConstants.DELETE_TOUR_SUCCESS:
+		case homeDataConstants.DELETE_TOUR_SUCCESS:
 
 			return {
 				...state,
@@ -466,7 +466,7 @@ export const homeDataReducer = (state, action) => {
 			};
 
 
-			case homeDataConstants.DELETE_POI_SUCCESS:
+		case homeDataConstants.DELETE_POI_SUCCESS:
 
 			return {
 				...state,
@@ -587,7 +587,7 @@ export const homeDataReducer = (state, action) => {
 		case homeDataConstants.UPDATE_MENU_PHOTO_SUCCESS:
 
 
-		console.log("fjsfjd")
+			console.log("fjsfjd")
 			return {
 				...state,
 				showEditMenuModal: false,
@@ -614,14 +614,14 @@ export const homeDataReducer = (state, action) => {
 			};
 
 
-			case homeDataConstants.HIDE_EDIT_LOGO_MODAL:
+		case homeDataConstants.HIDE_EDIT_LOGO_MODAL:
 
 
 			return {
 				...state,
 
 				showEditLogoModal: false,
-			
+
 
 			};
 
@@ -789,7 +789,7 @@ export const homeDataReducer = (state, action) => {
 			prodCpy.modalData.success = true;
 			prodCpy.modalData.text = "You have successfully updated partners data.";
 
-			
+
 			return prodCpy;
 
 		case homeDataConstants.POI_UPDATE_FAILURE:
@@ -867,18 +867,34 @@ export const homeDataReducer = (state, action) => {
 
 			};
 
+
+
+		case homeDataConstants.CONFIRMATION_SUCCESS:
+			return {
+				...state,
+				confirmed: true
+
+			};
+
+		case homeDataConstants.CONFIRMATION_FAILURE:
+			return {
+				...state,
+				notConfirmed: true
+
+			};
+
 		case homeDataConstants.INSERT_DATA_SUCCESS:
 
-		prodCpy = { ...state };
+			prodCpy = { ...state };
 
-		
+
 			prodCpy.modalData.success = true;
 			prodCpy.modalData.success = true;
 			prodCpy.modalData.failure = false;
 			prodCpy.modalData.text = "You have successfully added new data.";
 
 			return prodCpy;
-			
+
 
 		case homeDataConstants.INSERT_DATA_FAILURE:
 
