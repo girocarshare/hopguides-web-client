@@ -67,6 +67,9 @@ const HomeDataContextProvider = (props) => {
 		bpartners: {
 			bpartners: [],
 		},
+		
+		confirmed: false,
+		notConfirmed: false,
 
 		termsAndConditionsModal: {
 			show: false,

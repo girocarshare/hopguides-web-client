@@ -87,7 +87,7 @@ export const homeDataReducer = (state, action) => {
 */
 		case homeDataConstants.DATA_TOUR_POINTS_GET_SUCCESS:
 
-		console.log(action.data)
+			console.log(action.data)
 			var array = []
 			var points = []
 			var points2 = []
@@ -218,7 +218,7 @@ export const homeDataReducer = (state, action) => {
 			prodCpy.toursWithPoints.toursWithPoints = action.data;
 			return prodCpy;
 
-			
+
 
 		case homeDataConstants.DATA_TOUR_POINTS_GET_FAILURE:
 
@@ -310,8 +310,8 @@ export const homeDataReducer = (state, action) => {
 
 			};
 
-			case homeDataConstants.SHOW_TERMS_AND_CONDITIONS_MODAL:
-				
+		case homeDataConstants.SHOW_TERMS_AND_CONDITIONS_MODAL:
+
 			prodCpy = { ...state };
 
 			prodCpy.termsAndConditionsModal.show = true;
@@ -351,8 +351,8 @@ export const homeDataReducer = (state, action) => {
 
 
 			};
-			
-			case homeDataConstants.SHOW_ADD_MENU_MODAL:
+
+		case homeDataConstants.SHOW_ADD_MENU_MODAL:
 
 
 			return {
@@ -374,7 +374,7 @@ export const homeDataReducer = (state, action) => {
 
 			};
 
-			case homeDataConstants.SHOW_UPDATE_LOGO_MODAL:
+		case homeDataConstants.SHOW_UPDATE_LOGO_MODAL:
 
 
 			return {
@@ -394,7 +394,7 @@ export const homeDataReducer = (state, action) => {
 
 			};
 
-			case homeDataConstants.SHOW_CHANGE_LOCK_CODE_MODAL:
+		case homeDataConstants.SHOW_CHANGE_LOCK_CODE_MODAL:
 
 
 			return {
@@ -464,7 +464,7 @@ export const homeDataReducer = (state, action) => {
 			prodCpy.modalData.success = true;
 			prodCpy.modalData.text = "You have successfully added new partner.";
 			return prodCpy;
-		
+
 
 		case homeDataConstants.PARTNER_SUBMIT_FAILURE:
 
@@ -711,18 +711,18 @@ export const homeDataReducer = (state, action) => {
 
 			return prodCpy;
 
-			case homeDataConstants.HIDE_EDIT_LOGO_MODAL:
+		case homeDataConstants.HIDE_EDIT_LOGO_MODAL:
 
 
 			return {
 				...state,
 
 				showEditLogoModal: false,
-			
+
 
 			};
 
-			
+
 		case homeDataConstants.SHOW_ADD_PARTNER_MODAL:
 
 			return {
@@ -745,14 +745,14 @@ export const homeDataReducer = (state, action) => {
 
 			};
 
-			case homeDataConstants.GET_BPARTNERS_SUCCESS:
-				prodCpy = { ...state };
+		case homeDataConstants.GET_BPARTNERS_SUCCESS:
+			prodCpy = { ...state };
 
-				prodCpy.bpartners.bpartners = action.data;
-	
-				return prodCpy;
-			
-		
+			prodCpy.bpartners.bpartners = action.data;
+
+			return prodCpy;
+
+
 
 		case homeDataConstants.GET_BPARTNERS_FAILURE:
 			return {
@@ -763,7 +763,7 @@ export const homeDataReducer = (state, action) => {
 
 			};
 
-			case homeDataConstants.INSERT_DATA_SUCCESS:
+		case homeDataConstants.INSERT_DATA_SUCCESS:
 
 			return {
 				...state,
@@ -788,7 +788,7 @@ export const homeDataReducer = (state, action) => {
 				},
 
 			};
-			case homeDataConstants.UPDATE_TOUR_DATA_MODAL_SHOW:
+		case homeDataConstants.UPDATE_TOUR_DATA_MODAL_SHOW:
 
 			prodCpy = { ...state };
 
@@ -796,8 +796,8 @@ export const homeDataReducer = (state, action) => {
 			prodCpy.updateTourData.tour = action.tour;
 
 			return prodCpy;
-		
-			case homeDataConstants.UPDATE_TOUR_DATA_MODAL_CLOSE:
+
+		case homeDataConstants.UPDATE_TOUR_DATA_MODAL_CLOSE:
 
 			return {
 				...state,
@@ -807,7 +807,7 @@ export const homeDataReducer = (state, action) => {
 				},
 			};
 
-			case homeDataConstants.UPDATE_POINT_DATA_MODAL_SHOW:
+		case homeDataConstants.UPDATE_POINT_DATA_MODAL_SHOW:
 
 			prodCpy = { ...state };
 
@@ -816,8 +816,8 @@ export const homeDataReducer = (state, action) => {
 			prodCpy.updatePointData.point = action.point.point;
 
 			return prodCpy;
-		
-			case homeDataConstants.UPDATE_POINT_DATA_MODAL_CLOSE:
+
+		case homeDataConstants.UPDATE_POINT_DATA_MODAL_CLOSE:
 
 			return {
 				...state,
@@ -827,7 +827,7 @@ export const homeDataReducer = (state, action) => {
 				},
 			};
 
-			case homeDataConstants.GET_TERMS_AND_CONSITIONS_REQUEST:
+		case homeDataConstants.GET_TERMS_AND_CONSITIONS_REQUEST:
 
 
 			return {
@@ -852,6 +852,20 @@ export const homeDataReducer = (state, action) => {
 			return {
 				...state,
 				termsAndConsitions: ""
+
+			};
+
+		case homeDataConstants.CONFIRMATION_SUCCESS:
+			return {
+				...state,
+				confirmed: true
+
+			};
+
+		case homeDataConstants.CONFIRMATION_FAILURE:
+			return {
+				...state,
+				notConfirmed: true
 
 			};
 

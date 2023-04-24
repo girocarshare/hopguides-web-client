@@ -18,7 +18,8 @@ export const homeDataService = {
 	getBPartners,
 	changeLockCode,
 	insertData,
-	getTermsAndConditions
+	getTermsAndConditions,
+	confirm
 
 };
 
@@ -71,6 +72,39 @@ async function getTermsAndConditions(dispatch ,id) {
 	}
 	function failure(message) {
 		return { type: homeDataConstants.GET_TERMS_AND_CONSITIONS_FAILURE, errorMessage: message };
+	}
+}
+
+
+async function confirm(dispatch ,bookingId, pointId) {
+	
+	
+	dispatch(request());
+	
+	await Axios.get(`${url}api/booking/scanQR/` + bookingId +"/" + pointId, { validateStatus: () => true })
+		.then((res) => {
+			if (res.status === 200) {
+				dispatch(success(res.data));
+			} else {
+				var error = "Error while fetching data"
+				dispatch(failure(error));
+			}
+		})
+		.catch((err) => {
+		
+			var error = "Unknown error, please try again later."
+				dispatch(failure(error));
+		});
+
+	function request() {
+		return { type: homeDataConstants.CONFIRMATION_REQUEST };
+	}
+	function success(data) {
+		
+		return { type: homeDataConstants.CONFIRMATION_SUCCESS, data: data };
+	}
+	function failure(message) {
+		return { type: homeDataConstants.CONFIRMATION_FAILURE, errorMessage: message };
 	}
 }
 
