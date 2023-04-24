@@ -225,8 +225,7 @@ const TourData = () => {
 		homeDataService.insertData(false, dispatch);
 	};
 	const handleModalClose = () => {
-		dispatch({type: homeDataConstants.HIDE});
-		window.location.reload()
+		dispatch({type: homeDataConstants.UPDATE_TOUR_DATA_MODAL_CLOSE});
 	};
 
 	const addFile = (e) => {
@@ -282,7 +281,7 @@ const TourData = () => {
 
 								<div class="modal__header">
 									<h2 class="text-leading">
-										Update Partner
+										Update Tour
 									</h2>
 									<button class="button button--circle button--clear justify-self-end" type="button"
 											onClick={handleModalClose}>

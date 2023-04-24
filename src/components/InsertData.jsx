@@ -468,6 +468,8 @@ const InsertData = (props) => {
 
 		setPoints(newData)
 
+		setPartner(false)
+		setPoint(false)
 
 	}
 
@@ -584,11 +586,20 @@ const InsertData = (props) => {
 	};
 
 
-	const handleClose = () => {
+	const handleCloseMain = () => {
+		window.location = "#/"
+	};
 
+	const handleClose = () => {
+		
 		setShowModal(false)
 	};
 
+	const handleClosePoi = () => {
+		
+		setPartner(false)
+		setPoint(false)
+	};
 
 	const handleChangeTermsAndConditions = () => {
 
@@ -696,7 +707,7 @@ const InsertData = (props) => {
 									</h2>
 									<button class="button button--circle button--clear justify-self-end"
 											type="button"
-											onClick={handleClose}>
+											onClick={handleCloseMain}>
 										<AiOutlineClose/>
 									</button>
 								</div>
@@ -1050,7 +1061,7 @@ const InsertData = (props) => {
 																	<button
 																		class="button button--circle button--clear justify-self-end"
 																		type="button"
-																		onClick={handleClose}>
+																		onClick={handleClosePoi}>
 																		<AiOutlineClose/>
 																	</button>
 																</div>

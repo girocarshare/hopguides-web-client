@@ -260,8 +260,7 @@ const POIData = () => {
 		homeDataService.insertData(false, dispatch);
 	};
 	const handleModalClose = () => {
-		dispatch({type: homeDataConstants.HIDE});
-		window.location.reload()
+		dispatch({type: homeDataConstants.UPDATE_POINT_DATA_MODAL_CLOSE});
 	};
 
 	const addFile = (e) => {

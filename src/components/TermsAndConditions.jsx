@@ -27,7 +27,8 @@ const Report = forwardRef((props, ref) => {
 	}, [dispatch]);
 
 	const handleModalClose = () => {
-		dispatch({type: homeDataConstants.HIDE_MODAL});
+		window.location = "#/"
+		//dispatch({type: homeDataConstants.HIDE_MODAL});
 	};
 
 
