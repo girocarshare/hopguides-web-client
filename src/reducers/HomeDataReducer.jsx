@@ -789,7 +789,7 @@ export const homeDataReducer = (state, action) => {
 			prodCpy.modalData.success = true;
 			prodCpy.modalData.text = "You have successfully updated partners data.";
 
-
+			
 			return prodCpy;
 
 		case homeDataConstants.POI_UPDATE_FAILURE:
@@ -868,13 +868,16 @@ export const homeDataReducer = (state, action) => {
 			};
 
 
+		prodCpy = { ...state };
 
-		case homeDataConstants.CONFIRMATION_SUCCESS:
-			return {
-				...state,
-				confirmed: true
+		
+			prodCpy.modalData.success = true;
+			prodCpy.modalData.success = true;
+			prodCpy.modalData.failure = false;
+			prodCpy.modalData.text = "You have successfully added new data.";
 
-			};
+			return prodCpy;
+			
 
 		case homeDataConstants.CONFIRMATION_FAILURE:
 			return {
