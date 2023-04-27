@@ -115,6 +115,10 @@ const HomeData = forwardRef((props, ref) => {
   };
 
 
+  const getQrCodes = (e, data) => {
+  
+    window.location = "#/qrcodes/" + data;
+  };
 
   const getQrCode = (e, data) => {
     homeDataService.getQrCode(dispatch, data);
@@ -243,6 +247,8 @@ const HomeData = forwardRef((props, ref) => {
       {homeDataState.updateTourData.show && <div >
         <TourData />
       </div>}
+
+    
       {role &&
         <div class="button-login">
 
@@ -384,6 +390,7 @@ const HomeData = forwardRef((props, ref) => {
                   </td>
                   <td style={{ border: "1px solid gray" }}>{tour.noOfRidesAMonth}</td>
                   <td style={{ border: "1px solid gray" }}><button onClick={(e) => getHistory(e, tour.tourId)} >Get report</button></td>
+                  <td style={{ border: "1px solid gray" }}><button onClick={(e) => getQrCodes(e, tour.tourId)} >Get qr codes</button></td>
                   <td style={{ border: "1px solid gray" }}><button onClick={(e) => update(e, tour)} >{updateField}</button></td>
                   <td style={{ border: "1px solid gray" }}><button onClick={(e) => deleteTour(e, tour)} >Delete</button></td>
                   <td style={{ border: "1px solid gray" }}><button
