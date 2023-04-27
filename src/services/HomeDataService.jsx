@@ -18,7 +18,9 @@ export const homeDataService = {
 	changeLockCode,
 	insertData,
 	getTermsAndConditions,
-	confirm
+	confirm,
+	getQrCodes,
+	generateQrCode
 
 };
 
@@ -167,6 +169,72 @@ async function confirm(dispatch ,bookingId, pointId) {
 	}
 	function failure(message) {
 		return { type: homeDataConstants.CONFIRMATION_FAILURE, errorMessage: message };
+	}
+}
+
+
+async function getQrCodes(dispatch ,tourId) {
+	
+	
+	dispatch(request());
+	
+	await Axios.get(`${url}api/pnl/tour/getqrcodes/` + tourId , { validateStatus: () => true })
+		.then((res) => {
+			if (res.status === 200) {
+				dispatch(success(res.data));
+			} else {
+				var error = "Error while fetching data"
+				dispatch(failure(error));
+			}
+		})
+		.catch((err) => {
+		
+			var error = "Unknown error, please try again later."
+				dispatch(failure(error));
+		});
+
+	function request() {
+		return { type: homeDataConstants.GET_QRCODES_REQUEST };
+	}
+	function success(data) {
+		console.log(data)
+		return { type: homeDataConstants.GET_QRCODES_SUCCESS, data: data };
+	}
+	function failure(message) {
+		return { type: homeDataConstants.GET_QRCODES_FAILURE, errorMessage: message };
+	}
+}
+
+
+async function generateQrCode(dispatch ,tourId) {
+	
+	
+	dispatch(request());
+	
+	await Axios.get(`${url}api/pnl/tour/qr/` + tourId , { validateStatus: () => true })
+		.then((res) => {
+			if (res.status === 200) {
+				dispatch(success(res.data));
+			} else {
+				var error = "Error while fetching data"
+				dispatch(failure(error));
+			}
+		})
+		.catch((err) => {
+		
+			var error = "Unknown error, please try again later."
+				dispatch(failure(error));
+		});
+
+	function request() {
+		return { type: homeDataConstants.GENERATE_QRCODE_REQUEST };
+	}
+	function success(data) {
+		console.log(data)
+		return { type: homeDataConstants.GENERATE_QRCODE_SUCCESS, data: data };
+	}
+	function failure(message) {
+		return { type: homeDataConstants.GENERATE_QRCODE_FAILURE, errorMessage: message };
 	}
 }
 

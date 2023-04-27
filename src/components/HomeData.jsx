@@ -94,6 +94,13 @@ const HomeData = forwardRef((props, ref) => {
 		getDocumentsInfoHandlerr();
 	};
 
+  
+
+  const getQrCodes = (e, data) => {
+  
+    window.location = "#/qrcodes/" + data;
+  };
+
 
 	const getQrCode = (e, data) => {
 		homeDataService.getQrCode(dispatch, data);
@@ -388,6 +395,7 @@ const HomeData = forwardRef((props, ref) => {
 											<button class="button button--secondary button--small"
 													onClick={(e) => getHistory(e, tour.tourId)}>Get report
 											</button>
+                      <button class="button button--secondary button--small" onClick={(e) => getQrCodes(e, tour.tourId)} >Get qr codes</button>
 											<button class="button button--secondary button--small"
 													onClick={(e) => update(e, tour)}>{updateField}</button>
 											<button class="button button--secondary button--small"

@@ -70,6 +70,12 @@ const HomeDataContextProvider = (props) => {
 		confirmed: false,
 		notConfirmed: false,
 		
+		qrCodes : [],
+		
+		qrCode : null,
+
+		qr: "",
+		
 		termsAndConditionsModal: {
 			show: false,
 			text: "${title} global terms of service, effective as of 1.3.2023\n"+

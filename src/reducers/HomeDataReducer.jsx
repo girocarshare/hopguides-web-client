@@ -868,21 +868,6 @@ export const homeDataReducer = (state, action) => {
 			};
 
 
-
-		case homeDataConstants.CONFIRMATION_SUCCESS:
-			return {
-				...state,
-				confirmed: true
-
-			};
-
-		case homeDataConstants.CONFIRMATION_FAILURE:
-			return {
-				...state,
-				notConfirmed: true
-
-			};
-
 		case homeDataConstants.INSERT_DATA_SUCCESS:
 
 			prodCpy = { ...state };
@@ -974,6 +959,67 @@ export const homeDataReducer = (state, action) => {
 				termsAndConsitions: ""
 
 			};
+
+			
+
+	case homeDataConstants.GET_QRCODES_SUCCESS:
+		return {
+			...state,
+			qrCodes: action.data,
+
+		};
+
+	case homeDataConstants.GET_QRCODES_FAILURE:
+		return {
+			...state,
+			qrCodes: []
+
+		};
+
+		case homeDataConstants.SHOW_ADD_QR_CODE_MODAL:
+			return {
+				...state,
+				generateQrCodeModalShow: true
+
+			};
+
+			
+		case homeDataConstants.CONFIRMATION_SUCCESS:
+			return {
+				...state,
+				confirmed: true
+
+			};
+
+		case homeDataConstants.CONFIRMATION_FAILURE:
+			return {
+				...state,
+				notConfirmed: true
+
+			};
+
+			case homeDataConstants.GENERATE_QRCODE_SUCCESS:
+		
+		
+			prodCpy = { ...state };
+
+		prodCpy.qrCode = action.data;
+		prodCpy.qr = action.data.qrcode;
+		prodCpy.generateQrCodeModalShow = true;
+
+		return prodCpy;
+
+
+	case homeDataConstants.GENERATE_QRCODE_FAILURE:
+		return {
+			...state,
+			qrCode: null
+
+		};
+
+
+
+
 
 		default:
 			return state;
