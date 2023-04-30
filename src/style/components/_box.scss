@@ -1,0 +1,23 @@
+.box {
+	@apply bg-white shadow border border-black/10 rounded-xl mb-8;
+}
+
+.box__content {
+	@apply p-4 md:p-6;
+}
+
+.box__header {
+	@apply flex flex-col md:flex-row gap-2 items-start md:items-center mb-4;
+}
+
+.box__count {
+	@apply flex flex-col items-center justify-center bg-blue-400/10 p-4 rounded-lg;
+}
+
+.box__count__label {
+	@apply text-xs uppercase text-center font-medium text-blue-800;
+}
+
+.box__count__number {
+	@apply text-5xl text-center text-black font-bold;
+}

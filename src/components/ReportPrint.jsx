@@ -96,7 +96,7 @@ const ReportPrint = () => {
 
 	return (
 
-		<div class="container pt-20 pb-60 lg:py-40">
+		<div class="container container-md pt-20 pb-60 lg:py-40">
 			<div class="navbar">
 				<div class="navbar__content">
 					<div>

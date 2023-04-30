@@ -1,15 +1,16 @@
-import React, { useContext, useState, useEffect, useRef } from "react";
-import { reportConstants } from "../constants/ReportConstants";
-import { ReportContext } from "../contexts/ReportContext";
-import { reportService } from "../services/ReportService";
-import { AiOutlineClose } from 'react-icons/ai';
-import { useParams } from 'react-router-dom';
+import React, {useContext, useState, useEffect, useRef} from "react";
+import {reportConstants} from "../constants/ReportConstants";
+import {ReportContext} from "../contexts/ReportContext";
+import {reportService} from "../services/ReportService";
+import {AiOutlineClose} from 'react-icons/ai';
+import {useParams} from 'react-router-dom';
+
 var url = process.env.REACT_APP_URL || "http://localhost:8080/";
 
 const ReportModal = () => {
 
-	let { id } = useParams()
-	const { reportState, dispatch } = useContext(ReportContext);
+	let {id} = useParams()
+	const {reportState, dispatch} = useContext(ReportContext);
 	const [file, setFile] = useState(null);
 	const [errMessage, setErrMessage] = useState("");
 	const uploadRef = React.useRef();
@@ -17,7 +18,7 @@ const ReportModal = () => {
 	const progressRef = React.useRef();
 
 	const handleModalClose = () => {
-		dispatch({ type: reportConstants.HIDE_ADD_MENU_MODAL });
+		dispatch({type: reportConstants.HIDE_ADD_MENU_MODAL});
 		window.location.reload()
 	};
 
@@ -31,7 +32,7 @@ const ReportModal = () => {
 
 			return (
 				<div>
-					<h2 style={{ marginTop: "20px" }}>File details</h2>
+					<h2 style={{marginTop: "20px"}}>File details</h2>
 					<p>File name: {file.name}</p>
 					<p>File type: {file.type}</p>
 					<p>
@@ -42,7 +43,6 @@ const ReportModal = () => {
 			);
 		}
 	};
-
 
 
 	const handleSubmit = (e) => {
@@ -103,74 +103,84 @@ const ReportModal = () => {
 
 		reportService.addMenu(false, dispatch);
 	};
-
 	return (
 
-		<div>
+		<div class="relative z-50" aria-labelledby="modal-title" role="dialog" aria-modal="true">
 
-			{reportState.report.showModal && <div class="overlay" >
-				<div id="myModal" class="modal" style={{ background: "white" }}>
-					<div class="button-login">
+			{reportState.report.showModal &&
 
-						<button
-							type="button"
-							style={{ background: "#0099ff", marginTop: "px", marginRight: "55px", padding: "5px 15px", height: "35px" }}
-							onClick={handleModalClose}
-							class="btn btn-primary btn-lg"
-						>
-							<AiOutlineClose />
-						</button>
-					</div>
-					<div className="container"  >
+				<div>
 
+					<div class="modal-overlay"></div>
 
-						<div className="row mt-5">
+					<div class="fixed inset-0 z-10 overflow-y-auto">
 
-							<form id="contactForm" >
+						<div class="modal-frame">
 
-								<table style={{ marginLeft: "4rem", marginBottom: "4rem" }}>
-									<td width="600rem"  >
+							<div id="myModal" class="modal modal--sm">
 
-										<div style={{ marginTop: "15px" }}>
-											<input type="file" name="file" onChange={onFileChange} />
+								<div class="modal__header">
+									<h2 class="text-leading">
+										Update menu
+									</h2>
+									<button class="button button--circle button--clear justify-self-end" type="button"
+											onClick={handleModalClose}>
+										<AiOutlineClose/>
+									</button>
+								</div>
 
+								<div class="modal__body">
+
+									<form id="contactForm">
+
+										<div class="form">
+											<div class="form__group">
+												<label for="file-upload"
+													   class="button button--secondary button--small">
+													<span>Upload a file</span>
+													<input id="file-upload" name="file" type="file" class="sr-only"
+														   onChange={onFileChange}/>
+												</label>
+											</div>
+											<div class="form__group">
+												{fileData()}
+											</div>
+											<div class="form__group">
+												<div hidden={!errMessage}>
+													{errMessage}
+												</div>
+											</div>
+
+											<div class="form__group">
+												<label class="text-sm">
+													File progress: <progress class="ml-2" ref={progressRef} value="0"
+																			 max="100"/>
+												</label>
+												<p class="text-sm" ref={statusRef}></p>
+											</div>
+
+											<div class="form__group">
+												<button
+													onClick={(e) => {
+														handleSubmit(e)
+													}}
+													className="button button--primary"
+													id="sendMessageButton"
+													type="button"
+												>
+													Add menu
+												</button>
+											</div>
 										</div>
 
-										{fileData()}
+									</form>
 
-										<div className="form-group text-center" style={{ color: "red", fontSize: "0.8em", marginTop: "30px", marginRight: "40px" }} hidden={!errMessage}>
-											{errMessage}
-										</div>
-										<div className="form-group text-center">
-											<button
-												style={{ background: "#1977cc", marginTop: "15px", marginRight: "55px" }}
-
-												onClick={(e) => { handleSubmit(e) }}
-												className="btn btn-primary btn-xl"
-												id="sendMessageButton"
-												type="button"
-											>
-												Add menu
-											</button>
-										</div>
-
-										<label>
-											File progress: <progress ref={progressRef} value="0" max="100" />
-										</label>
-										<p ref={statusRef}></p>
-									</td>
-								</table>
-
-
-
-							</form>
+								</div>
+							</div>
 						</div>
-
-
 					</div>
-
 				</div>
-			</div>}
+			}
 		</div>
 
 	);

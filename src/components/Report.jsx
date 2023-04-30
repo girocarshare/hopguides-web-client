@@ -94,7 +94,7 @@ const Report = forwardRef((props, ref) => {
 
 		<div ref={ref}>
 
-			<div class="grid grid-cols-12 mb-12 lg:mb-16 items-start justif-start gap-8">
+			<div class="grid grid-cols-12 mb-12 items-start justif-start gap-8">
 
 				<div class="col-span-12 lg:col-span-3">
 					&nbsp;
@@ -133,85 +133,142 @@ const Report = forwardRef((props, ref) => {
 				</div>
 			</div>
 
-			<div class="home-box">
+			<div class="box">
+				<div class="box__content">
 
-				<p class="paragraph-box2">This is <b>{reportState.report.bpartnerName}</b> tourist package with digital
-					tour guide GoGiro. You are included
-					in <b>{reportState.report.name}</b> package <b>{reportState.report.offerName}</b>. When the guest
-					shows you a non used QR code this is valid confirmation that tourist has bought
-					a <b>{reportState.report.name}</b> package
-				</p><br/>
 
-				<h3><b>Tour name</b>: {reportState.report.name}</h3>
-				<h3><b>Monthly usage</b>: {reportState.report.monthlyUsedCoupons || 0}</h3>
-				<a class="button button--secondary button--small"
-				   href={"http://localhost:3000/#/previousReports/" + id}>Get previous reports</a>
+
+					<div class="flex flex-col md:flex-row gap-6">
+						<div>
+							<div class="box__header">
+								<div class="flex-grow text-heading6">
+									{reportState.report.name}
+								</div>
+								<a class="button button--secondary button--small"
+									href={"http://localhost:3000/#/previousReports/" + id}>All reports</a>
+							</div>
+							<div class="text-base">
+								This is <b>{reportState.report.bpartnerName}</b> tourist package with digital
+								tour guide GoGiro. You are included
+								in <b>{reportState.report.name}</b> package <b>{reportState.report.offerName}</b>. When the
+								guest shows you a non used QR code this is valid confirmation that tourist has bought
+								a <b>{reportState.report.name}</b> package.
+							</div>
+						</div>
+						<div class="box__count md:order-first">
+							<div class="form__label form__label--uppercase text-center">
+								Monthly usage:
+							</div>
+							<div class="box__count__number">
+								{reportState.report.monthlyUsedCoupons || 0}
+							</div>
+						</div>
+					</div>
+
+				</div>
 			</div>
 
 
-			<h4 class="header2">Instructions</h4>
-			<p class="paragraph-box2">1. Using the camera on your phone please scan the users/customer QR code </p><br/>
-			<p class="paragraph-box2">2. After scanning the QR code, please check the provided feedback on your
-				phone. </p><br/>
-			<ul class="ul-box2">
-				<li>If the QR code is <ColorText>VALID</ColorText> please serve the customer<BoldText> »home made«
-					Sirove Štruklje </BoldText>as included in the tour.
-				</li>
-			</ul>
+			<div class="box">
+				<div class="box__content">
 
-			<div class="image-box">
-				{
+					<div class="box__header">
+						<div class="form__label form__label--uppercase">
+							Instructions
+						</div>
+					</div>
 
-					<img alt="" src="/assets/img/Screenshot_2.png"/>
+					<div class="bullets">
+						<div class="bullet">
+							<div class="bullet__number">
+								1.
+							</div>
+							<div class="bullet__content">
+								Using the camera on your phone please scan the users/customer QR
+								code
+							</div>
+						</div>
+						<div class="bullet">
+							<div class="bullet__number">
+								2.
+							</div>
+							<div class="bullet__content">
+								After scanning the QR code, please check the provided feedback on your
+								phone.
+							</div>
+						</div>
+					</div>
 
-				}
+					<div class="flex flex-col md:flex-row gap-4 items-stretch">
+						<div class="bg-green-200 bg-opacity-40 rounded-lg p-4 flex flex-col gap-4 items-center">
+							<div class="text-sm">
+								If the QR code is <ColorText>VALID</ColorText> please serve the customer<BoldText> »home
+								made« Sirove Štruklje </BoldText>as included in the tour.
+							</div>
+							<div class="bg-white rounded-md overflow-hidden shadow shadow-green-500/20">
+								{
+
+									<img alt="" src="/assets/img/Screenshot_2.png"/>
+
+								}
+							</div>
+						</div>
+						<div class="bg-red-200 bg-opacity-40 rounded-lg p-4 flex flex-col gap-4 items-center">
+							<div class="text-sm">
+								If the QR code is <ColorTextRed>NOT VALID</ColorTextRed> the user has not paid for the
+								experience or
+								has already used the said QR code
+							</div>
+							<div class="bg-white rounded-md overflow-hidden shadow shadow-red-500/10">
+								{
+
+									<img alt="" src="/assets/img/Screenshot_1.png"/>
+
+								}
+							</div>
+						</div>
+					</div>
+
+				</div>
 			</div>
 
-			<ul class="ul-box2">
-				<li>If the QR code is <ColorTextRed>NOT VALID</ColorTextRed> the user has not paid for the experience or
-					has already used the said QR code
-
-				</li>
-			</ul>
-
-			<div class="image-box">
-				{
-
-					<img alt="" src="/assets/img/Screenshot_1.png"/>
-
-				}
-			</div>
-
-			<h4 class="header2"></h4>
-			<div class="paragraph-box">
+			<div class="box">
+				<div class="box__content">
 
 
-				<h1 style={{fontSize: 28}}><b>Offer name</b>: {reportState.report.offerName}</h1>
+					<div class="flex flex-col md:flex-row gap-4 items-start md:items-center">
+						<div class="flex-grow">
+							<div class="form__label form__label--uppercase">
+								Offer name:
+							</div>
+							<div class="text-heading6">
+								{reportState.report.offerName}
+							</div>
+						</div>
+						<div>
+							{/*{admin && */}
+							<button
+								type="button"
+								onClick={handleShowModal}
+								class="button button--primary button--small"
+							>
+								Update menu image
+							</button>
+							{/*} */}
+						</div>
+					</div>
 
-			</div>
 
-			{/*{admin && */}
-			<div class=" button-p">
-				<button
-					type="button"
-					style={{color: "black"}}
-					onClick={handleShowModal}
-					class="button button--secondary button--small"
-				>
-					Update menu image
-				</button>
-			</div>
-			{/*} */}
-
-
-			<div class="menu-box">
-				{
-					reportState.report.menu ? (
-						<img alt="" src={reportState.report.menu}></img>
-					) : (
-						null
-					)
-				}
+					<div>
+						{
+							reportState.report.menu ? (
+								<img alt="" src={reportState.report.menu}></img>
+							) : (
+								null
+							)
+						}
+					</div>
+				</div>
 			</div>
 		</div>
 	)
