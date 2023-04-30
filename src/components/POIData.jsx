@@ -203,6 +203,8 @@ const POIData = () => {
 				jsonTitles.push(titleObj)
 			}
 			point.imageTitles = jsonTitles
+		}else{
+			point.imageTitles = []
 		}
 
 		point.id = homeDataState.updatePointData.point.id
@@ -227,6 +229,7 @@ const POIData = () => {
 			}
 		}
 
+		console.log(point)
 		formData.append('point', JSON.stringify(point));
 
 		var xhr = new XMLHttpRequest();
