@@ -135,7 +135,6 @@ const TourData = () => {
 	const handleSubmit = (e) => {
 		/*e.preventDefault();
 		var tour = {}
-
 		if (titleTransl != "") {
 			tour.title = JSON.parse(titleTransl)
 		}
@@ -163,32 +162,21 @@ const TourData = () => {
 		if (length != "") {
 			tour.length = length
 		}
-
 		if (highestPoint != "") {
 			tour.highestPoint = highestPoint
 		}
 		if (currency != "") {
 			tour.currency = currency
 		}
-
 		tour.id = homeDataState.updateTourData.tour.tourId
-
-
 		const formData = new FormData();
 		if (file != null) {
-
 			formData.append('file', file);
 		}
-
 		if (audio != null) {
-
 			formData.append('file', audio);
 		}
-
-
-
 		formData.append('tour', JSON.stringify(tour));
-
 		console.log(formData)
 		var xhr = new XMLHttpRequest();
 		xhr.addEventListener("load", SuccessHandler, false);
@@ -197,7 +185,6 @@ const TourData = () => {
 		xhr.open('POST', `${url}api/pnl/tour/update/tour`, true);
 		xhr.onload = function () {
 		};
-
 		xhr.send(formData);
 */
 		SuccessHandler()

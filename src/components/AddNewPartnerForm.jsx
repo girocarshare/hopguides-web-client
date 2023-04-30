@@ -143,19 +143,15 @@ const AddNewPartnerForm = (props) => {
 	const handleAdd = (e) => {
 
 		/*if (partner && (titlePointTransl == "" || shortInfoPointTransl == "" || longInfoPointTransl == "" || category == "" || pointPrice == "" || offerName == "" || responsiblePerson == "" || voucherDescTransl == "" || phone == "" || email == "" || longitude == "" || latitude == "" || audio2 == null || selectedFiles.length == 0 || (!mondayclosed && (mondayFrom == "" || mondayTo == "")) || (!tuesdayclosed && (tuesdayFrom == "" || tuesdayTo == "")) || (!wednesdayclosed && (wednesdayFrom == "" || wednesdayTo == "")) || (!thursdayclosed && (thursdayFrom == "" || thursdayTo == "")) || (!fridayclosed && (fridayFrom == "" || fridayTo == "")) || (!saturdayclosed && (saturdayFrom == "" || saturdayTo == "")) || (!sundayclosed && (sundayFrom == "" || sundayTo == "")))) {
-
 			setErrMessagePartner("Please insert mandatory fields for partner (marked with *)")
 		} else if (point && (titlePointTransl == "" || shortInfoPointTransl == "" || longInfoPointTransl == "" || category == "" || longitude == "" || latitude == "" || audio2 == null || selectedFiles.length == 0)) {
-
 			setErrMessagePartner("Please insert mandatory fields for point of interest (marked with *)")
 		} else {
 			setAdd(false)
 			setErrMessagePartner("")
-
 var jsonTitles = []
     for(var ti of imageTitles){
       var help = ti.split("---")
-
       var titlee = JSON.parse(help[0])
       var titleObj = {
         number : help[1],
@@ -178,7 +174,6 @@ var jsonTitles = []
 				bpartnerId: homeDataState.showAddPartnerModal.bpartnerId,
 				imageTitles : jsonTitles
 			}
-
 			if (voucherDesc == "") {
 				point.voucherDesc = JSON.parse(`{
 				  "english": "",
@@ -192,7 +187,6 @@ var jsonTitles = []
 				point.partner = true
 			}
 			const newData = [point, ...points];
-
 			setPoints(newData)
 			setTitlePoint("")
 			setShortInfoPoint("")
@@ -220,16 +214,12 @@ var jsonTitles = []
 			setShortInfoPointTransl("")
 			setLongInfoPointTransl("")
 			setVoucherDescTransl("")
-
 			setFiles(files.concat(selectedFiles))
 			setAudios(audios.concat(audio2))
-
 			setSelectedFiles([])
 			setAudio2(null)
 			setImagePreviews([])
 			num = num + 1
-
-
 			// });
 		}*/
 		var point = {
@@ -317,28 +307,20 @@ var jsonTitles = []
 		/*if (points.length == 0) {
 			setErrMessage("Please add at least one partner")
 		} else {
-
 			e.preventDefault();
-
-
 			var tour = {
 				id: homeDataState.showAddPartnerModal.id,
 				points: points
 			}
-
 			const formData = new FormData();
-
 			for (var f of files) {
-
 				formData.append('file', f);
 			}
 			for (var a of audios) {
-
 				formData.append('file', a);
 			}
 			//formData.append('audio', audio);
 			formData.append('tour', JSON.stringify(tour));
-
 			var xhr = new XMLHttpRequest();
 			xhr.addEventListener("load", SuccessHandler, false);
 			xhr.addEventListener("error", ErrorHandler, false);
@@ -347,11 +329,7 @@ var jsonTitles = []
 			xhr.onload = function () {
 				// do something to response
 			};
-
 			xhr.send(formData);
-
-
-
 		}*/
 
 		SuccessHandler()
@@ -612,8 +590,8 @@ var jsonTitles = []
 														<label class="form__label">Category*</label>
 														<select
 															onChange={(e) => setCategory(e.target.value)}
-															name="category" class="custom-select"
-															class="form__input"
+															name="category" 
+															class="custom-select"
 														>
 															{categories.map(item =>
 																<option key={item}

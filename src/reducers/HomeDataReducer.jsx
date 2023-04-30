@@ -813,6 +813,17 @@ export const homeDataReducer = (state, action) => {
 
 			return prodCpy;
 
+		case homeDataConstants.HIDE_EDIT_LOGO_MODAL:
+
+
+			return {
+				...state,
+
+				showEditLogoModal: false,
+
+
+			};
+
 
 		case homeDataConstants.SHOW_ADD_PARTNER_MODAL:
 
@@ -852,7 +863,7 @@ export const homeDataReducer = (state, action) => {
 			array.push(bpartner)
 			array.push(bpartner2)
 
-			prodCpy.bpartners.bpartners = array//action.data;
+			prodCpy.bpartners.bpartners = action.data;
 
 			return prodCpy;
 
@@ -867,7 +878,6 @@ export const homeDataReducer = (state, action) => {
 
 			};
 
-		
 
 		case homeDataConstants.CONFIRMATION_FAILURE:
 			return {
@@ -967,8 +977,6 @@ export const homeDataReducer = (state, action) => {
 
 			};
 
-			
-
 	case homeDataConstants.GET_QRCODES_SUCCESS:
 		return {
 			...state,
@@ -990,7 +998,6 @@ export const homeDataReducer = (state, action) => {
 
 			};
 
-			
 		case homeDataConstants.CONFIRMATION_SUCCESS:
 			return {
 				...state,
@@ -1005,28 +1012,45 @@ export const homeDataReducer = (state, action) => {
 
 			};
 
-			case homeDataConstants.GENERATE_QRCODE_SUCCESS:
-		
-		
-			prodCpy = { ...state };
+			case homeDataConstants.GET_QRCODES_SUCCESS:
+			return {
+				...state,
+				qrCodes: action.data,
 
-		prodCpy.qrCode = action.data;
-		prodCpy.qr = action.data.qrcode;
-		prodCpy.generateQrCodeModalShow = true;
+			};
 
-		return prodCpy;
+		case homeDataConstants.GET_QRCODES_FAILURE:
+			return {
+				...state,
+				qrCodes: []
+
+			};
+
+			case homeDataConstants.SHOW_ADD_QR_CODE_MODAL:
+				return {
+					...state,
+					generateQrCodeModalShow: true
+	
+				};
+
+				case homeDataConstants.GENERATE_QRCODE_SUCCESS:
+			
+			
+				prodCpy = { ...state };
+
+			prodCpy.qrCode = action.data;
+			prodCpy.qr = action.data.qrcode;
+			prodCpy.generateQrCodeModalShow = true;
+
+			return prodCpy;
 
 
-	case homeDataConstants.GENERATE_QRCODE_FAILURE:
-		return {
-			...state,
-			qrCode: null
+		case homeDataConstants.GENERATE_QRCODE_FAILURE:
+			return {
+				...state,
+				qrCode: null
 
-		};
-
-
-
-
+			};
 
 		default:
 			return state;

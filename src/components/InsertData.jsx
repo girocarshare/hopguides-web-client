@@ -222,11 +222,8 @@ const InsertData = (props) => {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		/*if (titleTransl == "" || agreementDescTransl == "" || agreementDescTransl == "" || audio == null || shortInfo == "" || longInfo == "" || price == "" || hotelId == "" || duration == "" || length == "" || highestPoint == "") {
-
           setErrMessage("Please fill in the fileds marked with *")
         } else {
-
-
           var tour = {
             title: JSON.parse(titleTransl),
             agreementTitle: JSON.parse(agreementTitleTransl),
@@ -241,25 +238,19 @@ const InsertData = (props) => {
             termsAndConditions: termsAndConditions,
             currency: currency,
             bpartnerId: hotelId,
-
           }
-
           const formData = new FormData();
-
           formData.append('file', file);
           formData.append('file', audio);
           formData.append('file', audio2);
           for (var f of files) {
-
             console.log(f)
             formData.append('file', f);
           }
           for (var a of audios) {
-
             formData.append('file', a);
           }
           formData.append('tour', JSON.stringify(tour));
-
           console.log(tour)
           var xhr = new XMLHttpRequest();
           xhr.upload.addEventListener("progress", ProgressHandler, false);
@@ -269,10 +260,7 @@ const InsertData = (props) => {
           xhr.open('POST', `${url}api/pnl/tour/addFull/add`, true);
           xhr.onload = function () {
           };
-
           xhr.send(formData);
-
-
         }*/
 		SuccessHandler()
 
@@ -341,28 +329,22 @@ const InsertData = (props) => {
 	const handleAdd = (e) => {
 
 		/*if (partner && (titlePointTransl == "" || shortInfoPointTransl == "" || longInfoPointTransl == "" || category == "" || pointPrice == "" || offerName == "" || responsiblePerson == "" || voucherDescTransl == "" || phone == "" || email == "" || longitude == "" || latitude == "" || audio2 == null || selectedFiles.length == 0 || (!mondayclosed && (mondayFrom == "" || mondayTo == "")) || (!tuesdayclosed && (tuesdayFrom == "" || tuesdayTo == "")) || (!wednesdayclosed && (wednesdayFrom == "" || wednesdayTo == "")) || (!thursdayclosed && (thursdayFrom == "" || thursdayTo == "")) || (!fridayclosed && (fridayFrom == "" || fridayTo == "")) || (!saturdayclosed && (saturdayFrom == "" || saturdayTo == "")) || (!sundayclosed && (sundayFrom == "" || sundayTo == "")))) {
-
           setErrMessagePartner("Please insert mandatory fields for partner (marked with *)")
         } else if (point && (titlePointTransl == "" || shortInfoPointTransl == "" || longInfoPointTransl == "" || category == "" || longitude == "" || latitude == "" || audio2 == null || selectedFiles.length == 0)) {
-
           setErrMessagePartner("Please insert mandatory fields for point of interest (marked with *)")
         } else {
           setAdd(false)
           setErrMessagePartner("")
-
       var jsonTitles = []
         for(var ti of imageTitles){
           var help = ti.split("---")
-
           var titlee = JSON.parse(help[0])
           var titleObj = {
             number : help[1],
             name: titlee
-
           }
           jsonTitles.push(titleObj)
         }
-
           var point = {
             num: num,
             name: JSON.parse(titlePointTransl),
@@ -377,7 +359,6 @@ const InsertData = (props) => {
             category: category,
             imageTitles: jsonTitles,
           }
-
           if (voucherDesc == "") {
             point.voucherDesc = JSON.parse(`{
                   "english": "",
@@ -391,7 +372,6 @@ const InsertData = (props) => {
             point.partner = true
           }
           const newData = [point, ...points];
-
           setPoints(newData)
           setTitlePoint("")
           setShortInfoPoint("")
@@ -418,15 +398,12 @@ const InsertData = (props) => {
           setLongInfoPointTransl("")
           setVoucherDescTransl("")
           setImageTitles([])
-
           setFiles(files.concat(selectedFiles))
           setAudios(audios.concat(audio2))
-
           setSelectedFiles([])
           setAudio2(null)
           setImagePreviews([])
           num = num + 1
-
         }*/
 
 

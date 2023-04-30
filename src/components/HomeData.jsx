@@ -48,31 +48,24 @@ const HomeData = forwardRef((props, ref) => {
         if (token == "null") {
           window.location = "#/unauthorized";
         } else {
-
           /*Axios.get(`${url}api/users/getRole`, { headers: { Authorization: token } }, { validateStatus: () => true },
           )
             .then((res) => {
               if (res.status === 200) {
                 if ("BPARTNER" == res.data) {
-
                   setRole(true)
                 }
-
                 if ("PROVIDER" == res.data) {
-
                   setRole(true)
                   setAdmin(true)
                 }
-
                 if ("ADMIN" == res.data) {
-
                   setAdminOnly(true)
                   setAdmin(true)
                 }
               }
             })
             .catch((err) => {
-
             })
         }*/
 		setTours(homeDataState.toursWithPoints.toursWithPoints)

@@ -67,12 +67,17 @@ const HomeDataContextProvider = (props) => {
 		bpartners: {
 			bpartners: [],
 		},
+		
 		confirmed: false,
 		notConfirmed: false,
-		
+
 		qrCodes : [],
 		
 		qrCode : null,
+
+		qr: "",
+
+		generateQrCodeModalShow: false,
 
 		qr: "",
 		

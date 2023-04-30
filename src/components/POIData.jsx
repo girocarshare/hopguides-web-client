@@ -143,7 +143,6 @@ const POIData = () => {
 	const handleSubmit = (e) => {
 		/*e.preventDefault();
 		var point = {}
-
 		if (nameTransl != "") {
 			point.name = JSON.parse(nameTransl)
 		}
@@ -168,7 +167,6 @@ const POIData = () => {
 		if (responsiblePerson != "") {
 			point.contact.name = responsiblePerson
 		}
-
 		if (phone != "") {
 			point.contact.phone = phone
 		}
@@ -186,11 +184,9 @@ const POIData = () => {
 		if (category != "") {
 			point.category = category
 		}if (imageTitles != "") {
-
 			var jsonTitles = []
     for(var ti of imageTitles){
       var help = ti.split("---")
-
       var titlee = JSON.parse(help[0])
       var titleObj = {
         number : help[1],
@@ -199,35 +195,23 @@ const POIData = () => {
       }
       jsonTitles.push(titleObj)
     }
-
-
 			point.imageTitles = jsonTitles
 		}
-
 		point.id = homeDataState.updatePointData.point.id
 		point.workingHours = { monday: { from: mondayFrom, to: mondayTo }, tuesday: { from: tuesdayFrom, to: tuesdayTo }, wednesday: { from: wednesdayFrom, to: wednesdayTo }, thursday: { from: thursdayFrom, to: thursdayTo }, friday: { from: fridayFrom, to: fridayTo }, saturday: { from: saturdayFrom, to: saturdayTo }, sunday: { from: sundayFrom, to: sundayTo } }
-
-
 		const formData = new FormData();
-
 		if (file != null) {
-
 			formData.append('file', file);
 		}
 		if (audio != null) {
-
 			formData.append('file', audio);
 		}
-
 		if (selectedFiles != []) {
 			for (var f of selectedFiles) {
-
 				formData.append('file', f);
 			}
 		}
-
 		formData.append('point', JSON.stringify(point));
-
 		var xhr = new XMLHttpRequest();
 		xhr.addEventListener("load", SuccessHandler, false);
 		xhr.addEventListener("error", ErrorHandler, false);
@@ -237,7 +221,6 @@ const POIData = () => {
 		xhr.onload = function () {
 			// do something to response
 		};
-
 		xhr.send(formData);
 */
 		SuccessHandler()

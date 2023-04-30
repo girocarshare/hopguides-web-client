@@ -22,7 +22,6 @@ export const homeDataService = {
 	getQrCodes,
 	generateQrCode
 
-
 };
 
 
@@ -81,6 +80,39 @@ async function getTermsAndConditions(dispatch ,id) {
 	}*/
 }
 
+
+
+async function getQrCodes(dispatch ,tourId) {
+	
+	
+	dispatch(request());
+	
+	await Axios.get(`${url}api/pnl/tour/getqrcodes/` + tourId , { validateStatus: () => true })
+		.then((res) => {
+			if (res.status === 200) {
+				dispatch(success(res.data));
+			} else {
+				var error = "Error while fetching data"
+				dispatch(failure(error));
+			}
+		})
+		.catch((err) => {
+		
+			var error = "Unknown error, please try again later."
+				dispatch(failure(error));
+		});
+
+	function request() {
+		return { type: homeDataConstants.GET_QRCODES_REQUEST };
+	}
+	function success(data) {
+		console.log(data)
+		return { type: homeDataConstants.GET_QRCODES_SUCCESS, data: data };
+	}
+	function failure(message) {
+		return { type: homeDataConstants.GET_QRCODES_FAILURE, errorMessage: message };
+	}
+}
 
 function updateTour( tf, dispatch) {
 	
@@ -173,38 +205,6 @@ async function confirm(dispatch ,bookingId, pointId) {
 	}
 }
 
-
-async function getQrCodes(dispatch ,tourId) {
-	
-	
-	dispatch(request());
-	
-	await Axios.get(`${url}api/pnl/tour/getqrcodes/` + tourId , { validateStatus: () => true })
-		.then((res) => {
-			if (res.status === 200) {
-				dispatch(success(res.data));
-			} else {
-				var error = "Error while fetching data"
-				dispatch(failure(error));
-			}
-		})
-		.catch((err) => {
-		
-			var error = "Unknown error, please try again later."
-				dispatch(failure(error));
-		});
-
-	function request() {
-		return { type: homeDataConstants.GET_QRCODES_REQUEST };
-	}
-	function success(data) {
-		console.log(data)
-		return { type: homeDataConstants.GET_QRCODES_SUCCESS, data: data };
-	}
-	function failure(message) {
-		return { type: homeDataConstants.GET_QRCODES_FAILURE, errorMessage: message };
-	}
-}
 
 
 async function generateQrCode(dispatch ,tourId) {
@@ -447,14 +447,13 @@ async function getPreviousMonthsData(dispatch ,id) {
 }
 
 async function getToursAndPointsData(dispatch) {
-	dispatch(success([]));
-	function success(data) {
-		return { type: homeDataConstants.DATA_TOUR_POINTS_GET_SUCCESS, data: data };
-	}
-		//dispatch(request());
+
+
+		dispatch(request());
+		var token = authHeader()
 	
-	
-	/*await Axios.get(`${url}api/pnl/tour/allToursWithPoints`, { validateStatus: () => true })
+	await Axios.get(`${url}api/pnl/tour/allToursWithPoints`,{ headers: { Authorization: token},  validateStatus: () => true })
+
 		.then((res) => {
 			if (res.status === 200) {
 				dispatch(success(res.data));
@@ -479,7 +478,7 @@ async function getToursAndPointsData(dispatch) {
 	function failure(message) {
 
 		return { type: homeDataConstants.DATA_TOUR_POINTS_GET_FAILURE, errorMessage: message };
-	}*/
+	}
 }
 
 

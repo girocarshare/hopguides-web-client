@@ -16,9 +16,9 @@ import LoginPage from './pages/LoginPage.jsx';
 import RegisterPage from './pages/RegisterPage';
 import SetPasswordPage from './pages/SetPasswordPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
-import TermsAndConditionsPage from './pages/TermsAndConditionsPage';
 import ConfirmationPage from './pages/ConfirmationPage';
 import QRCodesPage from './pages/QRCodesPage';
+import TermsAndConditionsPage from './pages/TermsAndConditionsPage';
 import UnauthorizedPage from './pages/UnauthorizedPage.jsx';
 import LandingPage from './pages/LandingPage.jsx';
 
@@ -27,6 +27,8 @@ function App() {
     <Router>
       <Switch>
         <Route path="/register" component={RegisterPage} />
+        <Route path="/confirmation/:bookingId/:pointId" component={ConfirmationPage} />
+        <Route path="/qrcodes/:tourId" component={QRCodesPage} />
         <Route path="/termsAndConditions/:id" component={TermsAndConditionsPage} />
         <Route path="/insertdata" component={InsertDataPage} />
         <Route path="/ui" component={LandingPage} />

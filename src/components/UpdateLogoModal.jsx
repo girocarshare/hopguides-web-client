@@ -19,7 +19,7 @@ const UpdateLogoModal = () => {
 	const progressRef = React.useRef();
 
 	const handleModalClose = () => {
-		dispatch({type: homeDataConstants.HIDE_EDIT_LOGO_MODAL});
+		dispatch({ type: homeDataConstants.HIDE_EDIT_LOGO_MODAL });
 	};
 
 
