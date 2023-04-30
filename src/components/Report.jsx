@@ -137,7 +137,6 @@ const Report = forwardRef((props, ref) => {
 				<div class="box__content">
 
 
-
 					<div class="flex flex-col md:flex-row gap-6">
 						<div>
 							<div class="box__header">
@@ -145,12 +144,13 @@ const Report = forwardRef((props, ref) => {
 									{reportState.report.name}
 								</div>
 								<a class="button button--secondary button--small"
-									href={"http://localhost:3000/#/previousReports/" + id}>All reports</a>
+								   href={"http://localhost:3000/#/previousReports/" + id}>All reports</a>
 							</div>
 							<div class="text-base">
 								This is <b>{reportState.report.bpartnerName}</b> tourist package with digital
 								tour guide GoGiro. You are included
-								in <b>{reportState.report.name}</b> package <b>{reportState.report.offerName}</b>. When the
+								in <b>{reportState.report.name}</b> package <b>{reportState.report.offerName}</b>. When
+								the
 								guest shows you a non used QR code this is valid confirmation that tourist has bought
 								a <b>{reportState.report.name}</b> package.
 							</div>
@@ -205,10 +205,10 @@ const Report = forwardRef((props, ref) => {
 								If the QR code is <ColorText>VALID</ColorText> please serve the customer<BoldText> »home
 								made« Sirove Štruklje </BoldText>as included in the tour.
 							</div>
-							<div class="bg-white rounded-md overflow-hidden shadow shadow-green-500/20">
+							<div class="bg-white rounded-lg overflow-hidden shadow shadow-green-500/20">
 								{
 
-									<img alt="" src="/assets/img/Screenshot_2.png"/>
+									<img class="w-full h-auto max-w-[20rem]" alt="" src="/assets/img/voucher_valid.png"/>
 
 								}
 							</div>
@@ -219,10 +219,10 @@ const Report = forwardRef((props, ref) => {
 								experience or
 								has already used the said QR code
 							</div>
-							<div class="bg-white rounded-md overflow-hidden shadow shadow-red-500/10">
+							<div class="bg-white rounded-lg overflow-hidden shadow shadow-red-500/10">
 								{
 
-									<img alt="" src="/assets/img/Screenshot_1.png"/>
+									<img class="w-full h-auto max-w-[20rem]" alt="" src="/assets/img/voucher_invalid.png"/>
 
 								}
 							</div>
