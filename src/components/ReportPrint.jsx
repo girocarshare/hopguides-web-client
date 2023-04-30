@@ -1,147 +1,144 @@
-
-import { useContext, React, useEffect, useState, useRef, useCallback } from "react";
-import { useParams } from 'react-router-dom';
-import { ReportContext } from "../contexts/ReportContext";
-import { reportService } from "../services/ReportService";
-import { reportConstants } from "../constants/ReportConstants";
-import { deleteLocalStorage, authHeader } from "../helpers/auth-header";
+import {useContext, React, useEffect, useState, useRef, useCallback} from "react";
+import {useParams} from 'react-router-dom';
+import {ReportContext} from "../contexts/ReportContext";
+import {reportService} from "../services/ReportService";
+import {reportConstants} from "../constants/ReportConstants";
+import {deleteLocalStorage, authHeader} from "../helpers/auth-header";
 import Axios from "axios";
 import ReactToPrint from 'react-to-print';
 import Report from './Report';
+
 var url = process.env.REACT_APP_URL || "http://localhost:8080/";
 
 const ReportPrint = () => {
 
-    const componentRef = useRef();
-    const { reportState, dispatch } = useContext(ReportContext);
-
-    
-    let { id } = useParams()
-    const someFetchActionCreator = () => {
-        const getReportInfoHandler = async () => {
-            await reportService.getReport(dispatch, id);
-        };
+	const componentRef = useRef();
+	const {reportState, dispatch} = useContext(ReportContext);
 
 
-        getReportInfoHandler();
-    }
+	let {id} = useParams()
+	const someFetchActionCreator = () => {
+		const getReportInfoHandler = async () => {
+			await reportService.getReport(dispatch, id);
+		};
 
 
-    useEffect(() => {
-
-       
-       /* var token = authHeader()
-        if (token == "null") {
-            // window.location = "#/unauthorized";
-        } else {
-
-            Axios.get(`${url}api/users/getRole`, { headers: { Authorization: token } }, { validateStatus: () => true },
-            )
-                .then((res) => {
-                    if (res.status === 200) {
-                        if ("BPARTNER" == res.data) {
-
-                            setRole(true)
-                        }
-
-                        if ("ADMIN" == res.data || "PROVIDER" == res.data) {
-
-                            setRole(true)
-                            setAdmin(true)
-                        }
-                    }
-                })
-                .catch((err) => {
-
-                })
-        }
-
-*/
-        someFetchActionCreator()
-    }, [dispatch]);
+		getReportInfoHandler();
+	}
 
 
-    const handleShowModal = () => {
-        dispatch({ type: reportConstants.SHOW_ADD_MENU_MODAL });
-    };
-
-    const handleLogin = () => {
-        window.location.href = "#/login"
-    };
+	useEffect(() => {
 
 
-    const handleLogout = () => {
-        deleteLocalStorage();
-        window.location = "#/login";
-    };
+		/* var token = authHeader()
+         if (token == "null") {
+             // window.location = "#/unauthorized";
+         } else {
+
+             Axios.get(`${url}api/users/getRole`, { headers: { Authorization: token } }, { validateStatus: () => true },
+             )
+                 .then((res) => {
+                     if (res.status === 200) {
+                         if ("BPARTNER" == res.data) {
+
+                             setRole(true)
+                         }
+
+                         if ("ADMIN" == res.data || "PROVIDER" == res.data) {
+
+                             setRole(true)
+                             setAdmin(true)
+                         }
+                     }
+                 })
+                 .catch((err) => {
+
+                 })
+         }
+
+ */
+		someFetchActionCreator()
+	}, [dispatch]);
 
 
-    function BoldText({ children }) {
-        return (
-            <span style={{ fontWeight: 'bold' }}>{children}</span>
-        );
-    }
+	const handleShowModal = () => {
+		dispatch({type: reportConstants.SHOW_ADD_MENU_MODAL});
+	};
 
-    function ColorText({ children }) {
-        return (
-            <span style={{ color: 'green' }}>{children}</span>
-        );
-    }
-
-    function ColorTextRed({ children }) {
-        return (
-            <span style={{ color: 'red' }}>{children}</span>
-        );
-    }
-
-    return (
-        <div class="login-page">
-
-            <div >
+	const handleLogin = () => {
+		window.location.href = "#/login"
+	};
 
 
-            <div class='parent'>
-
-               {/* {!role && */}
-               <div >
-                    <button
-                        type="button"
-                        onClick={handleLogin}
-                        class="child float-left-child"
-                        style={{marginLeft: "30px "}}
-                    >
-                        Log in
-                    </button>
-                </div>
-                {/*}*/}
-
-                  {/* {role && */}<div>
-                    <button
-                        type="button"
-                        onClick={handleLogout}
-                        class='child float-left-child'
-                        style={{marginLeft: "30px "}}
-                    >
-                        Log out
-                    </button>
-
-                </div> 
-                {/*}*/}
+	const handleLogout = () => {
+		deleteLocalStorage();
+		window.location = "#/login";
+	};
 
 
-                <ReactToPrint
-                    trigger={() => <div class=" button-login"> <button class='child float-left-child'>Print out page</button></div>}
-                    content={() => componentRef.current}
-                />
-                </div>
-                <Report ref={componentRef} />
-            </div>
+	function BoldText({children}) {
+		return (
+			<span style={{fontWeight: 'bold'}}>{children}</span>
+		);
+	}
 
-        </div>
+	function ColorText({children}) {
+		return (
+			<span style={{color: 'green'}}>{children}</span>
+		);
+	}
 
+	function ColorTextRed({children}) {
+		return (
+			<span style={{color: 'red'}}>{children}</span>
+		);
+	}
 
+	return (
 
-    );
+		<div class="container container-md pt-20 pb-60 lg:py-40">
+			<div class="navbar">
+				<div class="navbar__content">
+					<div>
+						<img class="h-8 w-auto" src="assets/img/logo.svg"/>
+					</div>
+					<div class="hidden lg:flex flex-row items-center gap-2">
+
+						{/* {role && */}
+						<button
+							type="button"
+							onClick={handleLogout}
+							class="button button--clear button--small"
+						>
+							Log out
+						</button>
+						{/*}*/}
+
+						{/* {!role && */}
+						<button
+							type="button"
+							onClick={handleLogin}
+							class="button button--clear button--small"
+						>
+							Log in
+						</button>
+						{/*}*/}
+
+						<ReactToPrint
+							trigger={() =>
+								<button class='button button--primary button--small'>Print out page</button>
+							}
+							content={() => componentRef.current}
+						/>
+
+					</div>
+				</div>
+			</div>
+
+			<Report ref={componentRef}/>
+		</div>
+
+	);
 };
 
 export default ReportPrint;

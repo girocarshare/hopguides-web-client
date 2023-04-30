@@ -27,8 +27,6 @@ function App() {
     <Router>
       <Switch>
         <Route path="/register" component={RegisterPage} />
-        <Route path="/confirmation/:bookingId/:pointId" component={ConfirmationPage} />
-        <Route path="/qrcodes/:tourId" component={QRCodesPage} />
         <Route path="/termsAndConditions/:id" component={TermsAndConditionsPage} />
         <Route path="/insertdata" component={InsertDataPage} />
         <Route path="/ui" component={LandingPage} />

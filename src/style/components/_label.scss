@@ -17,3 +17,15 @@
 .label--primary {
 	@apply bg-black text-white;
 }
+.bullets {
+	@apply flex flex-col items-start gap-2 mb-8;
+}
+.bullet {
+	@apply flex flex-row items-start gap-4;
+}
+.bullet__number {
+	@apply bg-black text-white font-bold text-base text-center flex flex-col items-center justify-center w-8 h-8 rounded-full flex-shrink-0;
+}
+.bullet__content {
+	@apply pt-1 text-base font-semibold text-black;
+}

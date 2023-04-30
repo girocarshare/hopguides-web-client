@@ -867,6 +867,26 @@ export const homeDataReducer = (state, action) => {
 
 			};
 
+		case homeDataConstants.INSERT_DATA_SUCCESS:
+
+
+			prodCpy = { ...state };
+
+
+			prodCpy.modalData.success = true;
+			prodCpy.modalData.success = true;
+			prodCpy.modalData.failure = false;
+			prodCpy.modalData.text = "You have successfully added new data.";
+
+			return prodCpy;
+
+
+		case homeDataConstants.CONFIRMATION_FAILURE:
+			return {
+				...state,
+				notConfirmed: true
+
+			};
 
 		case homeDataConstants.INSERT_DATA_SUCCESS:
 
