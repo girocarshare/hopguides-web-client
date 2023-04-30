@@ -551,6 +551,7 @@ const TourData = () => {
 											<div>
 												{fileData()}
 											</div>
+										
 
 											<div class="mt-2">
 												{imagePreview && <img className="image__preview" src={imagePreview}

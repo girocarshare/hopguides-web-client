@@ -20,9 +20,9 @@ const HomePage = () => {
 		<HomeDataContextProvider>
 			<TourData/>
 			<POIData/>
-			<SuccessModal/>
 			<FailureModal/>
 			<HomePageData/>
+			<SuccessModal/>
 			<PreviousReportTourModal/>
 			<AddNewTourForm/>
 			<AddNewPartnerForm/>

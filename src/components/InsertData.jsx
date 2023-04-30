@@ -619,78 +619,7 @@ const InsertData = (props) => {
 
 			<div>
 
-				{showModal && <div>
-
-					<div class="relative z-50" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-
-						<div class="modal-overlay"></div>
-
-						<div class="fixed inset-0 z-10 overflow-y-auto">
-
-							<div class="modal-frame">
-
-								<div id="myModal" class="modal modal--sm">
-
-
-									<div class="modal__header">
-										<h2 class="text-leading">
-											TEST 1
-										</h2>
-										<button class="button button--circle button--clear justify-self-end"
-												type="button"
-												onClick={handleClose}>
-											<AiOutlineClose/>
-										</button>
-									</div>
-
-									<div class="modal__body">
-
-										<div className="form__group">
-											<div className="form-group controls mb-0 pb-2"
-												 style={{color: "#6c757d", opacity: 1}}>
-
-												<div class="row">
-													<div class="form-group col-lg-10">
-														<textarea className="form-control"
-																  readOnly={!changeTermsAndConditions}
-																  style={{height: "430px", width: "1100px"}}
-																  type="textarea"
-																  required name="message"
-																  placeholder="Terms and conditions"
-																  value={termsAndConditions}
-																  onChange={(e) => setTermsAndConditions(e.target.value)}></textarea>
-
-													</div>
-												</div>
-											</div>
-										</div>
-
-										<div className="button-p">
-											<button
-												style={{
-													background: "#0099ff",
-													marginTop: "px",
-													marginRight: "55px",
-													padding: "5px 15px",
-													height: "35px"
-												}}
-
-												onClick={handleChangeTermsAndConditions}
-												className="btn btn-primary btn-xl"
-												id="sendMessageButton"
-												type="button"
-											>
-												{changeTermsAndConditions === true ? `Done` : "Edit"}
-											</button>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>}
-
-
+			
 				<div class="relative z-50" aria-labelledby="modal-title" role="dialog" aria-modal="true">
 
 					<div class="modal-overlay"></div>
@@ -1902,6 +1831,75 @@ const InsertData = (props) => {
 						</div>
 					</div>
 				</div>
+
+				{showModal && <div>
+
+<div class="relative z-50" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+
+	<div class="modal-overlay"></div>
+
+	<div class="fixed inset-0 z-10 overflow-y-auto">
+
+		<div class="modal-frame">
+
+			<div id="myModal" class="modal modal--3xl">
+
+
+				<div class="modal__header">
+					<h2 class="text-leading">
+						Terms and conditions
+					</h2>
+					<button class="button button--circle button--clear justify-self-end"
+							type="button"
+							onClick={handleClose}>
+						<AiOutlineClose/>
+					</button>
+				</div>
+
+				<div class="modal__body">
+
+					<div className="form__group">
+						<div className="form-group controls mb-0 pb-2"
+							 style={{color: "#6c757d", opacity: 1}}>
+
+<div class="flex flex-col gap-2">
+													<div class="flex flex-row items-center gap-2">
+									<textarea className="form-control"
+									
+											  readOnly={!changeTermsAndConditions}
+											  style={{height: "430px", width: "1100px"}}
+											  type="textarea"
+											  required name="message"
+											  placeholder="Terms and conditions"
+											  value={termsAndConditions}
+											  onChange={(e) => setTermsAndConditions(e.target.value)}></textarea>
+
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div className="form__group">
+											<button
+
+
+												onClick={handleChangeTermsAndConditions}
+												className="button button--primary"
+												id="sendMessageButton"
+												type="button"
+											>
+												{changeTermsAndConditions === true ? `Done` : "Edit"}
+											</button>
+										</div>
+
+
+					
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</div>}
 			</div>
 		</div>
 

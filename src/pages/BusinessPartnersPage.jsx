@@ -10,9 +10,9 @@ const BusinessPartnersPage = () => {
 	return (
 		<div>
 			<BusinessPartnersContextProvider>
-				<SuccessFailureModal />
 				<BusinessPartnersData />
 				<BPartnerData />
+				<SuccessFailureModal />
 			</BusinessPartnersContextProvider>
 		</div>
 	);

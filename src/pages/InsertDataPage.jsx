@@ -11,9 +11,9 @@ const InsertDataPage = () => {
 	return (
 		<div>
 			<HomeDataContextProvider>
+				<InsertData />
 				<SuccessModal />
 				<FailureModal />
-				<InsertData />
 			</HomeDataContextProvider>
 		</div>
 	);
