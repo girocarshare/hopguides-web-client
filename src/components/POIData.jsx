@@ -181,6 +181,7 @@ const POIData = () => {
 		if (weburl != "") {
 			point.contact.webURL = weburl
 		} if (longitude != "") {
+			point.location = {}
 			point.location.longitude = longitude
 		}
 		if (latitude != "") {
