@@ -46,12 +46,8 @@ function insertData( tf, dispatch) {
 
 async function getTermsAndConditions(dispatch ,id) {
 	
-	dispatch(success(""));
-	function success(data) {
-		
-		return { type: homeDataConstants.GET_TERMS_AND_CONSITIONS_SUCCESS, data: data };
-	}
-	/*dispatch(request());
+
+	dispatch(request());
 	
 	await Axios.get(`${url}api/pnl/tour/termsandconditions/` + id, { validateStatus: () => true })
 		.then((res) => {
@@ -77,7 +73,7 @@ async function getTermsAndConditions(dispatch ,id) {
 	}
 	function failure(message) {
 		return { type: homeDataConstants.GET_TERMS_AND_CONSITIONS_FAILURE, errorMessage: message };
-	}*/
+	}
 }
 
 
@@ -241,14 +237,9 @@ async function generateQrCode(dispatch ,tourId) {
 
 
 function changeLockCode(lockCode, dispatch) {
-
-	dispatch(success());
-	function success() {
-		return { type: homeDataConstants.LOCK_CHANGE_SUCCESS };
-	}
-	//dispatch(request());
+dispatch(request());
 	
-	/*var token = authHeader()
+	var token = authHeader()
 	Axios.post(`${url}api/bp/changeLockCode/` + lockCode, { headers: { Authorization: token } },{ validateStatus: () => true })
 		.then((res) => {
 			if (res.status === 200) {
@@ -275,18 +266,14 @@ function changeLockCode(lockCode, dispatch) {
 	function failure(error) {
 		
 		return { type: homeDataConstants.TOUR_SUBMIT_FAILURE, error };
-	}*/
+	}
 }
 
 
 function deleteTour( dispatch, tourId) {
 
-	dispatch(success());
-	function success() {
-		//window.location.reload()
-		return { type: homeDataConstants.DELETE_TOUR_SUCCESS };
-	}
-	/*dispatch(request());
+	
+	dispatch(request());
 	
 	var token = authHeader()
 	Axios.get(`${url}api/pnl/tour/deleteTour/`+ tourId, {
@@ -319,17 +306,14 @@ function deleteTour( dispatch, tourId) {
 	function failure(error) {
 		
 		return { type: homeDataConstants.DELETE_TOUR_FAILURE, error };
-	}*/
+	}
 }
 
 
 
 function deletePoi( dispatch, tourId, poiId) {
-	dispatch(success());
-	function success() {
-		return { type: homeDataConstants.DELETE_POI_SUCCESS };
-	}
-	/*dispatch(request());
+
+	dispatch(request());
 	
 	var token = authHeader()
 	Axios.get(`${url}api/pnl/tour/deletePoi/`+ tourId + "/" + poiId, {
@@ -362,7 +346,7 @@ function deletePoi( dispatch, tourId, poiId) {
 	function failure(error) {
 		
 		return { type: homeDataConstants.DELETE_POI_FAILURE, error };
-	}*/
+	}
 }
 
 
@@ -409,13 +393,10 @@ function updatePoint( tf, dispatch) {
 
 
 async function getPreviousMonthsData(dispatch ,id) {
-	dispatch(success([]));
-	function success(data) {
-		return { type: homeDataConstants.PREVIOUS_DATA_GET_SUCCESS, data: data };
-	}
-	/*dispatch(request());
 	
-	if(id==""){
+	dispatch(request());
+	
+	if(id===""){
 		id = "x"
 	}
 	await Axios.get(`${url}api/pnl/tour/previousReport/` + id, { validateStatus: () => true })
@@ -443,7 +424,7 @@ async function getPreviousMonthsData(dispatch ,id) {
 	function failure(message) {
 
 		return { type: homeDataConstants.PREVIOUS_DATA_GET_FAILURE, errorMessage: message };
-	}*/
+	}
 }
 
 async function getToursAndPointsData(dispatch) {
@@ -495,7 +476,6 @@ async function getQrCode(dispatch,id) {
 			if (res.status === 200) {
 				console.log(res.data)
 				FileDownload(res.data, id.trim() + ".png");
-				//window.location.reload(true);
 			}
 		})
 		.catch((err) => {
@@ -506,12 +486,9 @@ async function getQrCode(dispatch,id) {
 
 
 async function getBPartners(dispatch ) {
-	dispatch(success([]));
-	function success(data) {
-		return { type: homeDataConstants.GET_BPARTNERS_SUCCESS, data: data };
-	}
 
-	/*await Axios.get(`${url}api/bp/all`, { validateStatus: () => true })
+	dispatch(request());
+	await Axios.get(`${url}api/bp/all`, { validateStatus: () => true })
 		.then((res) => {
 			if (res.status === 200) {
 				dispatch(success(res.data));
@@ -536,5 +513,5 @@ async function getBPartners(dispatch ) {
 	function failure(message) {
 
 		return { type: homeDataConstants.GET_BPARTNERS_FAILURE, errorMessage: message };
-	}*/
+	}
 }

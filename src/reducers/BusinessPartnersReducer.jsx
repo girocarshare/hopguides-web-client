@@ -18,37 +18,9 @@ export const businessPartnersReducer = (state, action) => {
 		case businessPartnersConstants.GET_BPARTNERS_SUCCESS:
 			prodCpy = { ...state };
 
-			var array = []
-			var bpartner = {
-				id: "446a706b-baa6-4feb-bc0b-0bcd9b2d2e0b",
-				name: "Business Partner Name One",
-				contact: {
-					phone: "652610775",
-					phone2: "652610775",
-					email: "lunazivkovic@gmail.com",
-					location: {
-						street: "Pavla Simića 2"
-					},
-					webURL: "Luna Zivkovic"
-				},
+			
 
-				userId: "d494f403-67d3-4be9-869c-b651bc5ac5ef",
-				logo: "https://hopguides.s3.eu-central-1.amazonaws.com/logos/V2jkmGsvxo.jpg",
-				dimensions: {
-					width: "200",
-					height: "40"
-				},
-				support: {
-					english: "Title text",
-					slovenian: "naslovno besedilo",
-				},
-				lockCode: "12312"
-
-			}
-
-			array.push(bpartner)
-
-			prodCpy.bpartners.bpartners = array//action.data;
+			prodCpy.bpartners.bpartners = action.data;
 
 			return prodCpy;
 
@@ -65,39 +37,13 @@ export const businessPartnersReducer = (state, action) => {
 
 		case businessPartnersConstants.UPDATE_BPARTNER_DATA_MODAL_SHOW:
 
-			var bpartner = {
-				id: "446a706b-baa6-4feb-bc0b-0bcd9b2d2e0b",
-				name: "Business Partner Name One",
-				contact: {
-					phone: "652610775",
-					phone2: "652610775",
-					email: "lunazivkovic@gmail.com",
-					location: {
-						street: "Pavla Simića 2"
-					},
-					webURL: "Luna Zivkovic"
-				},
-
-				userId: "d494f403-67d3-4be9-869c-b651bc5ac5ef",
-				logo: "https://hopguides.s3.eu-central-1.amazonaws.com/logos/V2jkmGsvxo.jpg",
-				dimensions: {
-					width: "200",
-					height: "40"
-				},
-				support: {
-					english: "Title text",
-					slovenian: "naslovno besedilo",
-				},
-				lockCode: "12312"
-
-			}
-
+			
 			return {
 				...state,
 
 				updateBPartner: {
 					show: true,
-					bpartner: bpartner//action.bpartner
+					bpartner: action.bpartner
 				}
 
 

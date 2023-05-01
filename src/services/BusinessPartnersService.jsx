@@ -1,7 +1,5 @@
 import Axios from "axios";
 import { businessPartnersConstants } from "../constants/BusinessPartnersConstants";
-
-import { authHeader } from "../helpers/auth-header";
 var url = process.env.REACT_APP_URL || "http://localhost:8080/";
 
 export const businessPartnersService = {
@@ -12,11 +10,9 @@ export const businessPartnersService = {
 
 };
 async function getBPartners(dispatch ) {
-	dispatch(success([]));
-	function success(data) {
-		return { type: businessPartnersConstants.GET_BPARTNERS_SUCCESS, data: data };
-	}
-	/*await Axios.get(`${url}api/bp/allwithdata`, { validateStatus: () => true })
+
+	dispatch(request());
+	await Axios.get(`${url}api/bp/allwithdata`, { validateStatus: () => true })
 		.then((res) => {
 			if (res.status === 200) {
 				dispatch(success(res.data));
@@ -41,18 +37,15 @@ async function getBPartners(dispatch ) {
 	function failure(message) {
 
 		return { type: businessPartnersConstants.GET_BPARTNERS_FAILURE, errorMessage: message };
-	}*/
+	}
 }
 
 
 async function deleteBPartner(dispatch, bpartnerId ) {
 
-	dispatch(success());
-	function success() {
-		return { type: businessPartnersConstants.BUSINESS_PARTNER_DELETE_SUCCESS };
-	}
+	dispatch(request());
 
-	/*await Axios.get(`${url}api/bp/delete/` + bpartnerId, { validateStatus: () => true })
+	await Axios.get(`${url}api/bp/delete/` + bpartnerId, { validateStatus: () => true })
 		.then((res) => {
 			if (res.status === 200) {
 				dispatch(success(res.data));
@@ -78,7 +71,7 @@ async function deleteBPartner(dispatch, bpartnerId ) {
 	function failure(message) {
 
 		//return { type: businessPartnersConstants.GET_BPARTNERS_FAILURE, errorMessage: message };
-	}*/
+	}
 
 
 }
@@ -94,7 +87,6 @@ function updateBPartner( tf, dispatch) {
 	}
 
 	function success() {
-		//window.location.reload()
 		return { type: businessPartnersConstants.BUSINESS_PARTNER_UPDATE_SUCCESS };
 	}
 	function failure(error) {

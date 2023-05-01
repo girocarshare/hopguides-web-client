@@ -227,19 +227,19 @@ const HomeData = forwardRef((props, ref) => {
 				<TourData/>
 			</div>}
 
-			<div class="container pt-20 lg:pt-40 pb-12">
+			<div className="container pt-20 lg:pt-40 pb-12">
 
-				<div class="navbar">
-					<div class="navbar__content">
+				<div className="navbar">
+					<div className="navbar__content">
 						<div>
-							<img class="h-8 w-auto" src="assets/img/logo.svg"/>
+							<img className="h-8 w-auto" src="assets/img/logo.svg"/>
 						</div>
-						<div class="hidden lg:flex flex-row items-center gap-2">
+						<div className="hidden lg:flex flex-row items-center gap-2">
 
 
 							{/*{role &&*/}
 							<div>
-								<button class="button button--clear button--small" type="button" onClick={updateLogo}>
+								<button className="button button--clear button--small" type="button" onClick={updateLogo}>
 									Edit logo
 								</button>
 							</div>
@@ -247,7 +247,7 @@ const HomeData = forwardRef((props, ref) => {
 
 							{/*{role &&*/}
 							<div>
-								<button class="button button--clear button--small" type="button" onClick={editLockCode}>
+								<button className="button button--clear button--small" type="button" onClick={editLockCode}>
 									Edit lock code
 								</button>
 							</div>
@@ -255,7 +255,7 @@ const HomeData = forwardRef((props, ref) => {
 
 							{/*{adminOnly &&*/}
 							<div>
-								<button class="button button--clear button--small" type="button"
+								<button className="button button--clear button--small" type="button"
 										onClick={handleRegister}>
 									New user
 								</button>
@@ -264,7 +264,7 @@ const HomeData = forwardRef((props, ref) => {
 
 							{/*{adminOnly &&*/}
 							<div>
-								<button class="button button--clear button--small" type="button"
+								<button className="button button--clear button--small" type="button"
 										onClick={allBusinessPartners}>
 									Partners
 								</button>
@@ -273,7 +273,7 @@ const HomeData = forwardRef((props, ref) => {
 
 							{/*{adminOnly &&*/}
 							<div>
-								<button class="button button--clear button--small" type="button" onClick={insertdata}>
+								<button className="button button--clear button--small" type="button" onClick={insertdata}>
 									New data
 								</button>
 							</div>
@@ -281,7 +281,7 @@ const HomeData = forwardRef((props, ref) => {
 
 							{!role &&
 								<div>
-									<button class="button button--clear button--small" type="button"
+									<button className="button button--clear button--small" type="button"
 											onClick={handleLogin}>
 										Log in
 									</button>
@@ -290,7 +290,7 @@ const HomeData = forwardRef((props, ref) => {
 
 							{/*{role &&*/}
 							<div>
-								<button class="button button--clear button--small" type="button" onClick={handleLogout}>
+								<button className="button button--clear button--small" type="button" onClick={handleLogout}>
 									Log out
 								</button>
 							</div>
@@ -300,37 +300,37 @@ const HomeData = forwardRef((props, ref) => {
 					</div>
 				</div>
 
-				<div class="grid grid-cols-12 mb-12 lg:mb-16 items-start justif-start gap-8">
+				<div className="grid grid-cols-12 mb-12 lg:mb-16 items-start justif-start gap-8">
 
-					<div class="col-span-12 lg:col-span-3">
+					<div className="col-span-12 lg:col-span-3">
 						&nbsp;
 					</div>
-					<div class="flex flex-col items-center justify-center gap-8 col-span-12 lg:col-span-6">
+					<div className="flex flex-col items-center justify-center gap-8 col-span-12 lg:col-span-6">
 						<div
-							class="w-48 h-48 rounded-full bg-white border border-black/10 oveflow-hidden bg-contain bg-center bg-no-repeat"
+							className="w-48 h-48 rounded-full bg-white border border-black/10 oveflow-hidden bg-contain bg-center bg-no-repeat"
 							style={{backgroundImage: `url(${("assets/img/turizem-lj.jpg")})`,}}>
 						</div>
-						<h1 class=" text-heading4 text-center">
+						<h1 className=" text-heading4 text-center">
 							Tourism Ljubljana
 						</h1>
 					</div>
 
 					{/*Contact*/}
 					<div
-						class="fixed z-20 left-0 bottom-0 right-0 col-span-12 lg:col-span-3 lg:relative flex flex-col items-center justify-center bg-white/80 backdrop-blur border-t lg:border-none border-black/10 drop-shadow-[0_-2px_6px_rgba(0,0,0,0.15)] lg:drop-shadow-none">
+						className="fixed z-20 left-0 bottom-0 right-0 col-span-12 lg:col-span-3 lg:relative flex flex-col items-center justify-center bg-white/80 backdrop-blur border-t lg:border-none border-black/10 drop-shadow-[0_-2px_6px_rgba(0,0,0,0.15)] lg:drop-shadow-none">
 						<div
-							class="flex flex-row lg:flex-col items-center lg:items-start gap-0 lg:gap-4 p-3 lg:p-6 lg:rounded-2xl lg:border lg:border-black/
+							className="flex flex-row lg:flex-col items-center lg:items-start gap-0 lg:gap-4 p-3 lg:p-6 lg:rounded-2xl lg:border lg:border-black/
 						10 lg:shadow-2xl lg:shadow-black/10 w-full">
-							<div class="label label--primary -rotate-90 lg:rotate-0 -ml-7 lg:ml-0">
+							<div className="label label--primary -rotate-90 lg:rotate-0 -ml-7 lg:ml-0">
 								Contact
 							</div>
 							{users.map((point) => (
-								<div class="flex flex-col gap-1 lg:gap-2 w-full overflow-hidden -ml-2 lg:ml-0">
-									<div class="text-sm lg:text-xl font-bold text-black">
+								<div  className="flex flex-col gap-1 lg:gap-2 w-full overflow-hidden -ml-2 lg:ml-0">
+									<div className="text-sm lg:text-xl font-bold text-black">
 										{point.name}
 									</div>
-									<div class="flex flex-col gap-1 lg:gap-2 text-xs lg:text-sm">
-										<a class="link" href="mailto:'{point.email}'">{point.email}</a>
+									<div className="flex flex-col gap-1 lg:gap-2 text-xs lg:text-sm">
+										<a className="link" href="mailto:'{point.email}'">{point.email}</a>
 										<div>{point.number}</div>
 									</div>
 								</div>
@@ -341,24 +341,24 @@ const HomeData = forwardRef((props, ref) => {
 
 				</div>
 
-				<div class="p-2 md:p-4 bg-black/[3%] rounded-2xl mb-12">
-					<div class="py-3 px-2 pb-4 md:pb-6">
-						<h4 class="text-heading6">
+				<div className="p-2 md:p-4 bg-black/[3%] rounded-2xl mb-12">
+					<div className="py-3 px-2 pb-4 md:pb-6">
+						<h4 className="text-heading6">
 							Tours
 						</h4>
 					</div>
 
-					<div class="table-frame">
+					<div className="table-frame">
 
 						<table>
 							<thead>
 							<tr>
 								<th>Name</th>
-								<th class="whitespace-nowrap">Price<span
-									class="text-xs font-normal text-black/60 ml-1">/ incl tax</span>
+								<th className="whitespace-nowrap">Price<span
+									className="text-xs font-normal text-black/60 ml-1">/ incl tax</span>
 								</th>
-								<th class="whitespace-nowrap">Tours<span
-									class="text-xs font-normal text-black/60 ml-1">/ this month</span></th>
+								<th className="whitespace-nowrap">Tours<span
+									className="text-xs font-normal text-black/60 ml-1">/ this month</span></th>
 								<th>Options</th>
 							</tr>
 							</thead>
@@ -379,19 +379,19 @@ const HomeData = forwardRef((props, ref) => {
 										
 									<td>{tour.noOfRidesAMonth}</td>
 									<td>
-										<div class="flex flex-row items-center gap-2 justify-end">
-											<button class="button button--secondary button--small" onClick={(event) => {
+										<div className="flex flex-row items-center gap-2 justify-end">
+											<button className="button button--secondary button--small" onClick={(event) => {
 												seeTermsAndConditions(event, tour.tourId)
 											}}>
 												Terms
 											</button>
-											<button class="button button--secondary button--small"
+											<button className="button button--secondary button--small"
 													onClick={(e) => getHistory(e, tour.tourId)}>Get report
 											</button>
-                      <button class="button button--secondary button--small" onClick={(e) => getQrCodes(e, tour.tourId)} >Get qr codes</button>
-											<button class="button button--secondary button--small"
+                      <button className="button button--secondary button--small" onClick={(e) => getQrCodes(e, tour.tourId)} >Get qr codes</button>
+											<button className="button button--secondary button--small"
 													onClick={(e) => update(e, tour)}>{updateField}</button>
-											<button class="button button--secondary button--small"
+											<button className="button button--secondary button--small"
 													onClick={(e) => deleteTour(e, tour)}>Delete
 											</button>
 										</div>
@@ -406,19 +406,19 @@ const HomeData = forwardRef((props, ref) => {
 					</div>
 				</div>
 
-				<div class="p-2 md:p-4 bg-black/[3%] rounded-2xl mb-12">
+				<div className="p-2 md:p-4 bg-black/[3%] rounded-2xl mb-12">
 
 					{homeDataState.toursWithPoints.toursWithPoints.map((tour, i) =>
 
 						<div id={tour.tourId}>
 
-							<div class="py-3 px-2 pb-4 md:pb-6 flex flex-row items-center justify-between gap-4">
-								<h4 class="text-heading6">
+							<div className="py-3 px-2 pb-4 md:pb-6 flex flex-row items-center justify-between gap-4">
+								<h4 className="text-heading6">
 									POIs & Partners
 								</h4>
 								<div>
 									{/* {admin && */}
-									<button class="button button--primary button--small" variant="contained"
+									<button className="button button--primary button--small" variant="contained"
 											onClick={(e) => addNewPartner(e, tour.tourId, tour.bpartnerId)}>
 										Add partner
 									</button>
@@ -427,20 +427,20 @@ const HomeData = forwardRef((props, ref) => {
 							</div>
 
 
-							<div class="table-frame">
+							<div className="table-frame">
 
 								<table>
 									<thead>
 
 									<tr>
 										<th>Name</th>
-										<th class="whitespace-nowrap">Price<span
-											class="text-xs font-normal text-black/60 ml-1">/ incl tax</span>
+										<th className="whitespace-nowrap">Price<span
+											className="text-xs font-normal text-black/60 ml-1">/ incl tax</span>
 										</th>
-										<th class="whitespace-nowrap">Offer name</th>
+										<th className="whitespace-nowrap">Offer name</th>
 										<th>Category</th>
-										<th class="whitespace-nowrap">Coupons<span
-											class="text-xs font-normal text-black/60 ml-1">/ this month</span></th>
+										<th className="whitespace-nowrap">Coupons<span
+											className="text-xs font-normal text-black/60 ml-1">/ this month</span></th>
 										<th>Options</th>
 									</tr>
 									</thead>
@@ -461,24 +461,24 @@ const HomeData = forwardRef((props, ref) => {
 
 											<td>{points.monthlyUsed}</td>
 											<td>
-												<div class="flex flex-row items-center gap-2 justify-end">
-													<button class="button button--secondary button--small"
+												<div className="flex flex-row items-center gap-2 justify-end">
+													<button className="button button--secondary button--small"
 															onClick={(event) => {
 																visitWebsite(event, points.point.id)
 															}}>
 														Web
 													</button>
-													<button class="button button--secondary button--small"
+													<button className="button button--secondary button--small"
 															onClick={(event) => {
 																getQrCode(event, points.point.id)
 															}}>
 														Get QR
 													</button>
-													<button class="button button--secondary button--small"
+													<button className="button button--secondary button--small"
 															onClick={(e) => updatePartnerPrice(e, points, tour)}>
 														{updatePartner}
 													</button>
-													<button class="button button--secondary button--small"
+													<button className="button button--secondary button--small"
 															onClick={(e) => deletePoi(e, tour, points.point.id)}>
 														Delete
 													</button>
@@ -498,23 +498,23 @@ const HomeData = forwardRef((props, ref) => {
 
 			</div>
 
-			<div class="text-sm text-black/40">
-				<div class="container pb-40 lg:pb-16">
+			<div className="text-sm text-black/40">
+				<div className="container pb-40 lg:pb-16">
 					<div
-						class="flex flex-col lg:flex-row items-center justify-start lg:justify-between gap-4 border-t black/10 pt-6">
-						<div class="flex items-center gap-2 lg:order-last mb-2 lg:mb-0">
-							<a class="button button--clear button--small" href="#" target="_blank">
+						className="flex flex-col lg:flex-row items-center justify-start lg:justify-between gap-4 border-t black/10 pt-6">
+						<div className="flex items-center gap-2 lg:order-last mb-2 lg:mb-0">
+							<a className="button button--clear button--small" href="#" target="_blank">
 								Terms
 							</a>
-							<a class="button button--clear button--small" href="#" target="_blank">
+							<a className="button button--clear button--small" href="#" target="_blank">
 								Privacy
 							</a>
-							<a class="button button--clear button--small" target="_blank">
+							<a className="button button--clear button--small" target="_blank">
 								Contact
 							</a>
 						</div>
 						<div>
-							2023 © <span class="font-bold">Hopguides™</span> Ltd. All rights reserved.
+							2023 © <span className="font-bold">Hopguides™</span> Ltd. All rights reserved.
 						</div>
 					</div>
 				</div>
