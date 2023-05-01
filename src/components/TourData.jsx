@@ -2,8 +2,6 @@ import React, {useContext, useEffect, useState, forwardRef, useRef} from "react"
 import {homeDataService} from "../services/HomeDataService";
 import {HomeDataContext} from "../contexts/HomeDataContext";
 import {homeDataConstants} from "../constants/HomeDataConstants";
-import TimePicker from 'react-time-picker';
-import {YMaps, Map} from "react-yandex-maps";
 import {AiOutlineClose} from 'react-icons/ai';
 import ReactAudioPlayer from 'react-audio-player';
 import Axios from "axios";
