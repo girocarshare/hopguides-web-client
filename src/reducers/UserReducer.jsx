@@ -1,6 +1,7 @@
 import { userConstants } from "../constants/UserConstants";
 
 
+var prodCpy = {};
 export const userReducer = (state, action) => {
 
 	switch (action.type) {
@@ -21,14 +22,33 @@ export const userReducer = (state, action) => {
 			};
 
 		case userConstants.REGISTRATION_MAIL_SUCCESS:
-			return {
-				success: true
-			};
-		case userConstants.REGISTRATION_MAIL_FAILURE:
-			return {
-				error: true
-			};
 
+			prodCpy = { ...state };
+
+			prodCpy.modalData.show = true;
+			prodCpy.modalData.title = "Success";
+			prodCpy.modalData.text = "You have successfully sent registration mail";
+			return prodCpy;
+
+
+		case userConstants.REGISTRATION_MAIL_FAILURE:
+
+
+			prodCpy = { ...state };
+			prodCpy.modalData.show = true;
+			prodCpy.modalData.title = "Failure";
+			prodCpy.modalData.text = "You are unable to send registration mail. Please try again later";
+			return prodCpy;
+
+
+			case userConstants.USER_SUCCESS_FAILURE_HIDE:
+
+
+			prodCpy = { ...state };
+			prodCpy.modalData.show = false;
+			prodCpy.modalData.title = "";
+			prodCpy.modalData.text = "";
+			return prodCpy;
 		case userConstants.SET_PASSWORD_SUCCESS:
 			return {
 				successPassword: true

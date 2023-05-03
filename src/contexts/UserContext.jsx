@@ -18,7 +18,13 @@ const UserContextProvider = (props) => {
 
 		
 		successForgotPassword: false,
-		errorForgotPassword: false
+		errorForgotPassword: false,
+
+		modalData: {
+			show: false,
+			title:"",
+			text: "",
+		},
 	});
 
 	return <UserContext.Provider value={{ userState, dispatch }}>{props.children}</UserContext.Provider>;

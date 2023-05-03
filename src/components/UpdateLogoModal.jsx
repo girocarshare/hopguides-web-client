@@ -1,14 +1,15 @@
-import React, { useContext, useState, useEffect, useRef } from "react";
-import { homeDataConstants } from "../constants/HomeDataConstants";
-import { HomeDataContext } from "../contexts/HomeDataContext";
-import { deleteLocalStorage, authHeader } from "../helpers/auth-header";
-import { AiOutlineClose } from 'react-icons/ai';
+import React, {useContext, useState, useEffect, useRef} from "react";
+import {homeDataConstants} from "../constants/HomeDataConstants";
+import {HomeDataContext} from "../contexts/HomeDataContext";
+import {deleteLocalStorage, authHeader} from "../helpers/auth-header";
+import {AiOutlineClose} from 'react-icons/ai';
+
 var url = process.env.REACT_APP_URL || "http://localhost:8080/";
 
 
 const UpdateLogoModal = () => {
 
-	const { homeDataState, dispatch } = useContext(HomeDataContext);
+	const {homeDataState, dispatch} = useContext(HomeDataContext);
 	const [file, setFile] = useState(null);
 	const [errMessage, setErrMessage] = useState("");
 	const [height, setHeight] = useState("");
@@ -19,27 +20,19 @@ const UpdateLogoModal = () => {
 
 	const handleModalClose = () => {
 		dispatch({ type: homeDataConstants.HIDE_EDIT_LOGO_MODAL });
-		//window.location.reload()
 	};
-
-	useEffect(() => {
-
-
-
-	}, [dispatch]);
 
 
 	const onFileChange = (event) => {
 		setFile(event.target.files[0]);
 	}
 
-
 	const fileData = () => {
 		if (file) {
 
 			return (
 				<div>
-					<h2 style={{ marginTop: "20px" }}>File details</h2>
+					<h2 style={{marginTop: "20px"}}>File details</h2>
 					<p>File name: {file.name}</p>
 					<p>File type: {file.type}</p>
 					<p>
@@ -52,13 +45,11 @@ const UpdateLogoModal = () => {
 	};
 
 
-
 	const handleSubmit = (e) => {
 		e.preventDefault();
 
-		
 
-		if (file == null || height =="" || width == "") {
+		/*if (file == null || height =="" || width == "") {
 
 			setErrMessage("Please pick a photo and height and width")
 		} else {
@@ -77,17 +68,15 @@ const UpdateLogoModal = () => {
 			xhr.addEventListener("load", SuccessHandler, false);
 			xhr.addEventListener("error", ErrorHandler, false);
 			xhr.addEventListener("abort", AbortHandler, false);
-			//************************************** */
 			xhr.open('POST', `${url}/api/bp/updateLogo`, true);
-			//xhr.setRequestHeader("Authorization", props.token);
 			xhr.onload = function () {
-				// do something to response
 			};
 
 			xhr.send(formData);
 
 
-		}
+		}*/
+		SuccessHandler()
 	};
 	const ProgressHandler = (e) => {
 		var percent = (e.loaded / e.total) * 100;
@@ -98,105 +87,107 @@ const UpdateLogoModal = () => {
 
 	const SuccessHandler = (e) => {
 
-		statusRef.current.innerHTML = "Success";
-		progressRef.current.value = 100;
-		//reportService.addMenu(true, dispatch);
-
-		dispatch({ type: homeDataConstants.UPDATE_MENU_PHOTO_SUCCESS });
+		dispatch({type: homeDataConstants.UPDATE_LOGO_PHOTO_SUCCESS});
 	};
 	const ErrorHandler = () => {
 
-		statusRef.current.innerHTML = "Upload failed";
-
-		dispatch({ type: homeDataConstants.UPDATE_MENU_PHOTO_FAILURE });
-		//reportService.addMenu(false, dispatch);
+		dispatch({type: homeDataConstants.UPDATE_LOGO_PHOTO_FAILURE});
 	};
 	const AbortHandler = () => {
 
 		statusRef.current.innerHTML = "Upload aborted";
 
-		//reportService.addMenu(false, dispatch);
 	};
 
 	return (
 		<div>
+			{homeDataState.showEditLogoModal &&
 
-			{homeDataState.showEditLogoModal && <div class="overlay" >
-				<div id="myModal" class="modal" style={{ background: "white" }}>
-					<div class="button-login">
+				<div class="relative z-50" aria-labelledby="modal-title" role="dialog" aria-modal="true">
 
-						<button
-							type="button"
-							style={{ background: "#0099ff", marginTop: "px", marginRight: "55px", padding: "5px 15px", height: "35px" }}
-							onClick={handleModalClose}
-							class="btn btn-primary btn-lg"
-						>
-							<AiOutlineClose />
-						</button>
-					</div>
+					<div class="modal-overlay"></div>
 
-					<div className="container"  >
+					<div class="fixed inset-0 z-10 overflow-y-auto">
 
+						<div class="modal-frame">
 
-						<div className="row mt-5">
+							<div id="myModal" class="modal modal--sm">
 
-							<form id="contactForm" >
+								<div class="modal__header">
+									<h2 class="text-leading">
+										Edit logo
+									</h2>
+									<button class="button button--circle button--clear justify-self-end" type="button"
+											onClick={handleModalClose}>
+										<AiOutlineClose/>
+									</button>
+								</div>
 
-								<table style={{ marginLeft: "4rem", marginBottom: "4rem" }}>
-									<td width="600rem"  >
+								<div class="modal__body">
+									<form class="form" id="contactForm">
 
-										<div style={{ marginTop: "15px" }}>
-											<input type="file" name="file" onChange={onFileChange} />
-
+										<div class="form__group">
+											<div class="flex items-center gap-x-3">
+												<svg class="h-12 w-12 text-gray-300" viewBox="0 0 24 24"
+													 fill="currentColor" aria-hidden="true">
+													<path fill-rule="evenodd"
+														  d="M18.685 19.097A9.723 9.723 0 0021.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 003.065 7.097A9.716 9.716 0 0012 21.75a9.716 9.716 0 006.685-2.653zm-12.54-1.285A7.486 7.486 0 0112 15a7.486 7.486 0 015.855 2.812A8.224 8.224 0 0112 20.25a8.224 8.224 0 01-5.855-2.438zM15.75 9a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"
+														  clip-rule="evenodd"/>
+												</svg>
+												<label for="file-upload"
+													   class="button button--secondary button--small">
+													<span>Upload a file</span>
+													<input id="file-upload" name="file" type="file" class="sr-only"
+														   onChange={onFileChange}/>
+												</label>
+											</div>
 										</div>
 
-										{fileData()}
+										<div class="form__group" hidden={!fileData()}>
+											{fileData()}
+										</div>
 
-										<div className="form-group">
-								<input className="form-control" type="text" style={{ height: "50px" }} required name="name" placeholder="Height" value={height} onChange={(e) => setHeight(e.target.value)}></input>
-								
-								</div>
-								<div className="form-group">
-								<input className="form-control" type="text" style={{ height: "50px" }} required name="name" placeholder="Width" value={width} onChange={(e) => setWidth(e.target.value)}></input>
-								
-								</div>
-										<div className="form-group text-center" style={{ color: "red", fontSize: "0.8em", marginTop: "30px", marginRight: "40px" }} hidden={!errMessage}>
+										<div class="form__group">
+											<div class="flex flex-row items-start justify-start gap-4">
+												<input class="form__input" type="number" required name="name"
+													   placeholder="Height" value={height}
+													   onChange={(e) => setHeight(e.target.value)}></input>
+												<input class="form__input" type="number" required name="name"
+													   placeholder="Width" value={width}
+													   onChange={(e) => setWidth(e.target.value)}></input>
+											</div>
+										</div>
+
+										<div class="form__group" hidden={!errMessage}>
 											{errMessage}
 										</div>
-										<div className="form-group text-center">
-											<button
-												style={{ background: "#1977cc", marginTop: "15px", marginRight: "55px" }}
 
-												onClick={(e) => { handleSubmit(e) }}
-												className="btn btn-primary btn-xl"
-												id="sendMessageButton"
-												type="button"
-											>
+										<div class="form__group">
+											<button class="button button--primary" onClick={(e) => {
+												handleSubmit(e)
+											}} id="sendMessageButton" type="button">
 												Upload new logo
 											</button>
 										</div>
 
-										<label>
-											File progress: <progress ref={progressRef} value="0" max="100" />
-										</label>
-										<p ref={statusRef}></p>
-									</td>
-								</table>
+										<div class="form__group">
+											<label class="text-sm">
+												File progress: <progress class="ml-2" ref={progressRef} value="0"
+																		 max="100"/>
+											</label>
+											<p class="text-sm" ref={statusRef}></p>
+										</div>
 
+									</form>
+								</div>
 
-
-							</form>
+							</div>
 						</div>
-
-
 					</div>
-
-
-
 				</div>
-			</div>}
-		</div>
 
+			}
+		</div>
 	);
 };
 

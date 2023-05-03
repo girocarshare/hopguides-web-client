@@ -1,0 +1,35 @@
+.dropdown {
+    @apply absolute top-full flex flex-col bg-white border border-black/20 rounded-2xl p-1 mt-1 w-[240px] shadow-lg gap-y-1 z-50;
+}
+
+.dropdown--full {
+    @apply inset-x-0 w-full;
+}
+
+.dropdown--left {
+    @apply left-0;
+}
+
+.dropdown--right {
+    @apply right-0;
+}
+
+.dropdown--no-margin {
+    @apply mt-0;
+}
+
+.dropdown__item {
+    @apply flex flex-1 items-center min-w-0 text-sm leading-none font-semibold text-black text-opacity-60 px-3 py-2.5 hover:text-opacity-100 bg-black bg-opacity-0 transition hover:bg-opacity-5 rounded-xl
+}
+
+.dropdown__item-icon {
+    @apply mr-2 stroke-[1.5] w-5 h-5;
+}
+
+.dropdown__item--active {
+    @apply bg-black/5;
+}
+
+.dropdown__item--danger {
+    @apply text-red-600 hover:text-red-800 hover:bg-red-50;
+}

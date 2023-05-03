@@ -1,0 +1,19 @@
+.loader {
+    @apply w-4 h-4 bg-contain;
+    background-image: url('~/src/assets/img/loader-white.png');
+    animation: spinner 1s linear infinite;
+}
+
+.loader--dark { background-image: url('~/src/assets/img/loader.png'); }
+
+.loader--tiny { @apply w-2.5 h-2.5; }
+
+.loader--small { @apply w-3 h-3; }
+
+.loader--large { @apply w-5 h-5; }
+
+@keyframes spinner {
+    100% {
+        transform: rotate(360deg);
+    }
+}

@@ -1,0 +1,11 @@
+.container {
+	@apply mx-auto max-w-7xl px-6 lg:px-8;
+}
+
+.container-md {
+	@apply max-w-5xl;
+}
+
+.container-full {
+	@apply w-full px-4 md:px-6;
+}

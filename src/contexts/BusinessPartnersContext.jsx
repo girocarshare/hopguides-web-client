@@ -16,6 +16,11 @@ const BusinessPartnersContextProvider = (props) => {
 			bpartner: null
 		},
 
+		modalData: {
+			show: false,
+			title:"",
+			text: "",
+		},
 	});
 
 	return <BusinessPartnersContext.Provider value={{ businessPartnersState, dispatch }}>{props.children}</BusinessPartnersContext.Provider>;

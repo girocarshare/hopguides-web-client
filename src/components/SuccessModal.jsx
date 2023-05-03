@@ -1,48 +1,54 @@
-import React, { useContext, useState, useEffect, useRef } from "react";
-import { homeDataConstants } from "../constants/HomeDataConstants";
-import { HomeDataContext } from "../contexts/HomeDataContext";
-
-
+import React, {useContext, useState, useEffect, useRef} from "react";
+import {homeDataConstants} from "../constants/HomeDataConstants";
+import {HomeDataContext} from "../contexts/HomeDataContext";
+import {AiOutlineClose} from 'react-icons/ai';
 
 const SuccessModal = () => {
 
-	const { homeDataState, dispatch } = useContext(HomeDataContext);
+		const {homeDataState, dispatch} = useContext(HomeDataContext);
 
 
-
-	const handleClose = () => {
-		dispatch({ type: homeDataConstants.HIDE_SUCCESS_FAILURE_MODAL });
-	};
-
-
-	return (
+		const handleClose = () => {
+			dispatch({type: homeDataConstants.HIDE_SUCCESS_FAILURE_MODAL});
+		};
 
 
+		return (
 
+			<div>
+				{homeDataState.modalData.success &&
 
+					<div class="relative z-50" aria-labelledby="modal-title" role="dialog" aria-modal="true">
 
-		<div>
-			{homeDataState.modalData.success && <div class="overlay" >
-				<div id="myModal" class="modal" style={{ background: "white", height: "300px", width: "900px" }}>
+						<div class="modal-overlay"></div>
 
-					<h2>Success</h2>
-					{homeDataState.modalData.text}
+						<div class="fixed inset-0 z-10 overflow-y-auto">
 
-					<div class="button-login">
+							<div class="modal-frame">
 
-						<button
-							type="button"
-							style={{ background: "#0099ff", marginTop: "px", marginRight: "55px", padding: "5px 15px", height: "35px" }}
-							onClick={handleClose}
-							class="btn btn-primary btn-lg"
-						>
-							OK
-						</button>
-					</div>
-				</div>
-			</div>}
-		</div>
-	);
-};
+								<div id="myModal" class="modal modal--md">
+
+									<div class="modal__header">
+										<h2 class="text-leading">
+											Success
+										</h2>
+										<button class="button button--circle button--clear justify-self-end" type="button"
+												onClick={handleClose}>
+											<AiOutlineClose/>
+										</button>
+									</div>
+
+									<div class="modal__body">
+										{homeDataState.modalData.text}
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>}
+			</div>
+		)
+			;
+	}
+;
 
 export default SuccessModal;

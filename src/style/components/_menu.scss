@@ -1,0 +1,19 @@
+.menu {
+    @apply flex flex-col gap-1 p-2;
+
+    li {
+        @apply flex whitespace-nowrap h-full;
+    }
+}
+
+.menu__item {
+    @apply relative flex w-full items-center h-[44px] px-3 font-semibold text-sm text-black/60 rounded-lg transition hover:text-black hover:bg-black/5 select-none;
+}
+
+.menu__item--active {
+    @apply text-black bg-neutral-100;
+}
+
+.menu__item-icon {
+    @apply w-6 h-6 stroke-[1.5] mr-3;
+}

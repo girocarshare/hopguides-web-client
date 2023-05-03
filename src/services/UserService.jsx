@@ -1,10 +1,7 @@
 
 import Axios from "axios";
 import { userConstants } from "../constants/UserConstants";
-
-import { deleteLocalStorage, setAuthInLocalStorage } from "../helpers/auth-header";
-import React, { useContext, useEffect, useImperativeHandle, forwardRef, useState } from "react";
-import { authHeader } from "../helpers/auth-header";
+import { setAuthInLocalStorage } from "../helpers/auth-header";
 var url = process.env.REACT_APP_URL || "http://localhost:8080/";
 export const userService = {
 	login,
@@ -16,7 +13,7 @@ export const userService = {
 
 
 function login(loginRequest, dispatch) {
-	
+
 	dispatch(request());
 	Axios.post(`${url}api/users/login`, loginRequest, { validateStatus: () => true })
 		.then((res) => {
@@ -114,34 +111,18 @@ function forgotPassword(sendEmailRequest, dispatch) {
 	}
 }
 
-
-function sendRegistrationMail(sendEmailRequest, dispatch) {
+function sendRegistrationMail( tf, dispatch) {
 	
-
-	dispatch(request());
-	Axios.post(`${url}api/users/sendRegistrationEmail`, sendEmailRequest, { validateStatus: () => true })
-		.then((res) => {
-			if (res.status === 200) {
-				dispatch(success());
-							
-			} else {
-				dispatch(failure(res.data.error));
-			} 
-		})
-		.catch((err) =>{
-			
-			var error = "Unknown error, please try again later."
-				dispatch(failure(error));
-			})
-
-	function request() {
-		return { type: userConstants.REGISTRATION_MAIL_REQUEST };
+	if(tf){
+		dispatch(success());
+	}else{
+		dispatch(failure("Error while sending registration mail"));
 	}
+
 	function success() {
 		return { type: userConstants.REGISTRATION_MAIL_SUCCESS };
 	}
 	function failure(error) {
-		
 		return { type: userConstants.REGISTRATION_MAIL_FAILURE, error };
 	}
 }
@@ -150,8 +131,6 @@ function sendRegistrationMail(sendEmailRequest, dispatch) {
 
 async function getRoles(dispatch) {
 	dispatch(request());
-
-	var token = authHeader()
 	
 	await Axios.get(`${url}api/roles`, { validateStatus: () => true })
 		.then((res) => {

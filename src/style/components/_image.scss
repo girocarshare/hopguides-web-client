@@ -1,0 +1,7 @@
+.image__preview {
+	@apply bg-white border border-black/10 rounded-lg;
+	img {
+		@apply w-full h-auto;
+	}
+;
+}

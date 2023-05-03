@@ -5,7 +5,6 @@ import { authHeader } from "../helpers/auth-header";
 var url = process.env.REACT_APP_URL || "http://localhost:8080/";
 
 export const homeDataService = {
-	//getData,
 	getToursAndPointsData,
 	getPreviousMonthsData,
 	addTour,
@@ -47,7 +46,7 @@ function insertData( tf, dispatch) {
 
 async function getTermsAndConditions(dispatch ,id) {
 	
-	
+
 	dispatch(request());
 	
 	await Axios.get(`${url}api/pnl/tour/termsandconditions/` + id, { validateStatus: () => true })
@@ -77,38 +76,6 @@ async function getTermsAndConditions(dispatch ,id) {
 	}
 }
 
-
-async function confirm(dispatch ,bookingId, pointId) {
-	
-	
-	dispatch(request());
-	
-	await Axios.get(`${url}api/booking/scanQR/` + bookingId +"/" + pointId, { validateStatus: () => true })
-		.then((res) => {
-			if (res.status === 200) {
-				dispatch(success(res.data));
-			} else {
-				var error = "Error while fetching data"
-				dispatch(failure(error));
-			}
-		})
-		.catch((err) => {
-		
-			var error = "Unknown error, please try again later."
-				dispatch(failure(error));
-		});
-
-	function request() {
-		return { type: homeDataConstants.CONFIRMATION_REQUEST };
-	}
-	function success(data) {
-		
-		return { type: homeDataConstants.CONFIRMATION_SUCCESS, data: data };
-	}
-	function failure(message) {
-		return { type: homeDataConstants.CONFIRMATION_FAILURE, errorMessage: message };
-	}
-}
 
 
 async function getQrCodes(dispatch ,tourId) {
@@ -140,39 +107,6 @@ async function getQrCodes(dispatch ,tourId) {
 	}
 	function failure(message) {
 		return { type: homeDataConstants.GET_QRCODES_FAILURE, errorMessage: message };
-	}
-}
-
-
-async function generateQrCode(dispatch ,tourId) {
-	
-	
-	dispatch(request());
-	
-	await Axios.get(`${url}api/pnl/tour/qr/` + tourId , { validateStatus: () => true })
-		.then((res) => {
-			if (res.status === 200) {
-				dispatch(success(res.data));
-			} else {
-				var error = "Error while fetching data"
-				dispatch(failure(error));
-			}
-		})
-		.catch((err) => {
-		
-			var error = "Unknown error, please try again later."
-				dispatch(failure(error));
-		});
-
-	function request() {
-		return { type: homeDataConstants.GENERATE_QRCODE_REQUEST };
-	}
-	function success(data) {
-		console.log(data)
-		return { type: homeDataConstants.GENERATE_QRCODE_SUCCESS, data: data };
-	}
-	function failure(message) {
-		return { type: homeDataConstants.GENERATE_QRCODE_FAILURE, errorMessage: message };
 	}
 }
 
@@ -234,9 +168,76 @@ function addTour(tour, dispatch) {
 	}
 }
 
-function changeLockCode(lockCode, dispatch) {
 
+async function confirm(dispatch ,bookingId, pointId) {
+	
+	
 	dispatch(request());
+	
+	await Axios.get(`${url}api/booking/scanQR/` + bookingId +"/" + pointId, { validateStatus: () => true })
+		.then((res) => {
+			if (res.status === 200) {
+				dispatch(success(res.data));
+			} else {
+				var error = "Error while fetching data"
+				dispatch(failure(error));
+			}
+		})
+		.catch((err) => {
+		
+			var error = "Unknown error, please try again later."
+				dispatch(failure(error));
+		});
+
+	function request() {
+		return { type: homeDataConstants.CONFIRMATION_REQUEST };
+	}
+	function success(data) {
+		
+		return { type: homeDataConstants.CONFIRMATION_SUCCESS, data: data };
+	}
+	function failure(message) {
+		return { type: homeDataConstants.CONFIRMATION_FAILURE, errorMessage: message };
+	}
+}
+
+
+
+async function generateQrCode(dispatch ,tourId) {
+	
+	
+	dispatch(request());
+	
+	await Axios.get(`${url}api/pnl/tour/qr/` + tourId , { validateStatus: () => true })
+		.then((res) => {
+			if (res.status === 200) {
+				dispatch(success(res.data));
+			} else {
+				var error = "Error while fetching data"
+				dispatch(failure(error));
+			}
+		})
+		.catch((err) => {
+		
+			var error = "Unknown error, please try again later."
+				dispatch(failure(error));
+		});
+
+	function request() {
+		return { type: homeDataConstants.GENERATE_QRCODE_REQUEST };
+	}
+	function success(data) {
+		console.log(data)
+		return { type: homeDataConstants.GENERATE_QRCODE_SUCCESS, data: data };
+	}
+	function failure(message) {
+		return { type: homeDataConstants.GENERATE_QRCODE_FAILURE, errorMessage: message };
+	}
+}
+
+
+function changeLockCode(lockCode, dispatch) {
+dispatch(request());
 	
 	var token = authHeader()
 	Axios.post(`${url}api/bp/changeLockCode/` + lockCode, { headers: { Authorization: token } },{ validateStatus: () => true })
@@ -271,6 +272,7 @@ function changeLockCode(lockCode, dispatch) {
 
 function deleteTour( dispatch, tourId) {
 
+	
 	dispatch(request());
 	
 	var token = authHeader()
@@ -281,7 +283,6 @@ function deleteTour( dispatch, tourId) {
 		.then((res) => {
 			if (res.status === 200) {
 				dispatch(success());
-				window.location.reload()
 			} else if (res.status === 500) {
 				dispatch(failure(res.data.response));
 			}else{
@@ -339,11 +340,11 @@ function deletePoi( dispatch, tourId, poiId) {
 	}
 	function success() {
 		window.location.reload()
-		return { type: homeDataConstants.DELETE_TOUR_SUCCESS };
+		return { type: homeDataConstants.DELETE_POI_SUCCESS };
 	}
 	function failure(error) {
 		
-		return { type: homeDataConstants.DELETE_TOUR_FAILURE, error };
+		return { type: homeDataConstants.DELETE_POI_FAILURE, error };
 	}
 }
 
@@ -391,10 +392,10 @@ function updatePoint( tf, dispatch) {
 
 
 async function getPreviousMonthsData(dispatch ,id) {
-
+	
 	dispatch(request());
 	
-	if(id==""){
+	if(id===""){
 		id = "x"
 	}
 	await Axios.get(`${url}api/pnl/tour/previousReport/` + id, { validateStatus: () => true })
@@ -427,10 +428,12 @@ async function getPreviousMonthsData(dispatch ,id) {
 
 async function getToursAndPointsData(dispatch) {
 
+
 		dispatch(request());
 		var token = authHeader()
 	
 	await Axios.get(`${url}api/pnl/tour/allToursWithPoints`,{ headers: { Authorization: token},  validateStatus: () => true })
+
 		.then((res) => {
 			if (res.status === 200) {
 				dispatch(success(res.data));
@@ -472,7 +475,6 @@ async function getQrCode(dispatch,id) {
 			if (res.status === 200) {
 				console.log(res.data)
 				FileDownload(res.data, id.trim() + ".png");
-				//window.location.reload(true);
 			}
 		})
 		.catch((err) => {
@@ -484,6 +486,7 @@ async function getQrCode(dispatch,id) {
 
 async function getBPartners(dispatch ) {
 
+	dispatch(request());
 	await Axios.get(`${url}api/bp/all`, { validateStatus: () => true })
 		.then((res) => {
 			if (res.status === 200) {

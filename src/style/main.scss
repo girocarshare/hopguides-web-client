@@ -1,0 +1,54 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+// Base
+@import 'base/default',
+'base/typography',
+'base/helpers';
+
+// Components
+@import 'components/container',
+'components/icon',
+'components/loader',
+'components/button',
+'components/label',
+'components/dropdown',
+'components/table',
+'components/menu',
+'components/navbar',
+'components/modal',
+'components/image',
+'components/box',
+'components/form';
+
+@media screen and (prefers-reduced-motion: reduce) {
+	html {
+		@apply scroll-auto;
+	}
+}
+
+@layer base {
+	html {
+		-webkit-tap-highlight-color: transparent;
+		@apply scroll-smooth;
+	}
+
+	a,
+	button,
+	[role="button"] {
+		@apply outline-none;
+	}
+}
+
+html, body, #root, .App {
+	height: 100%;
+}
+
+body {
+	@apply h-full overflow-x-hidden text-black/60;
+}
+
+.title {
+	@apply flex flex-row items-center justify-between gap-4 mb-8;
+}

@@ -2,42 +2,42 @@ import { reportConstants } from "../constants/ReportConstants";
 
 
 function convertMonth(month){
-	if(month == 1){
+	if(month === 1){
 
 		return "January"
 
-	}else if(month == 2){
+	}else if(month === 2){
 
 		return "February"
-	}else if(month == 3){
+	}else if(month === 3){
 		
 		return "March"
-	}else if(month == 4){
+	}else if(month === 4){
 
 		return "April"
 		
-	}else if(month == 5){
+	}else if(month === 5){
 		
 		return "May"
-	}else if(month == 6){
+	}else if(month === 6){
 		
 		return "June"
-	}else if(month == 7){
+	}else if(month === 7){
 		
 		return "July"
-	}else if(month == 8){
+	}else if(month === 8){
 		
 		return "August"
-	}else if(month == 9){
+	}else if(month === 9){
 		
 		return "September"
-	}else if(month == 10){
+	}else if(month === 10){
 		
 		return "October"
-	}else if(month == 11){
+	}else if(month === 11){
 		
 		return "November"
-	}else if(month == 12){
+	}else if(month === 12){
 		
 		return "December"
 	}
@@ -50,7 +50,7 @@ export const reportReducer = (state, action) => {
 
 		case reportConstants.REPORT_GET_SUCCESS:
 
-		/*var data= {
+		var data= {
 			bpartnerEmail:"danijel.omerzel@visitljubljana.si",
 			bpartnerName:"Tourism Ljubljana",
 			bpratnerPhone : "0038641386295",
@@ -59,7 +59,7 @@ export const reportReducer = (state, action) => {
 			name : "Klobasarna",
 			offerName: "Some offer name",
 			pointId :"0c4d2a86-9083-42ee-ad4f-4c3665ff0823"
-		}*/
+		}
 
 		/***********************************
 		 * *********************************
@@ -70,15 +70,15 @@ export const reportReducer = (state, action) => {
 			return {
 				...state,
 				report: {
-					pointId: action.data.pointId,
-					monthlyUsedCoupons: action.data.monthlyUsedCoupons,
-					name: action.data.name,
-					bpartnerName : action.data.bpartnerName,
-					bpartnerEmail: action.data.bpartnerEmail,
-					bpratnerPhone: action.data.bpratnerPhone,
-					bpratnerPhone2: action.data.bpratnerPhone2,
-					offerName: action.data.offerName,
-					menu: action.data.menu
+					pointId: data.pointId,
+					monthlyUsedCoupons: data.monthlyUsedCoupons,
+					name: data.name,
+					bpartnerName : data.bpartnerName,
+					bpartnerEmail: data.bpartnerEmail,
+					bpratnerPhone: data.bpratnerPhone,
+					bpratnerPhone2: data.bpratnerPhone2,
+					offerName: data.offerName,
+					menu: data.menu
 				},
 
 			};
@@ -142,7 +142,7 @@ export const reportReducer = (state, action) => {
 
 			var arrReports = []
 			for (var report of action.data) {
-				if (report.from.length == 5) {
+				if (report.from.length === 5) {
 					var monthNum = report.from.charAt(0)
 					monthNum = parseInt(monthNum) + 1
 					var month = convertMonth(monthNum)

@@ -1,0 +1,63 @@
+@font-face {
+    font-family: 'Inter';
+    font-style:  normal;
+    font-weight: 300;
+    font-display: swap;
+    src: url("~/src/assets/fonts/Inter-Light.woff2?v=3.19") format("woff2"),
+         url("~/src/assets/fonts/Inter-Light.woff?v=3.19") format("woff");
+}
+
+@font-face {
+    font-family: 'Inter';
+    font-style:  normal;
+    font-weight: 400;
+    font-display: swap;
+	src: url("~/src/assets/fonts/Inter-Regular.woff2?v=3.19") format("woff2"),
+         url("~/src/assets/fonts/Inter-Regular.woff?v=3.19") format("woff");
+}
+
+@font-face {
+    font-family: 'Inter';
+    font-style:  normal;
+    font-weight: 600;
+    font-display: swap;
+	src: url("~/src/assets/fonts/Inter-SemiBold.woff2?v=3.19") format("woff2"),
+         url("~/src/assets/fonts/Inter-SemiBold.woff?v=3.19") format("woff");
+}
+
+@font-face {
+    font-family: 'Inter';
+    font-style:  normal;
+    font-weight: 700;
+    font-display: swap;
+	src: url("~/src/assets/fonts/Inter-Bold.woff2?v=3.19") format("woff2"),
+         url("~/src/assets/fonts/Inter-Bold.woff?v=3.19") format("woff");
+}
+
+@font-face {
+    font-family: 'Inter';
+    font-style:  normal;
+    font-weight: 800;
+    font-display: swap;
+	src: url("~/src/assets/fonts/Inter-ExtraBold.woff2?v=3.19") format("woff2"),
+         url("~/src/assets/fonts/Inter-ExtraBold.woff?v=3.19") format("woff");
+}
+
+@font-face {
+    font-family: 'Inter var';
+    font-weight: 100 900;
+    font-display: swap;
+    font-style: normal;
+    font-named-instance: 'Regular';
+	src: url("~/src/assets/fonts/Inter-roman.var.woff2?v=3.19") format("woff2");
+}
+
+html { @apply font-sans; }
+
+@supports (font-variation-settings: normal) {
+    html { font-family: 'Inter var', sans-serif; }
+}
+
+body {
+    @apply bg-white text-black font-normal antialiased;
+}

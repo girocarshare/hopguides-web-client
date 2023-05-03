@@ -50,24 +50,24 @@ const Confirmation = forwardRef(( props, ref ) => {
     }
 
     return (
-        <div class="login-page" >
+        <div class = "grid h-screen place-items-center" >
            
 
 
-           {homeDataState.confirmed && <div class="image-box">
+           {homeDataState.confirmed && <div>
                 {
 
-                    <img alt="" src="/assets/img/Screenshot_2.png" />
+                    <img alt="" src="/assets/img/voucher_valid.png" />
 
                 }
             </div>}
 
           
 
-            {homeDataState.notConfirmed && <div class="image-box">
+            {homeDataState.notConfirmed && <div >
                 {
 
-                    <img alt="" src="/assets/img/Screenshot_1.png" />
+                    <img alt="" src="/assets/img/voucher_invalid.png" />
 
                 }
             </div>}

@@ -1,17 +1,17 @@
 import React, {
-  useEffect,
-  useState,
-  useImperativeHandle,
-  forwardRef,
-  useContext,
-  useRef
+	useEffect,
+	useState,
+	useImperativeHandle,
+	forwardRef,
+	useContext,
+	useRef
 } from "react";
-import { HomeDataContext } from "../contexts/HomeDataContext";
-import { homeDataService } from "../services/HomeDataService";
-import { homeDataConstants } from "../constants/HomeDataConstants";
-import { MdOutlineModeEditOutline, MdLaunch } from 'react-icons/md';
+import {HomeDataContext} from "../contexts/HomeDataContext";
+import {homeDataService} from "../services/HomeDataService";
+import {homeDataConstants} from "../constants/HomeDataConstants";
+import {MdOutlineModeEditOutline, MdLaunch} from 'react-icons/md';
 import Axios from "axios";
-import { deleteLocalStorage, authHeader } from "../helpers/auth-header";
+import {deleteLocalStorage, authHeader} from "../helpers/auth-header";
 import AddNewTourForm from "./AddNewTourForm";
 import UpdateLogoModal from "./UpdateLogoModal";
 import TourData from "./TourData";
@@ -22,499 +22,511 @@ var url = process.env.REACT_APP_URL || "http://localhost:8080/";
 
 const HomeData = forwardRef((props, ref) => {
 
-  const { homeDataState, dispatch } = useContext(HomeDataContext);
-  const [users, setUsers] = useState([]);
-  const [tours, setTours] = useState(props.data);
-  const [tourPrice, setTourPrice] = useState("");
-  const [rowId, setRowId] = useState("");
-  const [rowIdTour, setRowIdTour] = useState("");
-  const [role, setRole] = useState(false);
-  const [admin, setAdmin] = useState(false);
-  const [adminOnly, setAdminOnly] = useState(false);
-  const [updateField, setUpdateField] = useState("Update");
-  const [updatePartner, setUpdatePartner] = useState("Update");
-  const [editTourPrice, setEditTourPrice] = useState(false);
-  const [editResponsiblePerson, setEditResponsiblePerson] = useState(false);
-  const [responsiblePerson, setResponsiblePerson] = useState("");
-  const [editContactEmail, setEditContactEmail] = useState(false);
-  const [contactEmail, setContactEmail] = useState("");
-  const [editContactPhone, setEditContactPhone] = useState(false);
-  const [contactPhone, setContactPhone] = useState("");
-  const [editPartner, setEditPartner] = useState(false);
-  const [partnerPrice, setPartnerPrice] = useState("");
-  const [editOfferName, setEditOfferName] = useState(false);
-  const [offerName, setOfferName] = useState("");
-  const someFetchActionCreator = () => {
-    const getDocumentsInfoHandler = async () => {
-      await homeDataService.getData(dispatch);
-      await homeDataService.getToursAndPointsData(dispatch);
+	const {homeDataState, dispatch} = useContext(HomeDataContext);
+	const [users, setUsers] = useState([]);
+	const [tours, setTours] = useState(props.data);
+	const [tourPrice, setTourPrice] = useState("");
+	const [rowId, setRowId] = useState("");
+	const [rowIdTour, setRowIdTour] = useState("");
+	const [role, setRole] = useState(false);
+	const [admin, setAdmin] = useState(false);
+	const [adminOnly, setAdminOnly] = useState(false);
+	const [updateField, setUpdateField] = useState("Update");
+	const [updatePartner, setUpdatePartner] = useState("Update");
+	const [editTourPrice, setEditTourPrice] = useState(false);
+	const [editPartner, setEditPartner] = useState(false);
+	const [partnerPrice, setPartnerPrice] = useState("");
+	const [offerName, setOfferName] = useState("");
 
 
-    };
+	const handleLogout = () => {
+		deleteLocalStorage();
+		window.location = "#/login";
+	};
+	useEffect(() => {
+		/*var token = authHeader()
+        if (token == "null") {
+          window.location = "#/unauthorized";
+        } else {
+          /*Axios.get(`${url}api/users/getRole`, { headers: { Authorization: token } }, { validateStatus: () => true },
+          )
+            .then((res) => {
+              if (res.status === 200) {
+                if ("BPARTNER" == res.data) {
+                  setRole(true)
+                }
+                if ("PROVIDER" == res.data) {
+                  setRole(true)
+                  setAdmin(true)
+                }
+                if ("ADMIN" == res.data) {
+                  setAdminOnly(true)
+                  setAdmin(true)
+                }
+              }
+            })
+            .catch((err) => {
+            })
+        }*/
+		setTours(homeDataState.toursWithPoints.toursWithPoints)
+		var contactUser = {
+			name: "Danijel Omrzel",
+			email: "danijel.omrzel@visitlljubljana.si",
+			number: "0038641386295"
+		}
+		var arr = []
+		arr.push(contactUser)
+		setUsers(arr)
+	}, [dispatch]);
 
+	const getHistory = (e, data) => {
+		const getDocumentsInfoHandlerr = async () => {
+			await homeDataService.getPreviousMonthsData(dispatch, data);
+		};
 
-    getDocumentsInfoHandler();
-  };
+		getDocumentsInfoHandlerr();
+	};
 
-
-
-  const handleLogout = () => {
-    deleteLocalStorage();
-    window.location = "#/login";
-  };
-  useEffect(() => {
-    var token = authHeader()
-    if (token == "null") {
-      window.location = "#/unauthorized";
-    } else {
-
-      Axios.get(`${url}api/users/getRole`, { headers: { Authorization: token } }, { validateStatus: () => true },
-      )
-        .then((res) => {
-          if (res.status === 200) {
-            if ("BPARTNER" == res.data) {
-
-              setRole(true)
-            }
-
-            if ("PROVIDER" == res.data) {
-
-              setRole(true)
-              setAdmin(true)
-            }
-
-            if ("ADMIN" == res.data) {
-
-              setAdminOnly(true)
-              setAdmin(true)
-            }
-          }
-        })
-        .catch((err) => {
-
-        })
-    }
-    setTours(homeDataState.toursWithPoints.toursWithPoints)
-    var contactUser = {
-      name: "Danijel Omrzel",
-      email: "danijel.omrzel@visitlljubljana.si",
-      number: "0038641386295"
-    }
-    var arr = []
-    arr.push(contactUser)
-    setUsers(arr)
-  }, [dispatch]);
-
-  const getHistory = (e, data) => {
-    console.log(data)
-    const getDocumentsInfoHandlerr = async () => {
-      await homeDataService.getPreviousMonthsData(dispatch, data);
-    };
-
-    getDocumentsInfoHandlerr();
-  };
-
+  
 
   const getQrCodes = (e, data) => {
   
     window.location = "#/qrcodes/" + data;
   };
 
-  const getQrCode = (e, data) => {
-    homeDataService.getQrCode(dispatch, data);
-  };
 
+	const getQrCode = (e, data) => {
+		homeDataService.getQrCode(dispatch, data);
+	};
 
 
-  const visitWebsite = (e, data) => {
+	const visitWebsite = (e, data) => {
 
-    window.location = "#/report/" + data;
-  };
+		window.location = "#/report/" + data;
+	};
 
-  
-  const seeTermsAndConditions = (e, data) => {
 
-    window.location = "#/termsAndConditions/" + data;
-  };
+	const seeTermsAndConditions = (e, data) => {
 
+		window.location = "#/termsAndConditions/" + data;
+	};
 
-  const updateLogo = (e) => {
 
-    
-    dispatch({ type: homeDataConstants.SHOW_UPDATE_LOGO_MODAL });
-  };
+	const updateLogo = (e) => {
 
-  
 
-  const editLockCode = (e) => {
+		dispatch({type: homeDataConstants.SHOW_UPDATE_LOGO_MODAL});
+	};
 
-    
-    dispatch({ type: homeDataConstants.SHOW_CHANGE_LOCK_CODE_MODAL });
-  };
 
+	const editLockCode = (e) => {
 
-  const addNew = (e) => {
 
-    dispatch({ type: homeDataConstants.SHOW_ADD_MODAL });
-  };
-  const addNewPartner = (e, id, bpartnerId) => {
+		dispatch({type: homeDataConstants.SHOW_CHANGE_LOCK_CODE_MODAL});
+	};
 
-    console.log(bpartnerId)
-    dispatch({ type: homeDataConstants.SHOW_ADD_PARTNER_MODAL, id: id, bpartnerId:bpartnerId });
-  };
 
+	const addNew = (e) => {
 
-  const onUpdatePoint = (oldData, newData) => {
+		dispatch({type: homeDataConstants.SHOW_ADD_MODAL});
+	};
+	const addNewPartner = (e, id, bpartnerId) => {
 
-    const getUpdateHandlerr = async () => {
-      return await homeDataService.updatePoint(dispatch, oldData);
-    };
+		console.log(bpartnerId)
+		dispatch({type: homeDataConstants.SHOW_ADD_PARTNER_MODAL, id: id, bpartnerId: bpartnerId});
+	};
 
-    return getUpdateHandlerr();
 
-  };
-  const onUpdate = async (oldData, newData) => {
+	const onUpdatePoint = (oldData, newData) => {
 
-    const getUpdateHandlerr = async () => {
-      return await homeDataService.updateTour(dispatch, oldData);
-    };
+		const getUpdateHandlerr = async () => {
+			return await homeDataService.updatePoint(dispatch, oldData);
+		};
 
+		return getUpdateHandlerr();
 
-    return await getUpdateHandlerr();
+	};
+	const onUpdate = async (oldData, newData) => {
 
+		const getUpdateHandlerr = async () => {
+			return await homeDataService.updateTour(dispatch, oldData);
+		};
 
-  };
-  const handleLogin = () => {
-    window.location.href = "#/login"
-  };
 
+		return await getUpdateHandlerr();
 
-  const handleRegister = () => {
-    window.location.href = "#/register"
-  };
 
+	};
+	const handleLogin = () => {
+		window.location.href = "#/login"
+	};
 
 
-  const update = (e, tour) => {
+	const handleRegister = () => {
+		window.location.href = "#/register"
+	};
 
+	const allBusinessPartners = () => {
+		window.location.href = "#/businesspartners"
+	};
 
+	const insertdata = () => {
+		window.location.href = "#/insertdata"
+	};
 
-    dispatch({ type: homeDataConstants.UPDATE_TOUR_DATA_MODAL_SHOW, tour});
 
-  
-  };
+	const update = (e, tour) => {
 
-  const deleteTour = async (e, tour) => {
 
+		dispatch({type: homeDataConstants.UPDATE_TOUR_DATA_MODAL_SHOW, tour});
 
-    await homeDataService.deleteTour(dispatch, tour.tourId);
 
-  
-  };
+	};
 
-  const deletePoi = async (e, tour, poiId) => {
+	const deleteTour = async (e, tour) => {
 
 
-    await homeDataService.deletePoi(dispatch, tour.tourId, poiId);
+		await homeDataService.deleteTour(dispatch, tour.tourId);
 
-  
-  };
 
-  const updatePartnerPrice = (e, point, tour) => {
-
-    dispatch({ type: homeDataConstants.UPDATE_POINT_DATA_MODAL_SHOW, point});
-
-
-  };
-
-
-  return (
-
-    <div class="login-page" >
-
-      {homeDataState.showModal && <div >
-        <AddNewTourForm />
-      </div>}
-
-      {homeDataState.showEditLogoModal && <div >
-        <UpdateLogoModal />
-      </div>}
-
-      {homeDataState.showEditLockCodeModal && <div >
-        <ChangeLockCodeModal />
-      </div>}
-
-      {homeDataState.updateTourData.show && <div >
-        <TourData />
-      </div>}
-
-    
-      {role &&
-        <div class="button-login">
-
-          <button
-            type="button"
-            style={{ background: "#0099ff", marginTop: "px", marginRight: "55px", padding: "5px 15px", height: "35px" }}
-            onClick={handleLogin}
-            class="btn btn-primary btn-lg"
-          >
-            Log in
-          </button>
-        </div>
-      }
-
-      {!role &&
-        <div class=" button-login">
-          <button
-            type="button"
-            style={{ background: "#0099ff", marginTop: "px", marginRight: "55px", padding: "5px 15px", height: "35px" }}
-            onClick={handleLogout}
-            class="btn btn-primary btn-lg"
-          >
-            Log out
-          </button>
-        </div>
-      }
-      <br /> {!role &&
-        <div class=" button-login">
-          <button
-            type="button"
-            style={{ background: "#0099ff", marginTop: "px", marginRight: "55px", padding: "5px 15px", height: "35px" }}
-            onClick={updateLogo}
-            class="btn btn-primary btn-lg"
-          >
-            Edit logo
-          </button>
-        </div>
-      }  
-      <br /> {!role &&
-        <div class=" button-login">
-          <button
-            type="button"
-            style={{ background: "#0099ff", marginTop: "px", marginRight: "55px", padding: "5px 15px", height: "35px" }}
-            onClick={editLockCode}
-            class="btn btn-primary btn-lg"
-          >
-            Edit lock code
-          </button>
-        </div>
-      }
-      <br />
-      {adminOnly &&
-        <div class="button-login">
-
-          <button
-            type="button" style={{ background: "#0099ff", marginTop: "px", marginRight: "55px", padding: "5px 15px", height: "35px" }}
-            onClick={handleRegister}
-            class="btn btn-primary btn-lg"
-          >
-            Register new user
-          </button>
-        </div>
-      }
-
-
-
-
-
-      <h1 class="paragraph-box" style={{ fontSize: 28 }} ><b>Tourism Ljubljana</b></h1>
-      <div class="contact-box">
-
-        <table style={{ border: "1px solid gray", width: 1400, background: "white" }}>
-          <thead>
-            <tr>
-              <th style={{ border: "1px solid gray" }}> </th>
-              <th style={{ border: "1px solid gray" }}>Name</th>
-              <th style={{ border: "1px solid gray" }}>Email</th>
-              <th style={{ border: "1px solid gray" }}>Number</th>
-            </tr>
-          </thead>
-
-          {users.map((point) => (
-            <tbody>
-              <tr>
-                <td style={{ border: "1px solid gray" }}>{point.name}</td>
-                <td style={{ border: "1px solid gray" }}>{point.email}</td>
-                <td style={{ border: "1px solid gray" }}>{point.number}</td>
-
-              </tr>
-            </tbody>))
-          }
-        </table>
-
-      </div>
-      <h4 class="paragraph-box" style={{ fontSize: 20 }} >Tours</h4>
-
-
-      <div class="contact-box">
-        {
-          <table style={{ border: "1px solid gray", width: 1400, background: "white" }}>
-            <thead>
-
-
-              <tr>
-                <th style={{ border: "1px solid gray" }}>Name</th>
-                <th style={{ border: "1px solid gray" }}>Price</th>
-                <th style={{ border: "1px solid gray" }}>Number of executed tours for current month</th>
-                <th style={{ border: "1px solid gray" }}>Get monthly report</th>
-                <th style={{ border: "1px solid gray" }}>Update</th>
-                    <th style={{ border: "1px solid gray" }}>Delete</th>
-                    <th style={{ border: "1px solid gray" }}>See terms and conditions</th>
-              </tr>
-            </thead>
-
-            {homeDataState.toursWithPoints.toursWithPoints.map((tour) => (
-              <tbody>
-                <tr >
-                  <td style={{ border: "1px solid gray" }} id={tour.tourId} onClick={(e) => {
-
-                    const element = document.getElementById(tour.tourId);
-                    if (element) {
-                      element.scrollIntoView({ behavior: 'smooth' });
-                    }
-
-
-
-                  }}>{tour.title.english}</td>
-                  <td style={{ border: "1px solid gray" }}>
-                    <input
-                      readOnly={!editTourPrice || rowIdTour != tour.tourId}
-                      placeholder={editTourPrice === true ? `${tour.price}` : "Insert price"}
-                      aria-describedby="basic-addon1"
-                      id="name"
-                      type="text"
-                      style={{ backgroundColor: editTourPrice === true && rowIdTour == tour.tourId ? '#DCDCDC' : 'white', outline: 'none' }}
-                      onChange={(e) => setTourPrice(e.target.value)}
-                      value={tourPrice === "" ? `${tour.price} ${tour.currency} incl tax` : tourPrice}
-                    />
-                  </td>
-                  <td style={{ border: "1px solid gray" }}>{tour.noOfRidesAMonth}</td>
-                  <td style={{ border: "1px solid gray" }}><button onClick={(e) => getHistory(e, tour.tourId)} >Get report</button></td>
-                  <td style={{ border: "1px solid gray" }}><button onClick={(e) => getQrCodes(e, tour.tourId)} >Get qr codes</button></td>
-                  <td style={{ border: "1px solid gray" }}><button onClick={(e) => update(e, tour)} >{updateField}</button></td>
-                  <td style={{ border: "1px solid gray" }}><button onClick={(e) => deleteTour(e, tour)} >Delete</button></td>
-                  <td style={{ border: "1px solid gray" }}><button
-                        color="inherit"
-                        onClick={(event) => {
-
-                          seeTermsAndConditions(event, tour.tourId)
-                        }}
-                      >
-                        <MdLaunch />
-
-                      </button></td>
-
-                </tr>
-              </tbody>))
-            }
-          </table>
-        }
-      </div>
-
-      {homeDataState.toursWithPoints.toursWithPoints.map((tour, i) =>
-
-        <div style={{ marginTop: "100px" }} id={tour.tourId}>
-
-          <div class="contact-box">
-            {
-              <table style={{ border: "1px solid gray", width: 1400, background: "white" }}>
-                <thead>
-                  <tr>
-                    {admin && <button
-                      style={{ background: "#0099ff", marginTop: "px", marginRight: "55px", padding: "5px 15px", height: "35px" }}
-                      color="primary"
-                      variant="contained"
-                      onClick={(e) => addNewPartner(e, tour.tourId, tour.bpartnerId)}
-                    >
-                      Add partner
-                    </button>}
-                  </tr>
-
-                  <tr>
-                    <th style={{ border: "1px solid gray" }}>Visit website</th>
-                    <th style={{ border: "1px solid gray" }}>POI name</th>
-                    <th style={{ border: "1px solid gray" }}>Price</th>
-                    <th style={{ border: "1px solid gray" }}>Offer name</th>
-                    <th style={{ border: "1px solid gray" }}>Category</th>
-                    <th style={{ border: "1px solid gray" }}>Coupons realized by partner in current month </th>
-                    <th style={{ border: "1px solid gray" }}>Generate QR code</th>
-                    <th style={{ border: "1px solid gray" }}>Update</th>
-                    <th style={{ border: "1px solid gray" }}>Delete</th>
-                  </tr>
-                </thead>
-
-                {tour.points.map((points) => (
-                  <tbody>
-                    <tr >
-                      <td style={{ border: "1px solid gray" }}><button
-                        color="inherit"
-                        onClick={(event) => {
-
-                          visitWebsite(event, points.point.id)
-                        }}
-                      >
-                        <MdLaunch />
-
-                      </button></td>
-                      <td style={{ border: "1px solid gray" }}>{points.point.name.english}</td>
-                     
-                      <td style={{ border: "1px solid gray" }}>
-                        <input
-                          readOnly={!editPartner || rowId != points.point.id}
-                          placeholder={editPartner === true ? points.point.price : "Price"}
-                          aria-describedby="basic-addon1"
-                          id="name"
-                          type="text"
-                          style={{ backgroundColor: editPartner === true && rowId == points.point.id ? '#DCDCDC' : 'white', outline: 'none' }}
-                          onChange={(e) => setPartnerPrice(e.target.value)}
-                          value={partnerPrice === "" ? `${points.point.price} ${tour.currency} incl tax` : partnerPrice}
-                        />
-                      </td>
-                      <td style={{ border: "1px solid gray" }}>
-                        <input
-                          readOnly={!editPartner || rowId != points.point.id}
-                          placeholder={editPartner === true ? points.point.offerName : "Offer name"}
-                          aria-describedby="basic-addon1"
-                          id="name"
-                          type="text"
-                          style={{ backgroundColor: editPartner === true && rowId == points.point.id ? '#DCDCDC' : 'white', outline: 'none' }}
-                          onChange={(e) => setOfferName(e.target.value)}
-                          value={offerName === "" ? `${points.point.offerName} ` : offerName}
-                        />
-                      </td>
-
-                      
-                  <td style={{ border: "1px solid gray" }}>{points.point.category}</td>
-
-                      <td style={{ border: "1px solid gray" }}>{points.monthlyUsed}</td>
-
-                      <td style={{ border: "1px solid gray" }}>
-                        <button
-                          color="inherit"
-                          onClick={(event) => {
-                            getQrCode(event, points.point.id)
-                          }}
-                        >
-                          Get QR code
-                        </button></td>
-                      <td style={{ border: "1px solid gray" }}><button onClick={(e) => updatePartnerPrice(e, points, tour)} >{updatePartner}</button></td>
-                      <td style={{ border: "1px solid gray" }}><button onClick={(e) => deletePoi(e, tour, points.point.id)} >Delete</button></td>
-
-                    </tr>
-                  </tbody>))}
-              </table>
-            }
-          </div>
-
-
-
-        </div>
-      )}
-
-      <div style={{ marginTop: "100px" }} ><p> <br /><br />     </p></div>
-    </div>
-
-  );
+	};
+
+	const deletePoi = async (e, tour, poiId) => {
+
+
+		await homeDataService.deletePoi(dispatch, tour.tourId, poiId);
+
+
+	};
+
+	const updatePartnerPrice = (e, point, tour) => {
+
+		dispatch({type: homeDataConstants.UPDATE_POINT_DATA_MODAL_SHOW, point});
+
+
+	};
+
+
+	return (
+
+		<div>
+
+			{homeDataState.showModal && <div>
+				<AddNewTourForm/>
+			</div>}
+
+			{homeDataState.showEditLogoModal && <div>
+				<UpdateLogoModal/>
+			</div>}
+
+			{homeDataState.showEditLockCodeModal && <div>
+				<ChangeLockCodeModal/>
+			</div>}
+
+			{homeDataState.updateTourData.show && <div>
+				<TourData/>
+			</div>}
+
+			<div className="container pt-20 lg:pt-40 pb-12">
+
+				<div className="navbar">
+					<div className="navbar__content">
+						<div>
+							<img className="h-8 w-auto" src="assets/img/logo.svg"/>
+						</div>
+						<div className="hidden lg:flex flex-row items-center gap-2">
+
+
+							{/*{role &&*/}
+							<div>
+								<button className="button button--clear button--small" type="button" onClick={updateLogo}>
+									Edit logo
+								</button>
+							</div>
+							{/*}*/}
+
+							{/*{role &&*/}
+							<div>
+								<button className="button button--clear button--small" type="button" onClick={editLockCode}>
+									Edit lock code
+								</button>
+							</div>
+							{/*}*/}
+
+							{/*{adminOnly &&*/}
+							<div>
+								<button className="button button--clear button--small" type="button"
+										onClick={handleRegister}>
+									New user
+								</button>
+							</div>
+							{/*}*/}
+
+							{/*{adminOnly &&*/}
+							<div>
+								<button className="button button--clear button--small" type="button"
+										onClick={allBusinessPartners}>
+									Partners
+								</button>
+							</div>
+							{/*}*/}
+
+
+							{!role &&
+								<div>
+									<button className="button button--clear button--small" type="button"
+											onClick={handleLogin}>
+										Log in
+									</button>
+								</div>
+							}
+
+							{/*{role &&*/}
+							<div>
+								<button className="button button--clear button--small" type="button" onClick={handleLogout}>
+									Log out
+								</button>
+							</div>
+							{/*}*/}
+
+						</div>
+					</div>
+				</div>
+
+				<div className="grid grid-cols-12 mb-12 lg:mb-16 items-start justif-start gap-8">
+
+					<div className="col-span-12 lg:col-span-3">
+						&nbsp;
+					</div>
+					<div className="flex flex-col items-center justify-center gap-8 col-span-12 lg:col-span-6">
+						<div
+							className="w-48 h-48 rounded-full bg-white border border-black/10 oveflow-hidden bg-contain bg-center bg-no-repeat"
+							style={{backgroundImage: `url(${("assets/img/turizem-lj.jpg")})`,}}>
+						</div>
+						<h1 className=" text-heading4 text-center">
+							Tourism Ljubljana
+						</h1>
+					</div>
+
+					{/*Contact*/}
+					<div
+						className="fixed z-20 left-0 bottom-0 right-0 col-span-12 lg:col-span-3 lg:relative flex flex-col items-center justify-center bg-white/80 backdrop-blur border-t lg:border-none border-black/10 drop-shadow-[0_-2px_6px_rgba(0,0,0,0.15)] lg:drop-shadow-none">
+						<div
+							className="flex flex-row lg:flex-col items-center lg:items-start gap-0 lg:gap-4 p-3 lg:p-6 lg:rounded-2xl lg:border lg:border-black/
+						10 lg:shadow-2xl lg:shadow-black/10 w-full">
+							<div className="label label--primary -rotate-90 lg:rotate-0 -ml-7 lg:ml-0">
+								Contact
+							</div>
+							{users.map((point) => (
+								<div  className="flex flex-col gap-1 lg:gap-2 w-full overflow-hidden -ml-2 lg:ml-0">
+									<div className="text-sm lg:text-xl font-bold text-black">
+										{point.name}
+									</div>
+									<div className="flex flex-col gap-1 lg:gap-2 text-xs lg:text-sm">
+										<a className="link" href="mailto:'{point.email}'">{point.email}</a>
+										<div>{point.number}</div>
+									</div>
+								</div>
+							))
+							}
+						</div>
+					</div>
+
+				</div>
+
+				<div className="p-2 md:p-4 bg-black/[3%] rounded-2xl mb-12">
+					<div  className="py-3 px-2 pb-4 md:pb-6 flex flex-row items-center justify-between gap-4">
+						<h4 className="text-heading6">
+							Tours
+						</h4>
+						<div>
+								
+
+									{/*{adminOnly &&*/}
+							<div>
+								<button className="button button--primary button--small" variant="contained" type="button" onClick={insertdata}>
+									New data
+								</button>
+							</div>
+							{/*}*/}
+								</div>
+					</div>
+
+					<div className="table-frame">
+
+						<table>
+							<thead>
+							<tr>
+								<th>Name</th>
+								<th className="whitespace-nowrap">Price<span
+									className="text-xs font-normal text-black/60 ml-1">/ incl tax</span>
+								</th>
+								<th className="whitespace-nowrap">Tours booked<span
+									className="text-xs font-normal text-black/60 ml-1">/ this month</span></th>
+								<th>Options</th>
+							</tr>
+							</thead>
+
+							{homeDataState.toursWithPoints.toursWithPoints.map((tour) => (
+								<tbody>
+								<tr>
+									<td id={tour.tourId} onClick={(e) => {
+
+										const element = document.getElementById(tour.tourId);
+										if (element) {
+											element.scrollIntoView({behavior: 'smooth'});
+										}
+
+
+									}}>{tour.title.english}</td>
+									<td>{`${tour.price} ${tour.currency} including tax`}</td>
+										
+									<td>{tour.noOfRidesAMonth}</td>
+									<td>
+										<div className="flex flex-row items-center gap-2 justify-end">
+											<button className="button button--secondary button--small" onClick={(event) => {
+												seeTermsAndConditions(event, tour.tourId)
+											}}>
+												Terms
+											</button>
+											<button className="button button--secondary button--small"
+													onClick={(e) => getHistory(e, tour.tourId)}>Get report
+											</button>
+                      <button className="button button--secondary button--small" onClick={(e) => getQrCodes(e, tour.tourId)} >Get qr codes</button>
+											<button className="button button--secondary button--small"
+													onClick={(e) => update(e, tour)}>{updateField}</button>
+											<button className="button button--secondary button--small"
+													onClick={(e) => deleteTour(e, tour)}>Delete
+											</button>
+										</div>
+									</td>
+
+								</tr>
+								</tbody>
+							))
+							}
+						</table>
+
+					</div>
+				</div>
+
+				<div className="p-2 md:p-4 bg-black/[3%] rounded-2xl mb-12">
+
+					{homeDataState.toursWithPoints.toursWithPoints.map((tour, i) =>
+
+						<div id={tour.tourId}>
+
+							<div className="py-3 px-2 pb-4 md:pb-6 flex flex-row items-center justify-between gap-4">
+								<h4 className="text-heading6">
+									POIs & Partners
+								</h4>
+								<div>
+									{/* {admin && */}
+									<button className="button button--primary button--small" variant="contained"
+											onClick={(e) => addNewPartner(e, tour.tourId, tour.bpartnerId)}>
+										Add partner
+									</button>
+									{/*}*/}
+								</div>
+							</div>
+
+
+							<div className="table-frame">
+
+								<table>
+									<thead>
+
+									<tr>
+										<th>Name</th>
+										<th className="whitespace-nowrap">Price<span
+											className="text-xs font-normal text-black/60 ml-1">/ incl tax</span>
+										</th>
+										<th className="whitespace-nowrap">Offer name</th>
+										<th>Category</th>
+										<th className="whitespace-nowrap">Used coupons<span
+											className="text-xs font-normal text-black/60 ml-1">/ this month</span></th>
+										<th>Options</th>
+									</tr>
+									</thead>
+
+									{tour.points.map((points) => (
+										<tbody>
+										<tr>
+
+											<td>{points.point.name.english}</td>
+											<td>
+												{points.point.price == "" ?	"/" : `${points.point.price} ${tour.currency} including tax`}
+											</td>
+											<td>
+											{points.point.offerName == "" ?	"/" : `${points.point.offerName} `}
+											</td>
+
+											<td>{points.point.category}</td>
+
+											<td>{points.monthlyUsed}</td>
+											<td>
+												<div className="flex flex-row items-center gap-2 justify-end">
+													<button className="button button--secondary button--small"
+															onClick={(event) => {
+																visitWebsite(event, points.point.id)
+															}}>
+														Web
+													</button>
+													<button className="button button--secondary button--small"
+															onClick={(event) => {
+																getQrCode(event, points.point.id)
+															}}>
+														Get QR
+													</button>
+													<button className="button button--secondary button--small"
+															onClick={(e) => updatePartnerPrice(e, points, tour)}>
+														{updatePartner}
+													</button>
+													<button className="button button--secondary button--small"
+															onClick={(e) => deletePoi(e, tour, points.point.id)}>
+														Delete
+													</button>
+												</div>
+											</td>
+
+										</tr>
+										</tbody>
+									))}
+								</table>
+
+							</div>
+
+						</div>
+					)}
+				</div>
+
+			</div>
+
+			<div className="text-sm text-black/40">
+				<div className="container pb-40 lg:pb-16">
+					<div
+						className="flex flex-col lg:flex-row items-center justify-start lg:justify-between gap-4 border-t black/10 pt-6">
+						<div className="flex items-center gap-2 lg:order-last mb-2 lg:mb-0">
+							<a className="button button--clear button--small" href="#" target="_blank">
+								Terms
+							</a>
+							<a className="button button--clear button--small" href="#" target="_blank">
+								Privacy
+							</a>
+							<a className="button button--clear button--small" target="_blank">
+								Contact
+							</a>
+						</div>
+						<div>
+							2023 © <span className="font-bold">Hopguides™</span> Ltd. All rights reserved.
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	)
+		;
 });
 
 export default HomeData

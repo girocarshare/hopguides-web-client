@@ -1,0 +1,13 @@
+// Only for screen readers
+.sr-only {
+	@apply absolute w-px h-px p-0 -m-px overflow-hidden whitespace-nowrap border-0 border-none;
+	clip: rect(0, 0, 0, 0);
+}
+
+.progress-circle {
+	@apply stroke-2 stroke-black;
+	stroke-dasharray: 106px;
+	stroke-dashoffset: calc(106px - (106px * var(--percent)) / 100);
+	stroke-linecap: round;
+	transition: stroke-dashoffset .25s linear;
+}

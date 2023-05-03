@@ -1,0 +1,39 @@
+.table-frame {
+	@apply bg-white overflow-x-auto border border-black/10 rounded-xl shadow-lg shadow-black/[5%];
+}
+
+table {
+	@apply min-w-full divide-y divide-black/10;
+}
+
+th {
+	@apply px-3 py-3.5 text-left text-sm font-semibold align-bottom text-black;
+}
+
+th:first-child {
+	@apply py-3.5 pl-4 pr-3 text-left text-sm font-semibold;
+}
+
+th:last-child {
+	@apply relative py-3.5 pl-3 pr-4 text-right;
+}
+
+tbody {
+
+}
+th,
+td {
+	@apply whitespace-nowrap px-3 py-4 text-sm;
+}
+
+td:first-child {
+	@apply whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium;
+}
+
+td:last-child {
+	@apply relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium;
+}
+
+tr:nth-child(2) td {
+	@apply bg-black/[3%];
+}

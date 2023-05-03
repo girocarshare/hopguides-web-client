@@ -2,13 +2,11 @@ import React, { useContext, useEffect, useState, forwardRef, useRef } from "reac
 import { businessPartnersService } from "../services/BusinessPartnersService";
 import { BusinessPartnersContext } from "../contexts/BusinessPartnersContext";
 import { businessPartnersConstants } from "../constants/BusinessPartnersConstants";
-import TimePicker from 'react-time-picker';
 import { AiOutlineClose } from 'react-icons/ai';
-import ReactAudioPlayer from 'react-audio-player';
 
 var url = process.env.REACT_APP_URL || "http://localhost:8080/";
 const BPartnerData = () => {
-				const [email, setEmail] = useState("");
+	const [email, setEmail] = useState("");
 	const [name, setName] = useState("");
 	const [support, setSuppoprt] = useState("");
 	const [phone, setPhone] = useState("");
@@ -32,11 +30,9 @@ const BPartnerData = () => {
 	const onFileChange = (event) => {
 		var new_file = new File([event.target.files[0]], 'menu' + "---" + [event.target.files[0].name]);
 		setFile(new_file);
-		setImagePreview(URL.createObjectURL(event.target.files[0]));
-
+		setImagePreview(URL.createObjectURL(event.target.files[0]))
 
 	}
-
 
 	const fileData = () => {
 		if (file) {
@@ -54,145 +50,136 @@ const BPartnerData = () => {
 			);
 		}
 	};
-	const ProgressHandler = (e) => {
-		var percent = (e.loaded / e.total) * 100;
-		progressRef.current.value = Math.round(percent);
-		statusRef.current.innerHTML = Math.round(percent) + "% uploaded...";
-
-	};
 
 	const SuccessHandler = (e) => {
 
-		
+
 		businessPartnersService.updateBPartner(true, dispatch);
 	};
 	const ErrorHandler = () => {
 
 		statusRef.current.innerHTML = "Upload failed";
 
-		//dispatch({ type: homeDataConstants.UPDATE_MENU_PHOTO_FAILURE });
-		//reportService.addMenu(false, dispatch);
 	};
 	const AbortHandler = () => {
 
 		statusRef.current.innerHTML = "Upload aborted";
 
-		//reportService.addMenu(false, dispatch);
 	};
 
 	const handleSubmit = (e) => {
-		
+
 		e.preventDefault();
 
-		var bpartner = {}
-
-		if (name != "") {
-			bpartner.name = name
-		}
-		if (phone != "") {
-			bpartner.contact.phone = phone
-		}
-		if (phone2 != "") {
-			bpartner.contact.phone2 = phone2
-		}
+		/*	var bpartner = {}
 	
-		if (email != "") {
-			bpartner.contact.email = email
-		}
+			if (name != "") {
+				bpartner.name = name
+			}
+			if (phone != "") {
+				bpartner.contact.phone = phone
+			}
+			if (phone2 != "") {
+				bpartner.contact.phone2 = phone2
+			}
 		
-		if (address != "") {
-			bpartner.contact.location.street = address
-		}
-
-		if (webURL != "") {
-			bpartner.contact.webURL = webURL
-		}
-		if (lockCode != "") {
-			bpartner.lockCode = lockCode
-		}
-		if (support != "") {
-			bpartner.support = JSON.parse(support)
-		}
-
-		if (height != "") {
-			bpartner.dimensions.height = height
-		}
-		if (width != "") {
-			bpartner.dimensions.height = width
-		}
-
-		bpartner.id = businessPartnersState.updateBPartner.bpartner.id
+			if (email != "") {
+				bpartner.contact.email = email
+			}
+			
+			if (address != "") {
+				bpartner.contact.location.street = address
+			}
 	
+			if (webURL != "") {
+				bpartner.contact.webURL = webURL
+			}
+			if (lockCode != "") {
+				bpartner.lockCode = lockCode
+			}
+			if (support != "") {
+				bpartner.support = JSON.parse(support)
+			}
+	
+			if (height != "") {
+				bpartner.dimensions.height = height
+			}
+			if (width != "") {
+				bpartner.dimensions.height = width
+			}
+	
+			bpartner.id = businessPartnersState.updateBPartner.bpartner.id
+		
+	
+			const formData = new FormData();
+	
+			if (file != null) {
+	
+				formData.append('file', file);
+			}
+			formData.append('bpartner', JSON.stringify(bpartner));
+	
+			var xhr = new XMLHttpRequest();
+			xhr.addEventListener("load", SuccessHandler, false);
+			xhr.addEventListener("error", ErrorHandler, false);
+			xhr.addEventListener("abort", AbortHandler, false);
+			xhr.open('POST', `${url}api/bp/update`, true);
+			xhr.onload = function () {
+				// do something to response
+			};
+	
+			xhr.send(formData);*/
 
-		const formData = new FormData();
-
-		if (file != null) {
-
-			formData.append('file', file);
-		}
-		formData.append('bpartner', JSON.stringify(bpartner));
-
-		var xhr = new XMLHttpRequest();
-		xhr.addEventListener("load", SuccessHandler, false);
-		xhr.addEventListener("error", ErrorHandler, false);
-		xhr.addEventListener("abort", AbortHandler, false);
-		//************************************** */
-		xhr.open('POST', `${url}api/bp/update`, true);
-		//xhr.setRequestHeader("Authorization", props.token);
-		xhr.onload = function () {
-			// do something to response
-		};
-
-		xhr.send(formData);
-
-		// homeDataService.addTour(tour, dispatch);
-
-
+		SuccessHandler()
 
 	};
 
 	const handleModalClose = () => {
 		dispatch({ type: businessPartnersConstants.UPDATE_BPARTNER_DATA_MODAL_HIDE });
-		window.location.reload()
+		//window.location.reload()
 	};
 
 	return (
 
 		<div  >
 
-			{businessPartnersState.updateBPartner.show && <div class="overlay" >
+			{businessPartnersState.updateBPartner.show &&
+
+				<div class="relative z-50" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+
+					<div class="modal-overlay"></div>
+
+					<div class="fixed inset-0 z-10 overflow-y-auto">
+
+						<div class="modal-frame">
+
+							<div id="myModal" class="modal modal--3xl">
 
 
-				<div id="myModal" class="modal" style={{ background: "white" }}>
+								<div class="modal__header">
+									<h2 class="text-leading">
+										Update business partner
+									</h2>
+									<button class="button button--circle button--clear justify-self-end" type="button"
+										onClick={handleModalClose}>
+										<AiOutlineClose />
+									</button>
+								</div>
 
+								<div className="modal__body">
 
-					<div className="containerModal"  >
+									<form class="form" id="contactForm">
 
-						<div className="row mt-5">
-							<div class="button-login">
+										<div class="form">
 
-								<button
-									type="button"
-									style={{ background: "#0099ff", marginTop: "px", marginRight: "55px", padding: "5px 15px", height: "35px" }}
-									onClick={handleModalClose}
-									class="btn btn-primary btn-lg"
-								>
-									<AiOutlineClose />
-								</button>
-							</div>
-							<form id="contactForm" >
+											<div className="form__group">
 
-
-
-								<table style={{ marginLeft: "4rem", marginBottom: "4rem" }}>
-									<td width="600rem"  >
-										<div className="control-group">
-											<div className="form-group controls mb-0 pb-2" style={{ color: "#6c757d", opacity: 1 }}>
-												<label><b>Name</b></label>
-												<div class="row" >
-													<div class="form-group col-lg-10">
+												<label class="form__label" ><b>Name</b></label>
+												<div class="flex flex-col gap-2">
+													<div class="flex flex-row items-center gap-2">
 
 														<input
+															className={"form__input"}
 															readOnly={!edit}
 															aria-describedby="basic-addon1"
 															id="name"
@@ -205,15 +192,15 @@ const BPartnerData = () => {
 													</div>
 												</div>
 											</div>
-										</div>
 
 
-										<div className="control-group">
-											<div className="form-group controls mb-0 pb-2" style={{ color: "#6c757d", opacity: 1 }}>
-												<label><b>Primary phone</b></label>
-												<div class="row" >
-													<div class="form-group col-lg-10">
+											<div className="form__group">
+												<label class="form__label"><b>Primary phone</b></label>
+												<div class="flex flex-col gap-2">
+													<div class="flex flex-row items-center gap-2">
+
 														<textarea
+															className={"form__input"}
 															readOnly={!edit}
 															placeholder="Primary phone"
 															aria-describedby="basic-addon1"
@@ -226,14 +213,13 @@ const BPartnerData = () => {
 													</div>
 												</div>
 											</div>
-										</div>
 
-										<div className="control-group">
-											<div className="form-group controls mb-0 pb-2" style={{ color: "#6c757d", opacity: 1 }}>
-												<label><b>Secondary phone</b></label>
-												<div class="row" >
-													<div class="form-group col-lg-10">
+											<div className="form__group">
+												<label class="form__label"><b>Secondary phone</b></label>
+												<div class="flex flex-col gap-2">
+													<div class="flex flex-row items-center gap-2">
 														<textarea
+															className={"form__input"}
 															readOnly={!edit}
 															placeholder="Secondary phone"
 															aria-describedby="basic-addon1"
@@ -246,15 +232,14 @@ const BPartnerData = () => {
 													</div>
 												</div>
 											</div>
-										</div>
 
-										
-										<div className="control-group">
-											<div className="form-group controls mb-0 pb-2" style={{ color: "#6c757d", opacity: 1 }}>
-												<label><b>Email</b></label>
-												<div class="row" >
-													<div class="form-group col-lg-10">
+
+											<div className="form__group">
+												<label class="form__label"><b>Email</b></label>
+												<div class="flex flex-col gap-2">
+													<div class="flex flex-row items-center gap-2">
 														<textarea
+															className={"form__input"}
 															readOnly={!edit}
 															placeholder="Email"
 															aria-describedby="basic-addon1"
@@ -267,228 +252,222 @@ const BPartnerData = () => {
 													</div>
 												</div>
 											</div>
-										</div>
 
 
 
-												<div className="control-group">
-													<div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
-														<label><b>Address</b></label>
-														<div class="row" >
-															<div class="form-group col-lg-10">
-																<input
-																	readOnly={!edit}
-																	placeholder="Address"
-																	aria-describedby="basic-addon1"
-																	id="name"
-																	type="text"
-																	style={{ backgroundColor: edit === true ? '#DCDCDC' : 'white', outline: 'none' }}
-																	onChange={(e) => setAddress(e.target.value)}
-																	value={address === "" ? businessPartnersState.updateBPartner.bpartner.contact.location.street : address}
-																/>
+											<div className="form__group">
+												<label class="form__label"><b>Address</b></label>
+												<div class="flex flex-col gap-2">
+													<div class="flex flex-row items-center gap-2">
+														<input
+															className={"form__input"}
+															readOnly={!edit}
+															placeholder="Address"
+															aria-describedby="basic-addon1"
+															id="name"
+															type="text"
+															style={{ backgroundColor: edit === true ? '#DCDCDC' : 'white', outline: 'none' }}
+															onChange={(e) => setAddress(e.target.value)}
+															value={address === "" ? businessPartnersState.updateBPartner.bpartner.contact.location.street : address}
+														/>
 
 
-															</div>
-														</div>
-													</div>
-												</div>
-
-
-												<div className="control-group">
-													<div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
-														<label><b>Website</b></label>
-														<div class="row" >
-															<div class="form-group col-lg-10">
-																<input
-																	readOnly={!edit}
-																	placeholder="Website"
-																	aria-describedby="basic-addon1"
-																	id="name"
-																	type="text"
-																	style={{ backgroundColor: edit === true ? '#DCDCDC' : 'white', outline: 'none' }}
-																	onChange={(e) => setWebURL(e.target.value)}
-																	value={webURL === "" ? businessPartnersState.updateBPartner.bpartner.contact.webURL : webURL}
-																/>
-
-
-															</div>
-														</div>
-													</div>
-												</div>
-
-												<div className="control-group">
-													<div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
-														<label><b>Website</b></label>
-														<div class="row" >
-															<div class="form-group col-lg-10">
-																<input
-																	readOnly={!edit}
-																	placeholder="Website"
-																	aria-describedby="basic-addon1"
-																	id="name"
-																	type="text"
-																	style={{ backgroundColor: edit === true ? '#DCDCDC' : 'white', outline: 'none' }}
-																	onChange={(e) => setWebURL(e.target.value)}
-																	value={webURL === "" ? businessPartnersState.updateBPartner.bpartner.contact.webURL : webURL}
-																/>
-
-
-															</div>
-														</div>
-													</div>
-												</div>
-
-												<div className="control-group">
-													<div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
-														<label><b>Lock code</b></label>
-														<div class="row" >
-															<div class="form-group col-lg-10">
-																<input
-																	readOnly={!edit}
-																	placeholder="Lock code"
-																	aria-describedby="basic-addon1"
-																	id="name"
-																	type="text"
-																	style={{ backgroundColor: edit === true ? '#DCDCDC' : 'white', outline: 'none' }}
-																	onChange={(e) => setLockCode(e.target.value)}
-																	value={lockCode === "" ? businessPartnersState.updateBPartner.bpartner.lockCode : lockCode}
-																/>
-
-
-															</div>
-														</div>
-													</div>
-												</div>
-
-												<div className="control-group">
-													<div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
-														<label><b>Support text</b></label>
-														<div class="row" >
-															<div class="form-group col-lg-10">
-																<input
-																	readOnly={!edit}
-																	placeholder='JSON FORMAT: { "language": "Text"}'
-																	aria-describedby="basic-addon1"
-																	id="name"
-																	type="text"
-																	style={{ backgroundColor: edit === true ? '#DCDCDC' : 'white', outline: 'none' }}
-																	onChange={(e) => setSuppoprt(e.target.value)}
-																	value={support === "" ? JSON.stringify(businessPartnersState.updateBPartner.bpartner.support) : lockCode}
-																/>
-
-
-															</div>
-														</div>
-													</div>
-												</div>
-
-										<div className="control-group">
-											<div className="form-group controls mb-0 pb-2" style={{ color: "#6c757d", opacity: 1 }}>
-
-												<div class="row" >
-													<div class="form-group col-lg-10">
-
-
-
-														<div style={{ marginTop: "15px" }}>
-															<label><b>Logo image</b></label>
-															<br />   <br />
-															{edit && <input type={"file"} name="file" onChange={onFileChange} />}
-
-														</div>
-
-														{fileData()}
-
-														{imagePreview && <img className="preview" src={imagePreview} alt={"image-"} />}
-														{!imagePreview && <img className="preview" src={businessPartnersState.updateBPartner.bpartner.logo} alt={"image-"} />}
-
-
-														<br />
 													</div>
 												</div>
 											</div>
-										</div>
-
-										<div className="control-group">
-													<div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
-														<label><b>Logo height</b></label>
-														<div class="row" >
-															<div class="form-group col-lg-10">
-																<input
-																	readOnly={!edit}
-																	placeholder="Logo height"
-																	aria-describedby="basic-addon1"
-																	id="name"
-																	type="text"
-																	style={{ backgroundColor: edit === true ? '#DCDCDC' : 'white', outline: 'none' }}
-																	onChange={(e) => setHeight(e.target.value)}
-																	value={height === "" ? businessPartnersState.updateBPartner.bpartner.dimensions.height : height}
-																/>
 
 
-															</div>
-														</div>
+											<div className="form__group">
+												<label class="form__label"><b>Website</b></label>
+												<div class="flex flex-col gap-2">
+													<div class="flex flex-row items-center gap-2">
+														<input
+															className={"form__input"}
+															readOnly={!edit}
+															placeholder="Website"
+															aria-describedby="basic-addon1"
+															id="name"
+															type="text"
+															style={{ backgroundColor: edit === true ? '#DCDCDC' : 'white', outline: 'none' }}
+															onChange={(e) => setWebURL(e.target.value)}
+															value={webURL === "" ? businessPartnersState.updateBPartner.bpartner.contact.webURL : webURL}
+														/>
+
+
 													</div>
 												</div>
-												<div className="control-group">
-													<div className="form-group controls mb-0 pb-2" style={{ opacity: 1 }}>
-														<label><b>Logo width</b></label>
-														<div class="row" >
-															<div class="form-group col-lg-10">
-																<input
-																	readOnly={!edit}
-																	placeholder="Logo width"
-																	aria-describedby="basic-addon1"
-																	id="name"
-																	type="text"
-																	style={{ backgroundColor: edit === true ? '#DCDCDC' : 'white', outline: 'none' }}
-																	onChange={(e) => setWidth(e.target.value)}
-																	value={width === "" ? businessPartnersState.updateBPartner.bpartner.dimensions.width : width}
-																/>
+											</div>
+
+											<div className="form__group">
+												<label class="form__label"><b>Website</b></label>
+												<div class="flex flex-col gap-2">
+													<div class="flex flex-row items-center gap-2">
+														<input
+															className={"form__input"}
+															readOnly={!edit}
+															placeholder="Website"
+															aria-describedby="basic-addon1"
+															id="name"
+															type="text"
+															style={{ backgroundColor: edit === true ? '#DCDCDC' : 'white', outline: 'none' }}
+															onChange={(e) => setWebURL(e.target.value)}
+															value={webURL === "" ? businessPartnersState.updateBPartner.bpartner.contact.webURL : webURL}
+														/>
 
 
-															</div>
-														</div>
 													</div>
 												</div>
+											</div>
 
-										<div className="form-group text-center" style={{ color: "red", fontSize: "0.8em", marginTop: "30px", marginRight: "40px" }} hidden={!errMessage}>
-											{errMessage}
-										</div>
-										{!edit && <div className="form-group text-center">
+											<div className="form__group">
+												<label class="form__label"><b>Lock code</b></label>
+												<div class="flex flex-col gap-2">
+													<div class="flex flex-row items-center gap-2">
+														<input
+															className={"form__input"}
+															readOnly={!edit}
+															placeholder="Lock code"
+															aria-describedby="basic-addon1"
+															id="name"
+															type="text"
+															style={{ backgroundColor: edit === true ? '#DCDCDC' : 'white', outline: 'none' }}
+															onChange={(e) => setLockCode(e.target.value)}
+															value={lockCode === "" ? businessPartnersState.updateBPartner.bpartner.lockCode : lockCode}
+														/>
+
+
+													</div>
+												</div>
+											</div>
+
+											<div className="form__group">
+												<label class="form__label"><b>Support text</b></label>
+												<div class="flex flex-col gap-2">
+													<div class="flex flex-row items-center gap-2">
+														<input
+															className={"form__input"}
+															readOnly={!edit}
+															placeholder='JSON FORMAT: { "language": "Text"}'
+															aria-describedby="basic-addon1"
+															id="name"
+															type="text"
+															style={{ backgroundColor: edit === true ? '#DCDCDC' : 'white', outline: 'none' }}
+															onChange={(e) => setSuppoprt(e.target.value)}
+															value={support === "" ? JSON.stringify(businessPartnersState.updateBPartner.bpartner.support) : lockCode}
+														/>
+
+
+													</div>
+												</div>
+											</div>
+
+											<div className="form__group">
+
+															<label class="form__label"><b>Logo image</b></label>
+															<br />   <br />
+															{edit && 
+															<label
+															class="button button--secondary button--small">
+															<span>Upload image</span>
+															<input type={"file"} name={"file"}
+																   onChange={onFileChange}
+																   class="sr-only"/>
+														</label>
+														}
+
+
+														{fileData()}
+														<div class="mt-2">
+															{imagePreview && <img className="image__preview" src={imagePreview} alt={"image-"} />}
+															{!imagePreview && <img className="image__preview" src={businessPartnersState.updateBPartner.bpartner.logo} alt={"image-"} />}
+														</div>
+
+														<br />
+											</div>
+
+											<div className="form__group">
+												<label class="form__label"><b>Logo height</b></label>
+												<div class="flex flex-col gap-2">
+													<div class="flex flex-row items-center gap-2">
+														<input
+															className={"form__input"}
+															readOnly={!edit}
+															placeholder="Logo height"
+															aria-describedby="basic-addon1"
+															id="name"
+															type="text"
+															style={{ backgroundColor: edit === true ? '#DCDCDC' : 'white', outline: 'none' }}
+															onChange={(e) => setHeight(e.target.value)}
+															value={height === "" ? businessPartnersState.updateBPartner.bpartner.dimensions.height : height}
+														/>
+
+
+													</div>
+												</div>
+											</div>
+											<div className="form__group">
+												<label class="form__label"><b>Logo width</b></label>
+												<div class="flex flex-col gap-2">
+													<div class="flex flex-row items-center gap-2">
+														<input
+															className={"form__input"}
+															readOnly={!edit}
+															placeholder="Logo width"
+															aria-describedby="basic-addon1"
+															id="name"
+															type="text"
+															style={{ backgroundColor: edit === true ? '#DCDCDC' : 'white', outline: 'none' }}
+															onChange={(e) => setWidth(e.target.value)}
+															value={width === "" ? businessPartnersState.updateBPartner.bpartner.dimensions.width : width}
+														/>
+
+
+													</div>
+												</div>
+											</div>
+
+											<div className="form-group text-center" style={{ color: "red", fontSize: "0.8em", marginTop: "30px", marginRight: "40px" }} hidden={!errMessage}>
+												{errMessage}
+											</div>
+											{!edit && <div className="form__group">
 											<button
-												style={{ background: "#1977cc", marginTop: "15px" }}
 
-												onClick={(e) => { setEdit(!edit) }}
-												className="btn btn-primary btn-xl"
+
+												onClick={(e) => {
+													setEdit(!edit)
+												}}
+												className="button button--primary"
 												id="sendMessageButton"
 												type="button"
 											>
 												Edit
 											</button>
 										</div>}
-										{edit && <div className="form-group text-center">
+										{edit && <div className="form__group">
 											<button
-												style={{ background: "#1977cc", marginTop: "15px" }}
 
-												onClick={(e) => { handleSubmit(e) }}
-												className="btn btn-primary btn-xl"
+
+												onClick={(e) => {
+													handleSubmit(e)
+												}}
+												className="button button--primary"
 												id="sendMessageButton"
 												type="button"
 											>
 												Update business partner
 											</button>
 										</div>}
+										
 
-										<br />
+											<br />
 
-									</td>
-								</table>
-							</form>
+										</div>
+									</form>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
 			}
 		</div >
 

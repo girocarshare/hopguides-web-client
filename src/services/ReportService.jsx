@@ -12,8 +12,7 @@ export const reportService = {
 
 
 async function getReport(dispatch ,id) {
-	
-	
+
 	dispatch(request());
 	
 	await Axios.get(`${url}api/reports/` + id, { validateStatus: () => true })
@@ -45,7 +44,7 @@ async function getReport(dispatch ,id) {
 
 
 async function getReports(dispatch ,id) {
-
+	
 	dispatch(request());
 	
 	

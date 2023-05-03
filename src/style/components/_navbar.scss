@@ -1,0 +1,32 @@
+.navbar {
+	@apply fixed z-40 left-0 right-0 top-0 shadow-sm bg-white/80 backdrop-blur;
+}
+
+.navbar__content {
+	@apply mx-auto max-w-7xl px-6 lg:px-8 py-4 flex flex-row items-center justify-between gap-2;
+}
+
+.navbar--vertical {
+	@apply flex-col gap-6;
+}
+
+.navbar--vertical-tight {
+	@apply gap-2;
+}
+
+.navbar__item {
+	@apply relative inline-flex items-center h-10 font-semibold border-b-[3px] border-transparent text-black/60 transition hover:text-black select-none;
+}
+
+.navbar__item--active {
+	@apply text-black border-black;
+}
+
+.navbar__item--notification:before {
+	content: '';
+	@apply absolute top-2 -right-3 bg-black w-2 h-2 rounded-full;
+}
+
+.navbar__item-icon {
+	@apply w-5 h-5 stroke-[1.5] mr-2;
+}
