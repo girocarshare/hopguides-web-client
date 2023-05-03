@@ -283,7 +283,6 @@ function deleteTour( dispatch, tourId) {
 		.then((res) => {
 			if (res.status === 200) {
 				dispatch(success());
-				window.location.reload()
 			} else if (res.status === 500) {
 				dispatch(failure(res.data.response));
 			}else{

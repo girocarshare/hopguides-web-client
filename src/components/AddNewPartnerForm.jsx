@@ -1,10 +1,10 @@
-import React, {useContext, useEffect, useState, forwardRef, useRef} from "react";
-import {homeDataService} from "../services/HomeDataService";
-import {HomeDataContext} from "../contexts/HomeDataContext";
-import {homeDataConstants} from "../constants/HomeDataConstants";
+import React, { useContext, useEffect, useState, forwardRef, useRef } from "react";
+import { homeDataService } from "../services/HomeDataService";
+import { HomeDataContext } from "../contexts/HomeDataContext";
+import { homeDataConstants } from "../constants/HomeDataConstants";
 import TimePicker from 'react-time-picker';
 import Axios from "axios";
-import {AiOutlineClose} from 'react-icons/ai';
+import { AiOutlineClose } from 'react-icons/ai';
 
 var num = 1;
 
@@ -81,11 +81,11 @@ const AddNewPartnerForm = (props) => {
 	const [categories, setCategories] = useState(["HISTORY", "DRINKS", "NATURE", "EATS", "BRIDGE", "MUSEUMS", "EXPERIENCE"]);
 	const [category, setCategory] = useState(categories[0]);
 	const [imagePreviews, setImagePreviews] = useState([]);
-	const [progressInfos, setProgressInfos] = useState({val: []});
+	const [progressInfos, setProgressInfos] = useState({ val: [] });
 	const [message, setMessage] = useState([]);
 	const [imageInfos, setImageInfos] = useState([]);
 
-	const {homeDataState, dispatch} = useContext(HomeDataContext);
+	const { homeDataState, dispatch } = useContext(HomeDataContext);
 
 
 	const fetchData = async (input, num) => {
@@ -136,30 +136,30 @@ const AddNewPartnerForm = (props) => {
 	};
 
 	const handleModalClose = () => {
-		dispatch({type: homeDataConstants.HIDE_ADD_PARTNER_MODAL});
-		
+		dispatch({ type: homeDataConstants.HIDE_ADD_PARTNER_MODAL });
+
 	};
 
 	const handleAdd = (e) => {
 
-		/*if (partner && (titlePointTransl == "" || shortInfoPointTransl == "" || longInfoPointTransl == "" || category == "" || pointPrice == "" || offerName == "" || responsiblePerson == "" || voucherDescTransl == "" || phone == "" || email == "" || longitude == "" || latitude == "" || audio2 == null || selectedFiles.length == 0 || (!mondayclosed && (mondayFrom == "" || mondayTo == "")) || (!tuesdayclosed && (tuesdayFrom == "" || tuesdayTo == "")) || (!wednesdayclosed && (wednesdayFrom == "" || wednesdayTo == "")) || (!thursdayclosed && (thursdayFrom == "" || thursdayTo == "")) || (!fridayclosed && (fridayFrom == "" || fridayTo == "")) || (!saturdayclosed && (saturdayFrom == "" || saturdayTo == "")) || (!sundayclosed && (sundayFrom == "" || sundayTo == "")))) {
+		if (partner && (titlePointTransl == "" || shortInfoPointTransl == "" || longInfoPointTransl == "" || category == "" || pointPrice == "" || offerName == "" || responsiblePerson == "" || voucherDescTransl == "" || phone == "" || email == "" || longitude == "" || latitude == "" || audio2 == null || selectedFiles.length == 0 || (!mondayclosed && (mondayFrom == "" || mondayTo == "")) || (!tuesdayclosed && (tuesdayFrom == "" || tuesdayTo == "")) || (!wednesdayclosed && (wednesdayFrom == "" || wednesdayTo == "")) || (!thursdayclosed && (thursdayFrom == "" || thursdayTo == "")) || (!fridayclosed && (fridayFrom == "" || fridayTo == "")) || (!saturdayclosed && (saturdayFrom == "" || saturdayTo == "")) || (!sundayclosed && (sundayFrom == "" || sundayTo == "")))) {
 			setErrMessagePartner("Please insert mandatory fields for partner (marked with *)")
 		} else if (point && (titlePointTransl == "" || shortInfoPointTransl == "" || longInfoPointTransl == "" || category == "" || longitude == "" || latitude == "" || audio2 == null || selectedFiles.length == 0)) {
 			setErrMessagePartner("Please insert mandatory fields for point of interest (marked with *)")
 		} else {
 			setAdd(false)
 			setErrMessagePartner("")
-var jsonTitles = []
-    for(var ti of imageTitles){
-      var help = ti.split("---")
-      var titlee = JSON.parse(help[0])
-      var titleObj = {
-        number : help[1],
-        name: titlee
-        
-      }
-      jsonTitles.push(titleObj)
-    }
+			var jsonTitles = []
+			for (var ti of imageTitles) {
+				var help = ti.split("---")
+				var titlee = JSON.parse(help[0])
+				var titleObj = {
+					number: help[1],
+					name: titlee
+
+				}
+				jsonTitles.push(titleObj)
+			}
 			var point = {
 				num: num,
 				name: JSON.parse(titlePointTransl),
@@ -172,7 +172,7 @@ var jsonTitles = []
 				workingHours: { monday: { from: mondayFrom, to: mondayTo }, tuesday: { from: tuesdayFrom, to: tuesdayTo }, wednesday: { from: wednesdayFrom, to: wednesdayTo }, thursday: { from: thursdayFrom, to: thursdayTo }, friday: { from: fridayFrom, to: fridayTo }, saturday: { from: saturdayFrom, to: saturdayTo }, sunday: { from: sundayFrom, to: sundayTo } },
 				category: category,
 				bpartnerId: homeDataState.showAddPartnerModal.bpartnerId,
-				imageTitles : jsonTitles
+				imageTitles: jsonTitles
 			}
 			if (voucherDesc == "") {
 				point.voucherDesc = JSON.parse(`{
@@ -210,7 +210,7 @@ var jsonTitles = []
 			setLatitude("")
 			setTitlePointTransl("")
 			setImageTitles([])
-			
+
 			setShortInfoPointTransl("")
 			setLongInfoPointTransl("")
 			setVoucherDescTransl("")
@@ -220,45 +220,10 @@ var jsonTitles = []
 			setAudio2(null)
 			setImagePreviews([])
 			num = num + 1
-			// });
-		}*/
-		var point = {
-			num: num,
-			name: JSON.parse(`{"english": "Name text", "slovenian": "naslovno besedilo" } `),
-			shortInfo: JSON.parse(`{"english": "Short description", "slovenian": "naslovno besedilo" } `),
-			longInfo: JSON.parse(`{"english": "Long description", "slovenian": "naslovno besedilo" } `),
-			price: 5,
-			offerName: "Offer name",
-			contact: {
-				phone: "+38669617624",
-				email: "email@gmail.com",
-				webURL: "www.page.com",
-				name: "Responsible person name"
-			},
-			location: {latitude: "13.4125895", longitude: "49.8151515"},
-			workingHours: {
-				monday: {from: mondayFrom, to: mondayTo},
-				tuesday: {from: tuesdayFrom, to: tuesdayTo},
-				wednesday: {from: wednesdayFrom, to: wednesdayTo},
-				thursday: {from: thursdayFrom, to: thursdayTo},
-				friday: {from: fridayFrom, to: fridayTo},
-				saturday: {from: saturdayFrom, to: saturdayTo},
-				sunday: {from: sundayFrom, to: sundayTo}
-			},
-			bpartnerId: hotelId,
-			category: "NATURE"
 		}
 
-		if (voucherDesc == "") {
-			point.voucherDesc = JSON.parse(`{"english": "", "spanish": "", "serbian": "",  "slovenian": "" }`)
-			point.partner = false
-		} else {
-			point.voucherDesc = JSON.parse(`{"english": "Voucher text", "slovenian": "naslovno besedilo" } `)
-			point.partner = true
-		}
-		const newData = [point, ...points];
 
-		setPoints(newData)
+
 	}
 	const addFile2 = (e) => {
 		if (e.target.files[0]) {
@@ -283,7 +248,7 @@ var jsonTitles = []
 
 		setSelectedFiles(selectedFiles.concat(fs))
 		setImagePreviews(images);
-		setProgressInfos({val: []});
+		setProgressInfos({ val: [] });
 		setMessage([]);
 
 	};
@@ -304,7 +269,7 @@ var jsonTitles = []
 	};
 	const handleSubmit = (e) => {
 
-		/*if (points.length == 0) {
+		if (points.length == 0) {
 			setErrMessage("Please add at least one partner")
 		} else {
 			e.preventDefault();
@@ -330,9 +295,8 @@ var jsonTitles = []
 				// do something to response
 			};
 			xhr.send(formData);
-		}*/
+		}
 
-		SuccessHandler()
 
 	};
 
@@ -396,40 +360,39 @@ var jsonTitles = []
 										New partner
 									</h2>
 									<button class="button button--circle button--clear justify-self-end" type="button"
-											onClick={handleModalClose}>
-										<AiOutlineClose/>
+										onClick={handleModalClose}>
+										<AiOutlineClose />
 									</button>
 								</div>
 
 								<div className="modal__body">
 
 									<form class="form" id="contactForm">
+										{(!partner && !point) &&
+											<div class="grid dgrid-row place-items-center gap-2">
+												<button
+													onClick={(e) => {
+														addPartner(e)
+													}}
+													className="button button--primary"
+													id="sendMessageButton"
+													type="button"
+												>
+													Add partner
+												</button>
 
-
-										<div class="flex flex-row items-center gap-2">
-											<button
-												onClick={(e) => {
-													addPartner(e)
-												}}
-												className="button button--primary"
-												id="sendMessageButton"
-												type="button"
-											>
-												Add partner
-											</button>
-
-											<button
-												onClick={(e) => {
-													addPoint(e)
-												}}
-												className="button button--primary"
-												id="sendMessageButton"
-												type="button"
-											>
-												Add point of interest
-											</button>
-										</div>
-
+												<button
+													onClick={(e) => {
+														addPoint(e)
+													}}
+													className="button button--primary"
+													id="sendMessageButton"
+													type="button"
+												>
+													Add point of interest
+												</button>
+											</div>
+										}
 
 										<div>
 											{(partner || point) &&
@@ -479,15 +442,15 @@ var jsonTitles = []
 
 													<div className="form__group">
 														<div className="form__group"
-															 style={{opacity: 1}}>
+															style={{ opacity: 1 }}>
 															<label class="form__label">Short description* </label>
 															<div class="flex flex-col items-start gap-2">
 																<textarea className="form__input h-32"
 
-																		  type="textarea" required name="message"
-																		  placeholder='Short description'
-																		  value={shortInfoPoint}
-																		  onChange={(e) => setShortInfoPoint(e.target.value)}></textarea>
+																	type="textarea" required name="message"
+																	placeholder='Short description'
+																	value={shortInfoPoint}
+																	onChange={(e) => setShortInfoPoint(e.target.value)}></textarea>
 
 																<button
 
@@ -520,10 +483,10 @@ var jsonTitles = []
 														<label class="form__label">Long description*</label>
 														<div class="flex flex-col items-start gap-2">
 															<textarea className="form__input h-32"
-																	  type="textarea" required name="message"
-																	  placeholder='Long description'
-																	  value={longInfoPoint}
-																	  onChange={(e) => setLongInfoPoint(e.target.value)}></textarea>
+																type="textarea" required name="message"
+																placeholder='Long description'
+																value={longInfoPoint}
+																onChange={(e) => setLongInfoPoint(e.target.value)}></textarea>
 															<button
 
 
@@ -555,10 +518,10 @@ var jsonTitles = []
 															<label class="form__label">Voucher description*</label>
 															<div class="flex flex-col items-start gap-2">
 																<textarea className="form__input h-32"
-																		  type="textarea" required name="message"
-																		  placeholder='Voucher description'
-																		  value={voucherDesc}
-																		  onChange={(e) => setVoucherDesc(e.target.value)}></textarea>
+																	type="textarea" required name="message"
+																	placeholder='Voucher description'
+																	value={voucherDesc}
+																	onChange={(e) => setVoucherDesc(e.target.value)}></textarea>
 																<button
 
 
@@ -590,12 +553,12 @@ var jsonTitles = []
 														<label class="form__label">Category*</label>
 														<select
 															onChange={(e) => setCategory(e.target.value)}
-															name="category" 
-															class="custom-select"
+															name="category"
+															class="form__input shrink max-w-4"
 														>
 															{categories.map(item =>
 																<option key={item}
-																		value={item}>{item}</option>
+																	value={item}>{item}</option>
 															)};
 
 														</select>
@@ -623,7 +586,7 @@ var jsonTitles = []
 																>
 																	{currencyList.map(item =>
 																		<option key={item}
-																				value={item}>{item}</option>
+																			value={item}>{item}</option>
 																	)};
 
 																</select>
@@ -693,19 +656,19 @@ var jsonTitles = []
 																</label>
 																{!mondayclosed &&
 																	<div>
-																				<span>
-																					<TimePicker disableClock={true}
-																								onChange={(newValue) => {
-																									setMondayFrom(newValue);
-																								}} value={mondayFrom}/>
-																				</span>
 																		<span>
-																					<TimePicker disableClock={true}
-																								onChange={(newValue) => {
-																									setMondayTo(newValue);
-																								}}
-																								value={mondayTo}/>
-																</span>
+																			<TimePicker disableClock={true}
+																				onChange={(newValue) => {
+																					setMondayFrom(newValue);
+																				}} value={mondayFrom} />
+																		</span>
+																		<span>
+																			<TimePicker disableClock={true}
+																				onChange={(newValue) => {
+																					setMondayTo(newValue);
+																				}}
+																				value={mondayTo} />
+																		</span>
 
 
 																	</div>
@@ -723,23 +686,23 @@ var jsonTitles = []
 																	closed
 																</label>
 																{!tuesdayclosed && <div>
-																				<span>
-																					<TimePicker disableClock={true}
-																								onChange={(newValue) => {
-																									setTuesdayFrom(newValue);
-																								}} value={tuesdayFrom}/>
-																				</span> <span>
-																					<TimePicker disableClock={true}
-																								onChange={(newValue) => {
-																									setTuesdayTo(newValue);
-																								}}
-																								value={tuesdayTo}/></span>
+																	<span>
+																		<TimePicker disableClock={true}
+																			onChange={(newValue) => {
+																				setTuesdayFrom(newValue);
+																			}} value={tuesdayFrom} />
+																	</span> <span>
+																		<TimePicker disableClock={true}
+																			onChange={(newValue) => {
+																				setTuesdayTo(newValue);
+																			}}
+																			value={tuesdayTo} /></span>
 																</div>}
 															</div>
 
 															<div className="form__group">
 																<label class="form__label">Wednesday</label>
-																<br/>
+																<br />
 																<label>
 																	<input
 																		type="checkbox"
@@ -749,17 +712,17 @@ var jsonTitles = []
 																	closed
 																</label>
 																{!wednesdayclosed && <div>
-																				<span>
-																					<TimePicker disableClock={true}
-																								onChange={(newValue) => {
-																									setWednesdayFrom(newValue);
-																								}}
-																								value={wednesdayFrom}/>
-																				</span> <span>
-																					<TimePicker disableClock={true}
-																								onChange={(newValue) => {
-																									setWednesdayTo(newValue);
-																								}} value={wednesdayTo}/></span>
+																	<span>
+																		<TimePicker disableClock={true}
+																			onChange={(newValue) => {
+																				setWednesdayFrom(newValue);
+																			}}
+																			value={wednesdayFrom} />
+																	</span> <span>
+																		<TimePicker disableClock={true}
+																			onChange={(newValue) => {
+																				setWednesdayTo(newValue);
+																			}} value={wednesdayTo} /></span>
 
 
 																</div>}
@@ -767,7 +730,7 @@ var jsonTitles = []
 
 															<div className="form__group">
 																<label class="form__label">Thursday</label>
-																<br/>
+																<br />
 																<label>
 																	<input
 																		type="checkbox"
@@ -778,17 +741,17 @@ var jsonTitles = []
 																</label>
 																{!thursdayclosed && <div>
 
-																				<span>
-																					<TimePicker disableClock={true}
-																								onChange={(newValue) => {
-																									setThursdayFrom(newValue);
-																								}}
-																								value={thursdayFrom}/>
-																				</span> <span>
-																					<TimePicker disableClock={true}
-																								onChange={(newValue) => {
-																									setThursdayTo(newValue);
-																								}} value={thursdayTo}/></span>
+																	<span>
+																		<TimePicker disableClock={true}
+																			onChange={(newValue) => {
+																				setThursdayFrom(newValue);
+																			}}
+																			value={thursdayFrom} />
+																	</span> <span>
+																		<TimePicker disableClock={true}
+																			onChange={(newValue) => {
+																				setThursdayTo(newValue);
+																			}} value={thursdayTo} /></span>
 
 
 																</div>}
@@ -796,7 +759,7 @@ var jsonTitles = []
 
 															<div className="form__group">
 																<label class="form__label">Friday</label>
-																<br/>
+																<br />
 																<label>
 																	<input
 																		type="checkbox"
@@ -807,17 +770,17 @@ var jsonTitles = []
 																</label>
 																{!fridayclosed && <div>
 
-																				<span>
-																					<TimePicker disableClock={true}
-																								onChange={(newValue) => {
-																									setFridayFrom(newValue);
-																								}} value={fridayFrom}/>
-																				</span> <span>
-																					<TimePicker disableClock={true}
-																								onChange={(newValue) => {
-																									setFridayTo(newValue);
-																								}}
-																								value={fridayTo}/></span>
+																	<span>
+																		<TimePicker disableClock={true}
+																			onChange={(newValue) => {
+																				setFridayFrom(newValue);
+																			}} value={fridayFrom} />
+																	</span> <span>
+																		<TimePicker disableClock={true}
+																			onChange={(newValue) => {
+																				setFridayTo(newValue);
+																			}}
+																			value={fridayTo} /></span>
 
 
 																</div>}
@@ -825,7 +788,7 @@ var jsonTitles = []
 
 															<div className="form__group">
 																<label class="form__label">Saturday</label>
-																<br/>
+																<br />
 																<label>
 																	<input
 																		type="checkbox"
@@ -837,25 +800,25 @@ var jsonTitles = []
 																{!saturdayclosed && <div>
 
 
-																				<span>
-																					<TimePicker disableClock={true}
-																								onChange={(newValue) => {
-																									setSaturdayFrom(newValue);
-																								}}
-																								value={saturdayFrom}/>
-																				</span> <span>
-																					<TimePicker disableClock={true}
-																								onChange={(newValue) => {
-																									setSaturdayTo(newValue);
-																								}} value={saturdayTo}/></span>
+																	<span>
+																		<TimePicker disableClock={true}
+																			onChange={(newValue) => {
+																				setSaturdayFrom(newValue);
+																			}}
+																			value={saturdayFrom} />
+																	</span> <span>
+																		<TimePicker disableClock={true}
+																			onChange={(newValue) => {
+																				setSaturdayTo(newValue);
+																			}} value={saturdayTo} /></span>
 
 																</div>}
 															</div>
 
-															<div className="form__group"
-																 style={{opacity: 1, marginLeft: "300px"}}>
+															<div className="form__group">
+
 																<label class="form__label">Sunday</label>
-																<br/>
+																<br />
 																<label>
 																	<input
 																		type="checkbox"
@@ -867,20 +830,17 @@ var jsonTitles = []
 																{!sundayclosed && <div>
 
 
-																				<span style={{
-																					marginLeft: "20px",
-																					marginRight: "30px"
-																				}}>
-																					<TimePicker disableClock={true}
-																								onChange={(newValue) => {
-																									setSundayFrom(newValue);
-																								}} value={sundayFrom}/>
-																				</span> <span>
-																					<TimePicker disableClock={true}
-																								onChange={(newValue) => {
-																									setSundayTo(newValue);
-																								}}
-																								value={sundayTo}/></span>
+																	<span >
+																		<TimePicker disableClock={true}
+																			onChange={(newValue) => {
+																				setSundayFrom(newValue);
+																			}} value={sundayFrom} />
+																	</span> <span>
+																		<TimePicker disableClock={true}
+																			onChange={(newValue) => {
+																				setSundayTo(newValue);
+																			}}
+																			value={sundayTo} /></span>
 
 																</div>}
 															</div>
@@ -894,8 +854,8 @@ var jsonTitles = []
 															class="button button--secondary button--small">
 															<span>Upload audio</span>
 															<input type={"file"} accept={".mp3"}
-																   onChange={addFile2}
-																   class="sr-only"/>
+																onChange={addFile2}
+																class="sr-only" />
 														</label>
 													</div>
 													<div>
@@ -906,10 +866,10 @@ var jsonTitles = []
 															class="button button--secondary button--small">
 															<span>Upload image</span>
 															<input type="file"
-																   multiple
-																   accept="image/*"
-																   onChange={selectFiles}
-																   class="sr-only"/>
+																multiple
+																accept="image/*"
+																onChange={selectFiles}
+																class="sr-only" />
 														</label>
 
 														{progressInfos &&
@@ -923,7 +883,7 @@ var jsonTitles = []
 																			aria-valuenow={progressInfo.percentage}
 																			aria-valuemin="0"
 																			aria-valuemax="100"
-																			style={{width: progressInfo.percentage + "%"}}
+																			style={{ width: progressInfo.percentage + "%" }}
 																		>
 																			{progressInfo.percentage}%
 																		</div>
@@ -937,7 +897,7 @@ var jsonTitles = []
 																	return (
 																		<div>
 																			<img className="image__preview" src={img}
-																				 alt={"image-" + i} key={i}/>
+																				alt={"image-" + i} key={i} />
 
 																			<input
 
@@ -976,7 +936,7 @@ var jsonTitles = []
 																				<p>
 																					<a href={img.url}>{img.name}</a>
 																				</p>
-																				<img src={img.url} alt={img.name}/>
+																				<img src={img.url} alt={img.name} />
 																			</li>
 																		))}
 																</ul>
@@ -1047,23 +1007,23 @@ var jsonTitles = []
 															<div className="form__group">
 																<label class="form__label">Web page*</label><input
 
-																className={"form__input"}
-																placeholder="Web page"
-																aria-describedby="basic-addon1"
-																id="name"
-																type="text"
+																	className={"form__input"}
+																	placeholder="Web page"
+																	aria-describedby="basic-addon1"
+																	id="name"
+																	type="text"
 
 
-																onChange={(e) => setWebUrl(e.target.value)}
-																value={webURL}
-															/>
+																	onChange={(e) => setWebUrl(e.target.value)}
+																	value={webURL}
+																/>
 															</div>
 
 
 														</div>}
 
 
-													<div>
+													<div class="grid place-items-center">
 														<button
 
 															onClick={(e) => {
@@ -1073,7 +1033,7 @@ var jsonTitles = []
 															id="sendMessageButton"
 															type="button"
 														>
-															Add
+															Add partner to the table
 														</button>
 													</div>
 
@@ -1088,98 +1048,100 @@ var jsonTitles = []
 
 								{
 									points.length > 0 &&
-									<div class="modal__footer">
-										{
+									<div>
+										<div class="modal__footer">
+											{
 
-											<div class="table-frame">
-												<table>
-													<thead>
-													<tr>
-														<th>Title
-														</th>
-														<th>Short
-															description
-														</th>
-														<th>Long
-															description
-														</th>
-														<th>Category
-														</th>
-														<th>Price
-														</th>
-														<th>Offer name
-														</th>
-														<th>Responsible
-															person
-														</th>
-														<th>Email
-														</th>
-														<th>Phone
-														</th>
-														<th>Web page
-														</th>
-														<th>Location
-														</th>
-													</tr>
-													</thead>
+												<div class="table-frame">
+													<table>
+														<thead>
+															<tr>
+																<th>Title
+																</th>
+																<th>Short
+																	description
+																</th>
+																<th>Long
+																	description
+																</th>
+																<th>Category
+																</th>
+																<th>Price
+																</th>
+																<th>Offer name
+																</th>
+																<th>Responsible
+																	person
+																</th>
+																<th>Email
+																</th>
+																<th>Phone
+																</th>
+																<th>Web page
+																</th>
+																<th>Location
+																</th>
+															</tr>
+														</thead>
 
-													{points.map((point) => (
-														<tbody>
-														<tr>
-															<td>{point.name.english}</td>
-															<td>{point.shortInfo.english}</td>
-															<td>{point.longInfo.english}</td>
-															<td>{point.category}</td>
-															{point.price == "" ?
-																<td>/</td> :
-																<td>{point.price} {currency}</td>}
-															{point.offerName == "" ?
-																<td>/</td> :
-																<td>{point.offerName}</td>}
-															{point.contact.name == "" ?
-																<td>/</td> :
-																<td>{point.contact.name}</td>}
-															{point.contact.email == "" ?
-																<td>/</td> :
-																<td>{point.contact.email}</td>}
-															{point.contact.phone == "" ?
-																<td>/</td> :
-																<td>{point.contact.phone}</td>}
-															{point.contact.webURL == "" ?
-																<td>/</td> :
-																<td>{point.contact.webURL}</td>}
+														{points.map((point) => (
+															<tbody>
+																<tr>
+																	<td>{point.name.english}</td>
+																	<td>{point.shortInfo.english}</td>
+																	<td>{point.longInfo.english}</td>
+																	<td>{point.category}</td>
+																	{point.price == "" ?
+																		<td>/</td> :
+																		<td>{point.price} {currency}</td>}
+																	{point.offerName == "" ?
+																		<td>/</td> :
+																		<td>{point.offerName}</td>}
+																	{point.contact.name == "" ?
+																		<td>/</td> :
+																		<td>{point.contact.name}</td>}
+																	{point.contact.email == "" ?
+																		<td>/</td> :
+																		<td>{point.contact.email}</td>}
+																	{point.contact.phone == "" ?
+																		<td>/</td> :
+																		<td>{point.contact.phone}</td>}
+																	{point.contact.webURL == "" ?
+																		<td>/</td> :
+																		<td>{point.contact.webURL}</td>}
 
-															<td>{`${point.location.latitude}  ${point.location.longitude}`}</td>
+																	<td>{`${point.location.latitude}  ${point.location.longitude}`}</td>
 
-														</tr>
-														</tbody>))
-													}
+																</tr>
+															</tbody>))
+														}
 
-												</table>
+													</table>
 
+												</div>
+											}
+										</div>
+
+										<div class="grid place-items-center "  >
+											<div
+												hidden={!errMessagePartner}>
+												{errMessagePartner}
 											</div>
-										}
-
+											<div className="form__group ">
+												<button
+													onClick={(e) => {
+														handleSubmit(e)
+													}}
+													className="button button--primary"
+													id="sendMessageButton"
+													type="button"
+												>
+													Add partner(s)
+												</button>
+											</div>
+										</div>
 									</div>
 								}
-								<div class="modal__footer">
-									<div
-										hidden={!errMessagePartner}>
-										{errMessagePartner}
-									</div>
-									<div className="form__group">
-										<button
-											onClick={(e) => {
-												handleSubmit(e)
-											}}
-											className="button button--primary"
-											id="sendMessageButton"
-											type="button"
-										>
-											Add partner
-										</button>
-									</div>
-								</div>
 							</div>
 
 

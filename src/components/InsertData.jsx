@@ -1,15 +1,17 @@
-import React, {useContext, useEffect, useState, forwardRef, useRef} from "react";
-import {homeDataService} from "../services/HomeDataService";
-import {HomeDataContext} from "../contexts/HomeDataContext";
-import {homeDataConstants} from "../constants/HomeDataConstants";
+import React, { useContext, useEffect, useState, forwardRef, useRef } from "react";
+import { homeDataService } from "../services/HomeDataService";
+import { HomeDataContext } from "../contexts/HomeDataContext";
+import { homeDataConstants } from "../constants/HomeDataConstants";
 import TimePicker from 'react-time-picker';
-import {AiOutlineClose} from 'react-icons/ai';
+import { AiOutlineClose } from 'react-icons/ai';
 import Axios from "axios";
+import AddPartnerOrPointForm from "./AddPartnerOrPointForm";
 
 var url = process.env.REACT_APP_URL || "http://localhost:8080/";
 
 var num = 1;
 const InsertData = (props) => {
+	const [audioName, setAudioName] = useState("");
 	const [place, setPlace] = useState("");
 	const [title, setTitle] = useState("");
 	const [imageTitles, setImageTitles] = useState([]);
@@ -93,11 +95,11 @@ const InsertData = (props) => {
 	const [categories, setCategories] = useState(["HISTORY", "DRINKS", "NATURE", "EATS", "BRIDGE", "MUSEUMS", "EXPERIENCE"]);
 	const [category, setCategory] = useState(categories[0]);
 	const [imagePreviews, setImagePreviews] = useState([]);
-	const [progressInfos, setProgressInfos] = useState({val: []});
+	const [progressInfos, setProgressInfos] = useState({ val: [] });
 	const [message, setMessage] = useState([]);
 	const [imageInfos, setImageInfos] = useState([]);
 
-	const {homeDataState, dispatch} = useContext(HomeDataContext);
+	const { homeDataState, dispatch } = useContext(HomeDataContext);
 
 	const [termsAndConditions, setTermsAndConditions] = useState("");
 
@@ -214,55 +216,54 @@ const InsertData = (props) => {
 
 		setSelectedFiles(selectedFiles.concat(fs))
 		setImagePreviews(images);
-		setProgressInfos({val: []});
+		setProgressInfos({ val: [] });
 		setMessage([]);
 
 	};
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		/*if (titleTransl == "" || agreementDescTransl == "" || agreementDescTransl == "" || audio == null || shortInfo == "" || longInfo == "" || price == "" || hotelId == "" || duration == "" || length == "" || highestPoint == "") {
-          setErrMessage("Please fill in the fileds marked with *")
-        } else {
-          var tour = {
-            title: JSON.parse(titleTransl),
-            agreementTitle: JSON.parse(agreementTitleTransl),
-            agreementDesc: JSON.parse(agreementDescTransl),
-            shortInfo: JSON.parse(shortInfo),
-            longInfo: JSON.parse(longInfo),
-            price: price,
-            points: points,
-            duration: duration,
-            length: length,
-            highestPoint: highestPoint,
-            termsAndConditions: termsAndConditions,
-            currency: currency,
-            bpartnerId: hotelId,
-          }
-          const formData = new FormData();
-          formData.append('file', file);
-          formData.append('file', audio);
-          formData.append('file', audio2);
-          for (var f of files) {
-            console.log(f)
-            formData.append('file', f);
-          }
-          for (var a of audios) {
-            formData.append('file', a);
-          }
-          formData.append('tour', JSON.stringify(tour));
-          console.log(tour)
-          var xhr = new XMLHttpRequest();
-          xhr.upload.addEventListener("progress", ProgressHandler, false);
-          xhr.addEventListener("load", SuccessHandler, false);
-          xhr.addEventListener("error", ErrorHandler, false);
-          xhr.addEventListener("abort", AbortHandler, false);
-          xhr.open('POST', `${url}api/pnl/tour/addFull/add`, true);
-          xhr.onload = function () {
-          };
-          xhr.send(formData);
-        }*/
-		SuccessHandler()
+		if (titleTransl == "" || agreementDescTransl == "" || agreementDescTransl == "" || audio == null || shortInfo == "" || longInfo == "" || price == "" || hotelId == "" || duration == "" || length == "" || highestPoint == "") {
+			setErrMessage("Please fill in the fileds marked with *")
+		} else {
+			var tour = {
+				title: JSON.parse(titleTransl),
+				agreementTitle: JSON.parse(agreementTitleTransl),
+				agreementDesc: JSON.parse(agreementDescTransl),
+				shortInfo: JSON.parse(shortInfo),
+				longInfo: JSON.parse(longInfo),
+				price: price,
+				points: points,
+				duration: duration,
+				length: length,
+				highestPoint: highestPoint,
+				termsAndConditions: termsAndConditions,
+				currency: currency,
+				bpartnerId: hotelId,
+			}
+			const formData = new FormData();
+			formData.append('file', file);
+			formData.append('file', audio);
+			formData.append('file', audio2);
+			for (var f of files) {
+				console.log(f)
+				formData.append('file', f);
+			}
+			for (var a of audios) {
+				formData.append('file', a);
+			}
+			formData.append('tour', JSON.stringify(tour));
+			console.log(tour)
+			var xhr = new XMLHttpRequest();
+			xhr.upload.addEventListener("progress", ProgressHandler, false);
+			xhr.addEventListener("load", SuccessHandler, false);
+			xhr.addEventListener("error", ErrorHandler, false);
+			xhr.addEventListener("abort", AbortHandler, false);
+			xhr.open('POST', `${url}api/pnl/tour/addFull/add`, true);
+			xhr.onload = function () {
+			};
+			xhr.send(formData);
+		}
 
 	};
 
@@ -328,125 +329,88 @@ const InsertData = (props) => {
 
 	const handleAdd = (e) => {
 
-		/*if (partner && (titlePointTransl == "" || shortInfoPointTransl == "" || longInfoPointTransl == "" || category == "" || pointPrice == "" || offerName == "" || responsiblePerson == "" || voucherDescTransl == "" || phone == "" || email == "" || longitude == "" || latitude == "" || audio2 == null || selectedFiles.length == 0 || (!mondayclosed && (mondayFrom == "" || mondayTo == "")) || (!tuesdayclosed && (tuesdayFrom == "" || tuesdayTo == "")) || (!wednesdayclosed && (wednesdayFrom == "" || wednesdayTo == "")) || (!thursdayclosed && (thursdayFrom == "" || thursdayTo == "")) || (!fridayclosed && (fridayFrom == "" || fridayTo == "")) || (!saturdayclosed && (saturdayFrom == "" || saturdayTo == "")) || (!sundayclosed && (sundayFrom == "" || sundayTo == "")))) {
-          setErrMessagePartner("Please insert mandatory fields for partner (marked with *)")
-        } else if (point && (titlePointTransl == "" || shortInfoPointTransl == "" || longInfoPointTransl == "" || category == "" || longitude == "" || latitude == "" || audio2 == null || selectedFiles.length == 0)) {
-          setErrMessagePartner("Please insert mandatory fields for point of interest (marked with *)")
-        } else {
-          setAdd(false)
-          setErrMessagePartner("")
-      var jsonTitles = []
-        for(var ti of imageTitles){
-          var help = ti.split("---")
-          var titlee = JSON.parse(help[0])
-          var titleObj = {
-            number : help[1],
-            name: titlee
-          }
-          jsonTitles.push(titleObj)
-        }
-          var point = {
-            num: num,
-            name: JSON.parse(titlePointTransl),
-            shortInfo: JSON.parse(shortInfoPointTransl),
-            longInfo: JSON.parse(longInfoPointTransl),
-            price: pointPrice,
-            offerName: offerName,
-            contact: { phone: phone, email: email, webURL: webURL, name: responsiblePerson },
-            location: { latitude: latitude, longitude: longitude },
-            workingHours: { monday: { from: mondayFrom, to: mondayTo }, tuesday: { from: tuesdayFrom, to: tuesdayTo }, wednesday: { from: wednesdayFrom, to: wednesdayTo }, thursday: { from: thursdayFrom, to: thursdayTo }, friday: { from: fridayFrom, to: fridayTo }, saturday: { from: saturdayFrom, to: saturdayTo }, sunday: { from: sundayFrom, to: sundayTo } },
-            bpartnerId: hotelId,
-            category: category,
-            imageTitles: jsonTitles,
-          }
-          if (voucherDesc == "") {
-            point.voucherDesc = JSON.parse(`{
+		if (partner && (titlePointTransl == "" || shortInfoPointTransl == "" || longInfoPointTransl == "" || category == "" || pointPrice == "" || offerName == "" || responsiblePerson == "" || voucherDescTransl == "" || phone == "" || email == "" || longitude == "" || latitude == "" || audio2 == null || selectedFiles.length == 0 || (!mondayclosed && (mondayFrom == "" || mondayTo == "")) || (!tuesdayclosed && (tuesdayFrom == "" || tuesdayTo == "")) || (!wednesdayclosed && (wednesdayFrom == "" || wednesdayTo == "")) || (!thursdayclosed && (thursdayFrom == "" || thursdayTo == "")) || (!fridayclosed && (fridayFrom == "" || fridayTo == "")) || (!saturdayclosed && (saturdayFrom == "" || saturdayTo == "")) || (!sundayclosed && (sundayFrom == "" || sundayTo == "")))) {
+			setErrMessagePartner("Please insert mandatory fields for partner (marked with *)")
+		} else if (point && (titlePointTransl == "" || shortInfoPointTransl == "" || longInfoPointTransl == "" || category == "" || longitude == "" || latitude == "" || audio2 == null || selectedFiles.length == 0)) {
+			setErrMessagePartner("Please insert mandatory fields for point of interest (marked with *)")
+		} else {
+			setAdd(false)
+			setErrMessagePartner("")
+			var jsonTitles = []
+			for (var ti of imageTitles) {
+				var help = ti.split("---")
+				var titlee = JSON.parse(help[0])
+				var titleObj = {
+					number: help[1],
+					name: titlee
+				}
+				jsonTitles.push(titleObj)
+			}
+			var point = {
+				num: num,
+				name: JSON.parse(titlePointTransl),
+				shortInfo: JSON.parse(shortInfoPointTransl),
+				longInfo: JSON.parse(longInfoPointTransl),
+				price: pointPrice,
+				offerName: offerName,
+				contact: { phone: phone, email: email, webURL: webURL, name: responsiblePerson },
+				location: { latitude: latitude, longitude: longitude },
+				workingHours: { monday: { from: mondayFrom, to: mondayTo }, tuesday: { from: tuesdayFrom, to: tuesdayTo }, wednesday: { from: wednesdayFrom, to: wednesdayTo }, thursday: { from: thursdayFrom, to: thursdayTo }, friday: { from: fridayFrom, to: fridayTo }, saturday: { from: saturdayFrom, to: saturdayTo }, sunday: { from: sundayFrom, to: sundayTo } },
+				bpartnerId: hotelId,
+				category: category,
+				imageTitles: jsonTitles,
+			}
+			if (voucherDesc == "") {
+				point.voucherDesc = JSON.parse(`{
                   "english": "",
                   "spanish": "",
                   "serbian": "",
                   "slovenian": ""
                   }`)
-            point.partner = false
-          } else {
-            point.voucherDesc = JSON.parse(voucherDescTransl)
-            point.partner = true
-          }
-          const newData = [point, ...points];
-          setPoints(newData)
-          setTitlePoint("")
-          setShortInfoPoint("")
-          setLongInfoPoint("")
-          setPointPrice("")
-          setPhone("")
-          setEmail("")
-          setResponsiblePerson("")
-          setVoucherDesc("")
-          setMondayClosed(false)
-          setTuesdayClosed(false)
-          setWednesdayClosed(false)
-          setThursdayClosed(false)
-          setFridayClosed(false)
-          setSaturdayClosed(false)
-          setSundayClosed(false)
-          setOfferName("")
-          setWebUrl("")
-          setLocation("")
-          setLongitude("")
-          setLatitude("")
-          setTitlePointTransl("")
-          setShortInfoPointTransl("")
-          setLongInfoPointTransl("")
-          setVoucherDescTransl("")
-          setImageTitles([])
-          setFiles(files.concat(selectedFiles))
-          setAudios(audios.concat(audio2))
-          setSelectedFiles([])
-          setAudio2(null)
-          setImagePreviews([])
-          num = num + 1
-        }*/
+				point.partner = false
+			} else {
+				point.voucherDesc = JSON.parse(voucherDescTransl)
+				point.partner = true
+			}
+			const newData = [point, ...points];
+			setPoints(newData)
+			setTitlePoint("")
+			setShortInfoPoint("")
+			setLongInfoPoint("")
+			setPointPrice("")
+			setPhone("")
+			setEmail("")
+			setResponsiblePerson("")
+			setVoucherDesc("")
+			setMondayClosed(false)
+			setTuesdayClosed(false)
+			setWednesdayClosed(false)
+			setThursdayClosed(false)
+			setFridayClosed(false)
+			setSaturdayClosed(false)
+			setSundayClosed(false)
+			setOfferName("")
+			setWebUrl("")
+			setLocation("")
+			setLongitude("")
+			setLatitude("")
+			setTitlePointTransl("")
+			setShortInfoPointTransl("")
+			setLongInfoPointTransl("")
+			setVoucherDescTransl("")
+			setImageTitles([])
+			setFiles(files.concat(selectedFiles))
+			setAudios(audios.concat(audio2))
+			setSelectedFiles([])
+			setAudio2(null)
+			setImagePreviews([])
+			num = num + 1
 
-
-		var point = {
-			num: num,
-			name: JSON.parse(`{"english": "Name text", "slovenian": "naslovno besedilo" } `),
-			shortInfo: JSON.parse(`{"english": "Short description", "slovenian": "naslovno besedilo" } `),
-			longInfo: JSON.parse(`{"english": "Long description", "slovenian": "naslovno besedilo" } `),
-			price: 5,
-			offerName: "Offer name",
-			contact: {
-				phone: "+38669617624",
-				email: "email@gmail.com",
-				webURL: "www.page.com",
-				name: "Responsible person name"
-			},
-			location: {latitude: "13.4125895", longitude: "49.8151515"},
-			workingHours: {
-				monday: {from: mondayFrom, to: mondayTo},
-				tuesday: {from: tuesdayFrom, to: tuesdayTo},
-				wednesday: {from: wednesdayFrom, to: wednesdayTo},
-				thursday: {from: thursdayFrom, to: thursdayTo},
-				friday: {from: fridayFrom, to: fridayTo},
-				saturday: {from: saturdayFrom, to: saturdayTo},
-				sunday: {from: sundayFrom, to: sundayTo}
-			},
-			bpartnerId: hotelId,
-			category: "NATURE"
+			setPartner(false)
+			setPoint(false)
 		}
 
-		if (voucherDesc == "") {
-			point.voucherDesc = JSON.parse(`{"english": "", "spanish": "", "serbian": "",  "slovenian": "" }`)
-			point.partner = false
-		} else {
-			point.voucherDesc = JSON.parse(`{"english": "Voucher text", "slovenian": "naslovno besedilo" } `)
-			point.partner = true
-		}
-		const newData = [point, ...points];
 
-		setPoints(newData)
-
-		setPartner(false)
-		setPoint(false)
 
 	}
 
@@ -455,6 +419,7 @@ const InsertData = (props) => {
 
 			var new_file = new File([e.target.files[0]], 'audio1' + num + "---" + [e.target.files[0].name]);
 			setAudio(new_file);
+			setAudioName(e.target.files[0].name)
 
 		}
 	};
@@ -568,12 +533,12 @@ const InsertData = (props) => {
 	};
 
 	const handleClose = () => {
-		
+
 		setShowModal(false)
 	};
 
 	const handleClosePoi = () => {
-		
+
 		setPartner(false)
 		setPoint(false)
 	};
@@ -583,6 +548,7 @@ const InsertData = (props) => {
 		if (changeTermsAndConditions) {
 
 			setChangeTermsAndConditions(false)
+			setShowModal(false)
 
 		} else {
 			setChangeTermsAndConditions(true)
@@ -596,7 +562,7 @@ const InsertData = (props) => {
 
 			<div>
 
-			
+
 				<div class="relative z-50" aria-labelledby="modal-title" role="dialog" aria-modal="true">
 
 					<div class="modal-overlay"></div>
@@ -605,16 +571,16 @@ const InsertData = (props) => {
 
 						<div class="modal-frame">
 
-							<div id="myModal" class="modal modal--2xl">
+							<div id="myModal" class="modal modal--3xl">
 
 								<div class="modal__header">
 									<h2 class="text-leading">
 										Add new tour
 									</h2>
 									<button class="button button--circle button--clear justify-self-end"
-											type="button"
-											onClick={handleCloseMain}>
-										<AiOutlineClose/>
+										type="button"
+										onClick={handleCloseMain}>
+										<AiOutlineClose />
 									</button>
 								</div>
 								<div class="modal__body">
@@ -645,14 +611,14 @@ const InsertData = (props) => {
 														Translate
 													</button>
 												</div>
-												<input
+												<textarea
 
-													className={"form__input text-sm"}
+													className={"form__input text-sm "}
+													style={{ height: 80 }}
 													placeholder='JSON FORMAT: { "language": "Text"}'
 													aria-describedby="basic-addon1"
 													id="name"
 													type="text"
-													disabled
 													onChange={(e) => setTitleTransl(e.target.value)}
 													value={titleTransl}
 												/>
@@ -687,24 +653,22 @@ const InsertData = (props) => {
 											</div>
 											<div className="form__group">
 												<label class="form__label">Short description*</label>
-												<textarea className="form__input text-sm h-32"
-														  type="textarea"
-														  required name="message"
-														  disabled
-														  placeholder='JSON FORMAT: { "language": "Text"}'
-														  value={shortInfo}
-														  onChange={(e) => setShortInfo(e.target.value)}></textarea>
+												<textarea className="form__input text-sm h-32 "
+													type="textarea"
+													required name="message"
+													placeholder='JSON FORMAT: { "language": "Text"}'
+													value={shortInfo}
+													onChange={(e) => setShortInfo(e.target.value)}></textarea>
 											</div>
 
 											<div className="form__group">
 												<label class="form__label">Long description*</label>
-												<textarea className="form__input text-sm h-32"
-														  type="textarea"
-														  required name="message"
-														  disabled
-														  placeholder='JSON FORMAT: { "language": "Text"}'
-														  value={longInfo}
-														  onChange={(e) => setLongInfo(e.target.value)}></textarea>
+												<textarea className="form__input text-sm h-32 "
+													type="textarea"
+													required name="message"
+													placeholder='JSON FORMAT: { "language": "Text"}'
+													value={longInfo}
+													onChange={(e) => setLongInfo(e.target.value)}></textarea>
 											</div>
 
 										</div>
@@ -735,15 +699,14 @@ const InsertData = (props) => {
 													</button>
 												</div>
 											</div>
-											<input
+											<textarea
 
-												className={"form__input text-sm"}
+												className={"form__input text-sm "}
+												style={{ height: 80 }}
 												placeholder='JSON FORMAT: { "language": "Text"}'
 												aria-describedby="basic-addon1"
 												id="name"
 												type="text"
-
-												disabled
 												onChange={(e) => setAgreementTitleTransl(e.target.value)}
 												value={agreementTitleTransl}
 											/>
@@ -775,15 +738,14 @@ const InsertData = (props) => {
 													</button>
 												</div>
 											</div>
-											<input
+											<textarea
 
-												className={"form__input text-sm"}
+												className={"form__input text-sm "}
+												style={{ height: 80 }}
 												placeholder='JSON FORMAT: { "language": "Text"}'
 												aria-describedby="basic-addon1"
 												id="name"
 												type="text"
-
-												disabled
 												onChange={(e) => setAgreementDescTransl(e.target.value)}
 												value={agreementDescTransl}
 											/>
@@ -794,7 +756,7 @@ const InsertData = (props) => {
 											<div class="flex flex-row gap-2">
 												<input
 
-													className={"form__input grow"}
+													className={"form__input grow "}
 													placeholder="Price"
 													aria-describedby="basic-addon1"
 													id="name"
@@ -804,8 +766,8 @@ const InsertData = (props) => {
 													value={price}
 												/>
 												<select onChange={(e) => setCurrency(e.target.value)}
-														name="currency"
-														class="form__input shrink max-w-4"
+													name="currency"
+													class="form__input shrink max-w-4 "
 												>
 													{currencyList.map(item =>
 														<option key={item} value={item}>{item}</option>
@@ -820,14 +782,14 @@ const InsertData = (props) => {
 										<div className="form__group">
 											<label class="form__label">Business partner*</label>
 											<select onChange={(e) => setHotelId(e.target.value)}
-													name="category"
-													class="form__input"
+												name="category"
+												class="form__input "
 											>
 
 												<option key={"none"}></option>
 												{homeDataState.bpartners.bpartners.map(item =>
 													<option key={item.id}
-															value={item.id}>{item.name}</option>
+														value={item.id}>{item.name}</option>
 												)};
 
 											</select>
@@ -837,7 +799,7 @@ const InsertData = (props) => {
 											<label class="form__label">Tour duration*</label>
 											<input
 
-												className={"form__input"}
+												className={"form__input "}
 												placeholder="Tour duration"
 												aria-describedby="basic-addon1"
 												id="name"
@@ -852,7 +814,7 @@ const InsertData = (props) => {
 											<label class="form__label">Tour lenght (km)*</label>
 											<input
 
-												className={"form__input"}
+												className={"form__input "}
 												placeholder="Tour lenght (km)"
 												aria-describedby="basic-addon1"
 												id="name"
@@ -868,7 +830,7 @@ const InsertData = (props) => {
 											<label class="form__label">Highest point*</label>
 											<input
 
-												className={"form__input"}
+												className={"form__input "}
 												placeholder="Highest point"
 												aria-describedby="basic-addon1"
 												id="name"
@@ -886,8 +848,14 @@ const InsertData = (props) => {
 											<label class="button button--secondary button--small">
 												<span>Upload audio</span>
 												<input type={"file"} accept={".mp3"} onChange={addFile}
-													   class="sr-only"/>
+													class="sr-only" />
+
 											</label>
+
+											{audioName &&
+
+
+												<label >{audioName}</label>}
 
 										</div>
 										<div>
@@ -896,7 +864,7 @@ const InsertData = (props) => {
 											<label class="button button--secondary button--small">
 												<span>Upload image</span>
 												<input type={"file"} name="file" onChange={onFileChange}
-													   class="sr-only"/>
+													class="sr-only" />
 											</label>
 										</div>
 
@@ -907,10 +875,10 @@ const InsertData = (props) => {
 										{imagePreview &&
 
 
-											<img className="image__preview" src={imagePreview} alt={"image-"}/>}
+											<img className="image__preview" src={imagePreview} alt={"image-"} />}
 
 										<div className="form__group">
-											<div class="flex flex-row items-center gap-4">
+											<div class="flex flex-row items-center gap-4 ">
 												<button
 
 													onClick={(e) => {
@@ -920,9 +888,13 @@ const InsertData = (props) => {
 													id="sendMessageButton"
 													type="button"
 												>
-													Edit terms
+													Edit terms and conditions
 												</button>
-												<button
+											</div>
+											<br />
+											<br />
+											{(!partner || point) &&
+												<div class="flex flex-row items-center gap-2" style={{ marginLeft: "200px" }}><button
 													onClick={(e) => {
 														addPartner(e)
 													}}
@@ -933,779 +905,112 @@ const InsertData = (props) => {
 													Add partner
 												</button>
 
-												<button
-													onClick={(e) => {
-														addPoint(e)
-													}}
-													className="button button--primary"
-													id="sendMessageButton"
-													type="button"
-												>
-													Add POI
-												</button>
-											</div>
+													<button
+														onClick={(e) => {
+															addPoint(e)
+														}}
+														className="button button--primary"
+														id="sendMessageButton"
+														type="button"
+													>
+														Add point of interest
+													</button></div>}
 										</div>
 
 
-										<div>
-											{(partner || point) &&
-												<div class="relative z-50" aria-labelledby="modal-title" role="dialog"
-													 aria-modal="true">
-
-													<div class="modal-overlay"></div>
-
-													<div class="fixed inset-0 z-10 overflow-y-auto">
-
-														<div class="modal-frame">
-
-															<div id="myModal" class="modal modal--2xl">
-
-																<div class="modal__header">
-																	<h2 class="text-leading">
-																		New partner "or" POI
-																	</h2>
-																	<button
-																		class="button button--circle button--clear justify-self-end"
-																		type="button"
-																		onClick={handleClosePoi}>
-																		<AiOutlineClose/>
-																	</button>
-																</div>
-
-																<div class="modal__body">
-																	<div class="form">
-																		<div
-																			className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
-																			<div className="form__group">
-																				<label class="form__label">Name
-																					*</label>
-																				<div
-																					class="flex flex-row items-center gap-2">
-																					<input
-
-																						className={"form__input"}
-																						placeholder="Name"
-																						aria-describedby="basic-addon1"
-																						id="name"
-																						type="text"
-
-																						onChange={(e) => setTitlePoint(e.target.value)}
-																						value={titlePoint}
-																					/>
-
-																					<button
-
-																						onClick={(e) => fetchData(titlePoint, 4)}
-																						className="button button--primary"
-																						id="sendMessageButton"
-																						type="button"
-																					>
-																						Translate
-																					</button>
-																				</div>
-																			</div>
-																			<input
-
-																				className={"form__input text-sm"}
-																				placeholder='JSON FORMAT: { "language": "Text"}'
-																				aria-describedby="basic-addon1"
-																				id="name"
-																				type="text"
-
-																				disabled
-																				onChange={(e) => setTitlePointTransl(e.target.value)}
-																				value={titlePointTransl}
-																			/>
-																		</div>
-
-																		<div
-																			className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
-																			<div className="form__group">
-																				<label class="form__label">Short
-																					description* </label>
-																				<textarea className="form__input h-32"
-																						  type="textarea" required
-																						  name="message"
-																						  placeholder='Short description'
-																						  value={shortInfoPoint}
-																						  onChange={(e) => setShortInfoPoint(e.target.value)}></textarea>
-
-																				<button
-
-																					onClick={(e) => fetchData(shortInfoPoint, 5)}
-																					className="button button--primary mt-2"
-																					id="sendMessageButton"
-																					type="button"
-																				>
-																					Translate
-																				</button>
-
-																			</div>
-																			<textarea
-
-																				className={"form__input text-sm h-32"}
-																				placeholder='JSON FORMAT: { "language": "Text"}'
-																				aria-describedby="basic-addon1"
-																				id="name"
-																				type="text"
-
-																				disabled
-																				onChange={(e) => setShortInfoPointTransl(e.target.value)}
-																				value={shortInfoPointTransl}
-																			/>
-																		</div>
-
-																		<div
-																			className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
-																			<div className="form__group">
-																				<label class="form__label">Long
-																					description*</label>
-																				<textarea className="form__input h-32"
-																						  type="textarea" required
-																						  name="message"
-																						  placeholder='Long description'
-																						  value={longInfoPoint}
-																						  onChange={(e) => setLongInfoPoint(e.target.value)}></textarea>
-																				<button
-
-																					onClick={(e) => fetchData(longInfoPoint, 6)}
-																					className="button button--primary mt-2"
-																					id="sendMessageButton"
-																					type="button"
-																				>
-																					Translate
-																				</button>
-																			</div>
-																			<textarea
-
-																				className={"form__input text-sm h-32"}
-																				placeholder='JSON FORMAT: { "language": "Text"}'
-																				aria-describedby="basic-addon1"
-																				id="name"
-																				type="text"
-
-																				disabled
-																				onChange={(e) => setLongInfoPointTransl(e.target.value)}
-																				value={longInfoPointTransl}
-																			/>
-																		</div>
-
-																		{partner &&
-
-																			<div
-																				className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
-																				<div className="form__group">
-																					<label class="form__label">Voucher
-																						description*</label>
-																					<textarea
-																						className="form__input h-32"
-																						type="textarea" required
-																						name="message"
-																						placeholder='Voucher description'
-																						value={voucherDesc}
-																						onChange={(e) => setVoucherDesc(e.target.value)}></textarea>
-																					<button
-
-																						onClick={(e) => fetchData(voucherDesc, 7)}
-																						className="button button--primary mt-2"
-																						id="sendMessageButton"
-																						type="button"
-																					>
-																						Translate
-																					</button>
-																				</div>
-																				<textarea
-
-																					className={"form__input text-sm h-32"}
-																					placeholder='JSON FORMAT: { "language": "Text"}'
-																					aria-describedby="basic-addon1"
-																					id="name"
-																					type="text"
-																					disabled
-																					onChange={(e) => setVoucherDescTransl(e.target.value)}
-																					value={voucherDescTransl}
-																				/>
-																			</div>
-
-
-																		}
-
-																		<div className="form__group">
-																			<label class="form__label">Category*</label>
-																			<select
-																				onChange={(e) => setCategory(e.target.value)}
-																				name="category" class="form__input"
-																			>
-																				{categories.map(item =>
-																					<option key={item}
-																							value={item}>{item}</option>
-																				)};
-
-																			</select>
-																		</div>
-
-																		{partner && <div className="form__group">
-																			<label class="form__label">Price*</label>
-																			<div
-																				class="flex flex-row items-center gap-2">
-																				<input
-
-																					className={"form__input"}
-																					placeholder="Price"
-																					aria-describedby="basic-addon1"
-																					id="name"
-																					type="text"
-
-																					onChange={(e) => setPointPrice(e.target.value)}
-																					value={pointPrice}
-																				/>
-
-																				<select
-																					onChange={(e) => setCurrency(e.target.value)}
-																					name="currency" class="form__input"
-																				>
-																					{currencyList.map(item =>
-																						<option key={item}
-																								value={item}>{item}</option>
-																					)};
-
-																				</select>
-																			</div>
-																		</div>}
-																		{partner && <div className="form__group">
-
-																			<label class="form__label">Offer
-																				name*</label>
-																			<input
-
-																				className={"form__input"}
-																				placeholder="Offer name"
-																				aria-describedby="basic-addon1"
-																				id="name"
-																				type="text"
-
-																				onChange={(e) => setOfferName(e.target.value)}
-																				value={offerName}
-																			/>
-																		</div>}
-
-																		<div
-																			className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
-																			<div className="form__group">
-
-																				<label class="form__label">Address
-																					*</label>
-																				<input
-
-																					className={"form__input"}
-																					placeholder="Longitude"
-																					aria-describedby="basic-addon1"
-																					id="name"
-																					type="text"
-
-																					onChange={(e) => setLongitude(e.target.value)}
-																					value={longitude}
-																				/>
-																			</div>
-																			<input
-
-																				className={"form__input"}
-																				placeholder="Latitude"
-																				aria-describedby="basic-addon1"
-																				id="name"
-																				type="text"
-
-																				onChange={(e) => setLatitude(e.target.value)}
-																				value={latitude}
-																			/>
-																		</div>
-
-																		{partner &&
-																			<div
-																				className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
-																				<div className="form__group divide-y">
-																					<label class="form__label">Working
-																						hours*</label>
-
-																					<div class="form pt-6">
-
-																						<div className="form__group">
-																							<label
-																								class="form__label">Monday</label>
-																							<div
-																								class="flex flex-row items-center justify-between gap-2">
-
-																								<label
-																									class="form__group--checkbox">
-																									<input
-																										type="checkbox"
-																										checked={mondayclosed}
-																										onChange={(e) => setMondayClosed(!mondayclosed)}
-																									/>
-																									<span>
-																										Closed
-																									</span>
-																								</label>
-																								{!mondayclosed &&
-																									<div>
-																										<TimePicker
-																											disableClock={true}
-																											onChange={(newValue) => {
-																												setMondayFrom(newValue);
-																											}}
-																											value={mondayFrom}/>
-																										<TimePicker
-																											disableClock={true}
-																											onChange={(newValue) => {
-																												setMondayTo(newValue);
-																											}}
-																											value={mondayTo}/>
-																									</div>
-																								}
-																							</div>
-																						</div>
-
-																						<div className="form__group">
-																							<label
-																								class="form__label">Tuesday</label>
-																							<div
-																								class="flex flex-row items-center justify-between gap-2">
-																								<label
-																									class="form__group--checkbox">
-																									<input
-																										type="checkbox"
-																										checked={tuesdayclosed}
-																										onChange={(e) => setTuesdayClosed(!tuesdayclosed)}
-																									/>
-																									<span>
-																										Closed
-																									</span>
-																								</label>
-																								{!tuesdayclosed &&
-																									<div>
-																										<TimePicker
-																											disableClock={true}
-																											onChange={(newValue) => {
-																												setTuesdayFrom(newValue);
-																											}}
-																											value={tuesdayFrom}/>
-																										<TimePicker
-																											disableClock={true}
-																											onChange={(newValue) => {
-																												setTuesdayTo(newValue);
-																											}}
-																											value={tuesdayTo}/>
-																									</div>
-																								}
-																							</div>
-																						</div>
-
-																						<div className="form__group">
-																							<label
-																								class="form__label">Wednesday</label>
-																							<div
-																								class="flex flex-row items-center justify-between gap-2">
-																								<label
-																									class="form__group--checkbox">
-																									<input
-																										type="checkbox"
-																										checked={wednesdayclosed}
-																										onChange={(e) => setWednesdayClosed(!wednesdayclosed)}
-																									/>
-																									<span>
-																										Closed
-																									</span>
-																								</label>
-																								{!wednesdayclosed &&
-																									<div>
-
-																										<TimePicker
-																											disableClock={true}
-																											onChange={(newValue) => {
-																												setWednesdayFrom(newValue);
-																											}}
-																											value={wednesdayFrom}/>
-																										<TimePicker
-																											disableClock={true}
-																											onChange={(newValue) => {
-																												setWednesdayTo(newValue);
-																											}}
-																											value={wednesdayTo}/>
-																									</div>
-																								}
-																							</div>
-																						</div>
-
-																						<div className="form__group">
-																							<label
-																								class="form__label">Thursday</label>
-																							<div
-																								class="flex flex-row items-center justify-between gap-2">
-																								<label
-																									class="form__group--checkbox">
-																									<input
-																										type="checkbox"
-																										checked={thursdayclosed}
-																										onChange={(e) => setThursdayClosed(!thursdayclosed)}
-																									/>
-																									<span>
-																										Closed
-																									</span>
-																								</label>
-																								{!thursdayclosed &&
-																									<div>
-																										<TimePicker
-																											disableClock={true}
-																											onChange={(newValue) => {
-																												setThursdayFrom(newValue);
-																											}}
-																											value={thursdayFrom}/>
-																										<TimePicker
-																											disableClock={true}
-																											onChange={(newValue) => {
-																												setThursdayTo(newValue);
-																											}}
-																											value={thursdayTo}/>
-																									</div>
-																								}
-																							</div>
-																						</div>
-
-																						<div className="form__group">
-																							<label
-																								class="form__label">Friday</label>
-																							<div
-																								class="flex flex-row items-center justify-between gap-2">
-																								<label
-																									class="form__group--checkbox">
-																									<input
-																										type="checkbox"
-																										checked={fridayclosed}
-																										onChange={(e) => setFridayClosed(!fridayclosed)}
-																									/>
-																									<span>
-																										Closed
-																									</span>
-																								</label>
-																								{!fridayclosed &&
-																									<div>
-																										<TimePicker
-																											disableClock={true}
-																											onChange={(newValue) => {
-																												setFridayFrom(newValue);
-																											}}
-																											value={fridayFrom}/>
-																										<TimePicker
-																											disableClock={true}
-																											onChange={(newValue) => {
-																												setFridayTo(newValue);
-																											}}
-																											value={fridayTo}/>
-																									</div>
-																								}
-																							</div>
-																						</div>
-
-																						<div className="form__group">
-																							<label
-																								class="form__label">Saturday</label>
-																							<div
-																								class="flex flex-row items-center justify-between gap-2">
-																								<label
-																									class="form__group--checkbox">
-																									<input
-																										type="checkbox"
-																										checked={saturdayclosed}
-																										onChange={(e) => setSaturdayClosed(!saturdayclosed)}
-																									/>
-																									<span>
-																										Closed
-																									</span>
-																								</label>
-																								{!saturdayclosed &&
-																									<div>
-																										<TimePicker
-																											disableClock={true}
-																											onChange={(newValue) => {
-																												setSaturdayFrom(newValue);
-																											}}
-																											value={saturdayFrom}/>
-																										<TimePicker
-																											disableClock={true}
-																											onChange={(newValue) => {
-																												setSaturdayTo(newValue);
-																											}}
-																											value={saturdayTo}/>
-																									</div>
-																								}
-																							</div>
-																						</div>
-
-																						<div className="form__group">
-																							<label
-																								class="form__label">Sunday</label>
-																							<div
-																								class="flex flex-row items-center justify-between gap-2">
-																								<label
-																									class="form__group--checkbox">
-																									<input
-																										type="checkbox"
-																										checked={sundayclosed}
-																										onChange={(e) => setSundayClosed(!sundayclosed)}
-																									/>
-																									<span>
-																										Closed
-																									</span>
-																								</label>
-																								{!sundayclosed &&
-																									<div>
-																										<TimePicker
-																											disableClock={true}
-																											onChange={(newValue) => {
-																												setSundayFrom(newValue);
-																											}}
-																											value={sundayFrom}/>
-																										<TimePicker
-																											disableClock={true}
-																											onChange={(newValue) => {
-																												setSundayTo(newValue);
-																											}}
-																											value={sundayTo}/>
-																									</div>
-																								}
-																							</div>
-																						</div>
-																					</div>
-																				</div>
-																			</div>
-																		}
-
-																		<div className="form__group">
-																			<label class="form__label">Text to speach
-																				audio*</label>
-
-																			<label
-																				class="button button--secondary button--small">
-																				<span>Upload audio</span>
-																				<input type={"file"} accept={".mp3"}
-																					   onChange={addFile2}
-																					   class="sr-only"/>
-																			</label>
-																		</div>
-
-																		<div className="form__group">
-																			<label class="form__label">Image
-																				gallery*</label>
-
-																			<label
-																				class="button button--secondary button--small">
-																				<span>Upload image</span>
-																				<input type={"file"} accept="image/*"
-																					   onChange={selectFiles}
-																					   class="sr-only"/>
-																			</label>
-
-																			{progressInfos &&
-																				progressInfos.val.length > 0 &&
-																				progressInfos.val.map((progressInfo, index) => (
-																					<div key={index}>
-																						<span>{progressInfo.fileName}</span>
-																						<div className="progress">
-																							<div
-																								className="progress-bar progress-bar-info"
-																								role="progressbar"
-																								aria-valuenow={progressInfo.percentage}
-																								aria-valuemin="0"
-																								aria-valuemax="100"
-																								style={{width: progressInfo.percentage + "%"}}
-																							>
-																								{progressInfo.percentage}%
-																							</div>
-																						</div>
-																					</div>
-																				))}
-
-																			{imagePreviews && (
-																				<div>
-																					{imagePreviews.map((img, i) => {
-																						return (
-																							<div>
-																								<br/>
-																								<img className="preview"
-																									 src={img}
-																									 alt={"image-" + i}
-																									 key={i}/>
-																								<input
-
-																									className={"form__input"}
-																									placeholder={'JSON FORMAT: { "language": "Text"}'}
-																									aria-describedby="basic-addon1"
-																									id="name"
-																									type="text"
-
-																									onChange={(e) => changeImageTitle(e.target.value, i)}
-																								/>
-																							</div>
-																						);
-																					})}
-																				</div>
-																			)}
-
-																			{message.length > 0 && (
-																				<div
-																					className="alert alert-secondary mt-2"
-																					role="alert">
-																					<ul>
-																						{message.map((item, i) => {
-																							return <li
-																								key={i}>{item}</li>;
-																						})}
-																					</ul>
-																				</div>
-																			)}
-
-																			{imageInfos.length > 0 && (
-																				<div className="card mt-3">
-																					<br/>
-																					<div className="card-header">List of
-																						Images
-																					</div>
-																					<ul className="list-group list-group-flush">
-																						{imageInfos &&
-																							imageInfos.map((img, index) => (
-																								<li className="list-group-item"
-																									key={index}>
-																									<p>
-																										<a href={img.url}>{img.name}</a>
-																									</p>
-																									<img src={img.url}
-																										 alt={img.name}
-																										 height="80px"/>
-																								</li>
-																							))}
-																					</ul>
-																				</div>
-																			)}
-																		</div>
-
-
-																		{titlePoint.length == 0 &&
-																			<div className="paragraph-box2" style={{
-																				color: "red",
-																				fontSize: "0.8em",
-																				marginTop: "30px"
-																			}} hidden={!errMessagePhoto}>
-																				{errMessagePhoto}
-																			</div>}
-
-																		{partner &&
-																			<div
-																				className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
-																				<div className="form__group">
-																					<label class="form__label">Contact
-																						information about
-																						partner*</label>
-																					<div className="form__group">
-																						<label class="form__label">Responsible
-																							person
-																							name*</label>
-																						<div>
-																							<div class="form__group">
-																								<input
-
-																									className={"form__input"}
-																									placeholder="Responsible person name"
-																									aria-describedby="basic-addon1"
-																									id="name"
-																									type="text"
-
-																									onChange={(e) => setResponsiblePerson(e.target.value)}
-																									value={responsiblePerson}
-																								/>
-																							</div>
-																						</div>
-																					</div>
-
-
-																				</div>
-																				<div className="form__group">
-																					<label
-																						class="form__label">Phone*</label>
-																					<input
-																						className={"form__input"}
-																						placeholder="Phone"
-																						aria-describedby="basic-addon1"
-																						id="name"
-																						type="text"
-
-																						onChange={(e) => setPhone(e.target.value)}
-																						value={phone}
-																					/>
-																				</div>
-
-																				<div className="form__group">
-																					<label
-																						class="form__label">Email*</label>
-																					<input
-
-																						className={"form__input"}
-																						placeholder="Email"
-																						aria-describedby="basic-addon1"
-																						id="name"
-																						type="email"
-
-																						onChange={(e) => setEmail(e.target.value)}
-																						value={email}
-																					/>
-																				</div>
-
-																				<div className="form__group">
-																					<label class="form__label">Web
-																						page*</label>
-																					<input
-
-																						className={"form__input"}
-																						placeholder="Web page"
-																						aria-describedby="basic-addon1"
-																						id="name"
-																						type="text"
-
-																						onChange={(e) => setWebUrl(e.target.value)}
-																						value={webURL}
-																					/>
-																				</div>
-																			</div>
-																		}
-
-
-																		<div className="form__group">
-																			<button
-
-																				onClick={(e) => {
-																					handleAdd(e)
-																				}}
-																				className="button button--primary"
-																				id="sendMessageButton"
-																				type="button"
-																			>
-																				Add
-																			</button>
-																		</div>
-
-																	</div>
-																</div>
-															</div>
-														</div>
-													</div>
-												</div>
-											}
-										</div>
+										<AddPartnerOrPointForm
+											partner={partner}
+											point={point}
+											handleClosePoi={handleClosePoi}
+											setTitlePoint={setTitlePoint}
+											titlePoint={setTitlePoint}
+											fetchData={fetchData}
+											setTitlePointTransl={setTitlePointTransl}
+											titlePointTransl={titlePointTransl}
+											setShortInfoPoint={setShortInfoPoint}
+											shortInfoPoint={shortInfoPoint}
+											setShortInfoPointTransl={setShortInfoPointTransl}
+											shortInfoPointTransl={shortInfoPointTransl}
+											setLongInfoPoint={setLongInfoPoint}
+											longInfoPoint={longInfoPoint}
+											setLongInfoPointTransl={setLongInfoPointTransl}
+											longInfoPointTransl={longInfoPointTransl}
+											voucherDesc={voucherDesc}
+											setVoucherDesc={setVoucherDesc}
+											setVoucherDescTransl={setVoucherDescTransl}
+											voucherDescTransl={voucherDescTransl}
+											setCategory={setCategory}
+											categories={categories}
+											setPointPrice={setPointPrice}
+											pointPrice={pointPrice}
+											setCurrency={setCurrency}
+											currencyList={currencyList}
+											setOfferName={setOfferName}
+											offerName={offerName}
+											setLongitude={setLongitude}
+											longitude={longitude}
+											setLatitude={setLatitude}
+											latitude={latitude}
+											mondayclosed={mondayclosed}
+											setMondayClosed={setMondayClosed}
+											setMondayFrom={setMondayFrom}
+											mondayFrom={mondayFrom}
+											setMondayTo={setMondayTo}
+											mondayTo={mondayTo}
+											tuesdayclosed={tuesdayclosed}
+											setTuesdayClosed={setTuesdayClosed}
+											setTuesdayFrom={setTuesdayFrom}
+											tuesdayFrom={tuesdayFrom}
+											setTuesdayTo={setTuesdayTo}
+											tuesdayTo={tuesdayTo}
+											wednesdayclosed={wednesdayclosed}
+											setWednesdayClosed={setWednesdayClosed}
+											setWednesdayFrom={setWednesdayFrom}
+											wednesdayFrom={wednesdayFrom}
+											setWednesdayTo={setWednesdayTo}
+											wednesdayTo={wednesdayTo}
+											thursdayclosed={thursdayclosed}
+											setThursdayClosed={setThursdayClosed}
+											setThursdayFrom={setThursdayFrom}
+											thursdayFrom={thursdayFrom}
+											setThursdayTo={setThursdayTo}
+											thursdayTo={thursdayTo}
+											fridayclosed={fridayclosed}
+											setFridayClosed={setFridayClosed}
+											setFridayFrom={setFridayFrom}
+											fridayFrom={fridayFrom}
+											setFridayTo={setFridayTo}
+											fridayTo={fridayTo}
+											saturdayclosed={saturdayclosed}
+											setSaturdayClosed={setSaturdayClosed}
+											setSaturdayFrom={setSaturdayFrom}
+											saturdayFrom={saturdayFrom}
+											setSaturdayTo={setSaturdayTo}
+											saturdayTo={saturdayTo}
+											sundayclosed={sundayclosed}
+											setSundayClosed={setSundayClosed}
+											setSundayFrom={setSundayFrom}
+											sundayFrom={sundayFrom}
+											setSundayTo={setSundayTo}
+											sundayTo={sundayTo}
+											addFile2={addFile2}
+											selectFiles={selectFiles}
+											imagePreviews={imagePreviews}
+											changeImageTitle={changeImageTitle}
+											errMessagePhoto={errMessagePhoto}
+											setResponsiblePerson={setResponsiblePerson}
+											responsiblePerson={responsiblePerson}
+											setPhone={setPhone}
+											phone={phone}
+											setEmail={setEmail}
+											email={email}
+											setWebUrl={setWebUrl}
+											webURL={webURL}
+											errMessagePartner={errMessagePartner}
+											handleAdd={handleAdd}
+										/>
 									</form>
-									<div className="paragraph-box2"
-										 style={{color: "red", fontSize: "0.8em", marginTop: "30px"}}
-										 hidden={!errMessagePartner}>
-										{errMessagePartner}
-									</div>
+
 								</div>
 
 								{
@@ -1716,65 +1021,65 @@ const InsertData = (props) => {
 											<div class="table-frame">
 												<table>
 													<thead>
-													<tr>
-														<th>Title
-														</th>
-														<th>Short
-															description
-														</th>
-														<th>Long
-															description
-														</th>
-														<th>Category
-														</th>
-														<th>Price
-														</th>
-														<th>Offer name
-														</th>
-														<th>Responsible
-															person
-														</th>
-														<th>Email
-														</th>
-														<th>Phone
-														</th>
-														<th>Web
-															page
-														</th>
-														<th>Location
-														</th>
-													</tr>
+														<tr>
+															<th>Title
+															</th>
+															<th>Short
+																description
+															</th>
+															<th>Long
+																description
+															</th>
+															<th>Category
+															</th>
+															<th>Price
+															</th>
+															<th>Offer name
+															</th>
+															<th>Responsible
+																person
+															</th>
+															<th>Email
+															</th>
+															<th>Phone
+															</th>
+															<th>Web
+																page
+															</th>
+															<th>Location
+															</th>
+														</tr>
 													</thead>
 
 													{points.map((point) => (
 														<tbody>
-														<tr>
-															<td>{point.name.english}</td>
-															<td>{point.shortInfo.english}</td>
-															<td>{point.longInfo.english}</td>
-															<td>{point.category}</td>
-															{point.price == "" ?
-																<td>/</td> :
-																<td>{point.price} {currency}</td>}
-															{point.offerName == "" ?
-																<td>/</td> :
-																<td>{point.offerName}</td>}
-															{point.contact.name == "" ?
-																<td>/</td> :
-																<td>{point.contact.name}</td>}
-															{point.contact.email == "" ?
-																<td>/</td> :
-																<td>{point.contact.email}</td>}
-															{point.contact.phone == "" ?
-																<td>/</td> :
-																<td>{point.contact.phone}</td>}
-															{point.contact.webURL == "" ?
-																<td>/</td> :
-																<td>{point.contact.webURL}</td>}
+															<tr>
+																<td>{point.name.english}</td>
+																<td>{point.shortInfo.english}</td>
+																<td>{point.longInfo.english}</td>
+																<td>{point.category}</td>
+																{point.price == "" ?
+																	<td>/</td> :
+																	<td>{point.price} {currency}</td>}
+																{point.offerName == "" ?
+																	<td>/</td> :
+																	<td>{point.offerName}</td>}
+																{point.contact.name == "" ?
+																	<td>/</td> :
+																	<td>{point.contact.name}</td>}
+																{point.contact.email == "" ?
+																	<td>/</td> :
+																	<td>{point.contact.email}</td>}
+																{point.contact.phone == "" ?
+																	<td>/</td> :
+																	<td>{point.contact.phone}</td>}
+																{point.contact.webURL == "" ?
+																	<td>/</td> :
+																	<td>{point.contact.webURL}</td>}
 
-															<td>{`${point.location.latitude}  ${point.location.longitude}`}</td>
+																<td>{`${point.location.latitude}  ${point.location.longitude}`}</td>
 
-														</tr>
+															</tr>
 														</tbody>))
 													}
 
@@ -1782,27 +1087,27 @@ const InsertData = (props) => {
 											</div>
 										}
 
+										<div class="modal__body">
+											<div
+												hidden={!errMessage}>
+												{errMessage}
+											</div>
+											<div className="button-p">
+												<button
+
+													onClick={(e) => {
+														handleSubmit(e)
+													}}
+													className="button button--primary"
+													id="sendMessageButton"
+													type="button"
+												>
+													Add tour
+												</button>
+											</div>
+										</div>
 									</div>
 								}
-								<div class="modal__body">
-									<div
-										hidden={!errMessage}>
-										{errMessage}
-									</div>
-									<div className="button-p">
-										<button
-
-											onClick={(e) => {
-												handleSubmit(e)
-											}}
-											className="button button--primary"
-											id="sendMessageButton"
-											type="button"
-										>
-											Add tour
-										</button>
-									</div>
-								</div>
 
 							</div>
 						</div>
@@ -1811,52 +1116,52 @@ const InsertData = (props) => {
 
 				{showModal && <div>
 
-<div class="relative z-50" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+					<div class="relative z-50" aria-labelledby="modal-title" role="dialog" aria-modal="true">
 
-	<div class="modal-overlay"></div>
+						<div class="modal-overlay"></div>
 
-	<div class="fixed inset-0 z-10 overflow-y-auto">
+						<div class="fixed inset-0 z-10 overflow-y-auto">
 
-		<div class="modal-frame">
+							<div class="modal-frame">
 
-			<div id="myModal" class="modal modal--3xl">
+								<div id="myModal" class="modal modal--3xl">
 
 
-				<div class="modal__header">
-					<h2 class="text-leading">
-						Terms and conditions
-					</h2>
-					<button class="button button--circle button--clear justify-self-end"
-							type="button"
-							onClick={handleClose}>
-						<AiOutlineClose/>
-					</button>
-				</div>
+									<div class="modal__header">
+										<h2 class="text-leading">
+											Terms and conditions
+										</h2>
+										<button class="button button--circle button--clear justify-self-end"
+											type="button"
+											onClick={handleClose}>
+											<AiOutlineClose />
+										</button>
+									</div>
 
-				<div class="modal__body">
+									<div class="modal__body">
 
-					<div className="form__group">
-						<div className="form-group controls mb-0 pb-2"
-							 style={{color: "#6c757d", opacity: 1}}>
+										<div className="form__group">
+											<div className="form-group controls mb-0 pb-2"
+												style={{ color: "#6c757d", opacity: 1 }}>
 
-<div class="flex flex-col gap-2">
+												<div class="flex flex-col gap-2">
 													<div class="flex flex-row items-center gap-2">
-									<textarea className="form-control"
-									
-											  readOnly={!changeTermsAndConditions}
-											  style={{height: "430px", width: "1100px"}}
-											  type="textarea"
-											  required name="message"
-											  placeholder="Terms and conditions"
-											  value={termsAndConditions}
-											  onChange={(e) => setTermsAndConditions(e.target.value)}></textarea>
+														<textarea className="form-control"
 
-								</div>
-							</div>
-						</div>
-					</div>
+															readOnly={!changeTermsAndConditions}
+															style={{ height: "430px", width: "1100px" }}
+															type="textarea"
+															required name="message"
+															placeholder="Terms and conditions"
+															value={termsAndConditions}
+															onChange={(e) => setTermsAndConditions(e.target.value)}></textarea>
 
-					<div className="form__group">
+													</div>
+												</div>
+											</div>
+										</div>
+
+										<div class="grid place-items-center form__group">
 											<button
 
 
@@ -1870,13 +1175,13 @@ const InsertData = (props) => {
 										</div>
 
 
-					
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-</div>}
+
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>}
 			</div>
 		</div>
 

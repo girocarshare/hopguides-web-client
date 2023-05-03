@@ -271,13 +271,6 @@ const HomeData = forwardRef((props, ref) => {
 							</div>
 							{/*}*/}
 
-							{/*{adminOnly &&*/}
-							<div>
-								<button className="button button--clear button--small" type="button" onClick={insertdata}>
-									New data
-								</button>
-							</div>
-							{/*}*/}
 
 							{!role &&
 								<div>
@@ -342,10 +335,21 @@ const HomeData = forwardRef((props, ref) => {
 				</div>
 
 				<div className="p-2 md:p-4 bg-black/[3%] rounded-2xl mb-12">
-					<div className="py-3 px-2 pb-4 md:pb-6">
+					<div  className="py-3 px-2 pb-4 md:pb-6 flex flex-row items-center justify-between gap-4">
 						<h4 className="text-heading6">
 							Tours
 						</h4>
+						<div>
+								
+
+									{/*{adminOnly &&*/}
+							<div>
+								<button className="button button--primary button--small" variant="contained" type="button" onClick={insertdata}>
+									New data
+								</button>
+							</div>
+							{/*}*/}
+								</div>
 					</div>
 
 					<div className="table-frame">
@@ -357,7 +361,7 @@ const HomeData = forwardRef((props, ref) => {
 								<th className="whitespace-nowrap">Price<span
 									className="text-xs font-normal text-black/60 ml-1">/ incl tax</span>
 								</th>
-								<th className="whitespace-nowrap">Tours<span
+								<th className="whitespace-nowrap">Tours booked<span
 									className="text-xs font-normal text-black/60 ml-1">/ this month</span></th>
 								<th>Options</th>
 							</tr>
@@ -439,7 +443,7 @@ const HomeData = forwardRef((props, ref) => {
 										</th>
 										<th className="whitespace-nowrap">Offer name</th>
 										<th>Category</th>
-										<th className="whitespace-nowrap">Coupons<span
+										<th className="whitespace-nowrap">Used coupons<span
 											className="text-xs font-normal text-black/60 ml-1">/ this month</span></th>
 										<th>Options</th>
 									</tr>
@@ -451,10 +455,10 @@ const HomeData = forwardRef((props, ref) => {
 
 											<td>{points.point.name.english}</td>
 											<td>
-												{`${points.point.price} ${tour.currency} icluding tax`}
+												{points.point.price == "" ?	"/" : `${points.point.price} ${tour.currency} including tax`}
 											</td>
 											<td>
-											{`${points.point.offerName} `}
+											{points.point.offerName == "" ?	"/" : `${points.point.offerName} `}
 											</td>
 
 											<td>{points.point.category}</td>

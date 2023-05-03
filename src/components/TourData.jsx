@@ -1,8 +1,8 @@
-import React, {useContext, useEffect, useState, forwardRef, useRef} from "react";
-import {homeDataService} from "../services/HomeDataService";
-import {HomeDataContext} from "../contexts/HomeDataContext";
-import {homeDataConstants} from "../constants/HomeDataConstants";
-import {AiOutlineClose} from 'react-icons/ai';
+import React, { useContext, useEffect, useState, forwardRef, useRef } from "react";
+import { homeDataService } from "../services/HomeDataService";
+import { HomeDataContext } from "../contexts/HomeDataContext";
+import { homeDataConstants } from "../constants/HomeDataConstants";
+import { AiOutlineClose } from 'react-icons/ai';
 import ReactAudioPlayer from 'react-audio-player';
 import Axios from "axios";
 
@@ -39,7 +39,7 @@ const TourData = () => {
 	const [highestPoint, setHighestPoint] = useState("");
 	const [termsAndConditions, setTermsAndConditions] = useState("");
 	const [showModal, setShowModal] = useState(false);
-	const {homeDataState, dispatch} = useContext(HomeDataContext);
+	const { homeDataState, dispatch } = useContext(HomeDataContext);
 
 
 	const fetchData = async (input, num) => {
@@ -131,7 +131,7 @@ const TourData = () => {
 
 	};
 	const handleSubmit = (e) => {
-		/*e.preventDefault();
+		e.preventDefault();
 		var tour = {}
 		if (titleTransl != "") {
 			tour.title = JSON.parse(titleTransl)
@@ -184,8 +184,7 @@ const TourData = () => {
 		xhr.onload = function () {
 		};
 		xhr.send(formData);
-*/
-		SuccessHandler()
+
 	};
 
 
@@ -210,7 +209,7 @@ const TourData = () => {
 		homeDataService.insertData(false, dispatch);
 	};
 	const handleModalClose = () => {
-		dispatch({type: homeDataConstants.UPDATE_TOUR_DATA_MODAL_CLOSE});
+		dispatch({ type: homeDataConstants.UPDATE_TOUR_DATA_MODAL_CLOSE });
 	};
 
 	const addFile = (e) => {
@@ -235,7 +234,7 @@ const TourData = () => {
 
 			return (
 				<div>
-					<h2 style={{marginTop: "20px"}}>File details</h2>
+					<h2 style={{ marginTop: "20px" }}>File details</h2>
 					<p>File name: {file.name}</p>
 					<p>File type: {file.type}</p>
 					<p>
@@ -269,13 +268,28 @@ const TourData = () => {
 										Update Tour
 									</h2>
 									<button class="button button--circle button--clear justify-self-end" type="button"
-											onClick={handleModalClose}>
-										<AiOutlineClose/>
+										onClick={handleModalClose}>
+										<AiOutlineClose />
 									</button>
 								</div>
 
 								<div className="modal__body">
 									<form class="form" id="contactForm">
+
+										{!edit && <div className="grid place-items-end">
+											<button
+
+
+												onClick={(e) => {
+													setEdit(!edit)
+												}}
+												className="button button--primary"
+												id="sendMessageButton"
+												type="button"
+											>
+												Edit tour
+											</button>
+										</div>}
 										<div className="form__group">
 											<label class="form__label">Title</label>
 											<div class="flex flex-col gap-2">
@@ -467,7 +481,7 @@ const TourData = () => {
 												/>
 												{edit &&
 													<select onChange={(e) => setCurrency(e.target.value)}
-															name="currency" class="form__input"
+														name="currency" class="form__input"
 													>
 														{currencyList.map(item =>
 															<option key={item} value={item}>{item}</option>
@@ -527,8 +541,8 @@ const TourData = () => {
 													class="button button--secondary button--small">
 													<span>Upload image</span>
 													<input type={"file"} name={"file"}
-														   onChange={onFileChange}
-														   class="sr-only"/>
+														onChange={onFileChange}
+														class="sr-only" />
 												</label>
 											}
 
@@ -536,14 +550,14 @@ const TourData = () => {
 											<div>
 												{fileData()}
 											</div>
-										
+
 
 											<div class="mt-2">
 												{imagePreview && <img className="image__preview" src={imagePreview}
-																	  alt={"image-"}/>}
+													alt={"image-"} />}
 												{!imagePreview && <img className="image__preview"
-																	   src={homeDataState.updateTourData.tour.image}
-																	   alt={"image-"}/>}
+													src={homeDataState.updateTourData.tour.image}
+													alt={"image-"} />}
 											</div>
 										</div>
 
@@ -557,21 +571,21 @@ const TourData = () => {
 													src={homeDataState.updateTourData.tour.audio}
 
 													controls
-											/>}
+												/>}
 											</div>
 
 											<div class="mt-2">
 												{edit &&
-												<label
-													class="button button--secondary button--small">
-													<span>Upload audio</span>
-													<input type={"file"} accept={".mp3"}
-														onChange={addFile}
-														class="sr-only"/>
-												</label>
+													<label
+														class="button button--secondary button--small">
+														<span>Upload audio</span>
+														<input type={"file"} accept={".mp3"}
+															onChange={addFile}
+															class="sr-only" />
+													</label>
 
 
-											}
+												}
 											</div>
 										</div>
 
@@ -599,6 +613,7 @@ const TourData = () => {
 												aria-describedby="basic-addon1"
 												id="name"
 												type="textarea"
+												style= {{height: "500px"}}
 												onChange={(e) => setTermsAndConditions(e.target.value)}
 												value={termsAndConditions === "" ? homeDataState.updateTourData.tour.termsAndConditions : termsAndConditions}
 											/>
@@ -607,23 +622,9 @@ const TourData = () => {
 										<div className="form__group" hidden={!errMessage}>
 											{errMessage}
 										</div>
-										{!edit && <div className="form__group">
+
+										{edit && <div className="grid place-items-center form__group">
 											<button
-
-
-												onClick={(e) => {
-													setEdit(!edit)
-												}}
-												className="button button--primary"
-												id="sendMessageButton"
-												type="button"
-											>
-												Edit
-											</button>
-										</div>}
-										{edit && <div className="form__group">
-											<button
-
 
 												onClick={(e) => {
 													handleSubmit(e)
