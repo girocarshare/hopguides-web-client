@@ -1,5 +1,5 @@
 .table-frame {
-	@apply bg-white overflow-x-auto border border-black/10 rounded-xl shadow-lg shadow-black/[5%];
+	@apply bg-white overflow-x-auto border border-black/10 rounded-xl shadow-lg shadow-black/50;
 }
 
 table {
@@ -35,5 +35,5 @@ td:last-child {
 }
 
 tr:nth-child(2) td {
-	@apply bg-black/[3%];
+	@apply bg-black/30;
 }
