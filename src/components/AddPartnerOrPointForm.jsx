@@ -684,7 +684,7 @@ const AddPartnerOrPointForm = (props) => {
                                             </div>
                                         }
 
-                                        <div className="paragraph-box2"
+                                        <div className="paragraph-box2 grid dgrid-row place-items-center"
                                             style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }}
                                             hidden={!props.errMessagePartner}>
                                             {props.errMessagePartner}
