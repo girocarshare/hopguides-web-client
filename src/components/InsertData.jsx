@@ -6,6 +6,7 @@ import TimePicker from 'react-time-picker';
 import { AiOutlineClose } from 'react-icons/ai';
 import Axios from "axios";
 import AddPartnerOrPointForm from "./AddPartnerOrPointForm";
+import BasicTourData from "./BasicTourData";
 
 var url = process.env.REACT_APP_URL || "http://localhost:8080/";
 
@@ -585,337 +586,51 @@ const InsertData = (props) => {
 								</div>
 								<div class="modal__body">
 									<form class="form" id="contactForm">
-										<div className="form__group">
 
-											<div className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
-												<label class="form__label">Title*</label>
-												<div class="flex flex-row gap-2">
-													<input
-
-														className={"form__input"}
-														placeholder='Title'
-														aria-describedby="basic-addon1"
-														id="name"
-														type="text"
-
-														onChange={(e) => setTitle(e.target.value)}
-														value={title}
-													/>
-													<button
-
-														onClick={(e) => fetchData(title, 1)}
-														className="button button--primary"
-														id="sendMessageButton"
-														type="button"
-													>
-														Translate
-													</button>
-												</div>
-												<textarea
-
-													className={"form__input text-sm "}
-													style={{ height: 80 }}
-													placeholder='JSON FORMAT: { "language": "Text"}'
-													aria-describedby="basic-addon1"
-													id="name"
-													type="text"
-													onChange={(e) => setTitleTransl(e.target.value)}
-													value={titleTransl}
-												/>
-											</div>
-										</div>
-
-										<div className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
-											<div className="form__group">
-												<label class="form__label">Name of the place*</label>
-												<div class="flex flex-col gap-2">
-													<input
-
-														className={"form__input"}
-														placeholder='Title'
-														aria-describedby="basic-addon1"
-														id="name"
-														type="text"
-
-														onChange={(e) => setPlace(e.target.value)}
-														value={place}
-													/>
-													<button
-
-														onClick={(e) => makeShortAndLongDesc(place)}
-														className="button button--primary"
-														id="sendMessageButton"
-														type="button"
-													>
-														Generate short and long description
-													</button>
-												</div>
-											</div>
-											<div className="form__group">
-												<label class="form__label">Short description*</label>
-												<textarea className="form__input text-sm h-32 "
-													type="textarea"
-													required name="message"
-													placeholder='JSON FORMAT: { "language": "Text"}'
-													value={shortInfo}
-													onChange={(e) => setShortInfo(e.target.value)}></textarea>
-											</div>
-
-											<div className="form__group">
-												<label class="form__label">Long description*</label>
-												<textarea className="form__input text-sm h-32 "
-													type="textarea"
-													required name="message"
-													placeholder='JSON FORMAT: { "language": "Text"}'
-													value={longInfo}
-													onChange={(e) => setLongInfo(e.target.value)}></textarea>
-											</div>
-
-										</div>
-
-										<div className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
-											<div className="form__group">
-												<label class="form__label">Agreement title*</label>
-												<div class="flex flex-row items-center gap-2">
-													<input
-
-														className={"form__input"}
-														placeholder='Agreement title'
-														aria-describedby="basic-addon1"
-														id="name"
-														type="text"
-
-														onChange={(e) => setAgreementTitle(e.target.value)}
-														value={agreementTitle}
-													/>
-													<button
-
-														onClick={(e) => fetchData(agreementTitle, 2)}
-														className="button button--primary"
-														id="sendMessageButton"
-														type="button"
-													>
-														Translate
-													</button>
-												</div>
-											</div>
-											<textarea
-
-												className={"form__input text-sm "}
-												style={{ height: 80 }}
-												placeholder='JSON FORMAT: { "language": "Text"}'
-												aria-describedby="basic-addon1"
-												id="name"
-												type="text"
-												onChange={(e) => setAgreementTitleTransl(e.target.value)}
-												value={agreementTitleTransl}
-											/>
-										</div>
-
-										<div className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
-											<div className="form__group">
-												<label class="form__label">Agreement description*</label>
-												<div class="flex flex-row items-center gap-2">
-													<input
-
-														className={"form__input"}
-														placeholder='Agreement description'
-														aria-describedby="basic-addon1"
-														id="name"
-														type="text"
-
-														onChange={(e) => setAgreementDesc(e.target.value)}
-														value={agreementDesc}
-													/>
-													<button
-
-														onClick={(e) => fetchData(agreementDesc, 3)}
-														className="button button--primary"
-														id="sendMessageButton"
-														type="button"
-													>
-														Translate
-													</button>
-												</div>
-											</div>
-											<textarea
-
-												className={"form__input text-sm "}
-												style={{ height: 80 }}
-												placeholder='JSON FORMAT: { "language": "Text"}'
-												aria-describedby="basic-addon1"
-												id="name"
-												type="text"
-												onChange={(e) => setAgreementDescTransl(e.target.value)}
-												value={agreementDescTransl}
-											/>
-										</div>
-
-										<div className="form__group">
-											<label class="form__label">Price*</label>
-											<div class="flex flex-row gap-2">
-												<input
-
-													className={"form__input grow "}
-													placeholder="Price"
-													aria-describedby="basic-addon1"
-													id="name"
-													type="text"
-
-													onChange={(e) => setPrice(e.target.value)}
-													value={price}
-												/>
-												<select onChange={(e) => setCurrency(e.target.value)}
-													name="currency"
-													class="form__input shrink max-w-4 "
-												>
-													{currencyList.map(item =>
-														<option key={item} value={item}>{item}</option>
-													)};
-
-												</select>
-
-											</div>
-										</div>
-
-
-										<div className="form__group">
-											<label class="form__label">Business partner*</label>
-											<select onChange={(e) => setHotelId(e.target.value)}
-												name="category"
-												class="form__input "
-											>
-
-												<option key={"none"}></option>
-												{homeDataState.bpartners.bpartners.map(item =>
-													<option key={item.id}
-														value={item.id}>{item.name}</option>
-												)};
-
-											</select>
-										</div>
-
-										<div className="form__group">
-											<label class="form__label">Tour duration*</label>
-											<input
-
-												className={"form__input "}
-												placeholder="Tour duration"
-												aria-describedby="basic-addon1"
-												id="name"
-												type="text"
-
-												onChange={(e) => setDuration(e.target.value)}
-												value={duration}
-											/>
-										</div>
-
-										<div className="form__group">
-											<label class="form__label">Tour lenght (km)*</label>
-											<input
-
-												className={"form__input "}
-												placeholder="Tour lenght (km)"
-												aria-describedby="basic-addon1"
-												id="name"
-												type="text"
-
-												onChange={(e) => setLength(e.target.value)}
-												value={length}
-											/>
-										</div>
-
-
-										<div className="form__group">
-											<label class="form__label">Highest point*</label>
-											<input
-
-												className={"form__input "}
-												placeholder="Highest point"
-												aria-describedby="basic-addon1"
-												id="name"
-												type="text"
-
-												onChange={(e) => setHighestPoint(e.target.value)}
-												value={highestPoint}
-											/>
-										</div>
-
-										<div>
-
-											<label class="form__label">Text to speach audio*</label>
-
-											<label class="button button--secondary button--small">
-												<span>Upload audio</span>
-												<input type={"file"} accept={".mp3"} onChange={addFile}
-													class="sr-only" />
-
-											</label>
-
-											{audioName &&
-
-
-												<label >{audioName}</label>}
-
-										</div>
-										<div>
-											<label class="form__label">Background tour image</label>
-
-											<label class="button button--secondary button--small">
-												<span>Upload image</span>
-												<input type={"file"} name="file" onChange={onFileChange}
-													class="sr-only" />
-											</label>
-										</div>
-
-										<div>
-											{fileData()}
-										</div>
-
-										{imagePreview &&
-
-
-											<img className="image__preview" src={imagePreview} alt={"image-"} />}
-
-										<div className="form__group">
-											<div class="flex flex-row items-center gap-4 ">
-												<button
-
-													onClick={(e) => {
-														editTermsAndConditions(e)
-													}}
-													className="button button--primary"
-													id="sendMessageButton"
-													type="button"
-												>
-													Edit terms and conditions
-												</button>
-											</div>
-											<br />
-											<br />
-											{(!partner || point) &&
-												<div class="flex flex-row items-center gap-2" style={{ marginLeft: "200px" }}><button
-													onClick={(e) => {
-														addPartner(e)
-													}}
-													className="button button--primary"
-													id="sendMessageButton"
-													type="button"
-												>
-													Add partner
-												</button>
-
-													<button
-														onClick={(e) => {
-															addPoint(e)
-														}}
-														className="button button--primary"
-														id="sendMessageButton"
-														type="button"
-													>
-														Add point of interest
-													</button></div>}
-										</div>
+										<BasicTourData
+											setTitle={setTitle}
+											title={title}
+											fetchData={fetchData}
+											setTitleTransl={setTitleTransl}
+											titleTransl={titleTransl}
+											setPlace={setPlace}
+											place={place}
+											makeShortAndLongDesc={makeShortAndLongDesc}
+											shortInfo={shortInfo}
+											setShortInfo={setShortInfo}
+											longInfo={longInfo}
+											setLongInfo={setLongInfo}
+											setAgreementTitle={setAgreementTitle}
+											agreementTitle={agreementTitle}
+											setAgreementTitleTransl={setAgreementTitleTransl}
+											agreementTitleTransl={agreementTitleTransl}
+											setAgreementDesc={setAgreementDesc}
+											agreementDesc={agreementDesc}
+											setAgreementDescTransl={setAgreementDescTransl}
+											agreementDescTransl={agreementDescTransl}
+											setPrice={setPrice}
+											price={price}
+											setCurrency={setCurrency}
+											currencyList={currencyList}
+											setHotelId={setHotelId}
+											homeDataState={homeDataState}
+											setDuration={setDuration}
+											duration={duration}
+											setLength={setLength}
+											length={length}
+											setHighestPoint={setHighestPoint}
+											highestPoint={highestPoint}
+											addFile={addFile}
+											audioName={audioName}
+											onFileChange={onFileChange}
+											fileData={fileData}
+											imagePreview={imagePreview}
+											editTermsAndConditions={editTermsAndConditions}
+											partner={partner}
+											point={point}
+											addPartner={addPartner}
+											addPoint={addPoint}
+										/>
 
 
 										<AddPartnerOrPointForm
