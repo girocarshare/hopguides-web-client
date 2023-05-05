@@ -322,7 +322,6 @@ function deletePoi( dispatch, tourId, poiId) {
 		.then((res) => {
 			if (res.status === 200) {
 				dispatch(success());
-				window.location.reload()
 			} else if (res.status === 500) {
 				dispatch(failure(res.data.response));
 			}else{
@@ -339,7 +338,6 @@ function deletePoi( dispatch, tourId, poiId) {
 		return { type: homeDataConstants.DELETE_TOUR_REQUEST };
 	}
 	function success() {
-		window.location.reload()
 		return { type: homeDataConstants.DELETE_POI_SUCCESS };
 	}
 	function failure(error) {
@@ -470,7 +468,7 @@ async function getQrCode(dispatch,id) {
 	const FileDownload = require("js-file-download");
 
 
-	await Axios.get(`${url}api/reports/qr/ `+id, { headers: { Authorization: token} , validateStatus: () => true,  responseType: 'blob'})
+	await Axios.get(`${url}api/reports/qr/`+id, { headers: { Authorization: token} , validateStatus: () => true,  responseType: 'blob'})
 		.then((res) => {
 			if (res.status === 200) {
 				console.log(res.data)

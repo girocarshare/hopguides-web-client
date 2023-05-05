@@ -12,7 +12,24 @@ var url = process.env.REACT_APP_URL || "http://localhost:8080/";
 
 var num = 1;
 const InsertData = (props) => {
+
+	
+	const [errTitle, setErrTitle] = useState("");
+	const [errLongDescription, setErrLongDescription] = useState("");
+	const [errShortDescription, setErrShortDescription] = useState("");
+	const [errAgreementTitle, setErrAgreementTitle] = useState("");
+	const [errAgreementDescription, setErrAgreementDescription] = useState("");
+
+
+	const [errImageTitle, setErrImageTitle] = useState("");
+	const [errTitlePoint, setErrTitlePoint] = useState("");
+	const [errShortDescriptionPoint, setErrShortDescriptionPoint] = useState("");
+	const [errLongDescriptionPoint, setErrLongDescriptionPoint] = useState("");
+	const [errVoucherDescriptionPoint, setErrVoucherDescriptionPoint] = useState("");
+
+
 	const [audioName, setAudioName] = useState("");
+	const [audioNamePoint, setAudioNamePoint] = useState("");
 	const [place, setPlace] = useState("");
 	const [title, setTitle] = useState("");
 	const [imageTitles, setImageTitles] = useState([]);
@@ -86,7 +103,7 @@ const InsertData = (props) => {
 	const [add, setAdd] = useState(false);
 	const [file, setFile] = useState(null);
 	const [audio, setAudio] = useState();
-	const [audio2, setAudio2] = useState();
+	const [audio2, setAudio2] = useState(null);
 	const [audios, setAudios] = useState([]);
 	const statusRef = React.useRef();
 	const progressRef = React.useRef();
@@ -104,6 +121,14 @@ const InsertData = (props) => {
 
 	const [termsAndConditions, setTermsAndConditions] = useState("");
 
+	function isJsonString(str) {
+		try {
+			JSON.parse(str);
+		} catch (e) {
+			return false;
+		}
+		return true;
+	}
 
 	const fetchData = async (input, num) => {
 		const response = await Axios.post(
@@ -224,9 +249,39 @@ const InsertData = (props) => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		if (titleTransl == "" || agreementDescTransl == "" || agreementDescTransl == "" || audio == null || shortInfo == "" || longInfo == "" || price == "" || hotelId == "" || duration == "" || length == "" || highestPoint == "") {
+
+		setErrTitle("")
+		setErrLongDescription("")
+		setErrShortDescription("")
+		setErrAgreementDescription("")
+		setErrAgreementTitle("")
+
+
+		if (titleTransl == "" || agreementDescTransl == "" || file==null|| agreementDescTransl == "" || audio == null || shortInfo == "" || longInfo == "" || price == "" || hotelId == "" || duration == "" || length == "" || highestPoint == "") {
 			setErrMessage("Please fill in the fileds marked with *")
 		} else {
+		
+			if(!isJsonString(titleTransl)){
+				setErrTitle("Please insert the proper JSON format. Pay attention on enter and quotes(\")")
+				setErrMessage("JSON format invalid. Check the red fields.")
+			}
+			if(!isJsonString(agreementTitleTransl)){
+				setErrAgreementTitle("Please insert the proper JSON format. Pay attention on enter and quotes(\")")
+				setErrMessage("JSON format invalid. Check the red fields.")
+			}
+			if(!isJsonString(agreementDescTransl)){
+				setErrAgreementDescription("Please insert the proper JSON format. Pay attention on enter and quotes(\")")
+				setErrMessage("JSON format invalid. Check the red fields.")
+			}
+			if(!isJsonString(shortInfo)){
+				setErrShortDescription("Please insert the proper JSON format. Pay attention on enter and quotes(\")")
+				setErrMessage("JSON format invalid. Check the red fields.")
+			}
+			if(!isJsonString(longInfo)){
+				setErrLongDescription("Please insert the proper JSON format. Pay attention on enter and quotes(\")")
+				setErrMessage("JSON format invalid. Check the red fields.")
+			}
+
 			var tour = {
 				title: JSON.parse(titleTransl),
 				agreementTitle: JSON.parse(agreementTitleTransl),
@@ -312,12 +367,15 @@ const InsertData = (props) => {
 	const addPartner = () => {
 		setPartner(true)
 		setPoint(false)
+		window.scrollTo(0, 0);
 
 	};
 
 	const addPoint = () => {
+		console.log("Evoo")
 		setPartner(false)
 		setPoint(true)
+		window.scrollTo(0, 0);
 
 	};
 
@@ -330,9 +388,17 @@ const InsertData = (props) => {
 
 	const handleAdd = (e) => {
 
+		setErrImageTitle("")
+		setErrLongDescriptionPoint("")
+		setErrShortDescriptionPoint("")
+		setErrVoucherDescriptionPoint("")
+		setErrTitlePoint("")
+
+
 		if (partner && (titlePointTransl == "" || shortInfoPointTransl == "" || longInfoPointTransl == "" || category == "" || pointPrice == "" || offerName == "" || responsiblePerson == "" || voucherDescTransl == "" || phone == "" || email == "" || longitude == "" || latitude == "" || audio2 == null || selectedFiles.length == 0 || (!mondayclosed && (mondayFrom == "" || mondayTo == "")) || (!tuesdayclosed && (tuesdayFrom == "" || tuesdayTo == "")) || (!wednesdayclosed && (wednesdayFrom == "" || wednesdayTo == "")) || (!thursdayclosed && (thursdayFrom == "" || thursdayTo == "")) || (!fridayclosed && (fridayFrom == "" || fridayTo == "")) || (!saturdayclosed && (saturdayFrom == "" || saturdayTo == "")) || (!sundayclosed && (sundayFrom == "" || sundayTo == "")))) {
 			setErrMessagePartner("Please insert mandatory fields for partner (marked with *)")
-		} else if (point && (titlePointTransl == "" || shortInfoPointTransl == "" || longInfoPointTransl == "" || category == "" || longitude == "" || latitude == "" || audio2 == null || selectedFiles.length == 0)) {
+		} else if (point && (titlePointTransl == "" || shortInfoPointTransl == "" || longInfoPointTransl == "" || category == "" || longitude == "" || latitude == "" || audio2 === null || selectedFiles.length === 0)) {
+			
 			setErrMessagePartner("Please insert mandatory fields for point of interest (marked with *)")
 		} else {
 			setAdd(false)
@@ -340,40 +406,63 @@ const InsertData = (props) => {
 			var jsonTitles = []
 			for (var ti of imageTitles) {
 				var help = ti.split("---")
+				if(!isJsonString(help[0])){
+					setErrImageTitle("Please insert the proper JSON format. Pay attention on enter and quotes(\")")
+					setErrMessagePartner("JSON format invalid. Check the red fields.")
+				}
 				var titlee = JSON.parse(help[0])
+				
 				var titleObj = {
 					number: help[1],
 					name: titlee
 				}
 				jsonTitles.push(titleObj)
 			}
-			var point = {
+
+
+			if(!isJsonString(titlePointTransl)){
+				setErrTitlePoint("Please insert the proper JSON format. Pay attention on enter and quotes(\")")
+				setErrMessagePartner("JSON format invalid. Check the red fields.")
+			}
+			if(!isJsonString(shortInfoPointTransl)){
+				setErrShortDescriptionPoint("Please insert the proper JSON format. Pay attention on enter and quotes(\")")
+				setErrMessagePartner("JSON format invalid. Check the red fields.")
+			}
+			if(!isJsonString(longInfoPointTransl)){
+				setErrLongDescriptionPoint("Please insert the proper JSON format. Pay attention on enter and quotes(\")")
+				setErrMessagePartner("JSON format invalid. Check the red fields.")
+			}
+			if(partner && !isJsonString(voucherDescTransl)){
+				setErrVoucherDescriptionPoint("Please insert the proper JSON format. Pay attention on enter and quotes(\")")
+				setErrMessagePartner("JSON format invalid. Check the red fields.")
+			}
+			var pointObj = {
 				num: num,
 				name: JSON.parse(titlePointTransl),
 				shortInfo: JSON.parse(shortInfoPointTransl),
 				longInfo: JSON.parse(longInfoPointTransl),
-				price: pointPrice,
+				price: pointPrice.toString(),
 				offerName: offerName,
 				contact: { phone: phone, email: email, webURL: webURL, name: responsiblePerson },
-				location: { latitude: latitude, longitude: longitude },
+				location: { latitude: latitude.toString(), longitude: longitude.toString() },
 				workingHours: { monday: { from: mondayFrom, to: mondayTo }, tuesday: { from: tuesdayFrom, to: tuesdayTo }, wednesday: { from: wednesdayFrom, to: wednesdayTo }, thursday: { from: thursdayFrom, to: thursdayTo }, friday: { from: fridayFrom, to: fridayTo }, saturday: { from: saturdayFrom, to: saturdayTo }, sunday: { from: sundayFrom, to: sundayTo } },
 				bpartnerId: hotelId,
 				category: category,
 				imageTitles: jsonTitles,
 			}
 			if (voucherDesc == "") {
-				point.voucherDesc = JSON.parse(`{
+				pointObj.voucherDesc = JSON.parse(`{
                   "english": "",
                   "spanish": "",
                   "serbian": "",
                   "slovenian": ""
                   }`)
-				point.partner = false
+				  pointObj.partner = false
 			} else {
-				point.voucherDesc = JSON.parse(voucherDescTransl)
-				point.partner = true
+				pointObj.voucherDesc = JSON.parse(voucherDescTransl)
+				pointObj.partner = true
 			}
-			const newData = [point, ...points];
+			const newData = [pointObj, ...points];
 			setPoints(newData)
 			setTitlePoint("")
 			setShortInfoPoint("")
@@ -404,6 +493,7 @@ const InsertData = (props) => {
 			setAudios(audios.concat(audio2))
 			setSelectedFiles([])
 			setAudio2(null)
+			setAudioNamePoint("")
 			setImagePreviews([])
 			num = num + 1
 
@@ -431,6 +521,8 @@ const InsertData = (props) => {
 			var new_file = new File([e.target.files[0]], 'audio2' + num + "---" + [e.target.files[0].name]);
 
 			setAudio2(new_file);
+			
+			setAudioNamePoint(e.target.files[0].name)
 		}
 	};
 
@@ -630,6 +722,11 @@ const InsertData = (props) => {
 											point={point}
 											addPartner={addPartner}
 											addPoint={addPoint}
+											errTitle = {errTitle}
+											errLongDescription = {errLongDescription}
+											errShortDescription = {errShortDescription}
+											errAgreementTitle = {errAgreementTitle}
+											errAgreementDescription = {errAgreementDescription}
 										/>
 
 
@@ -723,6 +820,12 @@ const InsertData = (props) => {
 											webURL={webURL}
 											errMessagePartner={errMessagePartner}
 											handleAdd={handleAdd}
+											errTitlePoint = {errTitlePoint}
+											errShortDescriptionPoint = {errShortDescriptionPoint}
+											errLongDescriptionPoint = {errLongDescriptionPoint}
+											errVoucherDescriptionPoint = {errVoucherDescriptionPoint}
+											errImageTitle = {errImageTitle}
+											audioNamePoint = {audioNamePoint}
 										/>
 									</form>
 
@@ -802,12 +905,17 @@ const InsertData = (props) => {
 											</div>
 										}
 
-										<div class="modal__body">
-											<div
-												hidden={!errMessage}>
-												{errMessage}
-											</div>
-											<div className="button-p">
+										<div class="modal__body grid dgrid-row place-items-center">
+											
+
+											<div className="paragraph-box2 grid dgrid-row place-items-center"
+                                            style={{ color: "red", fontSize: "0.8em", marginBottom: "30px" }}
+                                            hidden={!errMessage}>
+                                            {errMessage}
+                                        </div>
+
+
+											<div className="button-p grid dgrid-row place-items-center">
 												<button
 
 													onClick={(e) => {

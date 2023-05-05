@@ -11,6 +11,7 @@ var url = process.env.REACT_APP_URL || "http://localhost:8080/";
 var num = 1;
 const AddPartnerOrPointForm = (props) => {
 
+    
 
     return (
 
@@ -73,7 +74,7 @@ const AddPartnerOrPointForm = (props) => {
                                             </div>
                                             <textarea
 
-                                                className={"form__input text-sm"}
+                                                className={!props.errTitlePoint ? "form__input text-sm" : "form__input text-sm !border !border-red-500"}
                                                 style={{ height: 80 }}
                                                 placeholder='JSON FORMAT: { "language": "Text"}'
                                                 aria-describedby="basic-addon1"
@@ -82,6 +83,12 @@ const AddPartnerOrPointForm = (props) => {
                                                 onChange={(e) => props.setTitlePointTransl(e.target.value)}
                                                 value={props.titlePointTransl}
                                             />
+                                            <div className="paragraph-box2 grid dgrid-row place-items-center"
+                                                style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }}
+                                                hidden={!props.errTitlePoint}>
+                                                {props.errTitlePoint}
+                                            </div>
+
                                         </div>
 
                                         <div
@@ -108,8 +115,7 @@ const AddPartnerOrPointForm = (props) => {
 
                                             </div>
                                             <textarea
-
-                                                className={"form__input text-sm h-32"}
+                                                className={!props.errShortDescriptionPoint ? "form__input text-sm h-32" : "form__input text-sm h-32 !border !border-red-500"}
                                                 placeholder='JSON FORMAT: { "language": "Text"}'
                                                 aria-describedby="basic-addon1"
                                                 id="name"
@@ -117,6 +123,11 @@ const AddPartnerOrPointForm = (props) => {
                                                 onChange={(e) => props.setShortInfoPointTransl(e.target.value)}
                                                 value={props.shortInfoPointTransl}
                                             />
+                                            <div className="paragraph-box2 grid dgrid-row place-items-center"
+                                                style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }}
+                                                hidden={!props.errShortDescriptionPoint}>
+                                                {props.errShortDescriptionPoint}
+                                            </div>
                                         </div>
 
                                         <div
@@ -142,7 +153,7 @@ const AddPartnerOrPointForm = (props) => {
                                             </div>
                                             <textarea
 
-                                                className={"form__input text-sm h-32"}
+                                                className={!props.errLongDescriptionPoint ? "form__input text-sm h-32" : "form__input text-sm h-32 !border !border-red-500"}
                                                 placeholder='JSON FORMAT: { "language": "Text"}'
                                                 aria-describedby="basic-addon1"
                                                 id="name"
@@ -150,6 +161,11 @@ const AddPartnerOrPointForm = (props) => {
                                                 onChange={(e) => props.setLongInfoPointTransl(e.target.value)}
                                                 value={props.longInfoPointTransl}
                                             />
+                                            <div className="paragraph-box2 grid dgrid-row place-items-center"
+                                                style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }}
+                                                hidden={!props.errLongDescriptionPoint}>
+                                                {props.errLongDescriptionPoint}
+                                            </div>
                                         </div>
 
                                         {props.partner &&
@@ -178,7 +194,7 @@ const AddPartnerOrPointForm = (props) => {
                                                 </div>
                                                 <textarea
 
-                                                    className={"form__input text-sm h-32"}
+                                                    className={!props.errVoucherDescriptionPoint ? "form__input text-sm h-32" : "form__input text-sm h-32 !border !border-red-500"}
                                                     placeholder='JSON FORMAT: { "language": "Text"}'
                                                     aria-describedby="basic-addon1"
                                                     id="name"
@@ -186,6 +202,11 @@ const AddPartnerOrPointForm = (props) => {
                                                     onChange={(e) => props.setVoucherDescTransl(e.target.value)}
                                                     value={props.voucherDescTransl}
                                                 />
+                                                <div className="paragraph-box2 grid dgrid-row place-items-center"
+                                                    style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }}
+                                                    hidden={!props.errVoucherDescriptionPoint}>
+                                                    {props.errVoucherDescriptionPoint}
+                                                </div>
                                             </div>
 
 
@@ -215,7 +236,7 @@ const AddPartnerOrPointForm = (props) => {
                                                     placeholder="Price"
                                                     aria-describedby="basic-addon1"
                                                     id="name"
-                                                    type="text"
+                                                    type="number"
 
                                                     onChange={(e) => props.setPointPrice(e.target.value)}
                                                     value={props.pointPrice}
@@ -262,7 +283,7 @@ const AddPartnerOrPointForm = (props) => {
                                                     placeholder="Longitude"
                                                     aria-describedby="basic-addon1"
                                                     id="name"
-                                                    type="text"
+                                                    type="number"
 
                                                     onChange={(e) => props.setLongitude(e.target.value)}
                                                     value={props.longitude}
@@ -274,7 +295,7 @@ const AddPartnerOrPointForm = (props) => {
                                                 placeholder="Latitude"
                                                 aria-describedby="basic-addon1"
                                                 id="name"
-                                                type="text"
+                                                type="number"
 
                                                 onChange={(e) => props.setLatitude(e.target.value)}
                                                 value={props.latitude}
@@ -552,6 +573,10 @@ const AddPartnerOrPointForm = (props) => {
                                                     onChange={props.addFile2}
                                                     class="sr-only" />
                                             </label>
+                                            {props.audioNamePoint &&
+
+
+                                                <label >{props.audioNamePoint}</label>}
                                         </div>
 
                                         <div className="form__group">
@@ -561,7 +586,7 @@ const AddPartnerOrPointForm = (props) => {
                                             <label
                                                 class="button button--secondary button--small">
                                                 <span>Upload image</span>
-                                                <input type={"file"} accept="image/*"
+                                                <input type={"file"} accept="image/*" multiple
                                                     onChange={props.selectFiles}
                                                     class="sr-only" />
                                             </label>
@@ -576,9 +601,10 @@ const AddPartnerOrPointForm = (props) => {
                                                                     src={img}
                                                                     alt={"image-" + i}
                                                                     key={i} />
+                                                                <br />
                                                                 <input
 
-                                                                    className={"form__input"}
+                                                                    className={!props.errImageTitle ? "form__input" : "form__input !border !border-red-500"}
                                                                     placeholder={'JSON FORMAT: { "language": "Text"}'}
                                                                     aria-describedby="basic-addon1"
                                                                     id="name"
@@ -586,13 +612,18 @@ const AddPartnerOrPointForm = (props) => {
 
                                                                     onChange={(e) => props.changeImageTitle(e.target.value, i)}
                                                                 />
+                                                                <div className="paragraph-box2 grid dgrid-row place-items-center"
+                                                                    style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }}
+                                                                    hidden={!props.errImageTitle}>
+                                                                    {props.errImageTitle}
+                                                                </div>
                                                             </div>
                                                         );
                                                     })}
                                                 </div>
                                             )}
 
-                                           
+
                                         </div>
 
 
