@@ -11,7 +11,13 @@ var num = 1;
 var url = process.env.REACT_APP_URL || "http://localhost:8080/";
 const AddNewPartnerForm = (props) => {
 
+	const [errImageTitle, setErrImageTitle] = useState("");
+	const [errTitlePoint, setErrTitlePoint] = useState("");
+	const [errShortDescriptionPoint, setErrShortDescriptionPoint] = useState("");
+	const [errLongDescriptionPoint, setErrLongDescriptionPoint] = useState("");
+	const [errVoucherDescriptionPoint, setErrVoucherDescriptionPoint] = useState("");
 
+	const [audioName, setAudioName] = useState("");
 	const [titlePoint, setTitlePoint] = useState("");
 	const [titlePointTransl, setTitlePointTransl] = useState("");
 	const [shortInfoPoint, setShortInfoPoint] = useState("");
@@ -134,24 +140,44 @@ const AddNewPartnerForm = (props) => {
 		setPoint(true)
 
 	};
-
+	function isJsonString(str) {
+		try {
+			JSON.parse(str);
+		} catch (e) {
+			return false;
+		}
+		return true;
+	}
 	const handleModalClose = () => {
+		setPartner(false)
+		setPoint(false)
 		dispatch({ type: homeDataConstants.HIDE_ADD_PARTNER_MODAL });
 
 	};
 
 	const handleAdd = (e) => {
+		setErrImageTitle("")
+		setErrLongDescriptionPoint("")
+		setErrShortDescriptionPoint("")
+		setErrVoucherDescriptionPoint("")
+		setErrTitlePoint("")
 
 		if (partner && (titlePointTransl == "" || shortInfoPointTransl == "" || longInfoPointTransl == "" || category == "" || pointPrice == "" || offerName == "" || responsiblePerson == "" || voucherDescTransl == "" || phone == "" || email == "" || longitude == "" || latitude == "" || audio2 == null || selectedFiles.length == 0 || (!mondayclosed && (mondayFrom == "" || mondayTo == "")) || (!tuesdayclosed && (tuesdayFrom == "" || tuesdayTo == "")) || (!wednesdayclosed && (wednesdayFrom == "" || wednesdayTo == "")) || (!thursdayclosed && (thursdayFrom == "" || thursdayTo == "")) || (!fridayclosed && (fridayFrom == "" || fridayTo == "")) || (!saturdayclosed && (saturdayFrom == "" || saturdayTo == "")) || (!sundayclosed && (sundayFrom == "" || sundayTo == "")))) {
 			setErrMessagePartner("Please insert mandatory fields for partner (marked with *)")
 		} else if (point && (titlePointTransl == "" || shortInfoPointTransl == "" || longInfoPointTransl == "" || category == "" || longitude == "" || latitude == "" || audio2 == null || selectedFiles.length == 0)) {
+			
 			setErrMessagePartner("Please insert mandatory fields for point of interest (marked with *)")
 		} else {
 			setAdd(false)
 			setErrMessagePartner("")
 			var jsonTitles = []
+			if(imageTitles.length !=0){
 			for (var ti of imageTitles) {
 				var help = ti.split("---")
+				if (!isJsonString(help[0])) {
+					setErrImageTitle("Please insert the proper JSON format. Pay attention on enter and quotes(\")")
+					setErrMessagePartner("JSON format invalid. Check the red fields.")
+				}
 				var titlee = JSON.parse(help[0])
 				var titleObj = {
 					number: help[1],
@@ -160,6 +186,26 @@ const AddNewPartnerForm = (props) => {
 				}
 				jsonTitles.push(titleObj)
 			}
+		}
+
+			if (!isJsonString(titlePointTransl)) {
+				setErrTitlePoint("Please insert the proper JSON format. Pay attention on enter and quotes(\")")
+				setErrMessagePartner("JSON format invalid. Check the red fields.")
+			}
+			if (!isJsonString(shortInfoPointTransl)) {
+				setErrShortDescriptionPoint("Please insert the proper JSON format. Pay attention on enter and quotes(\")")
+				setErrMessagePartner("JSON format invalid. Check the red fields.")
+			}
+			if (!isJsonString(longInfoPointTransl)) {
+				setErrLongDescriptionPoint("Please insert the proper JSON format. Pay attention on enter and quotes(\")")
+				setErrMessagePartner("JSON format invalid. Check the red fields.")
+			}
+			if (partner && !isJsonString(voucherDescTransl)) {
+				setErrVoucherDescriptionPoint("Please insert the proper JSON format. Pay attention on enter and quotes(\")")
+				setErrMessagePartner("JSON format invalid. Check the red fields.")
+			}
+
+
 			var point = {
 				num: num,
 				name: JSON.parse(titlePointTransl),
@@ -210,6 +256,7 @@ const AddNewPartnerForm = (props) => {
 			setLatitude("")
 			setTitlePointTransl("")
 			setImageTitles([])
+			setAudioName("")
 
 			setShortInfoPointTransl("")
 			setLongInfoPointTransl("")
@@ -220,6 +267,9 @@ const AddNewPartnerForm = (props) => {
 			setAudio2(null)
 			setImagePreviews([])
 			num = num + 1
+			
+			setPartner(false)
+			setPoint(false)
 		}
 
 
@@ -231,6 +281,7 @@ const AddNewPartnerForm = (props) => {
 			var new_file = new File([e.target.files[0]], 'audio2' + num + "---" + [e.target.files[0].name]);
 
 			setAudio2(new_file);
+			setAudioName(e.target.files[0].name)
 		}
 	};
 
@@ -378,6 +429,7 @@ const AddNewPartnerForm = (props) => {
 													id="sendMessageButton"
 													type="button"
 												>
+
 													Add partner
 												</button>
 
@@ -396,136 +448,118 @@ const AddNewPartnerForm = (props) => {
 
 										<div>
 											{(partner || point) &&
+
 												<div class="form">
-													<div className="form__group">
-														<label class="form__label">Name *</label>
-														<div class="flex flex-col gap-2">
-															<div class="flex flex-row items-center gap-2">
-																<input
-
-																	className={"form__input"}
-																	placeholder="Name"
-																	aria-describedby="basic-addon1"
-																	id="name"
-																	type="text"
-
-																	onChange={(e) => setTitlePoint(e.target.value)}
-																	value={titlePoint}
-																/>
-
-																<button
-
-
-																	onClick={(e) => fetchData(titlePoint, 4)}
-																	className="button button--primary"
-																	id="sendMessageButton"
-																	type="button"
-																>
-																	Translate
-																</button>
-															</div>
-
-															<input
-
-																className={"form__input text-sm"}
-																placeholder='JSON FORMAT: { "language": "Text"}'
-																aria-describedby="basic-addon1"
-																id="name"
-																type="text"
-
-
-																onChange={(e) => setTitlePointTransl(e.target.value)}
-																value={titlePointTransl}
-															/>
-														</div>
-													</div>
-
-													<div className="form__group">
-														<div className="form__group"
-															style={{ opacity: 1 }}>
-															<label class="form__label">Short description* </label>
-															<div class="flex flex-col items-start gap-2">
-																<textarea className="form__input h-32"
-
-																	type="textarea" required name="message"
-																	placeholder='Short description'
-																	value={shortInfoPoint}
-																	onChange={(e) => setShortInfoPoint(e.target.value)}></textarea>
-
-																<button
-
-
-																	onClick={(e) => fetchData(shortInfoPoint, 5)}
-																	className="button button--primary"
-																	id="sendMessageButton"
-																	type="button"
-																>
-																	Translate
-																</button>
-
-																<input
-
-																	className={"form__input text-sm"}
-																	placeholder='JSON FORMAT: { "language": "Text"}'
-																	aria-describedby="basic-addon1"
-																	id="name"
-																	type="text"
-
-
-																	onChange={(e) => setShortInfoPointTransl(e.target.value)}
-																	value={shortInfoPointTransl}
-																/>
-															</div>
-														</div>
-													</div>
-
-													<div className="form__group">
-														<label class="form__label">Long description*</label>
-														<div class="flex flex-col items-start gap-2">
-															<textarea className="form__input h-32"
-																type="textarea" required name="message"
-																placeholder='Long description'
-																value={longInfoPoint}
-																onChange={(e) => setLongInfoPoint(e.target.value)}></textarea>
-															<button
-
-
-																onClick={(e) => fetchData(longInfoPoint, 6)}
-																className="button button--primary"
-																id="sendMessageButton"
-																type="button"
-															>
-																Translate
-															</button>
-
-															<input
-
-																className={"form__input text-sm"}
-																placeholder='JSON FORMAT: { "language": "Text"}'
-																aria-describedby="basic-addon1"
-																id="name"
-																type="text"
-
-
-																onChange={(e) => setLongInfoPointTransl(e.target.value)}
-																value={longInfoPointTransl}
-															/>
-														</div>
-													</div>
-
-													{partner &&
+													<div
+														className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
 														<div className="form__group">
-															<label class="form__label">Voucher description*</label>
+															<label class="form__label">Name *</label>
+															<div class="flex flex-col gap-2">
+																<div class="flex flex-row items-center gap-2">
+																	<input
+
+																		className={"form__input"}
+																		placeholder="Name"
+																		aria-describedby="basic-addon1"
+																		id="name"
+																		type="text"
+
+																		onChange={(e) => setTitlePoint(e.target.value)}
+																		value={titlePoint}
+																	/>
+
+																	<button
+
+
+																		onClick={(e) => fetchData(titlePoint, 4)}
+																		className="button button--primary"
+																		id="sendMessageButton"
+																		type="button"
+																	>
+																		Translate
+																	</button>
+																</div>
+
+																<input
+
+																	className={!errTitlePoint ? "form__input text-sm" : "form__input text-sm !border !border-red-500"}
+																	placeholder='JSON FORMAT: { "language": "Text"}'
+																	aria-describedby="basic-addon1"
+																	id="name"
+																	type="text"
+
+
+																	onChange={(e) => setTitlePointTransl(e.target.value)}
+																	value={titlePointTransl}
+																/>
+																<div className="paragraph-box2 grid dgrid-row place-items-center"
+																	style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }}
+																	hidden={!errTitlePoint}>
+																	{errTitlePoint}
+																</div>
+															</div>
+														</div>
+													</div>
+													<div
+														className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
+														<div className="form__group">
+															<div className="form__group"
+																style={{ opacity: 1 }}>
+																<label class="form__label">Short description* </label>
+																<div class="flex flex-col items-start gap-2">
+																	<textarea className="form__input h-32"
+
+																		type="textarea" required name="message"
+																		placeholder='Short description'
+																		value={shortInfoPoint}
+																		onChange={(e) => setShortInfoPoint(e.target.value)}></textarea>
+
+																	<button
+
+
+																		onClick={(e) => fetchData(shortInfoPoint, 5)}
+																		className="button button--primary"
+																		id="sendMessageButton"
+																		type="button"
+																	>
+																		Translate
+																	</button>
+
+
+
+																	<textarea
+																		className={!errShortDescriptionPoint ? "form__input text-sm h-32" : "form__input text-sm h-32 !border !border-red-500"}
+																		placeholder='JSON FORMAT: { "language": "Text"}'
+																		aria-describedby="basic-addon1"
+																		id="name"
+																		type="text"
+																		onChange={(e) => setShortInfoPointTransl(e.target.value)}
+																		value={shortInfoPointTransl}
+																	/>
+
+																	<div className="paragraph-box2 grid dgrid-row place-items-center"
+																		style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }}
+																		hidden={!errShortDescriptionPoint}>
+																		{errShortDescriptionPoint}
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+													<div
+														className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
+														<div className="form__group">
+															<label class="form__label">Long description*</label>
 															<div class="flex flex-col items-start gap-2">
 																<textarea className="form__input h-32"
 																	type="textarea" required name="message"
-																	placeholder='Voucher description'
-																	value={voucherDesc}
-																	onChange={(e) => setVoucherDesc(e.target.value)}></textarea>
+																	placeholder='Long description'
+																	value={longInfoPoint}
+																	onChange={(e) => setLongInfoPoint(e.target.value)}></textarea>
 																<button
 
 
-																	onClick={(e) => fetchData(voucherDesc, 7)}
+																	onClick={(e) => fetchData(longInfoPoint, 6)}
 																	className="button button--primary"
 																	id="sendMessageButton"
 																	type="button"
@@ -533,18 +567,62 @@ const AddNewPartnerForm = (props) => {
 																	Translate
 																</button>
 
-																<input
+																<textarea
 
-																	className={"form__input"}
+																	className={!errLongDescriptionPoint ? "form__input text-sm h-32" : "form__input text-sm h-32 !border !border-red-500"}
 																	placeholder='JSON FORMAT: { "language": "Text"}'
 																	aria-describedby="basic-addon1"
 																	id="name"
 																	type="text"
-
-
-																	onChange={(e) => setVoucherDescTransl(e.target.value)}
-																	value={voucherDescTransl}
+																	onChange={(e) => setLongInfoPointTransl(e.target.value)}
+																	value={longInfoPointTransl}
 																/>
+																<div className="paragraph-box2 grid dgrid-row place-items-center"
+																	style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }}
+																	hidden={!errLongDescriptionPoint}>
+																	{errLongDescriptionPoint}
+																</div>
+															</div>
+														</div>
+													</div>
+													{partner &&
+														<div
+															className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
+															<div className="form__group">
+																<label class="form__label">Voucher description*</label>
+																<div class="flex flex-col items-start gap-2">
+																	<textarea className="form__input h-32"
+																		type="textarea" required name="message"
+																		placeholder='Voucher description'
+																		value={voucherDesc}
+																		onChange={(e) => setVoucherDesc(e.target.value)}></textarea>
+																	<button
+
+
+																		onClick={(e) => fetchData(voucherDesc, 7)}
+																		className="button button--primary"
+																		id="sendMessageButton"
+																		type="button"
+																	>
+																		Translate
+																	</button>
+
+																	<textarea
+
+																		className={!props.errVoucherDescriptionPoint ? "form__input text-sm h-32" : "form__input text-sm h-32 !border !border-red-500"}
+																		placeholder='JSON FORMAT: { "language": "Text"}'
+																		aria-describedby="basic-addon1"
+																		id="name"
+																		type="text"
+																		onChange={(e) => setVoucherDescTransl(e.target.value)}
+																		value={voucherDescTransl}
+																	/>
+																	<div className="paragraph-box2 grid dgrid-row place-items-center"
+																		style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }}
+																		hidden={!errVoucherDescriptionPoint}>
+																		{errVoucherDescriptionPoint}
+																	</div>
+																</div>
 															</div>
 														</div>
 													}
@@ -609,242 +687,295 @@ const AddNewPartnerForm = (props) => {
 														</div>
 													}
 
-													<div class="form__group">
+													<div
+														className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
+														<div class="form__group">
 
-														<label class="form__label">Address *</label>
-														<div class="flex flex-col items-start gap-2">
-															<input
+															<label class="form__label">Address *</label>
+															<div class="flex flex-col items-start gap-2">
+																<input
 
-																className={"form__input"}
-																placeholder="Longitude"
-																aria-describedby="basic-addon1"
-																id="name"
-																type="text"
+																	className={"form__input"}
+																	placeholder="Longitude"
+																	aria-describedby="basic-addon1"
+																	id="name"
+																	type="text"
 
-																onChange={(e) => setLongitude(e.target.value)}
-																value={longitude}
-															/>
-															<input
+																	onChange={(e) => setLongitude(e.target.value)}
+																	value={longitude}
+																/>
+																<input
 
-																className={"form__input"}
-																placeholder="Latitude"
-																aria-describedby="basic-addon1"
-																id="name"
-																type="text"
+																	className={"form__input"}
+																	placeholder="Latitude"
+																	aria-describedby="basic-addon1"
+																	id="name"
+																	type="text"
 
-																onChange={(e) => setLatitude(e.target.value)}
-																value={latitude}
-															/>
+																	onChange={(e) => setLatitude(e.target.value)}
+																	value={latitude}
+																/>
+															</div>
+
 														</div>
-
 													</div>
-
 													{partner &&
-														<div>
+														<div
+															className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
+															<div className="form__group divide-y">
+																<label class="form__label">Working
+																	hours*</label>
 
-															<div className="form__group">
-																<label class="form__label">Working hours *</label>
-																<label class="form__label">Monday</label>
+																<div class="form pt-6">
 
-																<label>
-																	<input
-																		type="checkbox"
-																		checked={mondayclosed}
-																		onChange={(e) => setMondayClosed(!mondayclosed)}
-																	/>
-																	closed
-																</label>
-																{!mondayclosed &&
-																	<div>
-																		<span>
-																			<TimePicker disableClock={true}
-																				onChange={(newValue) => {
-																					setMondayFrom(newValue);
-																				}} value={mondayFrom} />
-																		</span>
-																		<span>
-																			<TimePicker disableClock={true}
-																				onChange={(newValue) => {
-																					setMondayTo(newValue);
-																				}}
-																				value={mondayTo} />
-																		</span>
+																	<div className="form__group">
+																		<label
+																			class="form__label">Monday</label>
+																		<div
+																			class="flex flex-row items-center justify-between gap-2">
 
-
+																			<label
+																				class="form__group--checkbox">
+																				<input
+																					type="checkbox"
+																					checked={mondayclosed}
+																					onChange={(e) => setMondayClosed(!mondayclosed)}
+																				/>
+																				<span>
+																					Closed
+																				</span>
+																			</label>
+																			{!mondayclosed &&
+																				<div>
+																					<TimePicker
+																						disableClock={true}
+																						onChange={(newValue) => {
+																							setMondayFrom(newValue);
+																						}}
+																						value={mondayFrom} />
+																					<TimePicker
+																						disableClock={true}
+																						onChange={(newValue) => {
+																							setMondayTo(newValue);
+																						}}
+																						value={mondayTo} />
+																				</div>
+																			}
+																		</div>
 																	</div>
-																}
+
+																	<div className="form__group">
+																		<label
+																			class="form__label">Tuesday</label>
+																		<div
+																			class="flex flex-row items-center justify-between gap-2">
+																			<label
+																				class="form__group--checkbox">
+																				<input
+																					type="checkbox"
+																					checked={tuesdayclosed}
+																					onChange={(e) => setTuesdayClosed(!tuesdayclosed)}
+																				/>
+																				<span>
+																					Closed
+																				</span>
+																			</label>
+																			{!tuesdayclosed &&
+																				<div>
+																					<TimePicker
+																						disableClock={true}
+																						onChange={(newValue) => {
+																							setTuesdayFrom(newValue);
+																						}}
+																						value={tuesdayFrom} />
+																					<TimePicker
+																						disableClock={true}
+																						onChange={(newValue) => {
+																							setTuesdayTo(newValue);
+																						}}
+																						value={tuesdayTo} />
+																				</div>
+																			}
+																		</div>
+																	</div>
+
+																	<div className="form__group">
+																		<label
+																			class="form__label">Wednesday</label>
+																		<div
+																			class="flex flex-row items-center justify-between gap-2">
+																			<label
+																				class="form__group--checkbox">
+																				<input
+																					type="checkbox"
+																					checked={wednesdayclosed}
+																					onChange={(e) => setWednesdayClosed(!wednesdayclosed)}
+																				/>
+																				<span>
+																					Closed
+																				</span>
+																			</label>
+																			{!wednesdayclosed &&
+																				<div>
+
+																					<TimePicker
+																						disableClock={true}
+																						onChange={(newValue) => {
+																							setWednesdayFrom(newValue);
+																						}}
+																						value={wednesdayFrom} />
+																					<TimePicker
+																						disableClock={true}
+																						onChange={(newValue) => {
+																							setWednesdayTo(newValue);
+																						}}
+																						value={wednesdayTo} />
+																				</div>
+																			}
+																		</div>
+																	</div>
+
+																	<div className="form__group">
+																		<label
+																			class="form__label">Thursday</label>
+																		<div
+																			class="flex flex-row items-center justify-between gap-2">
+																			<label
+																				class="form__group--checkbox">
+																				<input
+																					type="checkbox"
+																					checked={thursdayclosed}
+																					onChange={(e) => setThursdayClosed(!thursdayclosed)}
+																				/>
+																				<span>
+																					Closed
+																				</span>
+																			</label>
+																			{!thursdayclosed &&
+																				<div>
+																					<TimePicker
+																						disableClock={true}
+																						onChange={(newValue) => {
+																							setThursdayFrom(newValue);
+																						}}
+																						value={thursdayFrom} />
+																					<TimePicker
+																						disableClock={true}
+																						onChange={(newValue) => {
+																							setThursdayTo(newValue);
+																						}}
+																						value={thursdayTo} />
+																				</div>
+																			}
+																		</div>
+																	</div>
+
+																	<div className="form__group">
+																		<label
+																			class="form__label">Friday</label>
+																		<div
+																			class="flex flex-row items-center justify-between gap-2">
+																			<label
+																				class="form__group--checkbox">
+																				<input
+																					type="checkbox"
+																					checked={fridayclosed}
+																					onChange={(e) => setFridayClosed(!fridayclosed)}
+																				/>
+																				<span>
+																					Closed
+																				</span>
+																			</label>
+																			{!fridayclosed &&
+																				<div>
+																					<TimePicker
+																						disableClock={true}
+																						onChange={(newValue) => {
+																							setFridayFrom(newValue);
+																						}}
+																						value={fridayFrom} />
+																					<TimePicker
+																						disableClock={true}
+																						onChange={(newValue) => {
+																							setFridayTo(newValue);
+																						}}
+																						value={fridayTo} />
+																				</div>
+																			}
+																		</div>
+																	</div>
+
+																	<div className="form__group">
+																		<label
+																			class="form__label">Saturday</label>
+																		<div
+																			class="flex flex-row items-center justify-between gap-2">
+																			<label
+																				class="form__group--checkbox">
+																				<input
+																					type="checkbox"
+																					checked={saturdayclosed}
+																					onChange={(e) => setSaturdayClosed(!saturdayclosed)}
+																				/>
+																				<span>
+																					Closed
+																				</span>
+																			</label>
+																			{!saturdayclosed &&
+																				<div>
+																					<TimePicker
+																						disableClock={true}
+																						onChange={(newValue) => {
+																							setSaturdayFrom(newValue);
+																						}}
+																						value={saturdayFrom} />
+																					<TimePicker
+																						disableClock={true}
+																						onChange={(newValue) => {
+																							setSaturdayTo(newValue);
+																						}}
+																						value={saturdayTo} />
+																				</div>
+																			}
+																		</div>
+																	</div>
+
+																	<div className="form__group">
+																		<label
+																			class="form__label">Sunday</label>
+																		<div
+																			class="flex flex-row items-center justify-between gap-2">
+																			<label
+																				class="form__group--checkbox">
+																				<input
+																					type="checkbox"
+																					checked={sundayclosed}
+																					onChange={(e) => setSundayClosed(!props.sundayclosed)}
+																				/>
+																				<span>
+																					Closed
+																				</span>
+																			</label>
+																			{!sundayclosed &&
+																				<div>
+																					<TimePicker
+																						disableClock={true}
+																						onChange={(newValue) => {
+																							setSundayFrom(newValue);
+																						}}
+																						value={sundayFrom} />
+																					<TimePicker
+																						disableClock={true}
+																						onChange={(newValue) => {
+																							setSundayTo(newValue);
+																						}}
+																						value={sundayTo} />
+																				</div>
+																			}
+																		</div>
+																	</div>
+																</div>
 															</div>
-
-															<div className="form__group">
-																<label class="form__label">Tuesday</label>
-																<label>
-																	<input
-																		type="checkbox"
-																		checked={tuesdayclosed}
-																		onChange={(e) => setTuesdayClosed(!tuesdayclosed)}
-																	/>
-																	closed
-																</label>
-																{!tuesdayclosed && <div>
-																	<span>
-																		<TimePicker disableClock={true}
-																			onChange={(newValue) => {
-																				setTuesdayFrom(newValue);
-																			}} value={tuesdayFrom} />
-																	</span> <span>
-																		<TimePicker disableClock={true}
-																			onChange={(newValue) => {
-																				setTuesdayTo(newValue);
-																			}}
-																			value={tuesdayTo} /></span>
-																</div>}
-															</div>
-
-															<div className="form__group">
-																<label class="form__label">Wednesday</label>
-																<br />
-																<label>
-																	<input
-																		type="checkbox"
-																		checked={wednesdayclosed}
-																		onChange={(e) => setWednesdayClosed(!wednesdayclosed)}
-																	/>
-																	closed
-																</label>
-																{!wednesdayclosed && <div>
-																	<span>
-																		<TimePicker disableClock={true}
-																			onChange={(newValue) => {
-																				setWednesdayFrom(newValue);
-																			}}
-																			value={wednesdayFrom} />
-																	</span> <span>
-																		<TimePicker disableClock={true}
-																			onChange={(newValue) => {
-																				setWednesdayTo(newValue);
-																			}} value={wednesdayTo} /></span>
-
-
-																</div>}
-															</div>
-
-															<div className="form__group">
-																<label class="form__label">Thursday</label>
-																<br />
-																<label>
-																	<input
-																		type="checkbox"
-																		checked={thursdayclosed}
-																		onChange={(e) => setThursdayClosed(!thursdayclosed)}
-																	/>
-																	closed
-																</label>
-																{!thursdayclosed && <div>
-
-																	<span>
-																		<TimePicker disableClock={true}
-																			onChange={(newValue) => {
-																				setThursdayFrom(newValue);
-																			}}
-																			value={thursdayFrom} />
-																	</span> <span>
-																		<TimePicker disableClock={true}
-																			onChange={(newValue) => {
-																				setThursdayTo(newValue);
-																			}} value={thursdayTo} /></span>
-
-
-																</div>}
-															</div>
-
-															<div className="form__group">
-																<label class="form__label">Friday</label>
-																<br />
-																<label>
-																	<input
-																		type="checkbox"
-																		checked={fridayclosed}
-																		onChange={(e) => setFridayClosed(!fridayclosed)}
-																	/>
-																	closed
-																</label>
-																{!fridayclosed && <div>
-
-																	<span>
-																		<TimePicker disableClock={true}
-																			onChange={(newValue) => {
-																				setFridayFrom(newValue);
-																			}} value={fridayFrom} />
-																	</span> <span>
-																		<TimePicker disableClock={true}
-																			onChange={(newValue) => {
-																				setFridayTo(newValue);
-																			}}
-																			value={fridayTo} /></span>
-
-
-																</div>}
-															</div>
-
-															<div className="form__group">
-																<label class="form__label">Saturday</label>
-																<br />
-																<label>
-																	<input
-																		type="checkbox"
-																		checked={saturdayclosed}
-																		onChange={(e) => setSaturdayClosed(!saturdayclosed)}
-																	/>
-																	closed
-																</label>
-																{!saturdayclosed && <div>
-
-
-																	<span>
-																		<TimePicker disableClock={true}
-																			onChange={(newValue) => {
-																				setSaturdayFrom(newValue);
-																			}}
-																			value={saturdayFrom} />
-																	</span> <span>
-																		<TimePicker disableClock={true}
-																			onChange={(newValue) => {
-																				setSaturdayTo(newValue);
-																			}} value={saturdayTo} /></span>
-
-																</div>}
-															</div>
-
-															<div className="form__group">
-
-																<label class="form__label">Sunday</label>
-																<br />
-																<label>
-																	<input
-																		type="checkbox"
-																		checked={sundayclosed}
-																		onChange={(e) => setSundayClosed(!sundayclosed)}
-																	/>
-																	closed
-																</label>
-																{!sundayclosed && <div>
-
-
-																	<span >
-																		<TimePicker disableClock={true}
-																			onChange={(newValue) => {
-																				setSundayFrom(newValue);
-																			}} value={sundayFrom} />
-																	</span> <span>
-																		<TimePicker disableClock={true}
-																			onChange={(newValue) => {
-																				setSundayTo(newValue);
-																			}}
-																			value={sundayTo} /></span>
-
-																</div>}
-															</div>
-
 														</div>}
 
 													<div>
@@ -857,6 +988,10 @@ const AddNewPartnerForm = (props) => {
 																onChange={addFile2}
 																class="sr-only" />
 														</label>
+														{audioName &&
+
+
+															<label >{audioName}</label>}
 													</div>
 													<div>
 
@@ -871,7 +1006,7 @@ const AddNewPartnerForm = (props) => {
 																onChange={selectFiles}
 																class="sr-only" />
 														</label>
-
+														<br/>
 														{progressInfos &&
 															progressInfos.val.length > 0 &&
 															progressInfos.val.map((progressInfo, index) => (
@@ -895,13 +1030,14 @@ const AddNewPartnerForm = (props) => {
 															<div>
 																{imagePreviews.map((img, i) => {
 																	return (
-																		<div>
+																		<div>  <br />
 																			<img className="image__preview" src={img}
 																				alt={"image-" + i} key={i} />
 
+<br/>
 																			<input
 
-																				className={"form__input"}
+																				className={!props.errImageTitle ? "form__input" : "form__input !border !border-red-500"}
 																				placeholder={'JSON FORMAT: { "language": "Text"}'}
 																				aria-describedby="basic-addon1"
 																				id="name"
@@ -910,6 +1046,11 @@ const AddNewPartnerForm = (props) => {
 
 																				onChange={(e) => changeImageTitle(e.target.value, i)}
 																			/>
+																			<div className="paragraph-box2 grid dgrid-row place-items-center"
+																				style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }}
+																				hidden={!errImageTitle}>
+																				{errImageTitle}
+																			</div>
 																		</div>
 																	);
 																})}
@@ -926,22 +1067,7 @@ const AddNewPartnerForm = (props) => {
 															</div>
 														)}
 
-														{imageInfos.length > 0 && (
-															<div>
-																<div>List of Images</div>
-																<ul>
-																	{imageInfos &&
-																		imageInfos.map((img, index) => (
-																			<li key={index}>
-																				<p>
-																					<a href={img.url}>{img.name}</a>
-																				</p>
-																				<img src={img.url} alt={img.name} />
-																			</li>
-																		))}
-																</ul>
-															</div>
-														)}
+
 													</div>
 
 
@@ -952,74 +1078,75 @@ const AddNewPartnerForm = (props) => {
 													{partner &&
 
 														<div class="form">
+															<div
+																className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
+																<div class="form__group">
+																	<label class="form__label">Contact information about
+																		partner*</label>
+																</div>
+																<div className="form__group">
+																	<label class="form__label">Responsible person
+																		name*</label>
+																	<input
 
-															<div class="form__group">
-																<label class="form__label">Contact information about
-																	partner*</label>
+																		className={"form__input"}
+																		placeholder="Responsible person name"
+																		aria-describedby="basic-addon1"
+																		id="name"
+																		type="text"
+
+
+																		onChange={(e) => setResponsiblePerson(e.target.value)}
+																		value={responsiblePerson}
+																	/>
+																</div>
+																<div className="form__group">
+																	<label class="form__label">Phone*</label>
+																	<input
+
+																		className={"form__input"}
+																		placeholder="Phone"
+																		aria-describedby="basic-addon1"
+																		id="name"
+																		type="text"
+
+																		onChange={(e) => setPhone(e.target.value)}
+																		value={phone}
+																	/>
+																</div>
+
+																<div className="form__group">
+																	<label class="form__label">Email*</label>
+																	<input
+
+																		className={"form__input"}
+																		placeholder="Email"
+																		aria-describedby="basic-addon1"
+																		id="name"
+																		type="email"
+
+
+																		onChange={(e) => setEmail(e.target.value)}
+																		value={email}
+																	/>
+																</div>
+
+																<div className="form__group">
+																	<label class="form__label">Web page*</label><input
+
+																		className={"form__input"}
+																		placeholder="Web page"
+																		aria-describedby="basic-addon1"
+																		id="name"
+																		type="text"
+
+
+																		onChange={(e) => setWebUrl(e.target.value)}
+																		value={webURL}
+																	/>
+																</div>
+
 															</div>
-															<div className="form__group">
-																<label class="form__label">Responsible person
-																	name*</label>
-																<input
-
-																	className={"form__input"}
-																	placeholder="Responsible person name"
-																	aria-describedby="basic-addon1"
-																	id="name"
-																	type="text"
-
-
-																	onChange={(e) => setResponsiblePerson(e.target.value)}
-																	value={responsiblePerson}
-																/>
-															</div>
-															<div className="form__group">
-																<label class="form__label">Phone*</label>
-																<input
-
-																	className={"form__input"}
-																	placeholder="Phone"
-																	aria-describedby="basic-addon1"
-																	id="name"
-																	type="text"
-
-																	onChange={(e) => setPhone(e.target.value)}
-																	value={phone}
-																/>
-															</div>
-
-															<div className="form__group">
-																<label class="form__label">Email*</label>
-																<input
-
-																	className={"form__input"}
-																	placeholder="Email"
-																	aria-describedby="basic-addon1"
-																	id="name"
-																	type="email"
-
-
-																	onChange={(e) => setEmail(e.target.value)}
-																	value={email}
-																/>
-															</div>
-
-															<div className="form__group">
-																<label class="form__label">Web page*</label><input
-
-																	className={"form__input"}
-																	placeholder="Web page"
-																	aria-describedby="basic-addon1"
-																	id="name"
-																	type="text"
-
-
-																	onChange={(e) => setWebUrl(e.target.value)}
-																	value={webURL}
-																/>
-															</div>
-
-
 														</div>}
 
 
@@ -1041,9 +1168,11 @@ const AddNewPartnerForm = (props) => {
 											}</div>
 
 									</form>
-									<div className="form__group" hidden={!errMessagePartner}>
-										{errMessagePartner}
-									</div>
+									<div className="paragraph-box2 grid dgrid-row place-items-center"
+                                            style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }}
+                                            hidden={!errMessagePartner}>
+                                            {errMessagePartner}
+                                        </div>
 								</div>
 
 								{

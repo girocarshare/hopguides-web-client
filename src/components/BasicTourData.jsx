@@ -6,52 +6,57 @@ var url = process.env.REACT_APP_URL || "http://localhost:8080/";
 var num = 1;
 const BasicTourData = (props) => {
 
-	const [currencyList, setCurrencyList] = useState(["£", "€", "$"]);
+    const [currencyList, setCurrencyList] = useState(["£", "€", "$"]);
 
-	const { homeDataState, dispatch } = useContext(HomeDataContext);
+    const { homeDataState, dispatch } = useContext(HomeDataContext);
     return (
 
         <div>
-            <div className="form__group">
 
-                <div className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
-                    <label class="form__label">Title*</label>
-                    <div class="flex flex-row gap-2">
-                        <input
+            <div className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">  <div className="form__group">
+                <label class="form__label">Title*</label>
+                <div class="flex flex-row items-center gap-2">
+                    <input
 
-                            className={"form__input"}
-                            placeholder='Title'
-                            aria-describedby="basic-addon1"
-                            id="name"
-                            type="text"
-
-                            onChange={(e) => props.setTitle(e.target.value)}
-                            value={ props.title}
-                        />
-                        <button
-
-                            onClick={(e) =>  props.fetchData(props.title, 1)}
-                            className="button button--primary"
-                            id="sendMessageButton"
-                            type="button"
-                        >
-                            Translate
-                        </button>
-                    </div>
-                    <textarea
-
-                        className={"form__input text-sm "}
-                        style={{ height: 80 }}
-                        placeholder='JSON FORMAT: { "language": "Text"}'
+                        className={"form__input"}
+                        placeholder='Title'
                         aria-describedby="basic-addon1"
                         id="name"
                         type="text"
-                        onChange={(e) => props.setTitleTransl(e.target.value)}
-                        value={props.titleTransl}
+
+                        onChange={(e) => props.setTitle(e.target.value)}
+                        value={props.title}
                     />
+                    <button
+
+                        onClick={(e) => props.fetchData(props.title, 1)}
+                        className="button button--primary"
+                        id="sendMessageButton"
+                        type="button"
+                    >
+                        Translate
+                    </button>
+                </div>
+            </div>
+                <textarea
+                    className={!props.errTitle ? "form__input text-sm" : "form__input text-sm !border !border-red-500"}
+                    style={{ height: 80 }}
+                    placeholder='JSON FORMAT: { "language": "Text"}'
+                    aria-describedby="basic-addon1"
+                    id="name"
+                    type="text"
+                    onChange={(e) => props.setTitleTransl(e.target.value)}
+                    value={props.titleTransl}
+                />
+
+                <div className="paragraph-box2 grid dgrid-row place-items-center"
+                    style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }}
+                    hidden={!props.errTitle}>
+                    {props.errTitle}
                 </div>
             </div>
 
+<br/>
             <div className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
                 <div className="form__group">
                     <label class="form__label">Name of the place*</label>
@@ -80,26 +85,39 @@ const BasicTourData = (props) => {
                 </div>
                 <div className="form__group">
                     <label class="form__label">Short description*</label>
-                    <textarea className="form__input text-sm h-32 "
+                    <textarea
+                        className={!props.errShortDescription ? "form__input text-sm h-32" : "form__input text-sm h-32 !border !border-red-500"}
                         type="textarea"
                         required name="message"
                         placeholder='JSON FORMAT: { "language": "Text"}'
                         value={props.shortInfo}
                         onChange={(e) => props.setShortInfo(e.target.value)}></textarea>
                 </div>
+                <div className="paragraph-box2 grid dgrid-row place-items-center"
+                    style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }}
+                    hidden={!props.errShortDescription}>
+                    {props.errShortDescription}
+                </div>
 
                 <div className="form__group">
                     <label class="form__label">Long description*</label>
-                    <textarea className="form__input text-sm h-32 "
+                    <textarea
+                        className={!props.errLongDescription ? "form__input text-sm h-32" : "form__input text-sm h-32 !border !border-red-500"}
+
                         type="textarea"
                         required name="message"
                         placeholder='JSON FORMAT: { "language": "Text"}'
                         value={props.longInfo}
                         onChange={(e) => props.setLongInfo(e.target.value)}></textarea>
                 </div>
+                <div className="paragraph-box2 grid dgrid-row place-items-center"
+                    style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }}
+                    hidden={!props.errLongDescription}>
+                    {props.errLongDescription}
+                </div>
 
             </div>
-
+            <br/>
             <div className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
                 <div className="form__group">
                     <label class="form__label">Agreement title*</label>
@@ -128,7 +146,8 @@ const BasicTourData = (props) => {
                 </div>
                 <textarea
 
-                    className={"form__input text-sm "}
+                    className={!props.errAgreementTitle ? "form__input text-sm" : "form__input text-sm !border !border-red-500"}
+
                     style={{ height: 80 }}
                     placeholder='JSON FORMAT: { "language": "Text"}'
                     aria-describedby="basic-addon1"
@@ -137,8 +156,13 @@ const BasicTourData = (props) => {
                     onChange={(e) => props.setAgreementTitleTransl(e.target.value)}
                     value={props.agreementTitleTransl}
                 />
+                <div className="paragraph-box2 grid dgrid-row place-items-center"
+                    style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }}
+                    hidden={!props.errAgreementTitle}>
+                    {props.errAgreementTitle}
+                </div>
             </div>
-
+            <br/>
             <div className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
                 <div className="form__group">
                     <label class="form__label">Agreement description*</label>
@@ -167,7 +191,8 @@ const BasicTourData = (props) => {
                 </div>
                 <textarea
 
-                    className={"form__input text-sm "}
+                    className={!props.errAgreementDescription ? "form__input text-sm" : "form__input text-sm !border !border-red-500"}
+
                     style={{ height: 80 }}
                     placeholder='JSON FORMAT: { "language": "Text"}'
                     aria-describedby="basic-addon1"
@@ -176,8 +201,13 @@ const BasicTourData = (props) => {
                     onChange={(e) => props.setAgreementDescTransl(e.target.value)}
                     value={props.agreementDescTransl}
                 />
+                <div className="paragraph-box2 grid dgrid-row place-items-center"
+                    style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }}
+                    hidden={!props.errAgreementDescription}>
+                    {props.errAgreementDescription}
+                </div>
             </div>
-
+            <br/>
             <div className="form__group">
                 <label class="form__label">Price*</label>
                 <div class="flex flex-row gap-2">
@@ -204,7 +234,7 @@ const BasicTourData = (props) => {
 
                 </div>
             </div>
-
+            <br/>
 
             <div className="form__group">
                 <label class="form__label">Business partner*</label>
@@ -221,7 +251,7 @@ const BasicTourData = (props) => {
 
                 </select>
             </div>
-
+            <br/>
             <div className="form__group">
                 <label class="form__label">Tour duration*</label>
                 <input
@@ -236,7 +266,7 @@ const BasicTourData = (props) => {
                     value={props.duration}
                 />
             </div>
-
+            <br/>
             <div className="form__group">
                 <label class="form__label">Tour lenght (km)*</label>
                 <input
@@ -251,7 +281,7 @@ const BasicTourData = (props) => {
                     value={props.length}
                 />
             </div>
-
+            <br/>
 
             <div className="form__group">
                 <label class="form__label">Highest point*</label>
@@ -267,7 +297,7 @@ const BasicTourData = (props) => {
                     value={props.highestPoint}
                 />
             </div>
-
+            <br/>
             <div>
 
                 <label class="form__label">Text to speach audio*</label>
@@ -285,8 +315,9 @@ const BasicTourData = (props) => {
                     <label >{props.audioName}</label>}
 
             </div>
+            <br/>
             <div>
-                <label class="form__label">Background tour image</label>
+                <label class="form__label">Background tour image*</label>
 
                 <label class="button button--secondary button--small">
                     <span>Upload image</span>
@@ -303,7 +334,7 @@ const BasicTourData = (props) => {
 
 
                 <img className="image__preview" src={props.imagePreview} alt={"image-"} />}
-
+<br/>
             <div className="form__group">
                 <div class="flex flex-row items-center gap-4 ">
                     <button

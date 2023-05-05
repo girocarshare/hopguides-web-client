@@ -13,7 +13,13 @@ const mapState = {
 };
 var url = process.env.REACT_APP_URL || "http://localhost:8080/";
 const TourData = () => {
+	const [errTitle, setErrTitle] = useState("");
+	const [errLongDescription, setErrLongDescription] = useState("");
+	const [errShortDescription, setErrShortDescription] = useState("");
+	const [errAgreementTitle, setErrAgreementTitle] = useState("");
+	const [errAgreementDescription, setErrAgreementDescription] = useState("");
 
+	const [audioName, setAudioName] = useState("");
 	const [title, setTitle] = useState("");
 	const [place, setPlace] = useState("");
 	const [titleTransl, setTitleTransl] = useState("");
@@ -130,22 +136,59 @@ const TourData = () => {
 
 
 	};
+	function isJsonString(str) {
+		try {
+			JSON.parse(str);
+		} catch (e) {
+			return false;
+		}
+		return true;
+	}
+
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		var tour = {}
+
+		setErrTitle("")
+		setErrLongDescription("")
+		setErrShortDescription("")
+		setErrAgreementDescription("")
+		setErrAgreementTitle("")
+
+
 		if (titleTransl != "") {
+			if (!isJsonString(titleTransl)) {
+				setErrTitle("Please insert the proper JSON format. Pay attention on enter and quotes(\")")
+				setErrMessage("JSON format invalid. Check the red fields.")
+			}
 			tour.title = JSON.parse(titleTransl)
 		}
 		if (agreementTitleTransl != "") {
+			if (!isJsonString(agreementTitleTransl)) {
+				setErrAgreementTitle("Please insert the proper JSON format. Pay attention on enter and quotes(\")")
+				setErrMessage("JSON format invalid. Check the red fields.")
+			}
 			tour.agreementTitle = JSON.parse(agreementTitleTransl)
 		}
 		if (agreementDescTransl != "") {
+			if (!isJsonString(agreementDescTransl)) {
+				setErrAgreementDescription("Please insert the proper JSON format. Pay attention on enter and quotes(\")")
+				setErrMessage("JSON format invalid. Check the red fields.")
+			}
 			tour.agreementDesc = JSON.parse(agreementDescTransl)
 		}
 		if (shortInfo != "") {
+			if (!isJsonString(shortInfo)) {
+				setErrShortDescription("Please insert the proper JSON format. Pay attention on enter and quotes(\")")
+				setErrMessage("JSON format invalid. Check the red fields.")
+			}
 			tour.shortInfo = JSON.parse(shortInfo)
 		}
 		if (longInfo != "") {
+			if (!isJsonString(longInfo)) {
+				setErrLongDescription("Please insert the proper JSON format. Pay attention on enter and quotes(\")")
+				setErrMessage("JSON format invalid. Check the red fields.")
+			}
 			tour.longInfo = JSON.parse(longInfo)
 		}
 		if (price != 0) {
@@ -218,6 +261,7 @@ const TourData = () => {
 			var new_file = new File([e.target.files[0]], 'audio1' + titlePoint + "---" + [e.target.files[0].name]);
 
 			setAudio(new_file);
+			setAudioName(e.target.files[0].name)
 
 		}
 	};
@@ -290,11 +334,167 @@ const TourData = () => {
 												Edit tour
 											</button>
 										</div>}
-										<div className="form__group">
-											<label class="form__label">Title</label>
-											<div class="flex flex-col gap-2">
+										<div
+											className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
+											<div className="form__group">
+												<label class="form__label">Title</label>
+												<div class="flex flex-col gap-2">
+													{edit &&
+														<div class="flex flex-row gap-2 items-center">
+															<input
+
+																className={"form__input"}
+																placeholder='Title'
+																aria-describedby="basic-addon1"
+																id="name"
+																type="text"
+
+																onChange={(e) => setTitle(e.target.value)}
+																value={title}
+															/>
+															<button
+
+																onClick={(e) => fetchData(title, 1)}
+																className="button button--primary"
+																id="sendMessageButton"
+																type="button"
+															>
+																Translate
+															</button>
+														</div>}
+
+
+													<textarea
+
+														className={!errTitle ? "form__input text-sm" : "form__input text-sm !border !border-red-500"}
+														style={{ height: 80 }}
+														readOnly={!edit}
+														placeholder='JSON FORMAT: { "language": "Text"}'
+														aria-describedby="basic-addon1"
+														id="name"
+														type="text"
+														onChange={(e) => setTitleTransl(e.target.value)}
+														value={titleTransl === "" ? JSON.stringify(homeDataState.updateTourData.tour.title) : titleTransl}
+
+													/>
+													<div className="paragraph-box2 grid dgrid-row place-items-center"
+														style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }}
+														hidden={!errTitle}>
+														{errTitle}
+													</div>
+												</div>
+											</div>
+										</div>
+										<div
+											className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
+											<div className="form__group">
+												<label class="form__label">Agreement title</label>
+												<div class="flex flex-col gap-2">
+													{edit &&
+														<div class="flex flex-row gap-2 items-center">
+															<input
+
+																className={"form__input"}
+																placeholder='Agreement title'
+																aria-describedby="basic-addon1"
+																id="name"
+																type="text"
+
+																onChange={(e) => setAgreementTitle(e.target.value)}
+																value={agreementTitle}
+															/>
+															<button
+
+																onClick={(e) => fetchData(agreementTitle, 2)}
+																className="button button--primary"
+																id="sendMessageButton"
+																type="button"
+															>
+																Translate
+															</button>
+
+														</div>}
+
+													<textarea
+
+														className={!errAgreementTitle ? "form__input text-sm" : "form__input text-sm !border !border-red-500"}
+														style={{ height: 80 }}
+														readOnly={!edit}
+														placeholder='JSON FORMAT: { "language": "Text"}'
+														aria-describedby="basic-addon1"
+														id="name"
+														type="text"
+														onChange={(e) => setAgreementTitleTransl(e.target.value)}
+														value={agreementTitleTransl === "" ? JSON.stringify(homeDataState.updateTourData.tour.agreementTitle) : agreementTitleTransl}
+
+													/>
+													<div className="paragraph-box2 grid dgrid-row place-items-center"
+														style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }}
+														hidden={!errAgreementTitle}>
+														{errAgreementTitle}
+													</div>
+												</div>
+											</div>
+										</div>
+										<div
+											className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
+											<div className="form__group">
+
+												<label class="form__label">Agreement description</label>
+												<div class="flex flex-col gap-2">
+													{edit &&
+														<div class="flex flex-row gap-2 items-center">
+															<input
+
+																className={"form__input"}
+																placeholder='Agreement description'
+																aria-describedby="basic-addon1"
+																id="name"
+																type="text"
+
+																onChange={(e) => setAgreementDesc(e.target.value)}
+																value={agreementDesc}
+															/>
+															<button
+
+																onClick={(e) => fetchData(agreementDesc, 3)}
+																className="button button--primary"
+																id="sendMessageButton"
+																type="button"
+															>
+																Translate
+															</button>
+														</div>}
+
+
+													<textarea
+
+														className={!errAgreementDescription ? "form__input text-sm" : "form__input text-sm !border !border-red-500"}
+														style={{ height: 80 }}
+														readOnly={!edit}
+														placeholder='JSON FORMAT: { "language": "Text"}'
+														aria-describedby="basic-addon1"
+														id="name"
+														type="text"
+														onChange={(e) => setAgreementDescTransl(e.target.value)}
+														value={agreementDescTransl === "" ? JSON.stringify(homeDataState.updateTourData.tour.agreementDesc) : agreementDescTransl}
+
+													/>
+													<div className="paragraph-box2 grid dgrid-row place-items-center"
+														style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }}
+														hidden={!errAgreementDescription}>
+														{errAgreementDescription}
+													</div>
+												</div>
+											</div>
+										</div>
+										<div
+											className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
+											<div className="form__group">
 												{edit &&
-													<div class="flex flex-row gap-2 items-center">
+													<div class="flex flex-col gap-2">
+														<label class="form__label">Name of the place*</label>
+
 														<input
 
 															className={"form__input"}
@@ -303,169 +503,63 @@ const TourData = () => {
 															id="name"
 															type="text"
 
-															onChange={(e) => setTitle(e.target.value)}
-															value={title}
+															onChange={(e) => setPlace(e.target.value)}
+															value={place}
 														/>
 														<button
 
-															onClick={(e) => fetchData(title, 1)}
+															onClick={(e) => makeShortAndLongDesc(place)}
 															className="button button--primary"
 															id="sendMessageButton"
 															type="button"
 														>
-															Translate
+															Generate short and long description
 														</button>
-													</div>}
-												<input
-													className={"form__input text-sm"}
-													readOnly={!edit}
-													aria-describedby="basic-addon1"
-													id="name"
-													type="text"
-													onChange={(e) => setTitleTransl(e.target.value)}
-													value={titleTransl === "" ? JSON.stringify(homeDataState.updateTourData.tour.title) : titleTransl}
-												/>
-											</div>
-										</div>
+													</div>
+												}
+												<div class="form__group mt-4">
+													<label class="form__label">Short description</label>
+													<textarea
+														className={!errShortDescription ? "form__input h-32" : "form__input h-32 !border !border-red-500"}
 
-										<div className="form__group">
-											<label class="form__label">Agreement title</label>
-											<div class="flex flex-col gap-2">
-												{edit &&
-													<div class="flex flex-row gap-2 items-center">
-														<input
-
-															className={"form__input"}
-															placeholder='Agreement title'
-															aria-describedby="basic-addon1"
-															id="name"
-															type="text"
-
-															onChange={(e) => setAgreementTitle(e.target.value)}
-															value={agreementTitle}
-														/>
-														<button
-
-															onClick={(e) => fetchData(agreementTitle, 2)}
-															className="button button--primary"
-															id="sendMessageButton"
-															type="button"
-														>
-															Translate
-														</button>
-
-													</div>}
-												<input
-													className={"form__input text-sm"}
-													readOnly={!edit}
-													aria-describedby="basic-addon1"
-													placeholder="Agreement title"
-													id="name"
-													type="text"
-													onChange={(e) => setAgreementTitleTransl(e.target.value)}
-													value={agreementTitleTransl === "" ? JSON.stringify(homeDataState.updateTourData.tour.agreementTitle) : agreementTitleTransl}
-												/>
-											</div>
-										</div>
-
-										<div className="form__group">
-
-											<label class="form__label">Agreement description</label>
-											<div class="flex flex-col gap-2">
-												{edit &&
-													<div class="flex flex-row gap-2 items-center">
-														<input
-
-															className={"form__input"}
-															placeholder='Agreement description'
-															aria-describedby="basic-addon1"
-															id="name"
-															type="text"
-
-															onChange={(e) => setAgreementDesc(e.target.value)}
-															value={agreementDesc}
-														/>
-														<button
-
-															onClick={(e) => fetchData(agreementDesc, 3)}
-															className="button button--primary"
-															id="sendMessageButton"
-															type="button"
-														>
-															Translate
-														</button>
-													</div>}
-
-												<input
-													className={"form__input text-sm"}
-													readOnly={!edit}
-													aria-describedby="basic-addon1"
-													placeholder="Agreement description"
-													id="name"
-													type="text"
-													onChange={(e) => setAgreementDescTransl(e.target.value)}
-													value={agreementDescTransl === "" ? JSON.stringify(homeDataState.updateTourData.tour.agreementDesc) : agreementDescTransl}
-												/>
-											</div>
-										</div>
-
-										<div className="form__group">
-											{edit &&
-												<div class="flex flex-col gap-2">
-													<label class="form__label">Name of the place*</label>
-
-													<input
-
-														className={"form__input"}
-														placeholder='Title'
+														readOnly={!edit}
+														placeholder="Short description"
 														aria-describedby="basic-addon1"
 														id="name"
-														type="text"
-
-														onChange={(e) => setPlace(e.target.value)}
-														value={place}
+														type="textarea"
+														onChange={(e) => setShortInfo(e.target.value)}
+														value={shortInfo === "" ? JSON.stringify(homeDataState.updateTourData.tour.shortInfo) : shortInfo}
 													/>
-													<button
-
-														onClick={(e) => makeShortAndLongDesc(place)}
-														className="button button--primary"
-														id="sendMessageButton"
-														type="button"
-													>
-														Generate short and long description
-													</button>
+													<div className="paragraph-box2 grid dgrid-row place-items-center"
+														style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }}
+														hidden={!errShortDescription}>
+														{errShortDescription}
+													</div>
 												</div>
-											}
-											<div class="form__group mt-4">
-												<label class="form__label">Short description</label>
+											</div>
+
+											<div className="form__group">
+												<label class="form__label">Long description</label>
+
 												<textarea
-													className={"form__input h-32"}
+													className={!errLongDescription ? "form__input h-32" : "form__input h-32 !border !border-red-500"}
+
 													readOnly={!edit}
-													placeholder="Short description"
+													placeholder="Long description"
 													aria-describedby="basic-addon1"
 													id="name"
 													type="textarea"
-													onChange={(e) => setShortInfo(e.target.value)}
-													value={shortInfo === "" ? JSON.stringify(homeDataState.updateTourData.tour.shortInfo) : shortInfo}
+													onChange={(e) => setLongInfo(e.target.value)}
+													value={longInfo === "" ? JSON.stringify(homeDataState.updateTourData.tour.longInfo) : longInfo}
 												/>
+												<div className="paragraph-box2 grid dgrid-row place-items-center"
+													style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }}
+													hidden={!errLongDescription}>
+													{errLongDescription}
+												</div>
 											</div>
+
 										</div>
-
-										<div className="form__group">
-											<label class="form__label">Long description</label>
-
-											<textarea
-												className={"form__input h-32"}
-												readOnly={!edit}
-												placeholder="Long description"
-												aria-describedby="basic-addon1"
-												id="name"
-												type="textarea"
-												onChange={(e) => setLongInfo(e.target.value)}
-												value={longInfo === "" ? JSON.stringify(homeDataState.updateTourData.tour.longInfo) : longInfo}
-											/>
-										</div>
-
 										<div className="form__group">
 											<label class="form__label">Price</label>
 											<div class="flex flex-row items-center gap-2">
@@ -546,6 +640,8 @@ const TourData = () => {
 												</label>
 											}
 
+											<br />
+
 
 											<div>
 												{fileData()}
@@ -566,13 +662,7 @@ const TourData = () => {
 
 											<label class="form__label">Text to speach audio</label>
 
-											<div>
-												{!audio && <ReactAudioPlayer
-													src={homeDataState.updateTourData.tour.audio}
 
-													controls
-												/>}
-											</div>
 
 											<div class="mt-2">
 												{edit &&
@@ -585,7 +675,21 @@ const TourData = () => {
 													</label>
 
 
+
 												}
+												{audioName &&
+
+
+													<label >{audioName}</label>}
+
+											</div>
+											<br />
+											<div>
+												{!audio && <ReactAudioPlayer
+													src={homeDataState.updateTourData.tour.audio}
+
+													controls
+												/>}
 											</div>
 										</div>
 
@@ -613,15 +717,18 @@ const TourData = () => {
 												aria-describedby="basic-addon1"
 												id="name"
 												type="textarea"
-												style= {{height: "500px"}}
+												style={{ height: "500px" }}
 												onChange={(e) => setTermsAndConditions(e.target.value)}
 												value={termsAndConditions === "" ? homeDataState.updateTourData.tour.termsAndConditions : termsAndConditions}
 											/>
 										</div>
 										}
-										<div className="form__group" hidden={!errMessage}>
-											{errMessage}
-										</div>
+								
+											<div className="paragraph-box2 grid dgrid-row place-items-center"
+                                            style={{ color: "red", fontSize: "0.8em", marginBottom: "30px" }}
+                                            hidden={!errMessage}>
+                                            {errMessage}
+                                        </div>
 
 										{edit && <div className="grid place-items-center form__group">
 											<button

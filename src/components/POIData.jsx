@@ -141,7 +141,7 @@ const POIData = () => {
 	};
 
 	const handleSubmit = (e) => {
-		/*e.preventDefault();
+		e.preventDefault();
 		var point = {}
 		if (nameTransl != "") {
 			point.name = JSON.parse(nameTransl)
@@ -222,8 +222,7 @@ const POIData = () => {
 			// do something to response
 		};
 		xhr.send(formData);
-*/
-		SuccessHandler()
+
 
 	};
 
@@ -344,9 +343,26 @@ const POIData = () => {
 										<AiOutlineClose/>
 									</button>
 								</div>
+							
 
+										
 								<div className="modal__body">
 									<form class="form" id="contactForm">
+									{!edit && <div className="grid place-items-end">
+											<button
+
+
+												onClick={(e) => {
+													setEdit(!edit)
+												}}
+												className="button button--primary"
+												id="sendMessageButton"
+												type="button"
+											>
+												Edit poi
+											</button>
+										</div>}
+									<div className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl"> 
 										<div className="form__group">
 											<label class="form__label">Name</label>
 											{edit &&
@@ -383,8 +399,9 @@ const POIData = () => {
 												value={nameTransl === "" ? JSON.stringify(homeDataState.updatePointData.point.name) : nameTransl}
 											/>
 										</div>
+</div>
 
-
+<div className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl"> 
 										<div className="form__group">
 											<label class="form__label">Short description</label>
 											{edit &&
@@ -417,7 +434,8 @@ const POIData = () => {
 												value={shortInfoPointTransl === "" ? JSON.stringify(homeDataState.updatePointData.point.shortInfo) : shortInfoPointTransl}
 											/>
 										</div>
-
+</div>
+<div className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl"> 
 										<div className="form__group">
 											<label class="form__label">Long description</label>
 											{edit &&
@@ -448,9 +466,10 @@ const POIData = () => {
 												value={longInfoPointTransl === "" ? JSON.stringify(homeDataState.updatePointData.point.longInfo) : longInfoPointTransl}
 											/>
 										</div>
-
+</div>
 										{homeDataState.updatePointData.point.partner &&
 											<div class="form">
+
 												<div className="form__group">
 													<label class="form__label">Price</label>
 													<div class="button-login">
@@ -478,7 +497,7 @@ const POIData = () => {
 														</select>}
 													</div>
 												</div>
-
+<div className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl"> 
 												<div className="form__group">
 													<label class="form__label">Voucher description*</label>
 													{edit &&
@@ -511,7 +530,7 @@ const POIData = () => {
 														value={voucherDescTransl}
 													/>
 												</div>
-
+</div>
 
 												<div className="form__group">
 													<label class="form__label">Offer name</label>
@@ -528,7 +547,8 @@ const POIData = () => {
 													/>
 												</div>
 
-
+												<div
+																className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
 												<div className="form__group">
 													<label class="form__label">Contact: responsible person</label>
 													{homeDataState.updatePointData.point.contact.name != "" &&
@@ -584,8 +604,10 @@ const POIData = () => {
 														value={weburl === "" ? homeDataState.updatePointData.point.contact.weburl : weburl}
 													/>
 												</div>
+											</div>
 											</div>}
-
+											<div
+																className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
 										<div className="form__group">
 											<label class="form__label">Location</label>
 											<input
@@ -608,6 +630,7 @@ const POIData = () => {
 												onChange={(e) => setLatitude(e.target.value)}
 												value={latitude === "" ? homeDataState.updatePointData.point.location.latitude : latitude}
 											/>
+										</div>
 										</div>
 										<div className="form__group">
 											<label class="form__label">Category</label>
@@ -929,24 +952,7 @@ const POIData = () => {
 												/>
 											}
 
-											{progressInfos &&
-												progressInfos.val.length > 0 &&
-												progressInfos.val.map((progressInfo, index) => (
-													<div key={index}>
-														<span>{progressInfo.fileName}</span>
-														<div>
-															<div
-																role="progressbar"
-																aria-valuenow={progressInfo.percentage}
-																aria-valuemin="0"
-																aria-valuemax="100"
-																style={{width: progressInfo.percentage + "%"}}
-															>
-																{progressInfo.percentage}%
-															</div>
-														</div>
-													</div>
-												))}
+											
 
 											{imagePreviews.length != 0 && (
 												<div>
@@ -976,7 +982,7 @@ const POIData = () => {
 													{homeDataState.updatePointData.point.images.map((img, i) => {
 														return (
 															<div>
-																<img className="image__preview" src={img}
+																<img className="image__preview" src={img.image}
 																	 alt={"image-" + img} key={i}/>
 															</div>
 														);
@@ -1005,19 +1011,7 @@ const POIData = () => {
 											{errMessage}
 										</div>
 
-										{!edit &&
-											<div className="form__group">
-												<button
-													onClick={(e) => {
-														setEdit(!edit)
-													}}
-													className="button button--primary"
-													id="sendMessageButton"
-													type="button"
-												>
-													Edit
-												</button>
-											</div>}
+										
 										{edit &&
 											<div className="form__group">
 												<button
