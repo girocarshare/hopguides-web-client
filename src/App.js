@@ -26,6 +26,7 @@ function App() {
   return (
     <Router>
       <Switch>
+        <Route path="/unauthorized" component={UnauthorizedPage} />
         <Route path="/register" component={RegisterPage} />
         <Route path="/confirmation/:bookingId/:pointId" component={ConfirmationPage} />
         <Route path="/qrcodes/:tourId" component={QRCodesPage} />
@@ -40,7 +41,6 @@ function App() {
         <Route path="/login" component={LoginPage} />
         <Route path="/businesspartners" component={BusinessPartnersPage} />
         <Route path="/" component={HomePage} />
-        <Route path="/unauthorized" component={UnauthorizedPage} />
         <Redirect to="/404" />
       </Switch>
     </Router>

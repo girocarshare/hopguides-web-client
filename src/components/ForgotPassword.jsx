@@ -76,12 +76,12 @@ const ForgotPassword = () => {
 										Error
 									</div>
 
-									<div className="form__group">
+									<div className="button-p grid dgrid-row place-items-center">
 										<input className="button button--primary min-w-[8rem]" id="kayitol" type="submit"
 											   value="Send"/>
 									</div>
 
-
+								
 								</form>
 							</div>
 						</div>

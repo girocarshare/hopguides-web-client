@@ -6,7 +6,7 @@ const UnauthorizedPage = () => {
 		<React.Fragment>
 			<section className="login-clean">
 			<div class="image-div" style={{marginTop: "70px"}}>
-							<img src={process.env.PUBLIC_URL + 'assets/img/logo.png'}  alt="SteriPro" style={{ maxWidth: "100px", width: "100%" }}></img>
+							{/*<img src={process.env.PUBLIC_URL + 'assets/img/logo.png'}  alt="SteriPro" style={{ maxWidth: "100px", width: "100%" }}></img>*/}
 						</div>
 
 				<div className="text-center" style={{ fontSize: "6em", color: "#3861b3" }}>
