@@ -593,7 +593,6 @@ export const homeDataReducer = (state, action) => {
 
 			prodCpy = { ...state };
 
-			console.log(action.point.point)
 			prodCpy.updatePointData.show = true;
 			prodCpy.updatePointData.point = action.point.point;
 
@@ -683,6 +682,32 @@ export const homeDataReducer = (state, action) => {
 				qrCode: null
 
 			};
+
+			case homeDataConstants.CHANGE_LOCK_CODE_SUCCESS:
+
+				return {
+					...state,
+	
+					showEditLockCodeModal:false,
+					modalData: {
+						success: true,
+						failure: false,
+						text: "You have successfully changed lock code",
+					},
+	
+				};
+		
+			case homeDataConstants.CHANGE_LOCK_CODE_FAILURE:
+				return {
+					...state,
+	
+					modalData: {
+						success: false,
+						failure: true,
+						text: "Error while changing lock code. Please try again later.",
+					},
+	
+				};
 
 		default:
 			return state;

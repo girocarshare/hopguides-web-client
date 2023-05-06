@@ -74,11 +74,12 @@ const ChangeLockCodeModal = () => {
 											/>
 										</div>
 
-										<div class="form__group" hidden={!errMessage}>
+										<div className="paragraph-box2 grid dgrid-row place-items-center"
+											style={{ color: "red", fontSize: "0.8em", marginBottom: "30px" }}
+											hidden={!errMessage}>
 											{errMessage}
 										</div>
-
-										<div class="form__group">
+										<div className="button-p grid dgrid-row place-items-center">
 											<button class="button button--primary"
 
 													onClick={(e) => {
@@ -92,7 +93,7 @@ const ChangeLockCodeModal = () => {
 											</button>
 										</div>
 
-
+									
 									</form>
 
 

@@ -1,19 +1,19 @@
-import {useContext, React, useEffect, useState, forwardRef} from "react";
-import {useParams} from 'react-router-dom';
-import {ReportContext} from "../contexts/ReportContext";
-import {reportService} from "../services/ReportService";
-import {reportConstants} from "../constants/ReportConstants";
-import {deleteLocalStorage, authHeader} from "../helpers/auth-header";
+import { useContext, React, useEffect, useState, forwardRef } from "react";
+import { useParams } from 'react-router-dom';
+import { ReportContext } from "../contexts/ReportContext";
+import { reportService } from "../services/ReportService";
+import { reportConstants } from "../constants/ReportConstants";
+import { deleteLocalStorage, authHeader } from "../helpers/auth-header";
 import Axios from "axios";
 
 var url = process.env.REACT_APP_URL || "http://localhost:8080/";
 
 const Report = forwardRef((props, ref) => {
-	const {reportState, dispatch} = useContext(ReportContext);
+	const { reportState, dispatch } = useContext(ReportContext);
 
 	const [role, setRole] = useState(false);
 	const [admin, setAdmin] = useState(false);
-	let {id} = useParams()
+	let { id } = useParams()
 	const someFetchActionCreator = () => {
 		const getReportInfoHandler = async () => {
 			await reportService.getReport(dispatch, id);
@@ -26,39 +26,39 @@ const Report = forwardRef((props, ref) => {
 
 	useEffect(() => {
 		window.scrollTo(0, 0);
-		/*var token = authHeader()
-        if (token == "null") {
-            // window.location = "#/unauthorized";
-        } else {
+		var token = authHeader()
+		if (token == "null") {
+			window.location = "#/unauthorized";
+		} else {
 
-            Axios.get(`${url}api/users/getRole`, { headers: { Authorization: token } }, { validateStatus: () => true },
-            )
-                .then((res) => {
-                    if (res.status === 200) {
-                        if ("BPARTNER" == res.data) {
+			Axios.get(`${url}api/users/getRole`, { headers: { Authorization: token } }, { validateStatus: () => true },
+			)
+				.then((res) => {
+					if (res.status === 200) {
+						if ("BPARTNER" == res.data) {
 
-                            setRole(true)
-                        }
+							setRole(true)
+						}
 
-                        if ("ADMIN" == res.data || "PROVIDER" == res.data) {
+						if ("ADMIN" == res.data || "PROVIDER" == res.data) {
 
-                            setRole(true)
-                            setAdmin(true)
-                        }
-                    }
-                })
-                .catch((err) => {
+							setRole(true)
+							setAdmin(true)
+						}
+					}
+				})
+				.catch((err) => {
 
-                })
-        }
+				})
+		}
 
-*/
+
 		someFetchActionCreator()
 	}, [dispatch]);
 
 
 	const handleShowModal = () => {
-		dispatch({type: reportConstants.SHOW_ADD_MENU_MODAL});
+		dispatch({ type: reportConstants.SHOW_ADD_MENU_MODAL });
 	};
 
 	const handleLogin = () => {
@@ -72,21 +72,21 @@ const Report = forwardRef((props, ref) => {
 	};
 
 
-	function BoldText({children}) {
+	function BoldText({ children }) {
 		return (
-			<span style={{fontWeight: 'bold'}}>{children}</span>
+			<span style={{ fontWeight: 'bold' }}>{children}</span>
 		);
 	}
 
-	function ColorText({children}) {
+	function ColorText({ children }) {
 		return (
-			<span style={{color: 'green'}}>{children}</span>
+			<span style={{ color: 'green' }}>{children}</span>
 		);
 	}
 
-	function ColorTextRed({children}) {
+	function ColorTextRed({ children }) {
 		return (
-			<span style={{color: 'red'}}>{children}</span>
+			<span style={{ color: 'red' }}>{children}</span>
 		);
 	}
 
@@ -102,7 +102,7 @@ const Report = forwardRef((props, ref) => {
 				<div class="flex flex-col items-center justify-center gap-8 col-span-12 lg:col-span-6">
 					<div
 						class="w-48 h-48 rounded-full bg-white border border-black/10 oveflow-hidden bg-contain bg-center bg-no-repeat"
-						style={{backgroundImage: `url(${("assets/img/turizem-lj.jpg")})`,}}>
+						style={{ backgroundImage: `url(${("assets/img/turizem-lj.jpg")})`, }}>
 					</div>
 					<h1 class=" text-heading4 text-center">
 						{reportState.report.bpartnerName}
@@ -124,7 +124,7 @@ const Report = forwardRef((props, ref) => {
 							</div>
 							<div class="flex flex-col gap-1 lg:gap-2 text-xs lg:text-sm">
 								<a class="link"
-								   href="mailto:'{reportState.report.bpartnerEmail}'">{reportState.report.bpartnerEmail}</a>
+									href="mailto:'{reportState.report.bpartnerEmail}'">{reportState.report.bpartnerEmail}</a>
 								<div>{reportState.report.bpratnerPhone}</div>
 								<div>{reportState.report.bpratnerPhone2}</div>
 							</div>
@@ -144,7 +144,7 @@ const Report = forwardRef((props, ref) => {
 									{reportState.report.name}
 								</div>
 								<a class="button button--secondary button--small"
-								   href={"http://localhost:3000/#/previousReports/" + id}>All reports</a>
+									href={"http://localhost:3000/#/previousReports/" + id}>All reports</a>
 							</div>
 							<div class="text-base">
 								This is <b>{reportState.report.bpartnerName}</b> tourist package with digital
@@ -203,12 +203,12 @@ const Report = forwardRef((props, ref) => {
 						<div class="bg-green-200 bg-opacity-40 rounded-lg p-4 flex flex-col gap-4 items-center">
 							<div class="text-sm">
 								If the QR code is <ColorText>VALID</ColorText> please serve the customer<BoldText> »home
-								made« Sirove Štruklje </BoldText>as included in the tour.
+									made« Sirove Štruklje </BoldText>as included in the tour.
 							</div>
 							<div class="bg-white rounded-lg overflow-hidden shadow shadow-green-500/20">
 								{
 
-									<img class="w-full h-auto max-w-[20rem]" alt="" src="/assets/img/voucher_valid.png"/>
+									<img class="w-full h-auto max-w-[20rem]" alt="" src="/assets/img/voucher_valid.png" />
 
 								}
 							</div>
@@ -222,7 +222,7 @@ const Report = forwardRef((props, ref) => {
 							<div class="bg-white rounded-lg overflow-hidden shadow shadow-red-500/10">
 								{
 
-									<img class="w-full h-auto max-w-[20rem]" alt="" src="/assets/img/voucher_invalid.png"/>
+									<img class="w-full h-auto max-w-[20rem]" alt="" src="/assets/img/voucher_invalid.png" />
 
 								}
 							</div>
@@ -258,6 +258,7 @@ const Report = forwardRef((props, ref) => {
 						</div>
 					</div>
 
+					<br />
 
 					<div>
 						{

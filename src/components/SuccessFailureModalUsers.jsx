@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect, useRef } from "react";
 import { userConstants } from "../constants/UserConstants";
 import { UserContext } from "../contexts/UserContext";
 
+import { AiOutlineClose } from 'react-icons/ai';
 
 const SuccessFailureModalUsers = () => {
 
@@ -13,31 +14,44 @@ const SuccessFailureModalUsers = () => {
 		dispatch({ type: userConstants.USER_SUCCESS_FAILURE_HIDE });
 	};
 
-
 	return (
 
+		<div class="relative z-50" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+			{userState.modalData.show &&
+				<div>
+					<div class="modal-overlay"></div>
 
-		<div>
-			{ userState.modalData.show && <div class="overlay" >
-				<div id="myModal" class="modal" style={{ background: "white", height: "300px", width: "900px" }}>
+					<div class="fixed inset-0 z-10 overflow-y-auto">
 
-					<h2>
-					{userState.modalData.title}</h2>
-					{userState.modalData.text}
+						<div class="modal-frame">
 
-					<div class="button-login">
+							<div id="myModal" class="modal modal--md">
 
-						<button
-							type="button"
-							style={{ background: "#0099ff", marginTop: "px", marginRight: "55px", padding: "5px 15px", height: "35px" }}
-							onClick={handleClose}
-							class="btn btn-primary btn-lg"
-						>
-							OK
-						</button>
+								<div class="modal__header">
+									<h2 class="text-leading">
+										{userState.modalData.title}
+									</h2>
+									<button class="button button--circle button--clear justify-self-end" type="button"
+										onClick={handleClose}>
+										<AiOutlineClose />
+									</button>
+								</div>
+
+								<div class="modal__body">
+									<div class="overlay" >
+										<div id="myModal" class="modal" style={{ background: "white", height: "300px", width: "900px" }}>
+
+
+											{userState.modalData.text}
+
+
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
-				</div>
-			</div>}
+				</div>}
 		</div>
 	);
 };
