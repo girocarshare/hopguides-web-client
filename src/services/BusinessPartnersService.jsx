@@ -62,15 +62,14 @@ async function deleteBPartner(dispatch, bpartnerId ) {
 		});
 
 	function request() {
-		//return { type: businessPartnersConstants.GET_BPARTNERS_REQUEST };
+		return { type: businessPartnersConstants.BUSINESS_PARTNER_DELETE_REQUEST };
 	}
 	function success(data) {
-		window.location.reload()
-		//return { type: businessPartnersConstants.GET_BPARTNERS_SUCCESS, data: data };
+		return { type: businessPartnersConstants.BUSINESS_PARTNER_DELETE_SUCCESS, data: data };
 	}
 	function failure(message) {
 
-		//return { type: businessPartnersConstants.GET_BPARTNERS_FAILURE, errorMessage: message };
+		return { type: businessPartnersConstants.BUSINESS_PARTNER_DELETE_FAILURE, errorMessage: message };
 	}
 
 

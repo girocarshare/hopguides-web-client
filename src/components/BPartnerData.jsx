@@ -2,12 +2,14 @@ import React, { useContext, useEffect, useState, forwardRef, useRef } from "reac
 import { businessPartnersService } from "../services/BusinessPartnersService";
 import { BusinessPartnersContext } from "../contexts/BusinessPartnersContext";
 import { businessPartnersConstants } from "../constants/BusinessPartnersConstants";
+import Axios from "axios";
 import { AiOutlineClose } from 'react-icons/ai';
 
 var url = process.env.REACT_APP_URL || "http://localhost:8080/";
 const BPartnerData = () => {
 	const [email, setEmail] = useState("");
 	const [name, setName] = useState("");
+	const [supportTransl, setSuppoprtTransl] = useState("");
 	const [support, setSuppoprt] = useState("");
 	const [phone, setPhone] = useState("");
 	const [phone2, setPhone2] = useState("");
@@ -67,73 +69,109 @@ const BPartnerData = () => {
 
 	};
 
+
+	const fetchData = async (input, num) => {
+		const response = await Axios.post(
+			"https://api.openai.com/v1/completions",
+			{
+				prompt: `translate "${input}" to english, spanish, serbian and slovenian and make it as one json with lower case letters as keys`,
+				model: 'text-davinci-002',
+				max_tokens: 500,
+				n: 1,
+				stop: ".",
+			},
+			{
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer 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`,
+				},
+			}
+		);
+
+		if (num == 1) {
+
+			setSuppoprtTransl(response.data.choices[0].text)
+		}
+
+		return response.data.choices[0].text;
+	};
 	const handleSubmit = (e) => {
 
 		e.preventDefault();
 
-		/*	var bpartner = {}
-	
-			if (name != "") {
-				bpartner.name = name
-			}
-			if (phone != "") {
-				bpartner.contact.phone = phone
-			}
-			if (phone2 != "") {
-				bpartner.contact.phone2 = phone2
-			}
-		
-			if (email != "") {
-				bpartner.contact.email = email
-			}
-			
-			if (address != "") {
-				bpartner.contact.location.street = address
-			}
-	
-			if (webURL != "") {
-				bpartner.contact.webURL = webURL
-			}
-			if (lockCode != "") {
-				bpartner.lockCode = lockCode
-			}
-			if (support != "") {
-				bpartner.support = JSON.parse(support)
-			}
-	
-			if (height != "") {
-				bpartner.dimensions.height = height
-			}
-			if (width != "") {
-				bpartner.dimensions.height = width
-			}
-	
-			bpartner.id = businessPartnersState.updateBPartner.bpartner.id
-		
-	
-			const formData = new FormData();
-	
-			if (file != null) {
-	
-				formData.append('file', file);
-			}
-			formData.append('bpartner', JSON.stringify(bpartner));
-	
-			var xhr = new XMLHttpRequest();
-			xhr.addEventListener("load", SuccessHandler, false);
-			xhr.addEventListener("error", ErrorHandler, false);
-			xhr.addEventListener("abort", AbortHandler, false);
-			xhr.open('POST', `${url}api/bp/update`, true);
-			xhr.onload = function () {
-				// do something to response
-			};
-	
-			xhr.send(formData);*/
+		var bpartner = {}
 
-		SuccessHandler()
+		if (name != "") {
+			bpartner.name = name
+		}
+		if (phone != "") {
+			bpartner.contact.phone = phone
+		}
+		if (phone2 != "") {
+			bpartner.contact.phone2 = phone2
+		}
+
+		if (email != "") {
+			bpartner.contact.email = email
+		}
+
+		if (address != "") {
+			bpartner.contact.location.street = address
+		}
+
+		if (webURL != "") {
+			bpartner.contact.webURL = webURL
+		}
+		if (lockCode != "") {
+			bpartner.lockCode = lockCode
+		}
+		if (supportTransl != "") {
+			if (!isJsonString(supportTransl)) {
+				setErrMessage("Please insert the proper JSON format of support field. Pay attention on enter and quotes(\")")
+			}
+
+			bpartner.support = JSON.parse(support)
+		}
+
+		if (height != "") {
+			bpartner.dimensions.height = height
+		}
+		if (width != "") {
+			bpartner.dimensions.height = width
+		}
+
+		bpartner.id = businessPartnersState.updateBPartner.bpartner.id
+
+
+		const formData = new FormData();
+
+		if (file != null) {
+
+			formData.append('file', file);
+		}
+		formData.append('bpartner', JSON.stringify(bpartner));
+
+		var xhr = new XMLHttpRequest();
+		xhr.addEventListener("load", SuccessHandler, false);
+		xhr.addEventListener("error", ErrorHandler, false);
+		xhr.addEventListener("abort", AbortHandler, false);
+		xhr.open('POST', `${url}api/bp/update`, true);
+		xhr.onload = function () {
+			// do something to response
+		};
+
+		xhr.send(formData);
+
 
 	};
-
+	function isJsonString(str) {
+		try {
+			JSON.parse(str);
+		} catch (e) {
+			return false;
+		}
+		return true;
+	}
 	const handleModalClose = () => {
 		dispatch({ type: businessPartnersConstants.UPDATE_BPARTNER_DATA_MODAL_HIDE });
 		//window.location.reload()
@@ -170,6 +208,20 @@ const BPartnerData = () => {
 
 									<form class="form" id="contactForm">
 
+										{!edit && <div className="grid place-items-end">
+											<button
+
+
+												onClick={(e) => {
+													setEdit(!edit)
+												}}
+												className="button button--primary"
+												id="sendMessageButton"
+												type="button"
+											>
+												Edit business partner
+											</button>
+										</div>}
 										<div class="form">
 
 											<div className="form__group">
@@ -199,7 +251,7 @@ const BPartnerData = () => {
 												<div class="flex flex-col gap-2">
 													<div class="flex flex-row items-center gap-2">
 
-														<textarea
+														<input
 															className={"form__input"}
 															readOnly={!edit}
 															placeholder="Primary phone"
@@ -218,7 +270,7 @@ const BPartnerData = () => {
 												<label class="form__label"><b>Secondary phone</b></label>
 												<div class="flex flex-col gap-2">
 													<div class="flex flex-row items-center gap-2">
-														<textarea
+														<input
 															className={"form__input"}
 															readOnly={!edit}
 															placeholder="Secondary phone"
@@ -238,7 +290,7 @@ const BPartnerData = () => {
 												<label class="form__label"><b>Email</b></label>
 												<div class="flex flex-col gap-2">
 													<div class="flex flex-row items-center gap-2">
-														<textarea
+														<input
 															className={"form__input"}
 															readOnly={!edit}
 															placeholder="Email"
@@ -340,7 +392,7 @@ const BPartnerData = () => {
 												</div>
 											</div>
 
-											<div className="form__group">
+											{!edit && <div className="form__group">
 												<label class="form__label"><b>Support text</b></label>
 												<div class="flex flex-col gap-2">
 													<div class="flex flex-row items-center gap-2">
@@ -360,29 +412,74 @@ const BPartnerData = () => {
 													</div>
 												</div>
 											</div>
+}
+											{edit && <div className="form__group">
+
+
+												<div class="bg-black/[3%] rounded-xl p-4 flex flex-col gap-2"><label class="form__label"><b>Support text</b></label>
+													<div class="flex flex-row items-center gap-2">
+														<input
+
+															className={"form__input"}
+															placeholder="Support"
+															aria-describedby="basic-addon1"
+															id="name"
+															type="text"
+
+															onChange={(e) => setSuppoprt(e.target.value)}
+															value={support}
+														/>
+														<button
+
+															onClick={(e) => fetchData(support, 1)}
+															className="button button--primary button--small"
+															id="sendMessageButton"
+															type="button"
+														>
+															Translate
+														</button>
+													</div>
+
+
+													<input
+														class="form__input mt-2 text-sm"
+														readOnly={!edit}
+														placeholder='JSON FORMAT: { "language": "Text"}'
+														aria-describedby="basic-addon1"
+														id="name"
+														type="text"
+														style={{ backgroundColor: edit === true ? '#DCDCDC' : 'white', outline: 'none' }}
+														onChange={(e) => setSuppoprtTransl(e.target.value)}
+														value={supportTransl === "" ? JSON.stringify(businessPartnersState.updateBPartner.bpartner.support) : supportTransl}
+													/>
+												</div>
+
+
+											</div>}
+
 
 											<div className="form__group">
 
-															<label class="form__label"><b>Logo image</b></label>
-															<br />   <br />
-															{edit && 
-															<label
-															class="button button--secondary button--small">
-															<span>Upload image</span>
-															<input type={"file"} name={"file"}
-																   onChange={onFileChange}
-																   class="sr-only"/>
-														</label>
-														}
+												<label class="form__label"><b>Logo image</b></label>
+												<br />   <br />
+												{edit &&
+													<label
+														class="button button--secondary button--small">
+														<span>Upload image</span>
+														<input type={"file"} name={"file"}
+															onChange={onFileChange}
+															class="sr-only" />
+													</label>
+												}
 
 
-														{fileData()}
-														<div class="mt-2">
-															{imagePreview && <img className="image__preview" src={imagePreview} alt={"image-"} />}
-															{!imagePreview && <img className="image__preview" src={businessPartnersState.updateBPartner.bpartner.logo} alt={"image-"} />}
-														</div>
+												{fileData()}
+												<div class="mt-2">
+													{imagePreview && <img className="image__preview" src={imagePreview} alt={"image-"} />}
+													{!imagePreview && <img className="image__preview" src={businessPartnersState.updateBPartner.bpartner.logo} alt={"image-"} />}
+												</div>
 
-														<br />
+												<br />
 											</div>
 
 											<div className="form__group">
@@ -429,35 +526,21 @@ const BPartnerData = () => {
 											<div className="form-group text-center" style={{ color: "red", fontSize: "0.8em", marginTop: "30px", marginRight: "40px" }} hidden={!errMessage}>
 												{errMessage}
 											</div>
-											{!edit && <div className="form__group">
-											<button
 
+											{edit && <div className="grid place-items-center form__group">
+												<button
 
-												onClick={(e) => {
-													setEdit(!edit)
-												}}
-												className="button button--primary"
-												id="sendMessageButton"
-												type="button"
-											>
-												Edit
-											</button>
-										</div>}
-										{edit && <div className="form__group">
-											<button
+													onClick={(e) => {
+														handleSubmit(e)
+													}}
+													className="button button--primary"
+													id="sendMessageButton"
+													type="button"
+												>
+													Update business partner
+												</button>
+											</div>}
 
-
-												onClick={(e) => {
-													handleSubmit(e)
-												}}
-												className="button button--primary"
-												id="sendMessageButton"
-												type="button"
-											>
-												Update business partner
-											</button>
-										</div>}
-										
 
 											<br />
 

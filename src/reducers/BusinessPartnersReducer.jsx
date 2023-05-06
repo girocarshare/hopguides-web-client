@@ -83,6 +83,27 @@ export const businessPartnersReducer = (state, action) => {
 			prodCpy.modalData.text = "You are unable to update business partner. Please try again later";
 			return prodCpy;
 
+			case businessPartnersConstants.BUSINESS_PARTNER_DELETE_SUCCESS:
+
+			prodCpy = { ...state };
+
+			prodCpy.updateBPartner.show = false;
+			prodCpy.modalData.show = true;
+			prodCpy.modalData.title = "Success";
+			prodCpy.modalData.text = "You have successfully deleted business partner.";
+			return prodCpy;
+
+
+		case businessPartnersConstants.BUSINESS_PARTNER_DELETE_FAILURE:
+
+
+			prodCpy = { ...state };
+			prodCpy.updateBPartner.show = false;
+			prodCpy.modalData.show = true;
+			prodCpy.modalData.title = "Failure";
+			prodCpy.modalData.text = "You are unable to delete business partner. Please try again later";
+			return prodCpy;
+
 			case businessPartnersConstants.BUSINESS_PARTNER_SUCCESS_FAILURE_HIDE:
 
 
