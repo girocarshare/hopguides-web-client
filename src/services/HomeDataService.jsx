@@ -244,8 +244,7 @@ dispatch(request());
 		.then((res) => {
 			if (res.status === 200) {
 				dispatch(success());
-				window.location.reload()
-			} else if (res.status === 215) {
+			} else if (res.status === 412) {
 				dispatch(failure(res.data.response));
 			}else{
 				
@@ -258,14 +257,14 @@ dispatch(request());
 
 	function request() {
 		
-		return { type: homeDataConstants.TOUR_SUBMIT_REQUEST };
+		return { type: homeDataConstants.CHANGE_LOCK_CODE_REQUEST };
 	}
 	function success() {
-		return { type: homeDataConstants.TOUR_SUBMIT_SUCCESS };
+		return { type: homeDataConstants.CHANGE_LOCK_CODE_SUCCESS };
 	}
 	function failure(error) {
 		
-		return { type: homeDataConstants.TOUR_SUBMIT_FAILURE, error };
+		return { type: homeDataConstants.CHANGE_LOCK_CODE_FAILURE, error };
 	}
 }
 

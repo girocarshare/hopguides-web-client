@@ -34,10 +34,17 @@ const PreviousReport = forwardRef((props, ref) => {
 	const handleClose = () => {
 		window.location = "#/"
 	};
+
+	const handleModalClose = () => {
+		window.location = "#/report/" + id
+		//dispatch({type: homeDataConstants.HIDE_MODAL});
+	};
+
+
 	useEffect(() => {
 
 
-		/* var token = authHeader()
+		 var token = authHeader()
          if (token == "null") {
            window.location = "#/unauthorized";
          } else {
@@ -62,13 +69,31 @@ const PreviousReport = forwardRef((props, ref) => {
 
              })
 
-           }*/
+           }
 		someFetchActionCreator();
 	}, [dispatch]);
 
 	return (
 
 		<div class="relative z-50" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+
+			<div class="modal-overlay"></div>
+
+			<div class="fixed inset-0 z-10 overflow-y-auto">
+
+				<div class="modal-frame">
+
+					<div id="myModal" class="modal modal--5xl">
+						<div class="modal__header">
+							<h2 class="text-leading">
+								Previous monthly reports
+							</h2>
+							<button class="button button--circle button--clear justify-self-end" type="button"
+									onClick={handleModalClose}>
+								<AiOutlineClose/>
+							</button>
+						</div>
+						<div class="modal__body">
 
 
 			{reportState.previousReports.reports.length > 0 &&
@@ -143,7 +168,13 @@ const PreviousReport = forwardRef((props, ref) => {
 
 				</div>
 			}
-		</div>
+	</div>
+
+</div>
+</div>
+</div>
+
+</div>
 	);
 });
 

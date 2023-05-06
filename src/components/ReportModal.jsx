@@ -1,29 +1,31 @@
-import React, {useContext, useState, useEffect, useRef} from "react";
-import {reportConstants} from "../constants/ReportConstants";
-import {ReportContext} from "../contexts/ReportContext";
-import {reportService} from "../services/ReportService";
-import {AiOutlineClose} from 'react-icons/ai';
-import {useParams} from 'react-router-dom';
+import React, { useContext, useState, useEffect, useRef } from "react";
+import { reportConstants } from "../constants/ReportConstants";
+import { ReportContext } from "../contexts/ReportContext";
+import { reportService } from "../services/ReportService";
+import { AiOutlineClose } from 'react-icons/ai';
+import { useParams } from 'react-router-dom';
 
 var url = process.env.REACT_APP_URL || "http://localhost:8080/";
 
 const ReportModal = () => {
 
-	let {id} = useParams()
-	const {reportState, dispatch} = useContext(ReportContext);
+	let { id } = useParams()
+	const { reportState, dispatch } = useContext(ReportContext);
 	const [file, setFile] = useState(null);
 	const [errMessage, setErrMessage] = useState("");
 	const uploadRef = React.useRef();
 	const statusRef = React.useRef();
 	const progressRef = React.useRef();
+	const [imagePreview, setImagePreview] = useState(null);
 
 	const handleModalClose = () => {
-		dispatch({type: reportConstants.HIDE_ADD_MENU_MODAL});
+		dispatch({ type: reportConstants.HIDE_ADD_MENU_MODAL });
 		window.location.reload()
 	};
 
 	const onFileChange = (event) => {
 		setFile(event.target.files[0]);
+		setImagePreview(URL.createObjectURL(event.target.files[0]));
 	}
 
 
@@ -32,7 +34,7 @@ const ReportModal = () => {
 
 			return (
 				<div>
-					<h2 style={{marginTop: "20px"}}>File details</h2>
+					<h2 style={{ marginTop: "20px" }}>File details</h2>
 					<p>File name: {file.name}</p>
 					<p>File type: {file.type}</p>
 					<p>
@@ -46,7 +48,7 @@ const ReportModal = () => {
 
 
 	const handleSubmit = (e) => {
-		/*e.preventDefault();
+		e.preventDefault();
 
 
 		if (file == null || reportState.report.pointId) {
@@ -75,8 +77,7 @@ const ReportModal = () => {
 
 			xhr.send(formData);
 
-		}*/
-		SuccessHandler()
+		}
 	};
 	const ProgressHandler = (e) => {
 		var percent = (e.loaded / e.total) * 100;
@@ -124,8 +125,8 @@ const ReportModal = () => {
 										Update menu
 									</h2>
 									<button class="button button--circle button--clear justify-self-end" type="button"
-											onClick={handleModalClose}>
-										<AiOutlineClose/>
+										onClick={handleModalClose}>
+										<AiOutlineClose />
 									</button>
 								</div>
 
@@ -136,14 +137,20 @@ const ReportModal = () => {
 										<div class="form">
 											<div class="form__group">
 												<label for="file-upload"
-													   class="button button--secondary button--small">
+													class="button button--secondary button--small">
 													<span>Upload a file</span>
 													<input id="file-upload" name="file" type="file" class="sr-only"
-														   onChange={onFileChange}/>
+														onChange={onFileChange} />
 												</label>
 											</div>
 											<div class="form__group">
 												{fileData()}
+											</div>
+
+											<div>
+												{imagePreview &&
+													<img className="preview" src={imagePreview}
+														alt={"image-"} />}
 											</div>
 											<div class="form__group">
 												<div hidden={!errMessage}>
@@ -154,7 +161,7 @@ const ReportModal = () => {
 											<div class="form__group">
 												<label class="text-sm">
 													File progress: <progress class="ml-2" ref={progressRef} value="0"
-																			 max="100"/>
+														max="100" />
 												</label>
 												<p class="text-sm" ref={statusRef}></p>
 											</div>

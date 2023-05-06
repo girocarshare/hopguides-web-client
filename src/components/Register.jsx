@@ -32,6 +32,8 @@ const Register = () => {
 	const progressRef = React.useRef();
 	const [file, setFile] = useState(null);
 	const [success, setSuccess] = useState(false);
+	const [imagePreview, setImagePreview] = useState(null);
+
 
 
 	const fetchData = async (input, num) => {
@@ -60,8 +62,18 @@ const Register = () => {
 		return response.data.choices[0].text;
 	};
 
+	function isJsonString(str) {
+		try {
+			JSON.parse(str);
+		} catch (e) {
+			return false;
+		}
+		return true;
+	}
+
 	const onFileChange = (event) => {
 		setFile(event.target.files[0]);
+		setImagePreview(URL.createObjectURL(event.target.files[0]));
 	}
 
 	const fileData = () => {
@@ -81,12 +93,6 @@ const Register = () => {
 		}
 	};
 
-	const ProgressHandler = (e) => {
-		var percent = (e.loaded / e.total) * 100;
-		progressRef.current.value = Math.round(percent);
-		statusRef.current.innerHTML = Math.round(percent) + "% uploaded...";
-
-	};
 
 	const SuccessHandler = (e) => {
 
@@ -106,11 +112,13 @@ const Register = () => {
 
 
 		e.preventDefault();
-
-		/*
+	if(!isJsonString(supportTransl)){
+				setErrMessage("Please insert the proper JSON format of support field. Pay attention on enter and quotes(\")")
+			}
+		
                 var sendEmailRequest = {
                     name: name,
-                    support: JSON.parse(support),
+                    support: JSON.parse(supportTransl),
                     dimensions: {
                         height: height,
                         width: width
@@ -137,7 +145,6 @@ const Register = () => {
                     formData.append('request', JSON.stringify(sendEmailRequest));
 
                     var xhr = new XMLHttpRequest();
-                    xhr.upload.addEventListener("progress", ProgressHandler, false);
                     xhr.addEventListener("load", SuccessHandler, false);
                     xhr.addEventListener("error", ErrorHandler, false);
                     xhr.addEventListener("abort", AbortHandler, false);
@@ -148,9 +155,7 @@ const Register = () => {
                     xhr.send(formData);
 
 
-                }*/
-
-		SuccessHandler()
+                }
 	};
 
 	const handleClose = () => {
@@ -260,6 +265,7 @@ const Register = () => {
 											<input class="form__input mt-2 text-sm"
 												   aria-describedby="basic-addon1"
 												   id="name"
+												   required
 												   placeholder='JSON FORMAT: { "language": "Text"}'
 												   type="text"
 												   onChange={(e) => setSuppoprtTransl(e.target.value)}
@@ -273,27 +279,29 @@ const Register = () => {
 										<div class="bg-black/[3%] rounded-xl p-4 flex flex-col gap-2">
 											<label class="form__label">Logo</label>
 											<div class="flex items-center gap-x-3">
-												<svg class="h-12 w-12 text-gray-300" viewBox="0 0 24 24"
-													 fill="currentColor" aria-hidden="true">
-													<path fill-rule="evenodd"
-														  d="M18.685 19.097A9.723 9.723 0 0021.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 003.065 7.097A9.716 9.716 0 0012 21.75a9.716 9.716 0 006.685-2.653zm-12.54-1.285A7.486 7.486 0 0112 15a7.486 7.486 0 015.855 2.812A8.224 8.224 0 0112 20.25a8.224 8.224 0 01-5.855-2.438zM15.75 9a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"
-														  clip-rule="evenodd"/>
-												</svg>
+											
 												<label for="file-upload"
 													   class="button button--secondary button--small">
 													<span>Choose a file</span>
 													<input id="file-upload" name="file" type="file" class="sr-only"
 														   onChange={onFileChange}/>
 												</label>
-											</div>
 
+
+												
+											</div>
+											<div>
+												{imagePreview &&
+													<img className="preview" src={imagePreview}
+														alt={"image-"} />}
+											</div>
 
 											{fileData()}
 											<div class="flex flex-row items-center gap-4">
-												<input className="form__input" type="text" required
+												<input className="form__input" type="number" required
 													   name="name" placeholder="Logo height" value={height}
 													   onChange={(e) => setHeight(e.target.value)}></input>
-												<input className="form__input" type="text" required
+												<input className="form__input" type="number" required
 													   name="name" placeholder="Logo width" value={width}
 													   onChange={(e) => setWidth(e.target.value)}></input>
 											</div>
@@ -312,11 +320,25 @@ const Register = () => {
 									>
 										Error
 									</div>
+
+											
+
+											<div className="paragraph-box2 grid dgrid-row place-items-center"
+                                            style={{ color: "red", fontSize: "0.8em", marginBottom: "30px" }}
+                                            hidden={!errMessage}>
+                                            {errMessage}
+                                        </div>
+
+
+									<div className="button-p grid dgrid-row place-items-center">
 									<div className="form__group">
 										<input className="button button--primary min-w-[8rem]" id="kayitol"
 											   type="submit"
 											   value="Send"/>
 									</div>
+									</div>
+
+								
 
 
 								</form>

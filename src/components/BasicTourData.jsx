@@ -17,7 +17,6 @@ const BasicTourData = (props) => {
                 <label class="form__label">Title*</label>
                 <div class="flex flex-row items-center gap-2">
                     <input
-
                         className={"form__input"}
                         placeholder='Title'
                         aria-describedby="basic-addon1"

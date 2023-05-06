@@ -1,9 +1,9 @@
-import React, {useContext, useEffect, useState, forwardRef, useRef} from "react";
-import {homeDataService} from "../services/HomeDataService";
-import {HomeDataContext} from "../contexts/HomeDataContext";
-import {homeDataConstants} from "../constants/HomeDataConstants";
+import React, { useContext, useEffect, useState, forwardRef, useRef } from "react";
+import { homeDataService } from "../services/HomeDataService";
+import { HomeDataContext } from "../contexts/HomeDataContext";
+import { homeDataConstants } from "../constants/HomeDataConstants";
 import TimePicker from 'react-time-picker';
-import {AiOutlineClose} from 'react-icons/ai';
+import { AiOutlineClose } from 'react-icons/ai';
 import ReactAudioPlayer from 'react-audio-player';
 import Axios from "axios";
 
@@ -16,7 +16,13 @@ var url = process.env.REACT_APP_URL || "http://localhost:8080/";
 const POIData = () => {
 
 	const addressInput = React.createRef(null);
+	const [errImageTitle, setErrImageTitle] = useState("");
+	const [errTitlePoint, setErrTitlePoint] = useState("");
+	const [errShortDescriptionPoint, setErrShortDescriptionPoint] = useState("");
+	const [errLongDescriptionPoint, setErrLongDescriptionPoint] = useState("");
+	const [errVoucherDescriptionPoint, setErrVoucherDescriptionPoint] = useState("");
 
+	const [audioNamePoint, setAudioNamePoint] = useState("");
 	const [name, setName] = useState("");
 	const [nameTransl, setNameTransl] = useState("");
 	const [shortInfoPointTransl, setShortInfoPointTransl] = useState("");
@@ -24,6 +30,7 @@ const POIData = () => {
 	const [voucherDescTransl, setVoucherDescTransl] = useState("");
 	const [voucherDesc, setVoucherDesc] = useState("");
 
+	const [errMessagePartner, setErrMessagePartner] = useState("");
 
 	const [shortInfo, setShortInfo] = useState("");
 	const [longInfo, setLongInfo] = useState("");
@@ -31,7 +38,7 @@ const POIData = () => {
 	const [selectedFiles, setSelectedFiles] = useState([]);
 	const [files, setFiles] = useState([]);
 	const [imagePreviews, setImagePreviews] = useState([]);
-	const [progressInfos, setProgressInfos] = useState({val: []});
+	const [progressInfos, setProgressInfos] = useState({ val: [] });
 
 	const [edit, setEdit] = useState(false);
 	const [titlePoint, setTitlePoint] = useState("");
@@ -83,7 +90,7 @@ const POIData = () => {
 	const [sundayclosed, setSundayClosed] = useState(false);
 
 
-	const {homeDataState, dispatch} = useContext(HomeDataContext);
+	const { homeDataState, dispatch } = useContext(HomeDataContext);
 
 
 	const fetchData = async (input, num) => {
@@ -136,24 +143,57 @@ const POIData = () => {
 
 		setSelectedFiles(selectedFiles.concat(fs))
 		setImagePreviews(images);
-		setProgressInfos({val: []});
+		setProgressInfos({ val: [] });
 
 	};
+	function isJsonString(str) {
+		try {
+			JSON.parse(str);
+		} catch (e) {
+			return false;
+		}
+		return true;
+	}
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
+
+
+		setErrImageTitle("")
+		setErrLongDescriptionPoint("")
+		setErrShortDescriptionPoint("")
+		setErrVoucherDescriptionPoint("")
+		setErrTitlePoint("")
+
+
 		var point = {}
 		if (nameTransl != "") {
+			if (!isJsonString(nameTransl)) {
+				setErrImageTitle("Please insert the proper JSON format. Pay attention on enter and quotes(\")")
+				setErrMessagePartner("JSON format invalid. Check the red fields.")
+			}
 			point.name = JSON.parse(nameTransl)
 		}
 		if (shortInfoPointTransl != "") {
+			if (!isJsonString(shortInfoPointTransl)) {
+				setErrShortDescriptionPoint("Please insert the proper JSON format. Pay attention on enter and quotes(\")")
+				setErrMessagePartner("JSON format invalid. Check the red fields.")
+			}
 			point.shortInfo = JSON.parse(shortInfoPointTransl)
 		}
 		if (longInfoPointTransl != "") {
+			if (!isJsonString(longInfoPointTransl)) {
+				setErrLongDescriptionPoint("Please insert the proper JSON format. Pay attention on enter and quotes(\")")
+				setErrMessagePartner("JSON format invalid. Check the red fields.")
+			}
 			point.longInfo = JSON.parse(longInfoPointTransl)
 		}
 		if (voucherDescTransl != "") {
-			point.voucherDesc = voucherDescTransl
+			if (!isJsonString(voucherDescTransl)) {
+				setErrVoucherDescriptionPoint("Please insert the proper JSON format. Pay attention on enter and quotes(\")")
+				setErrMessagePartner("JSON format invalid. Check the red fields.")
+			}
+			point.voucherDesc = JSON.parse(voucherDescTransl)
 		}
 		if (price != 0) {
 			point.price = price
@@ -183,18 +223,22 @@ const POIData = () => {
 		}
 		if (category != "") {
 			point.category = category
-		}if (imageTitles != "") {
+		} if (imageTitles != "") {
 			var jsonTitles = []
-    for(var ti of imageTitles){
-      var help = ti.split("---")
-      var titlee = JSON.parse(help[0])
-      var titleObj = {
-        number : help[1],
-        name: titlee
-        
-      }
-      jsonTitles.push(titleObj)
-    }
+			for (var ti of imageTitles) {
+				var help = ti.split("---")
+				if (!isJsonString(help[0])) {
+					setErrImageTitle("Please insert the proper JSON format. Pay attention on enter and quotes(\")")
+					setErrMessagePartner("JSON format invalid. Check the red fields.")
+				}
+				var titlee = JSON.parse(help[0])
+				var titleObj = {
+					number: help[1],
+					name: titlee
+
+				}
+				jsonTitles.push(titleObj)
+			}
 			point.imageTitles = jsonTitles
 		}
 		point.id = homeDataState.updatePointData.point.id
@@ -242,7 +286,7 @@ const POIData = () => {
 		homeDataService.insertData(false, dispatch);
 	};
 	const handleModalClose = () => {
-		dispatch({type: homeDataConstants.UPDATE_POINT_DATA_MODAL_CLOSE});
+		dispatch({ type: homeDataConstants.UPDATE_POINT_DATA_MODAL_CLOSE });
 	};
 
 	const addFile = (e) => {
@@ -250,6 +294,8 @@ const POIData = () => {
 
 			var new_file = new File([e.target.files[0]], 'audio2' + titlePoint + "---" + [e.target.files[0].name]);
 			setAudio(new_file);
+
+			setAudioNamePoint(e.target.files[0].name)
 
 		}
 	};
@@ -304,7 +350,7 @@ const POIData = () => {
 
 			return (
 				<div>
-					<h2 style={{marginTop: "20px"}}>File details</h2>
+					<h2 style={{ marginTop: "20px" }}>File details</h2>
 					<p>File name: {file.name}</p>
 					<p>File type: {file.type}</p>
 					<p>
@@ -339,16 +385,14 @@ const POIData = () => {
 										Update POI
 									</h2>
 									<button class="button button--circle button--clear justify-self-end" type="button"
-											onClick={handleModalClose}>
-										<AiOutlineClose/>
+										onClick={handleModalClose}>
+										<AiOutlineClose />
 									</button>
 								</div>
-							
 
-										
 								<div className="modal__body">
 									<form class="form" id="contactForm">
-									{!edit && <div className="grid place-items-end">
+										{!edit && <div className="grid place-items-end">
 											<button
 
 
@@ -362,155 +406,31 @@ const POIData = () => {
 												Edit poi
 											</button>
 										</div>}
-									<div className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl"> 
-										<div className="form__group">
-											<label class="form__label">Name</label>
-											{edit &&
-												<div>
-													<input
-
-														className={"form__input"}
-														placeholder="Name"
-														aria-describedby="basic-addon1"
-														id="name"
-														type="text"
-
-														onChange={(e) => setName(e.target.value)}
-														value={name}
-													/>
-
-													<button
-
-														onClick={(e) => fetchData(name, 1)}
-														className="button button--primary"
-														id="sendMessageButton"
-														type="button"
-													>
-														Translate
-													</button>
-												</div>}
-											<input
-												className={"form__input"}
-												readOnly={!edit}
-												aria-describedby="basic-addon1"
-												id="name"
-												type="text"
-												onChange={(e) => setNameTransl(e.target.value)}
-												value={nameTransl === "" ? JSON.stringify(homeDataState.updatePointData.point.name) : nameTransl}
-											/>
-										</div>
-</div>
-
-<div className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl"> 
-										<div className="form__group">
-											<label class="form__label">Short description</label>
-											{edit &&
-												<div>
-																<textarea className="form__input"
-																		  type="textarea" required name="message"
-																		  placeholder='Short description'
-																		  value={shortInfo}
-																		  onChange={(e) => setShortInfo(e.target.value)}></textarea>
-
-													<button
-
-														onClick={(e) => fetchData(shortInfo, 2)}
-														className="button button--primary"
-														id="sendMessageButton"
-														type="button"
-													>
-														Translate short description
-													</button>
-
-												</div>}
-											<textarea
-												readOnly={!edit}
-												className="form__input"
-												placeholder="Short description"
-												aria-describedby="basic-addon1"
-												id="name"
-												type="textarea"
-												onChange={(e) => setShortInfoPointTransl(e.target.value)}
-												value={shortInfoPointTransl === "" ? JSON.stringify(homeDataState.updatePointData.point.shortInfo) : shortInfoPointTransl}
-											/>
-										</div>
-</div>
-<div className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl"> 
-										<div className="form__group">
-											<label class="form__label">Long description</label>
-											{edit &&
-												<div>
-													<textarea className="form__input" type="textarea" required
-															  name="message"
-															  placeholder='Long description'
-															  value={longInfo}
-															  onChange={(e) => setLongInfo(e.target.value)}></textarea>
-													<button
-
-														onClick={(e) => fetchData(longInfo, 3)}
-														className="button button--primary"
-														id="sendMessageButton"
-														type="button"
-													>
-														Translate
-													</button>
-												</div>}
-											<textarea
-												readOnly={!edit}
-												className="form__input"
-												placeholder="Long description"
-												aria-describedby="basic-addon1"
-												id="name"
-												type="textarea"
-												onChange={(e) => setLongInfoPointTransl(e.target.value)}
-												value={longInfoPointTransl === "" ? JSON.stringify(homeDataState.updatePointData.point.longInfo) : longInfoPointTransl}
-											/>
-										</div>
-</div>
-										{homeDataState.updatePointData.point.partner &&
-											<div class="form">
-
-												<div className="form__group">
-													<label class="form__label">Price</label>
-													<div class="button-login">
-
-
-														<input
-															readOnly={!edit}
-															placeholder="Price"
-															aria-describedby="basic-addon1"
-															className="form__input"
-															id="name"
-															type="text"
-															onChange={(e) => setPrice(e.target.value)}
-															value={price === 0 ? `${homeDataState.updatePointData.point.price} ${homeDataState.updatePointData.point.currency} incl tax` : price}
-														/>
-														{edit && <select
-															onChange={(e) => setCurrency(e.target.value)}
-															name="currency" class="form__input"
-														>
-															{currencyList.map(item =>
-																<option key={item}
-																		value={item}>{item}</option>
-															)};
-
-														</select>}
-													</div>
-												</div>
-<div className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl"> 
-												<div className="form__group">
-													<label class="form__label">Voucher description*</label>
+										<div className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
+											<div className="form__group">
+												<label class="form__label">Name</label>
+												<div class="flex flex-col gap-2">
 													{edit &&
-														<div>
-															<textarea className="form__input"
-																	  type="textarea" required
-																	  name="message"
-																	  placeholder='Voucher description'
-																	  value={voucherDesc}
-																	  onChange={(e) => setVoucherDesc(e.target.value)}></textarea>
+
+														<div class="flex flex-row gap-2 items-center">
+															<input
+
+																className={"form__input"}
+																placeholder="Name"
+																aria-describedby="basic-addon1"
+																id="name"
+																type="text"
+
+																onChange={(e) => setName(e.target.value)}
+																value={name}
+															/>
+
+
+
 															<button
 
-																onClick={(e) => fetchData(voucherDesc, 4)}
+
+																onClick={(e) => fetchData(name, 1)}
 																className="button button--primary"
 																id="sendMessageButton"
 																type="button"
@@ -519,18 +439,165 @@ const POIData = () => {
 															</button>
 														</div>}
 													<input
-
 														className={"form__input"}
-														placeholder='Voucher description translated'
+														readOnly={!edit}
 														aria-describedby="basic-addon1"
 														id="name"
 														type="text"
-
-														onChange={(e) => setVoucherDescTransl(e.target.value)}
-														value={voucherDescTransl}
+														onChange={(e) => setNameTransl(e.target.value)}
+														value={nameTransl === "" ? JSON.stringify(homeDataState.updatePointData.point.name) : nameTransl}
 													/>
 												</div>
-</div>
+											</div>
+										</div>
+
+										<div className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
+											<div className="form__group">
+												<label class="form__label">Short description</label>
+
+												{edit &&
+													<div class="flex flex-col items-start gap-2">
+														<textarea
+															className={"form__input text-sm h-32"}
+															type="textarea" required name="message"
+															placeholder='Short description'
+															value={shortInfo}
+															onChange={(e) => setShortInfo(e.target.value)}></textarea>
+
+														<button
+
+															onClick={(e) => fetchData(shortInfo, 2)}
+															className="button button--primary"
+															id="sendMessageButton"
+															type="button"
+														>
+															Translate
+														</button>
+
+													</div>}
+												<textarea
+													readOnly={!edit}
+													className={!errShortDescriptionPoint ? "form__input text-sm h-32" : "form__input text-sm h-32 !border !border-red-500"}
+													placeholder="Short description"
+													aria-describedby="basic-addon1"
+													id="name"
+													type="textarea"
+													onChange={(e) => setShortInfoPointTransl(e.target.value)}
+													value={shortInfoPointTransl === "" ? JSON.stringify(homeDataState.updatePointData.point.shortInfo) : shortInfoPointTransl}
+												/>
+												<div className="paragraph-box2 grid dgrid-row place-items-center"
+													style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }}
+													hidden={!errShortDescriptionPoint}>
+													{errShortDescriptionPoint}
+												</div>
+											</div>
+										</div>
+										<div className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
+											<div className="form__group">
+												<label class="form__label">Long description</label>
+												{edit &&
+													<div>
+														<textarea className="form__input h-32" type="textarea" required
+															name="message"
+															placeholder='Long description'
+															value={longInfo}
+															onChange={(e) => setLongInfo(e.target.value)}></textarea>
+														<button
+
+															onClick={(e) => fetchData(longInfo, 3)}
+															className="button button--primary"
+															id="sendMessageButton"
+															type="button"
+														>
+															Translate
+														</button>
+													</div>}
+												<textarea
+													readOnly={!edit}
+													className={!errLongDescriptionPoint ? "form__input text-sm h-32" : "form__input text-sm h-32 !border !border-red-500"}
+													placeholder="Long description"
+													aria-describedby="basic-addon1"
+													id="name"
+													type="textarea"
+													onChange={(e) => setLongInfoPointTransl(e.target.value)}
+													value={longInfoPointTransl === "" ? JSON.stringify(homeDataState.updatePointData.point.longInfo) : longInfoPointTransl}
+												/>
+												<div className="paragraph-box2 grid dgrid-row place-items-center"
+													style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }}
+													hidden={!errLongDescriptionPoint}>
+													{errLongDescriptionPoint}
+												</div>
+											</div>
+										</div>
+										{homeDataState.updatePointData.point.offerName &&
+											<div class="form">
+
+												<div className="form__group">
+													<label class="form__label">Price</label>
+													<div class="flex flex-row gap-2">
+
+
+														<input
+															readOnly={!edit}
+															placeholder="Price"
+															aria-describedby="basic-addon1"
+															className={"form__input grow "}
+															id="name"
+															type="number"
+															onChange={(e) => setPrice(e.target.value)}
+															value={price === 0 ? `${homeDataState.updatePointData.point.price} ${homeDataState.updatePointData.point.currency} incl tax` : price}
+														/>
+
+														{edit && <select onChange={(e) => setCurrency(e.target.value)}
+															name="currency"
+															class="form__input shrink max-w-4 "
+														>
+															{currencyList.map(item =>
+																<option key={item} value={item}>{item}</option>
+															)};
+
+														</select>}
+													</div>
+												</div>
+												<div className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
+													<div className="form__group">
+														<label class="form__label">Voucher description*</label>
+														{edit &&
+															<div class="flex flex-col items-start gap-2">
+																<textarea className={"form__input text-sm h-32"}
+																	type="textarea" required
+																	name="message"
+																	placeholder='Voucher description'
+																	value={voucherDesc}
+																	onChange={(e) => setVoucherDesc(e.target.value)}></textarea>
+																<button
+
+																	onClick={(e) => fetchData(voucherDesc, 4)}
+																	className="button button--primary"
+																	id="sendMessageButton"
+																	type="button"
+																>
+																	Translate
+																</button>
+															</div>}
+														<textarea
+
+															className={!errVoucherDescriptionPoint ? "form__input text-sm h-32" : "form__input text-sm h-32 !border !border-red-500"}
+															placeholder='Voucher description translated'
+															aria-describedby="basic-addon1"
+															id="name"
+															type="text"
+
+															onChange={(e) => setVoucherDescTransl(e.target.value)}
+															value={voucherDescTransl}
+														/>
+														<div className="paragraph-box2 grid dgrid-row place-items-center"
+															style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }}
+															hidden={!errVoucherDescriptionPoint}>
+															{errVoucherDescriptionPoint}
+														</div>
+													</div>
+												</div>
 
 												<div className="form__group">
 													<label class="form__label">Offer name</label>
@@ -548,78 +615,80 @@ const POIData = () => {
 												</div>
 
 												<div
-																className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
-												<div className="form__group">
-													<label class="form__label">Contact: responsible person</label>
-													{homeDataState.updatePointData.point.contact.name != "" &&
+													className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
+													<div className="form__group">
+														<label class="form__label">Contact: responsible person</label>
+														{homeDataState.updatePointData.point.contact.name != "" &&
+															<input
+																className={"form__input"}
+																readOnly={!edit}
+																placeholder="Contact: responsible person"
+																aria-describedby="basic-addon1"
+																id="name"
+																type="text"
+																onChange={(e) => setResponsiblePerson(e.target.value)}
+																value={responsiblePerson === "" ? homeDataState.updatePointData.point.contact.name : responsiblePerson}
+															/>}
+													</div>
+
+													<div className="form__group">
+														<label class="form__label">Contact: phone</label>
 														<input
 															className={"form__input"}
 															readOnly={!edit}
-															placeholder="Contact: responsible person"
+															placeholder="Contact: phone"
 															aria-describedby="basic-addon1"
 															id="name"
 															type="text"
-															onChange={(e) => setResponsiblePerson(e.target.value)}
-															value={responsiblePerson === "" ? homeDataState.updatePointData.point.contact.name : responsiblePerson}
-														/>}
-												</div>
+															onChange={(e) => setPhone(e.target.value)}
+															value={phone === "" ? homeDataState.updatePointData.point.contact.phone : phone}
+														/>
+													</div>
 
-												<div className="form__group">
-													<label class="form__label">Contact: phone</label>
-													<input
-														className={"form__input"}
-														readOnly={!edit}
-														placeholder="Contact: phone"
-														aria-describedby="basic-addon1"
-														id="name"
-														type="text"
-														onChange={(e) => setPhone(e.target.value)}
-														value={phone === "" ? homeDataState.updatePointData.point.contact.phone : phone}
-													/>
+													<div className="form__group">
+														<label class="form__label">Contact: email</label>
+														<input
+															className={"form__input"}
+															readOnly={!edit}
+															placeholder="Contact: email"
+															aria-describedby="basic-addon1"
+															id="name"
+															type="text"
+															onChange={(e) => setEmail(e.target.value)}
+															value={email === "" ? homeDataState.updatePointData.point.contact.email : email}
+														/>
+													</div>
+													<div className="form__group">
+														<label class="form__label">Contact: website</label>
+														<input
+															className={"form__input"}
+															readOnly={!edit}
+															placeholder="Contact: website"
+															aria-describedby="basic-addon1"
+															id="name"
+															type="text"
+															onChange={(e) => setWebURL(e.target.value)}
+															value={weburl === "" ? homeDataState.updatePointData.point.contact.weburl : weburl}
+														/>
+													</div>
 												</div>
-
-												<div className="form__group">
-													<label class="form__label">Contact: email</label>
-													<input
-														className={"form__input"}
-														readOnly={!edit}
-														placeholder="Contact: email"
-														aria-describedby="basic-addon1"
-														id="name"
-														type="text"
-														onChange={(e) => setEmail(e.target.value)}
-														value={email === "" ? homeDataState.updatePointData.point.contact.email : email}
-													/>
-												</div>
-												<div className="form__group">
-													<label class="form__label">Contact: website</label>
-													<input
-														className={"form__input"}
-														readOnly={!edit}
-														placeholder="Contact: website"
-														aria-describedby="basic-addon1"
-														id="name"
-														type="text"
-														onChange={(e) => setWebURL(e.target.value)}
-														value={weburl === "" ? homeDataState.updatePointData.point.contact.weburl : weburl}
-													/>
-												</div>
-											</div>
 											</div>}
-											<div
-																className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
-										<div className="form__group">
+										<div
+											className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
+
 											<label class="form__label">Location</label>
-											<input
-												className={"form__input"}
-												readOnly={!edit}
-												placeholder="Longitude"
-												aria-describedby="basic-addon1"
-												id="name"
-												type="text"
-												onChange={(e) => setLongitude(e.target.value)}
-												value={longitude === "" ? homeDataState.updatePointData.point.location.longitude : longitude}
-											/>
+											<div className="form__group">
+												<input
+													className={"form__input"}
+													readOnly={!edit}
+													placeholder="Longitude"
+													aria-describedby="basic-addon1"
+													id="name"
+													type="text"
+													onChange={(e) => setLongitude(e.target.value)}
+													value={longitude === "" ? homeDataState.updatePointData.point.location.longitude : longitude}
+												/>
+											</div>
 											<input
 												className={"form__input"}
 												readOnly={!edit}
@@ -630,7 +699,7 @@ const POIData = () => {
 												onChange={(e) => setLatitude(e.target.value)}
 												value={latitude === "" ? homeDataState.updatePointData.point.location.latitude : latitude}
 											/>
-										</div>
+
 										</div>
 										<div className="form__group">
 											<label class="form__label">Category</label>
@@ -652,7 +721,7 @@ const POIData = () => {
 												>
 													{categories.map(item =>
 														<option key={item}
-																value={item}>{item}</option>
+															value={item}>{item}</option>
 													)};
 												</select>}
 										</div>
@@ -741,15 +810,15 @@ const POIData = () => {
 																<div>
 																	<span>
 																		<TimePicker disableClock={true}
-																					onChange={(newValue) => {
-																						setMondayFrom(newValue);
-																					}} value={mondayFrom}/>
+																			onChange={(newValue) => {
+																				setMondayFrom(newValue);
+																			}} value={mondayFrom} />
 																	</span>
 																	<span>
 																		<TimePicker disableClock={true}
-																					onChange={(newValue) => {
-																						setMondayTo(newValue);
-																					}} value={mondayTo}/>
+																			onChange={(newValue) => {
+																				setMondayTo(newValue);
+																			}} value={mondayTo} />
 																	</span>
 																</div>
 															}
@@ -769,15 +838,15 @@ const POIData = () => {
 																<div>
 																	<span>
 																		<TimePicker disableClock={true}
-																					onChange={(newValue) => {
-																						setTuesdayFrom(newValue);
-																					}} value={tuesdayFrom}/>
+																			onChange={(newValue) => {
+																				setTuesdayFrom(newValue);
+																			}} value={tuesdayFrom} />
 																	</span>
 																	<span>
 																		<TimePicker disableClock={true}
-																					onChange={(newValue) => {
-																						setTuesdayTo(newValue);
-																					}} value={tuesdayTo}/>
+																			onChange={(newValue) => {
+																				setTuesdayTo(newValue);
+																			}} value={tuesdayTo} />
 																	</span>
 																</div>
 															}
@@ -797,15 +866,15 @@ const POIData = () => {
 																<div>
 																	<span>
 																		<TimePicker disableClock={true}
-																					onChange={(newValue) => {
-																						setWednesdayFrom(newValue);
-																					}} value={wednesdayFrom}/>
+																			onChange={(newValue) => {
+																				setWednesdayFrom(newValue);
+																			}} value={wednesdayFrom} />
 																	</span>
 																	<span>
-																	<TimePicker disableClock={true}
-																				onChange={(newValue) => {
-																					setWednesdayTo(newValue);
-																				}} value={wednesdayTo}/>
+																		<TimePicker disableClock={true}
+																			onChange={(newValue) => {
+																				setWednesdayTo(newValue);
+																			}} value={wednesdayTo} />
 																	</span>
 																</div>
 															}
@@ -826,16 +895,16 @@ const POIData = () => {
 
 																	<span>
 																		<TimePicker disableClock={true}
-																					onChange={(newValue) => {
-																						setThursdayFrom(newValue);
-																					}} value={thursdayFrom}/>
+																			onChange={(newValue) => {
+																				setThursdayFrom(newValue);
+																			}} value={thursdayFrom} />
 																	</span>
 																	<span>
 																		<TimePicker disableClock={true}
-																					onChange={(newValue) => {
-																						setThursdayTo(newValue);
-																					}} value={thursdayTo}/>
-																</span>
+																			onChange={(newValue) => {
+																				setThursdayTo(newValue);
+																			}} value={thursdayTo} />
+																	</span>
 																</div>
 															}
 														</div>
@@ -855,14 +924,14 @@ const POIData = () => {
 
 																	<span>
 																		<TimePicker disableClock={true}
-																					onChange={(newValue) => {
-																						setFridayFrom(newValue);
-																					}} value={fridayFrom}/>
+																			onChange={(newValue) => {
+																				setFridayFrom(newValue);
+																			}} value={fridayFrom} />
 																	</span> <span>
 																		<TimePicker disableClock={true}
-																					onChange={(newValue) => {
-																						setFridayTo(newValue);
-																					}} value={fridayTo}/></span>
+																			onChange={(newValue) => {
+																				setFridayTo(newValue);
+																			}} value={fridayTo} /></span>
 
 
 																</div>}
@@ -881,16 +950,16 @@ const POIData = () => {
 															{!saturdayclosed && <div>
 
 
-																	<span>
-																		<TimePicker disableClock={true}
-																					onChange={(newValue) => {
-																						setSaturdayFrom(newValue);
-																					}} value={saturdayFrom}/>
-																	</span> <span>
-																		<TimePicker disableClock={true}
-																					onChange={(newValue) => {
-																						setSaturdayTo(newValue);
-																					}} value={saturdayTo}/></span>
+																<span>
+																	<TimePicker disableClock={true}
+																		onChange={(newValue) => {
+																			setSaturdayFrom(newValue);
+																		}} value={saturdayFrom} />
+																</span> <span>
+																	<TimePicker disableClock={true}
+																		onChange={(newValue) => {
+																			setSaturdayTo(newValue);
+																		}} value={saturdayTo} /></span>
 
 															</div>}
 														</div>
@@ -910,14 +979,14 @@ const POIData = () => {
 
 																<span>
 																	<TimePicker disableClock={true}
-																				onChange={(newValue) => {
-																					setSundayFrom(newValue);
-																				}} value={sundayFrom}/>
+																		onChange={(newValue) => {
+																			setSundayFrom(newValue);
+																		}} value={sundayFrom} />
 																</span> <span>
-																<TimePicker disableClock={true}
-																			onChange={(newValue) => {
-																				setSundayTo(newValue);
-																			}} value={sundayTo}/></span>
+																	<TimePicker disableClock={true}
+																		onChange={(newValue) => {
+																			setSundayTo(newValue);
+																		}} value={sundayTo} /></span>
 
 															</div>}
 														</div>
@@ -927,32 +996,42 @@ const POIData = () => {
 
 										<div className="form__group">
 											<label class="form__label">Menu image</label>
-											{edit && <input type={"file"} name="file"
-															onChange={onFileChange}/>}
+											{edit &&
+
+												<label
+													class="button button--secondary button--small">
+													<span>Upload menu image</span>
+													<input type={"file"} accept="image/*"
+														onChange={onFileChange}
+														class="sr-only" />
+												</label>
+											}
 
 											{fileData()}
 
 											{imagePreview &&
 												<img className="preview" src={imagePreview}
-													 alt={"image-"}/>}
+													alt={"image-"} />}
 											{!imagePreview && <img className="preview"
-																   src={homeDataState.updatePointData.point.menu}
-																   alt={"image-"}/>}
+												src={homeDataState.updatePointData.point.menu}
+												alt={"image-"} />}
 										</div>
 
 										<div>
 
 											<label class="form__label">Image gallery</label>
 											{edit &&
-												<input
-													type="file"
-													multiple
-													accept="image/*"
-													onChange={selectFiles}
-												/>
+												<label
+													class="button button--secondary button--small">
+													<span>Upload image</span>
+													<input type={"file"} accept="image/*" multiple
+														onChange={selectFiles}
+														class="sr-only" />
+												</label>
 											}
 
-											
+<br/>
+
 
 											{imagePreviews.length != 0 && (
 												<div>
@@ -960,8 +1039,9 @@ const POIData = () => {
 														return (
 															<div>
 																<img className="image__preview" src={img}
-																	 alt={"image-" + i} key={i}/>
+																	alt={"image-" + i} key={i} />
 
+<br/>
 																<input
 
 																	className={"form__input"}
@@ -972,6 +1052,7 @@ const POIData = () => {
 
 																	onChange={(e) => changeImageTitle(e.target.value, i)}
 																/>
+																<br/>
 															</div>
 														);
 													})}
@@ -983,7 +1064,8 @@ const POIData = () => {
 														return (
 															<div>
 																<img className="image__preview" src={img.image}
-																	 alt={"image-" + img} key={i}/>
+																	alt={"image-" + img} key={i} />
+																	<br/>
 															</div>
 														);
 													})}
@@ -996,24 +1078,40 @@ const POIData = () => {
 										<div className="form__group">
 
 											<label class="form__label">Text to speach audio</label>
-											{!audio && <ReactAudioPlayer
+											
+
+
+											{edit &&
+												<div> <label
+													class="button button--secondary button--small">
+													<span>Upload audio</span>
+													<input type={"file"} accept={".mp3"}
+														onChange={addFile}
+														class="sr-only" />
+												</label>
+													<div>
+														{audioNamePoint &&
+
+
+															<label >{audioNamePoint}</label>}
+													</div>
+												</div>}
+										</div>
+
+										{!audio && <ReactAudioPlayer
 												src={homeDataState.updatePointData.point.audio}
 
 												controls
 											/>}
+										 <div className="paragraph-box2 grid dgrid-row place-items-center"
+                                            style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }}
+                                            hidden={!errMessagePartner}>
+                                            {errMessagePartner}
+                                        </div>
 
-											{edit && <input type={"file"} accept={".mp3"}
-															onChange={addFile}/>}
-										</div>
 
-
-										<div className="form__group" hidden={!errMessage}>
-											{errMessage}
-										</div>
-
-										
 										{edit &&
-											<div className="form__group">
+											 <div className="form__group grid dgrid-row place-items-center">
 												<button
 													onClick={(e) => {
 														handleSubmit(e)

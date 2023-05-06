@@ -23,8 +23,10 @@ export const userReducer = (state, action) => {
 
 		case userConstants.REGISTRATION_MAIL_SUCCESS:
 
+		console.log("fjknkfjnkjkfdsj")
 			prodCpy = { ...state };
 
+			
 			prodCpy.modalData.show = true;
 			prodCpy.modalData.title = "Success";
 			prodCpy.modalData.text = "You have successfully sent registration mail";
