@@ -14,11 +14,12 @@ const SetPassword = () => {
 	const handleSubmitNew = (e) => {
 
 
+		
 
-		if(password != confirmPassword){
+		if (password != confirmPassword) {
 
 			setErrMessage("Passwords do not match")
-		}else if(password == "" || confirmPassword == ""){
+		} else if (password == "" || confirmPassword == "") {
 			setErrMessage("Please fill all fields")
 		}
 
@@ -30,7 +31,7 @@ const SetPassword = () => {
 			email: email,
 			password: password,
 			confirmPassword: confirmPassword,
-			
+
 
 		}
 
@@ -43,59 +44,76 @@ const SetPassword = () => {
 			<div>
 
 				<UserContextProvider>
-					<div class="wrapper">
+
+					<div class="relative z-50" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+
+						<div class="modal-overlay"></div>
+
+						<div class="fixed inset-0 z-10 overflow-y-auto">
+
+							<div class="modal-frame">
+
+								<div id="myModal" class="modal modal--sm">
+
+									<div class="modal__header">
+										<h2 class="text-leading">
+											Forgot password
+										</h2>
+
+									</div>
+
+									<div class="modal__body">
+										<form class="form" method="post" onSubmit={handleSubmitNew}>
+											<div className="form__group">
+												<label class="form__label">Set up password</label>
+									
+
+												<div className="form-group">
+													<input className="form__input" type="password" style={{ height: "50px" }} required name="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)}></input>
+												</div>
+
+<br/>
+												<div className="form-group">
+													<input className="form__input" type="password" style={{ height: "50px" }} required name="confirmPassword" placeholder="Confirm password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}></input>
+												</div>
 
 
-						<div style={{ display: "flex", justifyContent: "center", marginLeft: "338px", marginTop: "100px" }}>
-							<form method="post" onSubmit={handleSubmitNew} style={{ width: "100%", marginRight: "338px" }} >
+											</div>
+											<div
+												className="form-group text-center"
+												style={{ color: "green", fontSize: "0.8em" }}
+												hidden={!userState.successPassword}
+											>
+												Success
+											</div>
+
+											<div
+												className="form__group"
+												hidden={!userState.errorPassword}
+											>
+												Error
+											</div>
+											<div className="form-group text-center" style={{ color: "red", fontSize: "0.8em", marginTop: "30px", marginRight: "40px" }} hidden={!errMessage}>
+						{errMessage}
+					</div>
+											<div className="button-p grid dgrid-row place-items-center">
+												<input className="button button--primary min-w-[8rem]" id="kayitol" type="submit"
+													value="Send" />
+											</div>
 
 
-							<h1 class="paragraph-box" style={{ fontSize: 28 }} ><b>Set up password</b></h1>
-
-								<div className="form-group">
-									<input className="form-control" type="password" style={{ height: "50px" }} required name="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)}></input>
+										</form>
+									</div>
 								</div>
 
-								<div className="form-group">
-									<input className="form-control" type="password" style={{ height: "50px" }} required name="confirmPassword" placeholder="Confirm password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}></input>
-								</div>
+							</div>
 
-							
-
-
-
-								<label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-
-								<div className="form-group text-center" style={{ color: "red", fontSize: "0.8em", marginTop: "30px", marginRight: "40px" }} hidden={!errMessage}>
-								{errMessage}
-								</div>
-								<div
-									className="form-group text-center"
-									style={{ color: "green", fontSize: "0.8em" }}
-									hidden={!userState.successPassword}
-								>
-									Success
-								</div>
-
-								<div
-									className="form-group text-center"
-									style={{ color: "red", fontSize: "0.8em" }}
-									hidden={!userState.errorPassword}
-								>
-									Error
-								</div>
-						
-								<div className="form-group">
-									<input className="btn btn-primary btn-block" id="kayitol" type="submit" style={{ background: "#5e90f6" }} value="Send" />
-								</div>
-
-
-
-							</form>
 						</div>
 
 
 					</div>
+
+
 				</UserContextProvider>
 			</div>
 		</body>
