@@ -15,6 +15,8 @@ const ReportPrint = () => {
 	const componentRef = useRef();
 	const {reportState, dispatch} = useContext(ReportContext);
 
+	const [role, setRole] = useState(false);
+	const [admin, setAdmin] = useState(false);
 
 	let {id} = useParams()
 	const someFetchActionCreator = () => {
@@ -30,9 +32,9 @@ const ReportPrint = () => {
 	useEffect(() => {
 
 
-		/* var token = authHeader()
+		 var token = authHeader()
          if (token == "null") {
-             // window.location = "#/unauthorized";
+              window.location = "#/unauthorized";
          } else {
 
              Axios.get(`${url}api/users/getRole`, { headers: { Authorization: token } }, { validateStatus: () => true },
@@ -56,7 +58,7 @@ const ReportPrint = () => {
                  })
          }
 
- */
+ 
 		someFetchActionCreator()
 	}, [dispatch]);
 
@@ -103,8 +105,13 @@ const ReportPrint = () => {
 						<img class="h-8 w-auto" src="assets/img/logo.svg"/>
 					</div>
 					<div class="hidden lg:flex flex-row items-center gap-2">
-
-						{/* {role && */}
+					<ReactToPrint
+							trigger={() =>
+								<button class='button button--primary button--small'>Print out page</button>
+							}
+							content={() => componentRef.current}
+						/>
+						{role && 
 						<button
 							type="button"
 							onClick={handleLogout}
@@ -112,9 +119,9 @@ const ReportPrint = () => {
 						>
 							Log out
 						</button>
-						{/*}*/}
+						}
 
-						{/* {!role && */}
+						{!role && 
 						<button
 							type="button"
 							onClick={handleLogin}
@@ -122,14 +129,9 @@ const ReportPrint = () => {
 						>
 							Log in
 						</button>
-						{/*}*/}
+						}
 
-						<ReactToPrint
-							trigger={() =>
-								<button class='button button--primary button--small'>Print out page</button>
-							}
-							content={() => componentRef.current}
-						/>
+						
 
 					</div>
 				</div>

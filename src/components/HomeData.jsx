@@ -44,16 +44,18 @@ const HomeData = forwardRef((props, ref) => {
 		window.location = "#/login";
 	};
 	useEffect(() => {
-		/*var token = authHeader()
+		var token = authHeader()
         if (token == "null") {
           window.location = "#/unauthorized";
         } else {
-          /*Axios.get(`${url}api/users/getRole`, { headers: { Authorization: token } }, { validateStatus: () => true },
+          Axios.get(`${url}api/users/getRole`, { headers: { Authorization: token } }, { validateStatus: () => true },
           )
             .then((res) => {
               if (res.status === 200) {
                 if ("BPARTNER" == res.data) {
                   setRole(true)
+				  
+				  window.location = "#/unauthorized";
                 }
                 if ("PROVIDER" == res.data) {
                   setRole(true)
@@ -67,7 +69,7 @@ const HomeData = forwardRef((props, ref) => {
             })
             .catch((err) => {
             })
-        }*/
+        }
 		setTours(homeDataState.toursWithPoints.toursWithPoints)
 		var contactUser = {
 			name: "Danijel Omrzel",
@@ -237,42 +239,42 @@ const HomeData = forwardRef((props, ref) => {
 						<div className="hidden lg:flex flex-row items-center gap-2">
 
 
-							{/*{role &&*/}
+							{role &&
 							<div>
 								<button className="button button--clear button--small" type="button" onClick={updateLogo}>
 									Edit logo
 								</button>
 							</div>
-							{/*}*/}
+							}
 
-							{/*{role &&*/}
+							{role &&
 							<div>
 								<button className="button button--clear button--small" type="button" onClick={editLockCode}>
 									Edit lock code
 								</button>
 							</div>
-							{/*}*/}
+							}
 
-							{/*{adminOnly &&*/}
+							{adminOnly &&
 							<div>
 								<button className="button button--clear button--small" type="button"
 										onClick={handleRegister}>
 									New user
 								</button>
 							</div>
-							{/*}*/}
+							}
 
-							{/*{adminOnly &&*/}
+							{adminOnly &&
 							<div>
 								<button className="button button--clear button--small" type="button"
 										onClick={allBusinessPartners}>
 									Partners
 								</button>
 							</div>
-							{/*}*/}
+							}
 
 
-							{!role &&
+							{(!role && !adminOnly) &&
 								<div>
 									<button className="button button--clear button--small" type="button"
 											onClick={handleLogin}>
@@ -281,13 +283,13 @@ const HomeData = forwardRef((props, ref) => {
 								</div>
 							}
 
-							{/*{role &&*/}
+							{(role || adminOnly) &&
 							<div>
 								<button className="button button--clear button--small" type="button" onClick={handleLogout}>
 									Log out
 								</button>
 							</div>
-							{/*}*/}
+							}
 
 						</div>
 					</div>
@@ -342,13 +344,13 @@ const HomeData = forwardRef((props, ref) => {
 						<div>
 								
 
-									{/*{adminOnly &&*/}
+									{admin &&
 							<div>
 								<button className="button button--primary button--small" variant="contained" type="button" onClick={insertdata}>
-									New data
+									New tour
 								</button>
 							</div>
-							{/*}*/}
+							}
 								</div>
 					</div>
 
@@ -387,17 +389,17 @@ const HomeData = forwardRef((props, ref) => {
 											<button className="button button--secondary button--small" onClick={(event) => {
 												seeTermsAndConditions(event, tour.tourId)
 											}}>
-												Terms
+												Terms and conditions
 											</button>
 											<button className="button button--secondary button--small"
 													onClick={(e) => getHistory(e, tour.tourId)}>Get report
 											</button>
-                      <button className="button button--secondary button--small" onClick={(e) => getQrCodes(e, tour.tourId)} >Get qr codes</button>
+                    {adminOnly &&   <button className="button button--secondary button--small" onClick={(e) => getQrCodes(e, tour.tourId)} >Get qr codes</button>}
 											<button className="button button--secondary button--small"
 													onClick={(e) => update(e, tour)}>{updateField}</button>
-											<button className="button button--secondary button--small"
+										 {adminOnly &&	<button className="button button--secondary button--small"
 													onClick={(e) => deleteTour(e, tour)}>Delete
-											</button>
+											</button>}
 										</div>
 									</td>
 
@@ -421,12 +423,12 @@ const HomeData = forwardRef((props, ref) => {
 									POIs & Partners
 								</h4>
 								<div>
-									{/* {admin && */}
+									{admin && 
 									<button className="button button--primary button--small" variant="contained"
 											onClick={(e) => addNewPartner(e, tour.tourId, tour.bpartnerId)}>
 										Add partner
 									</button>
-									{/*}*/}
+									}
 								</div>
 							</div>
 
@@ -482,10 +484,10 @@ const HomeData = forwardRef((props, ref) => {
 															onClick={(e) => updatePartnerPrice(e, points, tour)}>
 														{updatePartner}
 													</button>
-													<button className="button button--secondary button--small"
+													{adminOnly &&  <button className="button button--secondary button--small"
 															onClick={(e) => deletePoi(e, tour, points.point.id)}>
 														Delete
-													</button>
+													</button>}
 												</div>
 											</td>
 
