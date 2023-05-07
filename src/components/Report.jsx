@@ -246,7 +246,7 @@ const Report = forwardRef((props, ref) => {
 							</div>
 						</div>
 						<div>
-							{/*{admin && */}
+							{admin && 
 							<button
 								type="button"
 								onClick={handleShowModal}
@@ -254,7 +254,7 @@ const Report = forwardRef((props, ref) => {
 							>
 								Update menu image
 							</button>
-							{/*} */}
+							}
 						</div>
 					</div>
 

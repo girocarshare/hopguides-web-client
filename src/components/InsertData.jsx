@@ -4,6 +4,7 @@ import { HomeDataContext } from "../contexts/HomeDataContext";
 import { homeDataConstants } from "../constants/HomeDataConstants";
 import TimePicker from 'react-time-picker';
 import { AiOutlineClose } from 'react-icons/ai';
+import {deleteLocalStorage, authHeader} from "../helpers/auth-header";
 import Axios from "axios";
 import AddPartnerOrPointForm from "./AddPartnerOrPointForm";
 import BasicTourData from "./BasicTourData";
@@ -363,7 +364,27 @@ const InsertData = (props) => {
 
 		}
 	};
-
+	useEffect(() => {
+		var token = authHeader()
+        if (token == "null") {
+          window.location = "#/unauthorized";
+        } else {
+          Axios.get(`${url}api/users/getRole`, { headers: { Authorization: token } }, { validateStatus: () => true },
+          )
+            .then((res) => {
+              if (res.status === 200) {
+                if ("BPARTNER" == res.data) {
+                 
+          window.location = "#/unauthorized";
+                }
+              
+              }
+            })
+            .catch((err) => {
+            })
+        }
+	
+	}, [dispatch]);
 	const addPartner = () => {
 		setPartner(true)
 		setPoint(false)
