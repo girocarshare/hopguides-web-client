@@ -735,7 +735,7 @@ const InsertData = (props) => {
 											point={point}
 											handleClosePoi={handleClosePoi}
 											setTitlePoint={setTitlePoint}
-											titlePoint={setTitlePoint}
+											titlePoint={titlePoint}
 											fetchData={fetchData}
 											setTitlePointTransl={setTitlePointTransl}
 											titlePointTransl={titlePointTransl}
