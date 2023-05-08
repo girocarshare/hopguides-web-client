@@ -3,6 +3,7 @@ import { businessPartnersService } from "../services/BusinessPartnersService";
 import { BusinessPartnersContext } from "../contexts/BusinessPartnersContext";
 import { businessPartnersConstants } from "../constants/BusinessPartnersConstants";
 import Axios from "axios";
+import {deleteLocalStorage, authHeader} from "../helpers/auth-header";
 import { AiOutlineClose } from 'react-icons/ai';
 
 var url = process.env.REACT_APP_URL || "http://localhost:8080/";
@@ -152,10 +153,12 @@ const BPartnerData = () => {
 		formData.append('bpartner', JSON.stringify(bpartner));
 
 		var xhr = new XMLHttpRequest();
+		var token = authHeader()
 		xhr.addEventListener("load", SuccessHandler, false);
 		xhr.addEventListener("error", ErrorHandler, false);
 		xhr.addEventListener("abort", AbortHandler, false);
 		xhr.open('POST', `${url}api/bp/update`, true);
+		xhr.setRequestHeader('authorization', token);
 		xhr.onload = function () {
 			// do something to response
 		};

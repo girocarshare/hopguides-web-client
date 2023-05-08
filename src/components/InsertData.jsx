@@ -310,13 +310,14 @@ const InsertData = (props) => {
 				formData.append('file', a);
 			}
 			formData.append('tour', JSON.stringify(tour));
-			console.log(tour)
+			var token = authHeader()
 			var xhr = new XMLHttpRequest();
 			xhr.upload.addEventListener("progress", ProgressHandler, false);
 			xhr.addEventListener("load", SuccessHandler, false);
 			xhr.addEventListener("error", ErrorHandler, false);
 			xhr.addEventListener("abort", AbortHandler, false);
 			xhr.open('POST', `${url}api/pnl/tour/addFull/add`, true);
+			xhr.setRequestHeader('authorization', token);
 			xhr.onload = function () {
 			};
 			xhr.send(formData);

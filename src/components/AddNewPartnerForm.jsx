@@ -4,6 +4,7 @@ import { HomeDataContext } from "../contexts/HomeDataContext";
 import { homeDataConstants } from "../constants/HomeDataConstants";
 import TimePicker from 'react-time-picker';
 import Axios from "axios";
+import {deleteLocalStorage, authHeader} from "../helpers/auth-header";
 import { AiOutlineClose } from 'react-icons/ai';
 
 var num = 1;
@@ -337,11 +338,13 @@ const AddNewPartnerForm = (props) => {
 			}
 			//formData.append('audio', audio);
 			formData.append('tour', JSON.stringify(tour));
+			var token = authHeader()
 			var xhr = new XMLHttpRequest();
 			xhr.addEventListener("load", SuccessHandler, false);
 			xhr.addEventListener("error", ErrorHandler, false);
 			xhr.addEventListener("abort", AbortHandler, false);
 			xhr.open('POST', `${url}api/pnl/tour/addFull/partner`, true);
+			xhr.setRequestHeader('authorization', token);
 			xhr.onload = function () {
 				// do something to response
 			};

@@ -1,5 +1,6 @@
 import Axios from "axios";
 import { businessPartnersConstants } from "../constants/BusinessPartnersConstants";
+import { authHeader } from "../helpers/auth-header";
 var url = process.env.REACT_APP_URL || "http://localhost:8080/";
 
 export const businessPartnersService = {
@@ -45,7 +46,11 @@ async function deleteBPartner(dispatch, bpartnerId ) {
 
 	dispatch(request());
 
-	await Axios.get(`${url}api/bp/delete/` + bpartnerId, { validateStatus: () => true })
+	var token = authHeader()
+	await Axios.get(`${url}api/bp/delete/` + bpartnerId, {
+		headers: {
+		  Authorization: token 
+		}},{ validateStatus: () => true })
 		.then((res) => {
 			if (res.status === 200) {
 				dispatch(success(res.data));
@@ -86,6 +91,7 @@ function updateBPartner( tf, dispatch) {
 	}
 
 	function success() {
+		getBPartners(dispatch)
 		return { type: businessPartnersConstants.BUSINESS_PARTNER_UPDATE_SUCCESS };
 	}
 	function failure(error) {
