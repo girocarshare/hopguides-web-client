@@ -461,16 +461,15 @@ async function getToursAndPointsData(dispatch) {
 
 
 async function getQrCode(dispatch,id) {
-	
+
 	var token = authHeader()
 
 	const FileDownload = require("js-file-download");
 
 
-	await Axios.get(`${url}api/reports/qr/`+id, { headers: { Authorization: token} , validateStatus: () => true,  responseType: 'blob'})
+	await Axios.get(`${url}api/reports/qr/ `+id, { headers: { Authorization: token} , validateStatus: () => true,  responseType: 'blob'})
 		.then((res) => {
 			if (res.status === 200) {
-				console.log(res.data)
 				FileDownload(res.data, id.trim() + ".png");
 			}
 		})
