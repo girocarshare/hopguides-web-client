@@ -100,7 +100,7 @@ const BPartnerData = () => {
 
 		e.preventDefault();
 
-		var bpartner = {}
+		var bpartner = businessPartnersState.updateBPartner.bpartner
 
 		if (name != "") {
 			bpartner.name = name
@@ -131,18 +131,19 @@ const BPartnerData = () => {
 				setErrMessage("Please insert the proper JSON format of support field. Pay attention on enter and quotes(\")")
 			}
 
-			bpartner.support = JSON.parse(support)
+			bpartner.support = JSON.parse(supportTransl)
 		}
 
 		if (height != "") {
 			bpartner.dimensions.height = height
 		}
 		if (width != "") {
-			bpartner.dimensions.height = width
+			bpartner.dimensions.width = width
 		}
 
 		bpartner.id = businessPartnersState.updateBPartner.bpartner.id
 
+		console.log(bpartner)
 
 		const formData = new FormData();
 
@@ -353,26 +354,7 @@ const BPartnerData = () => {
 												</div>
 											</div>
 
-											<div className="form__group">
-												<label class="form__label"><b>Website</b></label>
-												<div class="flex flex-col gap-2">
-													<div class="flex flex-row items-center gap-2">
-														<input
-															className={"form__input"}
-															readOnly={!edit}
-															placeholder="Website"
-															aria-describedby="basic-addon1"
-															id="name"
-															type="text"
-															style={{ backgroundColor: edit === true ? '#DCDCDC' : 'white', outline: 'none' }}
-															onChange={(e) => setWebURL(e.target.value)}
-															value={webURL === "" ? businessPartnersState.updateBPartner.bpartner.contact.webURL : webURL}
-														/>
-
-
-													</div>
-												</div>
-											</div>
+											
 
 											<div className="form__group">
 												<label class="form__label"><b>Lock code</b></label>

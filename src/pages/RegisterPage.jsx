@@ -7,21 +7,21 @@ var url = process.env.REACT_APP_URL || "http://localhost:8080/";
 
 
 const RegisterPage = () => {
-	
-	
+
+
 	return (
-	
-			<div>
-			
-					<UserContextProvider>
+
+		<div>
+
+			<UserContextProvider>
+				<Register />
 				<SuccessFailureModalUsers />
-					<Register/>
-					</UserContextProvider>
-			
-			</div>
+			</UserContextProvider>
+
+		</div>
 
 
-		
+
 	);
 };
 
