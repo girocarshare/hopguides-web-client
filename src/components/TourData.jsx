@@ -4,6 +4,7 @@ import { HomeDataContext } from "../contexts/HomeDataContext";
 import { homeDataConstants } from "../constants/HomeDataConstants";
 import { AiOutlineClose } from 'react-icons/ai';
 import ReactAudioPlayer from 'react-audio-player';
+import {deleteLocalStorage, authHeader} from "../helpers/auth-header";
 import Axios from "axios";
 
 const mapState = {
@@ -218,12 +219,13 @@ const TourData = () => {
 			formData.append('file', audio);
 		}
 		formData.append('tour', JSON.stringify(tour));
-		console.log(formData)
+		var token = authHeader()
 		var xhr = new XMLHttpRequest();
 		xhr.addEventListener("load", SuccessHandler, false);
 		xhr.addEventListener("error", ErrorHandler, false);
 		xhr.addEventListener("abort", AbortHandler, false);
 		xhr.open('POST', `${url}api/pnl/tour/update/tour`, true);
+		xhr.setRequestHeader('authorization', token);
 		xhr.onload = function () {
 		};
 		xhr.send(formData);

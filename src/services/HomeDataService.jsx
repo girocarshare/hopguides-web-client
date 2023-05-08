@@ -121,6 +121,7 @@ function updateTour( tf, dispatch) {
 	}
 
 	function success() {
+		getToursAndPointsData(dispatch)
 		return { type: homeDataConstants.TOUR_UPDATE_SUCCESS };
 	}
 	function failure(error) {
@@ -281,7 +282,7 @@ function deleteTour( dispatch, tourId) {
 		}},{ validateStatus: () => true })
 		.then((res) => {
 			if (res.status === 200) {
-				dispatch(success());
+				dispatch(success(res.data));
 			} else if (res.status === 500) {
 				dispatch(failure(res.data.response));
 			}else{
@@ -297,9 +298,9 @@ function deleteTour( dispatch, tourId) {
 		
 		return { type: homeDataConstants.DELETE_TOUR_REQUEST };
 	}
-	function success() {
-		window.location.reload()
-		return { type: homeDataConstants.DELETE_TOUR_SUCCESS };
+	function success(data) {
+		console.log("evo me")
+		return { type: homeDataConstants.DELETE_TOUR_SUCCESS, data: data };
 	}
 	function failure(error) {
 		
@@ -320,7 +321,7 @@ function deletePoi( dispatch, tourId, poiId) {
 		}},{ validateStatus: () => true })
 		.then((res) => {
 			if (res.status === 200) {
-				dispatch(success());
+				dispatch(success(res.data));
 			} else if (res.status === 500) {
 				dispatch(failure(res.data.response));
 			}else{
@@ -336,8 +337,8 @@ function deletePoi( dispatch, tourId, poiId) {
 		
 		return { type: homeDataConstants.DELETE_TOUR_REQUEST };
 	}
-	function success() {
-		return { type: homeDataConstants.DELETE_POI_SUCCESS };
+	function success(data) {
+		return { type: homeDataConstants.DELETE_POI_SUCCESS, data: data };
 	}
 	function failure(error) {
 		
@@ -357,6 +358,7 @@ function addPartner(tf, dispatch) {
 	}
 
 	function success() {
+		getToursAndPointsData(dispatch)
 		return { type: homeDataConstants.PARTNER_SUBMIT_SUCCESS };
 	}
 	function failure(error) {
@@ -377,6 +379,7 @@ function updatePoint( tf, dispatch) {
 	}
 
 	function success() {
+		getToursAndPointsData(dispatch)
 		return { type: homeDataConstants.POI_UPDATE_SUCCESS };
 	}
 	function failure(error) {
@@ -461,16 +464,15 @@ async function getToursAndPointsData(dispatch) {
 
 
 async function getQrCode(dispatch,id) {
-	
+
 	var token = authHeader()
 
 	const FileDownload = require("js-file-download");
 
 
-	await Axios.get(`${url}api/reports/qr/`+id, { headers: { Authorization: token} , validateStatus: () => true,  responseType: 'blob'})
+	await Axios.get(`${url}api/reports/qr/ `+id, { headers: { Authorization: token} , validateStatus: () => true,  responseType: 'blob'})
 		.then((res) => {
 			if (res.status === 200) {
-				console.log(res.data)
 				FileDownload(res.data, id.trim() + ".png");
 			}
 		})

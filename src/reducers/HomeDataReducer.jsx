@@ -273,8 +273,13 @@ export const homeDataReducer = (state, action) => {
 					failure: false,
 					text: "You have successfully deleted tour.",
 				},
-
+				toursWithPoints:{
+					toursWithPoints: action.data
+				}
 			};
+
+			
+			//prodCpy.toursWithPoints.toursWithPoints = action.data;
 
 		case homeDataConstants.DELETE_TOUR_FAILURE:
 
@@ -294,7 +299,9 @@ export const homeDataReducer = (state, action) => {
 
 			return {
 				...state,
-
+				toursWithPoints:{
+					toursWithPoints : action.data
+				},
 				modalData: {
 
 					success: true,
@@ -551,6 +558,8 @@ export const homeDataReducer = (state, action) => {
 			prodCpy = { ...state };
 
 
+			prodCpy.toursWithPoints.toursWithPoints = action.data;
+			prodCpy.showModal = false;
 			prodCpy.modalData.success = true;
 			prodCpy.modalData.failure = false;
 			prodCpy.modalData.text = "You have successfully added new data.";

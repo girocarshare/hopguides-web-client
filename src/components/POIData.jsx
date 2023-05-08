@@ -5,6 +5,7 @@ import { homeDataConstants } from "../constants/HomeDataConstants";
 import TimePicker from 'react-time-picker';
 import { AiOutlineClose } from 'react-icons/ai';
 import ReactAudioPlayer from 'react-audio-player';
+import {deleteLocalStorage, authHeader} from "../helpers/auth-header";
 import Axios from "axios";
 
 const mapState = {
@@ -256,12 +257,13 @@ const POIData = () => {
 			}
 		}
 		formData.append('point', JSON.stringify(point));
+		var token = authHeader()
 		var xhr = new XMLHttpRequest();
 		xhr.addEventListener("load", SuccessHandler, false);
 		xhr.addEventListener("error", ErrorHandler, false);
 		xhr.addEventListener("abort", AbortHandler, false);
 		xhr.open('POST', `${url}api/poi/update`, true);
-		//xhr.setRequestHeader("Authorization", props.token);
+		xhr.setRequestHeader('authorization', token);
 		xhr.onload = function () {
 			// do something to response
 		};

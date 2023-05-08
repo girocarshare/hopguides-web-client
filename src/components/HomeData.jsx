@@ -416,11 +416,11 @@ const HomeData = forwardRef((props, ref) => {
 
 					{homeDataState.toursWithPoints.toursWithPoints.map((tour, i) =>
 
-						<div id={tour.tourId}>
+						<div >
 
 							<div className="py-3 px-2 pb-4 md:pb-6 flex flex-row items-center justify-between gap-4">
 								<h4 className="text-heading6">
-									POIs & Partners
+									POIs & Partners for {tour.title.english} tour
 								</h4>
 								<div>
 									{admin && 
@@ -453,7 +453,7 @@ const HomeData = forwardRef((props, ref) => {
 
 									{tour.points.map((points) => (
 										<tbody>
-										<tr>
+										<tr id={tour.tourId}>
 
 											<td>{points.point.name.english}</td>
 											<td>
@@ -468,18 +468,18 @@ const HomeData = forwardRef((props, ref) => {
 											<td>{points.monthlyUsed}</td>
 											<td>
 												<div className="flex flex-row items-center gap-2 justify-end">
-													<button className="button button--secondary button--small"
+													{points.point.offerName != "" && <button className="button button--secondary button--small"
 															onClick={(event) => {
 																visitWebsite(event, points.point.id)
 															}}>
 														Web
-													</button>
-													<button className="button button--secondary button--small"
+													</button>}
+													{points.point.offerName != "" &&<button className="button button--secondary button--small"
 															onClick={(event) => {
 																getQrCode(event, points.point.id)
 															}}>
 														Get QR
-													</button>
+													</button>}
 													<button className="button button--secondary button--small"
 															onClick={(e) => updatePartnerPrice(e, points, tour)}>
 														{updatePartner}
@@ -498,6 +498,7 @@ const HomeData = forwardRef((props, ref) => {
 
 							</div>
 
+							<br/> <br/>
 						</div>
 					)}
 				</div>
