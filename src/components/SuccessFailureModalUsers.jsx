@@ -16,14 +16,16 @@ const SuccessFailureModalUsers = () => {
 
 	return (
 
-		<div class="relative z-50" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-			{userState.modalData.show &&
-				<div>
-					<div class="modal-overlay"></div>
+		<div>
 
-					<div class="fixed inset-0 z-10 overflow-y-auto">
+{userState.modalData.show &&
+	<div class="relative z-50" aria-labelledby="modal-title" role="dialog" aria-modal="true">
 
-						<div class="modal-frame">
+	<div class="modal-overlay"></div>
+
+	<div class="fixed inset-0 z-10 overflow-y-auto">
+
+		<div class="modal-frame">
 
 							<div id="myModal" class="modal modal--md">
 
@@ -51,7 +53,7 @@ const SuccessFailureModalUsers = () => {
 							</div>
 						</div>
 					</div>
-				</div>}
+		</div>}
 		</div>
 	);
 };

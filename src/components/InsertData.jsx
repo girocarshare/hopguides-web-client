@@ -677,7 +677,6 @@ const InsertData = (props) => {
 
 			<div>
 
-
 				<div class="relative z-50" aria-labelledby="modal-title" role="dialog" aria-modal="true">
 
 					<div class="modal-overlay"></div>
