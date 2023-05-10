@@ -167,7 +167,8 @@ const POIData = () => {
 		setErrTitlePoint("")
 
 
-		var point = {}
+		var point = homeDataState.updatePointData.point
+
 		if (nameTransl != "") {
 			if (!isJsonString(nameTransl)) {
 				setErrImageTitle("Please insert the proper JSON format. Pay attention on enter and quotes(\")")
