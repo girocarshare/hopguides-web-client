@@ -4,7 +4,7 @@ import { HomeDataContext } from "../contexts/HomeDataContext";
 import { homeDataConstants } from "../constants/HomeDataConstants";
 import TimePicker from 'react-time-picker';
 import Axios from "axios";
-import {deleteLocalStorage, authHeader} from "../helpers/auth-header";
+import { deleteLocalStorage, authHeader } from "../helpers/auth-header";
 import { AiOutlineClose } from 'react-icons/ai';
 
 var num = 1;
@@ -166,28 +166,28 @@ const AddNewPartnerForm = (props) => {
 		if (partner && (titlePointTransl == "" || shortInfoPointTransl == "" || longInfoPointTransl == "" || category == "" || pointPrice == "" || offerName == "" || responsiblePerson == "" || voucherDescTransl == "" || phone == "" || email == "" || longitude == "" || latitude == "" || audio2 == null || selectedFiles.length == 0 || (!mondayclosed && (mondayFrom == "" || mondayTo == "")) || (!tuesdayclosed && (tuesdayFrom == "" || tuesdayTo == "")) || (!wednesdayclosed && (wednesdayFrom == "" || wednesdayTo == "")) || (!thursdayclosed && (thursdayFrom == "" || thursdayTo == "")) || (!fridayclosed && (fridayFrom == "" || fridayTo == "")) || (!saturdayclosed && (saturdayFrom == "" || saturdayTo == "")) || (!sundayclosed && (sundayFrom == "" || sundayTo == "")))) {
 			setErrMessagePartner("Please insert mandatory fields for partner (marked with *)")
 		} else if (point && (titlePointTransl == "" || shortInfoPointTransl == "" || longInfoPointTransl == "" || category == "" || longitude == "" || latitude == "" || audio2 == null || selectedFiles.length == 0)) {
-			
+
 			setErrMessagePartner("Please insert mandatory fields for point of interest (marked with *)")
 		} else {
 			setAdd(false)
 			setErrMessagePartner("")
 			var jsonTitles = []
-			if(imageTitles.length !=0){
-			for (var ti of imageTitles) {
-				var help = ti.split("---")
-				if (!isJsonString(help[0])) {
-					setErrImageTitle("Please insert the proper JSON format. Pay attention on enter and quotes(\")")
-					setErrMessagePartner("JSON format invalid. Check the red fields.")
-				}
-				var titlee = JSON.parse(help[0])
-				var titleObj = {
-					number: help[1],
-					name: titlee
+			if (imageTitles.length != 0) {
+				for (var ti of imageTitles) {
+					var help = ti.split("---")
+					if (!isJsonString(help[0])) {
+						setErrImageTitle("Please insert the proper JSON format. Pay attention on enter and quotes(\")")
+						setErrMessagePartner("JSON format invalid. Check the red fields.")
+					}
+					var titlee = JSON.parse(help[0])
+					var titleObj = {
+						number: help[1],
+						name: titlee
 
+					}
+					jsonTitles.push(titleObj)
 				}
-				jsonTitles.push(titleObj)
 			}
-		}
 
 			if (!isJsonString(titlePointTransl)) {
 				setErrTitlePoint("Please insert the proper JSON format. Pay attention on enter and quotes(\")")
@@ -268,7 +268,7 @@ const AddNewPartnerForm = (props) => {
 			setAudio2(null)
 			setImagePreviews([])
 			num = num + 1
-			
+
 			setPartner(false)
 			setPoint(false)
 		}
@@ -308,6 +308,8 @@ const AddNewPartnerForm = (props) => {
 
 	const SuccessHandler = (e) => {
 
+		var arr = []
+		setPoints(arr)
 		homeDataService.addPartner(true, dispatch);
 
 	};
@@ -349,6 +351,9 @@ const AddNewPartnerForm = (props) => {
 				// do something to response
 			};
 			xhr.send(formData);
+
+
+
 		}
 
 
@@ -1009,7 +1014,7 @@ const AddNewPartnerForm = (props) => {
 																onChange={selectFiles}
 																class="sr-only" />
 														</label>
-														<br/>
+														<br />
 														{progressInfos &&
 															progressInfos.val.length > 0 &&
 															progressInfos.val.map((progressInfo, index) => (
@@ -1037,7 +1042,7 @@ const AddNewPartnerForm = (props) => {
 																			<img className="image__preview" src={img}
 																				alt={"image-" + i} key={i} />
 
-<br/>
+																			<br />
 																			<input
 
 																				className={!props.errImageTitle ? "form__input" : "form__input !border !border-red-500"}
@@ -1172,10 +1177,10 @@ const AddNewPartnerForm = (props) => {
 
 									</form>
 									<div className="paragraph-box2 grid dgrid-row place-items-center"
-                                            style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }}
-                                            hidden={!errMessagePartner}>
-                                            {errMessagePartner}
-                                        </div>
+										style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }}
+										hidden={!errMessagePartner}>
+										{errMessagePartner}
+									</div>
 								</div>
 
 								{
