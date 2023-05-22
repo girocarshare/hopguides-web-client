@@ -204,12 +204,12 @@ async function confirm(dispatch ,bookingId, pointId) {
 
 
 
-async function generateQrCode(dispatch ,tourId) {
+async function generateQrCode(dispatch ,tourId, number) {
 	
 	
 	dispatch(request());
 	
-	await Axios.get(`${url}api/pnl/tour/qr/` + tourId , { validateStatus: () => true })
+	await Axios.get(`${url}api/pnl/tour/qr/` + tourId + "/" + number , { validateStatus: () => true })
 		.then((res) => {
 			if (res.status === 200) {
 				dispatch(success(res.data));
