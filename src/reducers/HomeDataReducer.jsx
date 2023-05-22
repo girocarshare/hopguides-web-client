@@ -678,8 +678,8 @@ export const homeDataReducer = (state, action) => {
 			
 				prodCpy = { ...state };
 
-			prodCpy.qrCode = action.data;
-			prodCpy.qr = action.data.qrcode;
+			prodCpy.generatedQrCodes = action.data;
+			//prodCpy.qr = action.data.qrcode;
 			prodCpy.generateQrCodeModalShow = true;
 
 			return prodCpy;

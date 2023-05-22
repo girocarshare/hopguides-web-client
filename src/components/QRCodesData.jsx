@@ -10,11 +10,12 @@ var url = process.env.REACT_APP_URL || "http://localhost:8080/";
 
 const QRCodesData = forwardRef((props, ref) => {
     const { homeDataState, dispatch } = useContext(HomeDataContext);
+    const [number, setNumber] = useState(0);
+    const [clicked, setClicked] = useState(false);
 
     let { tourId } = useParams()
     const someFetchActionCreator = () => {
         const getReportInfoHandler = async () => {
-            console.log(tourId)
             await homeDataService.getQrCodes(dispatch, tourId);
         };
 
@@ -30,13 +31,14 @@ const QRCodesData = forwardRef((props, ref) => {
 
     const someFetchActionCreatorCode = () => {
         const getReportInfoHandler = async () => {
-            await homeDataService.generateQrCode(dispatch, tourId);
+            await homeDataService.generateQrCode(dispatch, tourId, number);
         };
 
         getReportInfoHandler();
     }
     const createQrCode = (e) => {
 
+        setClicked(true)
         someFetchActionCreatorCode()
         // dispatch({ type: homeDataConstants.SHOW_ADD_QR_CODE_MODAL });
     };
@@ -70,86 +72,95 @@ const QRCodesData = forwardRef((props, ref) => {
                             <div className="modal__body">
 
 
-                                <div className="grid place-items-end">
+                                <div className="form__group">
+                                    <label class="form__label">Insert the number of qr codes that needs to be generated</label>
+                                    <div class="flex flex-row items-center gap-2">
+                                        <input
 
-                                    <button
+                                            className={"form__input"}
+                                            placeholder="Price"
+                                            aria-describedby="basic-addon1"
+                                            id="name"
+                                            type="text"
 
+                                            onChange={(e) => setNumber(e.target.value)}
+                                            value={number}
+                                        />
 
-                                        onClick={(e) => {
-                                            createQrCode(e)
-                                        }}
-                                        className="button button--primary"
-                                        id="sendMessageButton"
-                                        type="button"
-                                    >
-                                        Create new QR code
-                                    </button>
-                                </div>
-
-
-
-<br/>
-
-                                {homeDataState.qr &&
-                                   <div className="p-2 md:p-4 bg-black/[3%] rounded-2xl mb-12">
+                                        <button
 
 
-                                        <div class="grid place-items-center">
-
-
-                                            <div>
-                                                <img src={homeDataState.qr} style={{ height: "200px", width: "200px" }} ></img>
-                                                <h1 class="grid place-items-center" style={{ fontSize: 20 }}><b>{homeDataState.qrCode.code} </b></h1>
-
-                                            </div>
-
-                                        </div>
-
-
+                                            onClick={(e) => {
+                                                createQrCode(e)
+                                            }}
+                                            className="button button--primary"
+                                            id="sendMessageButton"
+                                            type="button"
+                                        >
+                                            Create new QR codes
+                                        </button>
                                     </div>
-                                }
-
-
-
-                                <div className="table-frame">
-
-                                    <table>
-                                        <thead>
-                                            <tr>
-                                                <th>Qr Code</th>
-                                                <th className="whitespace-nowrap">Code</th>
-                                                <th className="whitespace-nowrap">Qr code id</th>
-                                                <th>Used</th>
-                                            </tr>
-                                        </thead>
-
-                                        {homeDataState.qrCodes.map((qrcode) => (
-                                            <tbody>
-                                                <tr>
-                                                    <td ><img  style={{ height: "200px", width: "200px" }} src={qrcode.qrcode}></img></td>
-                                                    <td>{qrcode.code}</td>
-
-                                                    <td>{qrcode.qrCodeId}</td>
-                                                    <td>{qrcode.used.toString()}</td>
-
-
-                                                </tr>
-                                            </tbody>
-                                        ))
-                                        }
-                                    </table>
-
                                 </div>
 
+
+
+
+                                <br />
+                               
+                                {clicked && homeDataState.generatedQrCodes.length == 0 &&
+                                    < span > loading...</span>}
+                                  
+                            {homeDataState.generatedQrCodes.map((qrcode) => (
+                                <tbody>
+                                    <tr>
+                                        <td ><img style={{ height: "200px", width: "200px" }} src={qrcode.qrcode}></img></td>
+                                        <td>{qrcode.code}</td>
+
+                                    </tr>
+                                </tbody>
+                            ))
+                            }
+
+
+                            <div className="table-frame">
+
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Qr Code</th>
+                                            <th className="whitespace-nowrap">Code</th>
+                                            <th className="whitespace-nowrap">Qr code id</th>
+                                            <th>Used</th>
+                                        </tr>
+                                    </thead>
+
+                                    {homeDataState.qrCodes.map((qrcode) => (
+                                        <tbody>
+                                            <tr>
+                                                <td ><img style={{ height: "200px", width: "200px" }} src={qrcode.qrcode}></img></td>
+                                                <td>{qrcode.code}</td>
+
+                                                <td>{qrcode.qrCodeId}</td>
+                                                <td>{qrcode.used.toString()}</td>
+
+
+                                            </tr>
+                                        </tbody>
+                                    ))
+                                    }
+                                </table>
 
                             </div>
+
+
                         </div>
                     </div>
                 </div>
             </div>
-
         </div>
-    )
+
+            </div >
+            )
 });
 
 export default QRCodesData;

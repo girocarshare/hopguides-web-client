@@ -73,13 +73,13 @@ const HomeDataContextProvider = (props) => {
 
 		qrCodes : [],
 		
+		generatedQrCodes : [],
+		
 		qrCode : null,
 
 		qr: "",
 
 		generateQrCodeModalShow: false,
-
-		qr: "",
 		
 		termsAndConditionsModal: {
 			show: false,
