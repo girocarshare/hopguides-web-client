@@ -17,10 +17,10 @@ function convertMonth(month) {
 
 		return "April"
 
-	} else if (month ===5) {
+	} else if (month === 5) {
 
 		return "May"
-	} else if (month=== 6) {
+	} else if (month === 6) {
 
 		return "June"
 	} else if (month === 7) {
@@ -50,9 +50,10 @@ export const homeDataReducer = (state, action) => {
 
 		case homeDataConstants.DATA_TOUR_POINTS_GET_SUCCESS:
 
-			
+
 			prodCpy = { ...state };
 
+			console.log(action.data)
 			prodCpy.toursWithPoints.toursWithPoints = action.data;
 			return prodCpy;
 
@@ -178,10 +179,10 @@ export const homeDataReducer = (state, action) => {
 
 			};
 
-		
 
 
-		
+
+
 
 		case homeDataConstants.SHOW_UPDATE_LOGO_MODAL:
 
@@ -273,13 +274,13 @@ export const homeDataReducer = (state, action) => {
 					failure: false,
 					text: "You have successfully deleted tour.",
 				},
-				toursWithPoints:{
+				toursWithPoints: {
 					toursWithPoints: action.data
 				}
 			};
 
-			
-			//prodCpy.toursWithPoints.toursWithPoints = action.data;
+
+		//prodCpy.toursWithPoints.toursWithPoints = action.data;
 
 		case homeDataConstants.DELETE_TOUR_FAILURE:
 
@@ -299,8 +300,8 @@ export const homeDataReducer = (state, action) => {
 
 			return {
 				...state,
-				toursWithPoints:{
-					toursWithPoints : action.data
+				toursWithPoints: {
+					toursWithPoints: action.data
 				},
 				modalData: {
 
@@ -374,7 +375,7 @@ export const homeDataReducer = (state, action) => {
 
 		case homeDataConstants.TOUR_UPDATE_SUCCESS:
 
-			
+
 			prodCpy = { ...state };
 
 			prodCpy.updateTourData.show = false;
@@ -528,7 +529,7 @@ export const homeDataReducer = (state, action) => {
 		case homeDataConstants.GET_BPARTNERS_SUCCESS:
 			prodCpy = { ...state };
 
-		
+
 
 			prodCpy.bpartners.bpartners = action.data;
 
@@ -645,19 +646,19 @@ export const homeDataReducer = (state, action) => {
 
 			};
 
-	case homeDataConstants.GET_QRCODES_SUCCESS:
-		return {
-			...state,
-			qrCodes: action.data,
+		case homeDataConstants.GET_QRCODES_SUCCESS:
+			return {
+				...state,
+				qrCodes: action.data,
 
-		};
+			};
 
-	case homeDataConstants.GET_QRCODES_FAILURE:
-		return {
-			...state,
-			qrCodes: []
+		case homeDataConstants.GET_QRCODES_FAILURE:
+			return {
+				...state,
+				qrCodes: []
 
-		};
+			};
 
 		case homeDataConstants.SHOW_ADD_QR_CODE_MODAL:
 			return {
@@ -673,10 +674,10 @@ export const homeDataReducer = (state, action) => {
 
 			};
 
-				case homeDataConstants.GENERATE_QRCODE_SUCCESS:
-			
-			
-				prodCpy = { ...state };
+		case homeDataConstants.GENERATE_QRCODE_SUCCESS:
+
+
+			prodCpy = { ...state };
 
 			prodCpy.generatedQrCodes = action.data;
 			//prodCpy.qr = action.data.qrcode;
@@ -692,31 +693,31 @@ export const homeDataReducer = (state, action) => {
 
 			};
 
-			case homeDataConstants.CHANGE_LOCK_CODE_SUCCESS:
+		case homeDataConstants.CHANGE_LOCK_CODE_SUCCESS:
 
-				return {
-					...state,
-	
-					showEditLockCodeModal:false,
-					modalData: {
-						success: true,
-						failure: false,
-						text: "You have successfully changed lock code",
-					},
-	
-				};
-		
-			case homeDataConstants.CHANGE_LOCK_CODE_FAILURE:
-				return {
-					...state,
-	
-					modalData: {
-						success: false,
-						failure: true,
-						text: "Error while changing lock code. Please try again later.",
-					},
-	
-				};
+			return {
+				...state,
+
+				showEditLockCodeModal: false,
+				modalData: {
+					success: true,
+					failure: false,
+					text: "You have successfully changed lock code",
+				},
+
+			};
+
+		case homeDataConstants.CHANGE_LOCK_CODE_FAILURE:
+			return {
+				...state,
+
+				modalData: {
+					success: false,
+					failure: true,
+					text: "Error while changing lock code. Please try again later.",
+				},
+
+			};
 
 		default:
 			return state;

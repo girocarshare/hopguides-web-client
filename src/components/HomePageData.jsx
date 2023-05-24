@@ -37,7 +37,7 @@ const HomePageData = forwardRef((props, ref) => {
         <div>
              <HomeData 
             data = {homeDataState.toursWithPoints.toursWithPoints}
-            tours = {tours}/>
+            tours = {homeDataState.toursWithPoints.toursWithPoints}/>
         </div>
 
     );
