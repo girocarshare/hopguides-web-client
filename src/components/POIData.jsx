@@ -671,7 +671,7 @@ const POIData = () => {
 															id="name"
 															type="text"
 															onChange={(e) => setWebURL(e.target.value)}
-															value={weburl === "" ? homeDataState.updatePointData.point.contact.weburl : weburl}
+															value={weburl === "" ? homeDataState.updatePointData.point.contact.webURL: weburl}
 														/>
 													</div>
 												</div>

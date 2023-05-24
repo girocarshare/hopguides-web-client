@@ -6,6 +6,7 @@ import TimePicker from 'react-time-picker';
 import Axios from "axios";
 import { deleteLocalStorage, authHeader } from "../helpers/auth-header";
 import { AiOutlineClose } from 'react-icons/ai';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 var num = 1;
 
@@ -95,6 +96,13 @@ const AddNewPartnerForm = (props) => {
 	const { homeDataState, dispatch } = useContext(HomeDataContext);
 
 
+	const handleDragEnd = (e) => {
+		if (!e.destination) return;
+		let tempData = Array.from(points);
+		let [source_data] = tempData.splice(e.source.index, 1);
+		tempData.splice(e.destination.index, 0, source_data);
+		setPoints(tempData);
+	};
 	const fetchData = async (input, num) => {
 		const response = await Axios.post(
 			"https://api.openai.com/v1/completions",
@@ -233,7 +241,7 @@ const AddNewPartnerForm = (props) => {
 				point.voucherDesc = JSON.parse(voucherDescTransl)
 				point.partner = true
 			}
-			const newData = [point, ...points];
+			const newData = [ ...points, point];
 			setPoints(newData)
 			setTitlePoint("")
 			setShortInfoPoint("")
@@ -1187,12 +1195,13 @@ const AddNewPartnerForm = (props) => {
 									points.length > 0 &&
 									<div>
 										<div class="modal__footer">
-											{
-
-												<div class="table-frame">
-													<table>
+										<DragDropContext onDragEnd={handleDragEnd}>
+													<table className="table borderd">
 														<thead>
+
 															<tr>
+															<th> =
+																</th>
 																<th>Title
 																</th>
 																<th>Short
@@ -1214,49 +1223,67 @@ const AddNewPartnerForm = (props) => {
 																</th>
 																<th>Phone
 																</th>
-																<th>Web page
+																<th>Web
+																	page
 																</th>
 																<th>Location
 																</th>
 															</tr>
 														</thead>
+														<Droppable droppableId="droppable-1">
+															{(provider) => (
+																<tbody
+																	className="text-capitalize"
+																	ref={provider.innerRef}
+																	{...provider.droppableProps}
+																>
+																	{points.map((point, index) => (
+																		<Draggable
+																			key={point.name.english}
+																			draggableId={point.name.english}
+																			index={index}
+																		>
+																			{(provider) => (
 
-														{points.map((point) => (
-															<tbody>
-																<tr>
-																	<td>{point.name.english}</td>
-																	<td>{point.shortInfo.english}</td>
-																	<td>{point.longInfo.english}</td>
-																	<td>{point.category}</td>
-																	{point.price == "" ?
-																		<td>/</td> :
-																		<td>{point.price} {currency}</td>}
-																	{point.offerName == "" ?
-																		<td>/</td> :
-																		<td>{point.offerName}</td>}
-																	{point.contact.name == "" ?
-																		<td>/</td> :
-																		<td>{point.contact.name}</td>}
-																	{point.contact.email == "" ?
-																		<td>/</td> :
-																		<td>{point.contact.email}</td>}
-																	{point.contact.phone == "" ?
-																		<td>/</td> :
-																		<td>{point.contact.phone}</td>}
-																	{point.contact.webURL == "" ?
-																		<td>/</td> :
-																		<td>{point.contact.webURL}</td>}
+																				<tr {...provider.draggableProps} ref={provider.innerRef} >
+																				 <td {...provider.dragHandleProps}>=</td>
+																					<td>{point.name.english}</td>
+																					<td>{point.shortInfo.english}</td>
+																					<td>{point.longInfo.english}</td>
+																					<td>{point.category}</td>
+																					{point.price == "" ?
+																						<td>/</td> :
+																						<td>{point.price} {currency}</td>}
+																					{point.offerName == "" ?
+																						<td>/</td> :
+																						<td>{point.offerName}</td>}
+																					{point.contact.name == "" ?
+																						<td>/</td> :
+																						<td>{point.contact.name}</td>}
+																					{point.contact.email == "" ?
+																						<td>/</td> :
+																						<td>{point.contact.email}</td>}
+																					{point.contact.phone == "" ?
+																						<td>/</td> :
+																						<td>{point.contact.phone}</td>}
+																					{point.contact.webURL == "" ?
+																						<td>/</td> :
+																						<td>{point.contact.webURL}</td>}
 
-																	<td>{`${point.location.latitude}  ${point.location.longitude}`}</td>
+																					<td>{`${point.location.latitude}  ${point.location.longitude}`}</td>
 
-																</tr>
-															</tbody>))
-														}
 
+																				</tr>
+																			)}
+																		</Draggable>
+																	))}
+																	{provider.placeholder}
+																</tbody>
+															)}
+														</Droppable>
 													</table>
+												</DragDropContext>
 
-												</div>
-											}
 										</div>
 
 										<div class="grid place-items-center "  >

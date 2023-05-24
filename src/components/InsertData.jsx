@@ -4,17 +4,18 @@ import { HomeDataContext } from "../contexts/HomeDataContext";
 import { homeDataConstants } from "../constants/HomeDataConstants";
 import TimePicker from 'react-time-picker';
 import { AiOutlineClose } from 'react-icons/ai';
-import {deleteLocalStorage, authHeader} from "../helpers/auth-header";
+import { deleteLocalStorage, authHeader } from "../helpers/auth-header";
 import Axios from "axios";
 import AddPartnerOrPointForm from "./AddPartnerOrPointForm";
 import BasicTourData from "./BasicTourData";
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 var url = process.env.REACT_APP_URL || "http://localhost:8080/";
 
 var num = 1;
 const InsertData = (props) => {
 
-	
+
 	const [errTitle, setErrTitle] = useState("");
 	const [errLongDescription, setErrLongDescription] = useState("");
 	const [errShortDescription, setErrShortDescription] = useState("");
@@ -130,6 +131,14 @@ const InsertData = (props) => {
 		}
 		return true;
 	}
+
+	const handleDragEnd = (e) => {
+		if (!e.destination) return;
+		let tempData = Array.from(points);
+		let [source_data] = tempData.splice(e.source.index, 1);
+		tempData.splice(e.destination.index, 0, source_data);
+		setPoints(tempData);
+	};
 
 	const fetchData = async (input, num) => {
 		const response = await Axios.post(
@@ -258,27 +267,27 @@ const InsertData = (props) => {
 		setErrAgreementTitle("")
 
 
-		if (titleTransl == "" || agreementDescTransl == "" || file==null|| agreementDescTransl == "" || audio == null || shortInfo == "" || longInfo == "" || price == "" || hotelId == "" || duration == "" || length == "" || highestPoint == "") {
+		if (titleTransl == "" || agreementDescTransl == "" || file == null || agreementDescTransl == "" || audio == null || shortInfo == "" || longInfo == "" || price == "" || hotelId == "" || duration == "" || length == "" || highestPoint == "") {
 			setErrMessage("Please fill in the fileds marked with *")
 		} else {
-		
-			if(!isJsonString(titleTransl)){
+
+			if (!isJsonString(titleTransl)) {
 				setErrTitle("Please insert the proper JSON format. Pay attention on enter and quotes(\")")
 				setErrMessage("JSON format invalid. Check the red fields.")
 			}
-			if(!isJsonString(agreementTitleTransl)){
+			if (!isJsonString(agreementTitleTransl)) {
 				setErrAgreementTitle("Please insert the proper JSON format. Pay attention on enter and quotes(\")")
 				setErrMessage("JSON format invalid. Check the red fields.")
 			}
-			if(!isJsonString(agreementDescTransl)){
+			if (!isJsonString(agreementDescTransl)) {
 				setErrAgreementDescription("Please insert the proper JSON format. Pay attention on enter and quotes(\")")
 				setErrMessage("JSON format invalid. Check the red fields.")
 			}
-			if(!isJsonString(shortInfo)){
+			if (!isJsonString(shortInfo)) {
 				setErrShortDescription("Please insert the proper JSON format. Pay attention on enter and quotes(\")")
 				setErrMessage("JSON format invalid. Check the red fields.")
 			}
-			if(!isJsonString(longInfo)){
+			if (!isJsonString(longInfo)) {
 				setErrLongDescription("Please insert the proper JSON format. Pay attention on enter and quotes(\")")
 				setErrMessage("JSON format invalid. Check the red fields.")
 			}
@@ -367,24 +376,24 @@ const InsertData = (props) => {
 	};
 	useEffect(() => {
 		var token = authHeader()
-        if (token == "null") {
-          window.location = "#/unauthorized";
-        } else {
-          Axios.get(`${url}api/users/getRole`, { headers: { Authorization: token } }, { validateStatus: () => true },
-          )
-            .then((res) => {
-              if (res.status === 200) {
-                if ("BPARTNER" == res.data) {
-                 
-          window.location = "#/unauthorized";
-                }
-              
-              }
-            })
-            .catch((err) => {
-            })
-        }
-	
+		if (token == "null") {
+			window.location = "#/unauthorized";
+		} else {
+			Axios.get(`${url}api/users/getRole`, { headers: { Authorization: token } }, { validateStatus: () => true },
+			)
+				.then((res) => {
+					if (res.status === 200) {
+						if ("BPARTNER" == res.data) {
+
+							window.location = "#/unauthorized";
+						}
+
+					}
+				})
+				.catch((err) => {
+				})
+		}
+
 	}, [dispatch]);
 	const addPartner = () => {
 		setPartner(true)
@@ -420,7 +429,7 @@ const InsertData = (props) => {
 		if (partner && (titlePointTransl == "" || shortInfoPointTransl == "" || longInfoPointTransl == "" || category == "" || pointPrice == "" || offerName == "" || responsiblePerson == "" || voucherDescTransl == "" || phone == "" || email == "" || longitude == "" || latitude == "" || audio2 == null || selectedFiles.length == 0 || (!mondayclosed && (mondayFrom == "" || mondayTo == "")) || (!tuesdayclosed && (tuesdayFrom == "" || tuesdayTo == "")) || (!wednesdayclosed && (wednesdayFrom == "" || wednesdayTo == "")) || (!thursdayclosed && (thursdayFrom == "" || thursdayTo == "")) || (!fridayclosed && (fridayFrom == "" || fridayTo == "")) || (!saturdayclosed && (saturdayFrom == "" || saturdayTo == "")) || (!sundayclosed && (sundayFrom == "" || sundayTo == "")))) {
 			setErrMessagePartner("Please insert mandatory fields for partner (marked with *)")
 		} else if (point && (titlePointTransl == "" || shortInfoPointTransl == "" || longInfoPointTransl == "" || category == "" || longitude == "" || latitude == "" || audio2 === null || selectedFiles.length === 0)) {
-			
+
 			setErrMessagePartner("Please insert mandatory fields for point of interest (marked with *)")
 		} else {
 			setAdd(false)
@@ -428,12 +437,12 @@ const InsertData = (props) => {
 			var jsonTitles = []
 			for (var ti of imageTitles) {
 				var help = ti.split("---")
-				if(!isJsonString(help[0])){
+				if (!isJsonString(help[0])) {
 					setErrImageTitle("Please insert the proper JSON format. Pay attention on enter and quotes(\")")
 					setErrMessagePartner("JSON format invalid. Check the red fields.")
 				}
 				var titlee = JSON.parse(help[0])
-				
+
 				var titleObj = {
 					number: help[1],
 					name: titlee
@@ -442,22 +451,23 @@ const InsertData = (props) => {
 			}
 
 
-			if(!isJsonString(titlePointTransl)){
+			if (!isJsonString(titlePointTransl)) {
 				setErrTitlePoint("Please insert the proper JSON format. Pay attention on enter and quotes(\")")
 				setErrMessagePartner("JSON format invalid. Check the red fields.")
 			}
-			if(!isJsonString(shortInfoPointTransl)){
+			if (!isJsonString(shortInfoPointTransl)) {
 				setErrShortDescriptionPoint("Please insert the proper JSON format. Pay attention on enter and quotes(\")")
 				setErrMessagePartner("JSON format invalid. Check the red fields.")
 			}
-			if(!isJsonString(longInfoPointTransl)){
+			if (!isJsonString(longInfoPointTransl)) {
 				setErrLongDescriptionPoint("Please insert the proper JSON format. Pay attention on enter and quotes(\")")
 				setErrMessagePartner("JSON format invalid. Check the red fields.")
 			}
-			if(partner && !isJsonString(voucherDescTransl)){
+			if (partner && !isJsonString(voucherDescTransl)) {
 				setErrVoucherDescriptionPoint("Please insert the proper JSON format. Pay attention on enter and quotes(\")")
 				setErrMessagePartner("JSON format invalid. Check the red fields.")
 			}
+			console.log(hotelId)
 			var pointObj = {
 				num: num,
 				name: JSON.parse(titlePointTransl),
@@ -479,12 +489,12 @@ const InsertData = (props) => {
                   "serbian": "",
                   "slovenian": ""
                   }`)
-				  pointObj.partner = false
+				pointObj.partner = false
 			} else {
 				pointObj.voucherDesc = JSON.parse(voucherDescTransl)
 				pointObj.partner = true
 			}
-			const newData = [pointObj, ...points];
+			const newData = [ ...points, pointObj];
 			setPoints(newData)
 			setTitlePoint("")
 			setShortInfoPoint("")
@@ -543,7 +553,7 @@ const InsertData = (props) => {
 			var new_file = new File([e.target.files[0]], 'audio2' + num + "---" + [e.target.files[0].name]);
 
 			setAudio2(new_file);
-			
+
 			setAudioNamePoint(e.target.files[0].name)
 		}
 	};
@@ -698,6 +708,7 @@ const InsertData = (props) => {
 									</button>
 								</div>
 								<div class="modal__body">
+			
 									<form class="form" id="contactForm">
 
 										<BasicTourData
@@ -743,11 +754,11 @@ const InsertData = (props) => {
 											point={point}
 											addPartner={addPartner}
 											addPoint={addPoint}
-											errTitle = {errTitle}
-											errLongDescription = {errLongDescription}
-											errShortDescription = {errShortDescription}
-											errAgreementTitle = {errAgreementTitle}
-											errAgreementDescription = {errAgreementDescription}
+											errTitle={errTitle}
+											errLongDescription={errLongDescription}
+											errShortDescription={errShortDescription}
+											errAgreementTitle={errAgreementTitle}
+											errAgreementDescription={errAgreementDescription}
 										/>
 
 
@@ -841,12 +852,12 @@ const InsertData = (props) => {
 											webURL={webURL}
 											errMessagePartner={errMessagePartner}
 											handleAdd={handleAdd}
-											errTitlePoint = {errTitlePoint}
-											errShortDescriptionPoint = {errShortDescriptionPoint}
-											errLongDescriptionPoint = {errLongDescriptionPoint}
-											errVoucherDescriptionPoint = {errVoucherDescriptionPoint}
-											errImageTitle = {errImageTitle}
-											audioNamePoint = {audioNamePoint}
+											errTitlePoint={errTitlePoint}
+											errShortDescriptionPoint={errShortDescriptionPoint}
+											errLongDescriptionPoint={errLongDescriptionPoint}
+											errVoucherDescriptionPoint={errVoucherDescriptionPoint}
+											errImageTitle={errImageTitle}
+											audioNamePoint={audioNamePoint}
 										/>
 									</form>
 
@@ -855,85 +866,104 @@ const InsertData = (props) => {
 								{
 									points.length > 0 &&
 									<div class="modal__body">
-										{
+			
+												<DragDropContext onDragEnd={handleDragEnd}>
+													<table className="table borderd">
+														<thead>
 
-											<div class="table-frame">
-												<table>
-													<thead>
-														<tr>
-															<th>Title
-															</th>
-															<th>Short
-																description
-															</th>
-															<th>Long
-																description
-															</th>
-															<th>Category
-															</th>
-															<th>Price
-															</th>
-															<th>Offer name
-															</th>
-															<th>Responsible
-																person
-															</th>
-															<th>Email
-															</th>
-															<th>Phone
-															</th>
-															<th>Web
-																page
-															</th>
-															<th>Location
-															</th>
-														</tr>
-													</thead>
-
-													{points.map((point) => (
-														<tbody>
 															<tr>
-																<td>{point.name.english}</td>
-																<td>{point.shortInfo.english}</td>
-																<td>{point.longInfo.english}</td>
-																<td>{point.category}</td>
-																{point.price == "" ?
-																	<td>/</td> :
-																	<td>{point.price} {currency}</td>}
-																{point.offerName == "" ?
-																	<td>/</td> :
-																	<td>{point.offerName}</td>}
-																{point.contact.name == "" ?
-																	<td>/</td> :
-																	<td>{point.contact.name}</td>}
-																{point.contact.email == "" ?
-																	<td>/</td> :
-																	<td>{point.contact.email}</td>}
-																{point.contact.phone == "" ?
-																	<td>/</td> :
-																	<td>{point.contact.phone}</td>}
-																{point.contact.webURL == "" ?
-																	<td>/</td> :
-																	<td>{point.contact.webURL}</td>}
-
-																<td>{`${point.location.latitude}  ${point.location.longitude}`}</td>
-
+															<th> =
+																</th>
+																<th>Title
+																</th>
+																<th>Short
+																	description
+																</th>
+																<th>Long
+																	description
+																</th>
+																<th>Category
+																</th>
+																<th>Price
+																</th>
+																<th>Offer name
+																</th>
+																<th>Responsible
+																	person
+																</th>
+																<th>Email
+																</th>
+																<th>Phone
+																</th>
+																<th>Web
+																	page
+																</th>
+																<th>Location
+																</th>
 															</tr>
-														</tbody>))
-													}
+														</thead>
+														<Droppable droppableId="droppable-1">
+															{(provider) => (
+																<tbody
+																	className="text-capitalize"
+																	ref={provider.innerRef}
+																	{...provider.droppableProps}
+																>
+																	{points.map((point, index) => (
+																		<Draggable
+																			key={point.name.english}
+																			draggableId={point.name.english}
+																			index={index}
+																		>
+																			{(provider) => (
 
-												</table>
-											</div>
-										}
+																				<tr {...provider.draggableProps} ref={provider.innerRef} >
+																				 <td {...provider.dragHandleProps}>=</td>
+																					<td>{point.name.english}</td>
+																					<td>{point.shortInfo.english}</td>
+																					<td>{point.longInfo.english}</td>
+																					<td>{point.category}</td>
+																					{point.price == "" ?
+																						<td>/</td> :
+																						<td>{point.price} {currency}</td>}
+																					{point.offerName == "" ?
+																						<td>/</td> :
+																						<td>{point.offerName}</td>}
+																					{point.contact.name == "" ?
+																						<td>/</td> :
+																						<td>{point.contact.name}</td>}
+																					{point.contact.email == "" ?
+																						<td>/</td> :
+																						<td>{point.contact.email}</td>}
+																					{point.contact.phone == "" ?
+																						<td>/</td> :
+																						<td>{point.contact.phone}</td>}
+																					{point.contact.webURL == "" ?
+																						<td>/</td> :
+																						<td>{point.contact.webURL}</td>}
+
+																					<td>{`${point.location.latitude}  ${point.location.longitude}`}</td>
+
+
+																				</tr>
+																			)}
+																		</Draggable>
+																	))}
+																	{provider.placeholder}
+																</tbody>
+															)}
+														</Droppable>
+													</table>
+												</DragDropContext>
 
 										<div class="modal__body grid dgrid-row place-items-center">
-											
+
 
 											<div className="paragraph-box2 grid dgrid-row place-items-center"
-                                            style={{ color: "red", fontSize: "0.8em", marginBottom: "30px" }}
-                                            hidden={!errMessage}>
-                                            {errMessage}
-                                        </div>
+												style={{ color: "red", fontSize: "0.8em", marginBottom: "30px" }}
+												hidden={!errMessage}>
+												{errMessage}
+											</div>
 
 
 											<div className="button-p grid dgrid-row place-items-center">

@@ -6,23 +6,24 @@ import React, {
 	useContext,
 	useRef
 } from "react";
-import {HomeDataContext} from "../contexts/HomeDataContext";
-import {homeDataService} from "../services/HomeDataService";
-import {homeDataConstants} from "../constants/HomeDataConstants";
-import {MdOutlineModeEditOutline, MdLaunch} from 'react-icons/md';
+import { HomeDataContext } from "../contexts/HomeDataContext";
+import { homeDataService } from "../services/HomeDataService";
+import { homeDataConstants } from "../constants/HomeDataConstants";
+import { MdOutlineModeEditOutline, MdLaunch } from 'react-icons/md';
 import Axios from "axios";
-import {deleteLocalStorage, authHeader} from "../helpers/auth-header";
+import { deleteLocalStorage, authHeader } from "../helpers/auth-header";
 import AddNewTourForm from "./AddNewTourForm";
 import UpdateLogoModal from "./UpdateLogoModal";
 import TourData from "./TourData";
 import ChangeLockCodeModal from "./ChangeLockCodeModal";
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 var url = process.env.REACT_APP_URL || "http://localhost:8080/";
 
 
 const HomeData = forwardRef((props) => {
 
-	const {homeDataState, dispatch} = useContext(HomeDataContext);
+	const { homeDataState, dispatch } = useContext(HomeDataContext);
 	const [users, setUsers] = useState([]);
 	const [tours, setTours] = useState(props.data);
 	const [tourPrice, setTourPrice] = useState("");
@@ -38,10 +39,38 @@ const HomeData = forwardRef((props) => {
 	const [partnerPrice, setPartnerPrice] = useState("");
 	const [offerName, setOfferName] = useState("");
 	var myElementRef = React.createRef();
+	const [reorganize, setReorganize] = useState(false);
+	const [reorganizeData, setReorganizeData] = useState([]);
+	const [data, setData] = useState([
+		{
+			name: "Jeevan",
+			age: 21,
+			gender: "male"
+		},
+		{
+			name: "Piyush",
+			age: 17,
+			gender: "male"
+		},
+		{
+			name: "Arti",
+			age: 22,
+			gender: "female"
+		}
+	]);
+
 	const ref = useRef(null);
 	const handleLogout = () => {
 		deleteLocalStorage();
 		window.location = "#/login";
+	};
+
+	const handleDragEnd = (e) => {
+		if (!e.destination) return;
+		let tempData = Array.from(reorganizeData);
+		let [source_data] = tempData.splice(e.source.index, 1);
+		tempData.splice(e.destination.index, 0, source_data);
+		setReorganizeData(tempData);
 	};
 
 	useEffect(() => {
@@ -52,31 +81,31 @@ const HomeData = forwardRef((props) => {
 
 
 		var token = authHeader()
-        if (token == "null") {
-          window.location = "#/unauthorized";
-        } else {
-          Axios.get(`${url}api/users/getRole`, { headers: { Authorization: token } }, { validateStatus: () => true },
-          )
-            .then((res) => {
-              if (res.status === 200) {
-                if ("BPARTNER" == res.data) {
-                  setRole(true)
-				  
-				  window.location = "#/unauthorized";
-                }
-                if ("PROVIDER" == res.data) {
-                  setRole(true)
-                  setAdmin(true)
-                }
-                if ("ADMIN" == res.data) {
-                  setAdminOnly(true)
-                  setAdmin(true)
-                }
-              }
-            })
-            .catch((err) => {
-            })
-        }
+		if (token == "null") {
+			window.location = "#/unauthorized";
+		} else {
+			Axios.get(`${url}api/users/getRole`, { headers: { Authorization: token } }, { validateStatus: () => true },
+			)
+				.then((res) => {
+					if (res.status === 200) {
+						if ("BPARTNER" == res.data) {
+							setRole(true)
+
+							window.location = "#/unauthorized";
+						}
+						if ("PROVIDER" == res.data) {
+							setRole(true)
+							setAdmin(true)
+						}
+						if ("ADMIN" == res.data) {
+							setAdminOnly(true)
+							setAdmin(true)
+						}
+					}
+				})
+				.catch((err) => {
+				})
+		}
 		setTours(homeDataState.toursWithPoints.toursWithPoints)
 		var contactUser = {
 			name: "Danijel Omrzel",
@@ -96,12 +125,12 @@ const HomeData = forwardRef((props) => {
 		getDocumentsInfoHandlerr();
 	};
 
-  
 
-  const getQrCodes = (e, data) => {
-  
-    window.location = "#/qrcodes/" + data;
-  };
+
+	const getQrCodes = (e, data) => {
+
+		window.location = "#/qrcodes/" + data;
+	};
 
 
 	const getQrCode = (e, data) => {
@@ -124,25 +153,25 @@ const HomeData = forwardRef((props) => {
 	const updateLogo = (e) => {
 
 
-		dispatch({type: homeDataConstants.SHOW_UPDATE_LOGO_MODAL});
+		dispatch({ type: homeDataConstants.SHOW_UPDATE_LOGO_MODAL });
 	};
 
 
 	const editLockCode = (e) => {
 
 
-		dispatch({type: homeDataConstants.SHOW_CHANGE_LOCK_CODE_MODAL});
+		dispatch({ type: homeDataConstants.SHOW_CHANGE_LOCK_CODE_MODAL });
 	};
 
 
 	const addNew = (e) => {
 
-		dispatch({type: homeDataConstants.SHOW_ADD_MODAL});
+		dispatch({ type: homeDataConstants.SHOW_ADD_MODAL });
 	};
 	const addNewPartner = (e, id, bpartnerId) => {
 
 		console.log(bpartnerId)
-		dispatch({type: homeDataConstants.SHOW_ADD_PARTNER_MODAL, id: id, bpartnerId: bpartnerId});
+		dispatch({ type: homeDataConstants.SHOW_ADD_PARTNER_MODAL, id: id, bpartnerId: bpartnerId });
 	};
 
 
@@ -187,7 +216,7 @@ const HomeData = forwardRef((props) => {
 	const update = (e, tour) => {
 
 
-		dispatch({type: homeDataConstants.UPDATE_TOUR_DATA_MODAL_SHOW, tour});
+		dispatch({ type: homeDataConstants.UPDATE_TOUR_DATA_MODAL_SHOW, tour });
 
 
 	};
@@ -210,185 +239,118 @@ const HomeData = forwardRef((props) => {
 
 	const updatePartnerPrice = (e, point, tour) => {
 
-		dispatch({type: homeDataConstants.UPDATE_POINT_DATA_MODAL_SHOW, point});
+		dispatch({ type: homeDataConstants.UPDATE_POINT_DATA_MODAL_SHOW, point });
 
 
 	};
+	function timeout(delay) {
+		return new Promise(res => setTimeout(res, delay));
+	}
 
 
-		const reorgnizeTableRows = () => {
 
-		const table = ref.current;
-		console.log(table);
-	
 
-		// Get the table and its rows
-		//var table = document.getElementById("my-table");
+	const reorgnizeTableRows = async (e, data) => {
+
+		console.log(data)
+		/*for(var obj of data){
+			setReorganizeData(reorganizeData => [...reorganizeData, obj])
+		}*/
+
+		// setReorganizeData([...data])    
+		// setState(prevState => [...prevState, obj1])
+		//setReorganizeData(data)
+
+		for (var obj of data) {
+			const newData = [...reorganizeData, obj];
+			setReorganizeData(newData)
+		}
 		
-		/*ar rows = table.rows;
-		
-		// Initialize the drag source element to null
-		var dragSrcEl = null;
-	
-		// Loop through each row (skipping the first row which contains the table headers)
-		for (var i = 1; i < rows.length; i++) {
-			var row = rows[i];
-			// Make each row draggable
-			
-			row.draggable = true;
-	
-			// Add an event listener for when the drag starts
-			row.addEventListener('dragstart', function (e) {
-				// Set the drag source element to the current row
-				dragSrcEl = this;
-				// Set the drag effect to "move"
-				e.dataTransfer.effectAllowed = 'move';
-				// Set the drag data to the outer HTML of the current row
-				e.dataTransfer.setData('text/html', this.outerHTML);
-				// Add a class to the current row to indicate it is being dragged
-				this.classList.add('bg-gray-100');
-			});
-	
-			// Add an event listener for when the drag ends
-			row.addEventListener('dragend', function (e) {
-				// Remove the class indicating the row is being dragged
-				this.classList.remove('bg-gray-100');
-				// Remove the border classes from all table rows
-				table.querySelectorAll('.border-t-2', '.border-blue-300').forEach(function (el) {
-					el.classList.remove('border-t-2', 'border-blue-300');
-				});
-			});
-	
-			// Add an event listener for when the dragged row is over another row
-			row.addEventListener('dragover', function (e) {
-				// Prevent the default dragover behavior
-				e.preventDefault();
-				// Add border classes to the current row to indicate it is a drop target
-				this.classList.add('border-t-2', 'border-blue-300');
-			});
-	
-			// Add an event listener for when the dragged row enters another row
-			row.addEventListener('dragenter', function (e) {
-				// Prevent the default dragenter behavior
-				e.preventDefault();
-				// Add border classes to the current row to indicate it is a drop target
-				this.classList.add('border-t-2', 'border-blue-300');
-			});
-	
-			// Add an event listener for when the dragged row leaves another row
-			row.addEventListener('dragleave', function (e) {
-				// Remove the border classes from the current row
-				this.classList.remove('border-t-2', 'border-blue-300');
-			});
-	
-			// Add an event listener for when the dragged row is dropped onto another row
-			row.addEventListener('drop', function (e) {
-				// Prevent the default drop behavior
-				e.preventDefault();
-				// If the drag source element is not the current row
-				if (dragSrcEl != this) {
-					// Get the index of the drag source element
-					var sourceIndex = dragSrcEl.rowIndex;
-					// Get the index of the target row
-					var targetIndex = this.rowIndex;
-					// If the source index is less than the target index
-					if (sourceIndex < targetIndex) {
-						// Insert the drag source element after the target row
-						table.tBodies[0].insertBefore(dragSrcEl, this.nextSibling);
-					} else {
-						// Insert the drag source element before the target row
-						table.tBodies[0].insertBefore(dragSrcEl, this);
-					}
-				}
-				// Remove the border classes from all table rows
-				table.querySelectorAll('.border-t-2', '.border-blue-300').forEach(function (el) {
-				  el.classList.remove('border-t-2', 'border-blue-300');
-					});
-				});
-			}*/
+		setReorganize(!reorganize)
 	};
-	
+
 
 	return (
 
 		<div>
 
 			{homeDataState.showModal && <div>
-				<AddNewTourForm/>
+				<AddNewTourForm />
 			</div>}
 
 			{homeDataState.showEditLogoModal && <div>
-				<UpdateLogoModal/>
+				<UpdateLogoModal />
 			</div>}
 
 			{homeDataState.showEditLockCodeModal && <div>
-				<ChangeLockCodeModal/>
+				<ChangeLockCodeModal />
 			</div>}
 
 			{homeDataState.updateTourData.show && <div>
-				<TourData/>
+				<TourData />
 			</div>}
 
 			<div className="container pt-20 lg:pt-40 pb-12">
 
+
 				<div className="navbar">
 					<div className="navbar__content">
 						<div>
-							<img className="h-8 w-auto" src="assets/img/logo.svg"/>
+							<img className="h-8 w-auto" src="assets/img/logo.svg" />
 						</div>
 						<div className="hidden lg:flex flex-row items-center gap-2">
 
 
 							{role &&
-							<div>
-								<button className="button button--clear button--small" type="button" onClick={updateLogo}>
-									Edit logo
-								</button>
-							</div>
+								<div>
+									<button className="button button--clear button--small" type="button" onClick={updateLogo}>
+										Edit logo
+									</button>
+								</div>
 							}
 
 							{role &&
-							<div>
-								<button className="button button--clear button--small" type="button" onClick={editLockCode}>
-									Edit lock code
-								</button>
-							</div>
+								<div>
+									<button className="button button--clear button--small" type="button" onClick={editLockCode}>
+										Edit lock code
+									</button>
+								</div>
 							}
 
 							{adminOnly &&
-							<div>
-								<button className="button button--clear button--small" type="button"
+								<div>
+									<button className="button button--clear button--small" type="button"
 										onClick={handleRegister}>
-									New user
-								</button>
-							</div>
+										New user
+									</button>
+								</div>
 							}
 
 							{adminOnly &&
-							<div>
-								<button className="button button--clear button--small" type="button"
+								<div>
+									<button className="button button--clear button--small" type="button"
 										onClick={allBusinessPartners}>
-									Partners
-								</button>
-							</div>
+										Partners
+									</button>
+								</div>
 							}
 
 
 							{(!role && !adminOnly) &&
 								<div>
 									<button className="button button--clear button--small" type="button"
-											onClick={handleLogin}>
+										onClick={handleLogin}>
 										Log in
 									</button>
 								</div>
 							}
 
 							{(role || adminOnly) &&
-							<div>
-								<button className="button button--clear button--small" type="button" onClick={handleLogout}>
-									Log out
-								</button>
-							</div>
+								<div>
+									<button className="button button--clear button--small" type="button" onClick={handleLogout}>
+										Log out
+									</button>
+								</div>
 							}
 
 						</div>
@@ -403,7 +365,7 @@ const HomeData = forwardRef((props) => {
 					<div className="flex flex-col items-center justify-center gap-8 col-span-12 lg:col-span-6">
 						<div
 							className="w-48 h-48 rounded-full bg-white border border-black/10 oveflow-hidden bg-contain bg-center bg-no-repeat"
-							style={{backgroundImage: `url(${("assets/img/turizem-lj.jpg")})`,}}>
+							style={{ backgroundImage: `url(${("assets/img/turizem-lj.jpg")})`, }}>
 						</div>
 						<h1 className=" text-heading4 text-center">
 							Tourism Ljubljana
@@ -420,7 +382,7 @@ const HomeData = forwardRef((props) => {
 								Contact
 							</div>
 							{users.map((point) => (
-								<div  className="flex flex-col gap-1 lg:gap-2 w-full overflow-hidden -ml-2 lg:ml-0">
+								<div className="flex flex-col gap-1 lg:gap-2 w-full overflow-hidden -ml-2 lg:ml-0">
 									<div className="text-sm lg:text-xl font-bold text-black">
 										{point.name}
 									</div>
@@ -437,73 +399,74 @@ const HomeData = forwardRef((props) => {
 				</div>
 
 				<div className="p-2 md:p-4 bg-black/[3%] rounded-2xl mb-12">
-					<div  className="py-3 px-2 pb-4 md:pb-6 flex flex-row items-center justify-between gap-4">
+					<div className="py-3 px-2 pb-4 md:pb-6 flex flex-row items-center justify-between gap-4">
 						<h4 className="text-heading6">
 							Tours
 						</h4>
 						<div>
-								
 
-									{admin &&
-							<div>
-								<button className="button button--primary button--small" variant="contained" type="button" onClick={insertdata}>
-									New tour
-								</button>
-							</div>
-							}
+
+							{admin &&
+								<div>
+									<button className="button button--primary button--small" variant="contained" type="button" onClick={insertdata}>
+										New tour
+									</button>
 								</div>
+							}
+						</div>
 					</div>
 
 					<div className="table-frame">
 
+
 						<table ref={ref} id="my-table">
 							<thead>
-							<tr>
-								<th>Name</th>
-								<th className="whitespace-nowrap">Price<span
-									className="text-xs font-normal text-black/60 ml-1">/ incl tax</span>
-								</th>
-								<th className="whitespace-nowrap">Tours booked<span
-									className="text-xs font-normal text-black/60 ml-1">/ this month</span></th>
-								<th>Options</th>
-							</tr>
+								<tr>
+									<th>Name</th>
+									<th className="whitespace-nowrap">Price<span
+										className="text-xs font-normal text-black/60 ml-1">/ incl tax</span>
+									</th>
+									<th className="whitespace-nowrap">Tours booked<span
+										className="text-xs font-normal text-black/60 ml-1">/ this month</span></th>
+									<th>Options</th>
+								</tr>
 							</thead>
 
 							{homeDataState.toursWithPoints.toursWithPoints.map((tour) => (
 								<tbody>
-								<tr class="text-sm transition-all hover:bg-gray-100">
-									<td id={tour.tourId} onClick={(e) => {
+									<tr class="text-sm transition-all hover:bg-gray-100">
+										<td id={tour.tourId} onClick={(e) => {
 
-										const element = document.getElementById(tour.tourId);
-										if (element) {
-											element.scrollIntoView({behavior: 'smooth'});
-										}
+											const element = document.getElementById(tour.tourId);
+											if (element) {
+												element.scrollIntoView({ behavior: 'smooth' });
+											}
 
 
-									}}>{tour.title.english}</td>
-									<td>{`${tour.price} ${tour.currency} including tax`}</td>
-										
-									<td>{tour.noOfRidesAMonth}</td>
-									<td>
-										<div className="flex flex-row items-center gap-2 justify-end">
-											<button className="button button--secondary button--small" onClick={(event) => {
-												seeTermsAndConditions(event, tour.tourId)
-											}}>
-												Terms and conditions
-											</button>
-											<button className="button button--secondary button--small"
+										}}>{tour.title.english}</td>
+										<td>{`${tour.price} ${tour.currency} including tax`}</td>
+
+										<td>{tour.noOfRidesAMonth}</td>
+										<td>
+											<div className="flex flex-row items-center gap-2 justify-end">
+												<button className="button button--secondary button--small" onClick={(event) => {
+													seeTermsAndConditions(event, tour.tourId)
+												}}>
+													Terms and conditions
+												</button>
+												<button className="button button--secondary button--small"
 													onClick={(e) => getHistory(e, tour.tourId)}>Get report
-											</button>
-                    {adminOnly &&   <button className="button button--secondary button--small" onClick={(e) => getQrCodes(e, tour.tourId)} >Get qr codes</button>}
-											<button className="button button--secondary button--small"
+												</button>
+												{adminOnly && <button className="button button--secondary button--small" onClick={(e) => getQrCodes(e, tour.tourId)} >Get qr codes</button>}
+												<button className="button button--secondary button--small"
 													onClick={(e) => update(e, tour)}>{updateField}</button>
-										 {adminOnly &&	<button className="button button--secondary button--small"
+												{adminOnly && <button className="button button--secondary button--small"
 													onClick={(e) => deleteTour(e, tour)}>Delete
-											</button>}
-										</div>
-									</td>
+												</button>}
+											</div>
+										</td>
 
-								</tr>
+									</tr>
 								</tbody>
 							))
 							}
@@ -514,7 +477,7 @@ const HomeData = forwardRef((props) => {
 
 				<div className="p-2 md:p-4 bg-black/[3%] rounded-2xl mb-12">
 
-					{homeDataState.toursWithPoints.toursWithPoints.map((tour, i) =>
+					{!reorganize && <div>{homeDataState.toursWithPoints.toursWithPoints.map((tour, i) =>
 
 						<div >
 
@@ -523,20 +486,22 @@ const HomeData = forwardRef((props) => {
 									POIs & Partners for {tour.title.english} tour
 								</h4>
 								<div>
-									{admin && 
-									<button className="button button--primary button--small" variant="contained"
+									{admin &&
+										<button className="button button--primary button--small" variant="contained"
 											onClick={(e) => addNewPartner(e, tour.tourId, tour.bpartnerId)}>
-										Add partner
-									</button>
+											Add partner
+										</button>
 									}
-								</div><div>
-									{admin && 
-									<button className="button button--primary button--small" variant="contained"
-											onClick={(e) => reorgnizeTableRows(e, tour.tourId, tour.bpartnerId)}>
-										Reorganize table rows
-									</button>
+								</div>{/*<div>
+									{admin &&
+										<button className="button button--primary button--small" variant="contained"
+											onClick={(e) => reorgnizeTableRows(e, tour.points)}>
+											Change the order
+										</button>
 									}
-								</div>
+
+
+								</div>*/}
 							</div>
 
 
@@ -545,69 +510,188 @@ const HomeData = forwardRef((props) => {
 								<table >
 									<thead>
 
-									<tr>
-										<th>Name</th>
-										<th className="whitespace-nowrap">Price<span
-											className="text-xs font-normal text-black/60 ml-1">/ incl tax</span>
-										</th>
-										<th className="whitespace-nowrap">Offer name</th>
-										<th>Category</th>
-										<th className="whitespace-nowrap">Used coupons<span
-											className="text-xs font-normal text-black/60 ml-1">/ this month</span></th>
-										<th>Options</th>
-									</tr>
+										<tr>
+											<th>Name</th>
+											<th className="whitespace-nowrap">Price<span
+												className="text-xs font-normal text-black/60 ml-1">/ incl tax</span>
+											</th>
+											<th className="whitespace-nowrap">Offer name</th>
+											<th>Category</th>
+											<th className="whitespace-nowrap">Used coupons<span
+												className="text-xs font-normal text-black/60 ml-1">/ this month</span></th>
+											<th>Options</th>
+										</tr>
 									</thead>
 
 									{tour.points.map((points) => (
 										<tbody>
-										<tr id={tour.tourId}>
+											<tr id={tour.tourId}>
 
-											<td>{points.point.name.english}</td>
-											<td>
-												{points.point.price == "" ?	"/" : `${points.point.price} ${tour.currency} including tax`}
-											</td>
-											<td>
-											{points.point.offerName == "" ?	"/" : `${points.point.offerName} `}
-											</td>
+												<td>{points.point.name.english}</td>
+												<td>
+													{points.point.price == "" ? "/" : `${points.point.price} ${tour.currency} including tax`}
+												</td>
+												<td>
+													{points.point.offerName == "" ? "/" : `${points.point.offerName} `}
+												</td>
 
-											<td>{points.point.category}</td>
+												<td>{points.point.category}</td>
 
-											<td>{points.monthlyUsed}</td>
-											<td>
-												<div className="flex flex-row items-center gap-2 justify-end">
-													{points.point.offerName != "" && <button className="button button--secondary button--small"
+												<td>{points.monthlyUsed}</td>
+												<td>
+													<div className="flex flex-row items-center gap-2 justify-end">
+														{points.point.offerName != "" && <button className="button button--secondary button--small"
 															onClick={(event) => {
 																visitWebsite(event, points.point.id)
 															}}>
-														Web
-													</button>}
-													{points.point.offerName != "" &&<button className="button button--secondary button--small"
+															Web
+														</button>}
+														{points.point.offerName != "" && <button className="button button--secondary button--small"
 															onClick={(event) => {
 																getQrCode(event, points.point.id)
 															}}>
-														Get QR
-													</button>}
-													<button className="button button--secondary button--small"
+															Get QR
+														</button>}
+														<button className="button button--secondary button--small"
 															onClick={(e) => updatePartnerPrice(e, points, tour)}>
-														{updatePartner}
-													</button>
-													{adminOnly &&  <button className="button button--secondary button--small"
+															{updatePartner}
+														</button>
+														{adminOnly && <button className="button button--secondary button--small"
 															onClick={(e) => deletePoi(e, tour, points.point.id)}>
-														Delete
-													</button>}
-												</div>
-											</td>
+															Delete
+														</button>}
+													</div>
+												</td>
 
-										</tr>
+											</tr>
 										</tbody>
 									))}
 								</table>
 
 							</div>
 
-							<br/> <br/>
+							<br /> <br />
 						</div>
 					)}
+					</div>}
+
+					{reorganize && homeDataState.reorganizeData.length != 0 && <div>
+						{homeDataState.reorganizeData.map((tour, i) =>
+
+							<div >
+
+								<div className="py-3 px-2 pb-4 md:pb-6 flex flex-row items-center justify-between gap-4">
+									<h4 className="text-heading6">
+										POIs & Partners for {tour.title.english} tour
+									</h4>
+									<div>
+										{admin &&
+											<button className="button button--primary button--small" variant="contained"
+												onClick={(e) => addNewPartner(e, tour.tourId, tour.bpartnerId)}>
+												Add partner
+											</button>
+										}
+									</div><div>
+
+										{admin &&
+											<button className="button button--primary button--small" variant="contained"
+												onClick={(e) => reorgnizeTableRows(e, tour.points)}>
+												Save
+											</button>
+										}
+									</div>
+								</div>
+
+
+								<div className="table-frame">
+
+
+									<DragDropContext onDragEnd={handleDragEnd}>
+										<table className="table borderd">
+											<thead>
+
+												<tr>
+													<th>Name</th>
+													<th className="whitespace-nowrap">Price<span
+														className="text-xs font-normal text-black/60 ml-1">/ incl tax</span>
+													</th>
+													<th className="whitespace-nowrap">Offer name</th>
+													<th>Category</th>
+													<th className="whitespace-nowrap">Used coupons<span
+														className="text-xs font-normal text-black/60 ml-1">/ this month</span></th>
+													<th>Options</th>
+												</tr>
+											</thead>
+											<Droppable droppableId="droppable-1">
+												{(provider) => (
+													<tbody
+														className="text-capitalize"
+														ref={provider.innerRef}
+														{...provider.droppableProps}
+													>
+														{tour.points.map((points, index) => (
+															<Draggable
+																key={points.point.id}
+																draggableId={points.point.id}
+																index={index}
+															>
+																{(provider) => (
+
+																	<tr {...provider.draggableProps} ref={provider.innerRef} id={tour.tourId}>
+																		{reorganize && <td {...provider.dragHandleProps}>=</td>}
+																		<td > {points.point.name.english}</td>
+																		<td>
+																			{points.point.price == "" ? "/" : `${points.point.price} ${tour.currency} including tax`}
+																		</td>
+																		<td>
+																			{points.point.offerName == "" ? "/" : `${points.point.offerName} `}
+																		</td>
+
+																		<td>{points.point.category}</td>
+
+																		<td>{points.monthlyUsed}</td>
+																		<td>
+																			<div className="flex flex-row items-center gap-2 justify-end">
+																				{points.point.offerName != "" && <button className="button button--secondary button--small"
+																					onClick={(event) => {
+																						visitWebsite(event, points.point.id)
+																					}}>
+																					Web
+																				</button>}
+																				{points.point.offerName != "" && <button className="button button--secondary button--small"
+																					onClick={(event) => {
+																						getQrCode(event, points.point.id)
+																					}}>
+																					Get QR
+																				</button>}
+																				<button className="button button--secondary button--small"
+																					onClick={(e) => updatePartnerPrice(e, points, tour)}>
+																					{updatePartner}
+																				</button>
+																				{adminOnly && <button className="button button--secondary button--small"
+																					onClick={(e) => deletePoi(e, tour, points.point.id)}>
+																					Delete
+																				</button>}
+																			</div>
+																		</td>
+
+																	</tr>
+																)}
+															</Draggable>
+														))}
+														{provider.placeholder}
+													</tbody>
+												)}
+											</Droppable>
+										</table>
+									</DragDropContext>
+
+								</div>
+
+								<br /> <br />
+							</div>
+						)}
+					</div>}
 				</div>
 
 			</div>
