@@ -144,11 +144,10 @@ const InsertData = (props) => {
 		const response = await Axios.post(
 			"https://api.openai.com/v1/completions",
 			{
-				prompt: `translate "${input}" to english, spanish, serbian and slovenian and make it as one json with lower case letters as keys`,
+				prompt: `translate "${input}" to english, spanish, serbian and slovenian and put it in json format`,
 				model: 'text-davinci-002',
-				max_tokens: 500,
+				max_tokens: 2500,
 				n: 1,
-				stop: ".",
 			},
 			{
 				headers: {
@@ -189,9 +188,9 @@ const InsertData = (props) => {
 		const response = await Axios.post(
 			"https://api.openai.com/v1/completions",
 			{
-				prompt: `write me a short description about ${input}, translate it to english, spanish, serbian and slovenian and make it as one json with lower case letters as keys`,
+				prompt: `write me a short description about ${input}, translate it to english, spanish, serbian and slovenian and put it in json format`,
 				model: 'text-davinci-003',
-				max_tokens: 2049,
+				max_tokens: 2500,
 				n: 1,
 			},
 			{
@@ -207,7 +206,7 @@ const InsertData = (props) => {
 		const response2 = await Axios.post(
 			"https://api.openai.com/v1/completions",
 			{
-				prompt: `write me a long description about ${input}, translate it to to english, spanish, serbian and slovenian and make it as one json with lower case letters as keys`,
+				prompt: `write me a long description about ${input}, translate it to to english, spanish, serbian and slovenian and put it in json format`,
 				model: 'text-davinci-003',
 				max_tokens: 2049,
 				n: 1,
