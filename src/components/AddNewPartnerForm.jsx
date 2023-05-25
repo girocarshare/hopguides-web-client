@@ -1018,7 +1018,6 @@ const AddNewPartnerForm = (props) => {
 															<span>Upload image</span>
 															<input type="file"
 																multiple
-																accept="image/*"
 																onChange={selectFiles}
 																class="sr-only" />
 														</label>

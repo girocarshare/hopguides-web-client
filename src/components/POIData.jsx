@@ -1027,7 +1027,7 @@ const POIData = () => {
 												<label
 													class="button button--secondary button--small">
 													<span>Upload image</span>
-													<input type={"file"} accept="image/*" multiple
+													<input type={"file"} multiple
 														onChange={selectFiles}
 														class="sr-only" />
 												</label>
