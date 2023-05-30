@@ -13,7 +13,7 @@ const mapState = {
 	controls: [],
 };
 var url = process.env.REACT_APP_URL || "http://localhost:8080/";
-const TourData = () => {
+const UpdatedTourData = () => {
 	const [errTitle, setErrTitle] = useState("");
 	const [errLongDescription, setErrLongDescription] = useState("");
 	const [errShortDescription, setErrShortDescription] = useState("");
@@ -50,120 +50,6 @@ const TourData = () => {
 	const [showModal, setShowModal] = useState(false);
 	const { homeDataState, dispatch } = useContext(HomeDataContext);
 
-
-	const fetchData = async (input, num) => {
-		const response = await Axios.post(
-			"https://api.openai.com/v1/completions",
-			{
-				prompt: `translate "${input}" to slovenian`,
-				model: 'text-davinci-002',
-				max_tokens: 500,
-				n: 1,
-			},
-			{
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: `Bearer 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`,
-				},
-			}
-		);
-
-		if (num == 1) {
-
-			setTitleTransl(response.data.choices[0].text)
-		} else if (num == 2) {
-
-			setAgreementTitleTransl(response.data.choices[0].text)
-		} else if (num == 3) {
-
-			setAgreementDescTransl(response.data.choices[0].text)
-		}
-
-		return response.data.choices[0].text;
-	};
-
-
-	const makeShortAndLongDesc = async (input) => {
-		const response = await Axios.post(
-			"https://api.openai.com/v1/completions",
-			{
-				prompt: `in one paragraph write me a short description about ${input}`,
-				model: 'text-davinci-003',
-				max_tokens: 2049,
-				n: 1,
-			},
-			{
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: `Bearer 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`,
-				},
-			}
-		);
-
-		setShortInfo(response.data.choices[0].text)
-
-
-		const responseSlo = await Axios.post(
-			"https://api.openai.com/v1/completions",
-			{
-				prompt: `translate ${response.data.choices[0].text} to slovenian`,
-				model: 'text-davinci-003',
-				max_tokens: 2049,
-				n: 1,
-			},
-			{
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: `Bearer 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`,
-				},
-			}
-		);
-
-		setShortInfoTransl(responseSlo.data.choices[0].text)
-
-
-		const response2 = await Axios.post(
-			"https://api.openai.com/v1/completions",
-			{
-				prompt: ` write me a long description about ${input} and put it in one paragraph`,
-				model: 'text-davinci-003',
-				max_tokens: 2049,
-				n: 1,
-			},
-			{
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: `Bearer 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`,
-				},
-			}
-		);
-
-
-		setLongInfo(response2.data.choices[0].text)
-
-		const response2Slo = await Axios.post(
-			"https://api.openai.com/v1/completions",
-			{
-				prompt: `translate ${response2.data.choices[0].text} to slovenian`,
-				model: 'text-davinci-003',
-				max_tokens: 2049,
-				n: 1,
-			},
-			{
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: `Bearer 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`,
-				},
-			}
-		);
-
-		setLongInfoTransl(response2Slo.data.choices[0].text)
-		return response.data.choices[0].text;
-	};
-
-
-
-
 	const editTermsAndConditions = () => {
 
 		setShowModal(true)
@@ -178,216 +64,10 @@ const TourData = () => {
 
 
 	};
-	function isJsonString(str) {
-		try {
-			JSON.parse(str);
-		} catch (e) {
-			return false;
-		}
-		return true;
-	}
 
-	const handleSubmit = (e) => {
-		e.preventDefault();
-		var tour = {}
-
-		setErrTitle("")
-		setErrLongDescription("")
-		setErrShortDescription("")
-		setErrAgreementDescription("")
-		setErrAgreementTitle("")
-
-		var title1 = ""
-		if(title == ""){
-			title1 = homeDataState.updateTourData.tour.title.english
-		}else{
-			title1 = title
-		}
-
-		var titleTransl1 = ""
-		if(titleTransl == ""){
-			titleTransl1 = homeDataState.updateTourData.tour.title.slovenian
-		}else{
-			titleTransl1 = titleTransl
-		}
-
-		var agreementTitle1 = ""
-		if(agreementTitle == ""){
-			agreementTitle1 = homeDataState.updateTourData.tour.agreementTitle.english
-		}else{
-			agreementTitle1 = agreementTitle
-		}
-
-		var agreementTitleTransl1 = ""
-		if(agreementTitleTransl == ""){
-			agreementTitleTransl1 = homeDataState.updateTourData.tour.agreementTitle.slovenian
-		}else{
-			agreementTitleTransl1 = agreementTitleTransl
-		}
-
-		var agreementDesc1 = ""
-		if(agreementDesc == ""){
-			agreementDesc1 = (homeDataState.updateTourData.tour.agreementDesc.english)
-		}else{
-			agreementDesc1 = agreementDesc
-		}
-
-		var agreementDescTransl1 = ""
-		if(agreementDescTransl == ""){
-			agreementDescTransl1 = (homeDataState.updateTourData.tour.agreementDesc.slovenian)
-		}else{
-			agreementDescTransl1 = agreementDescTransl
-		}
-
-
-		var shortInfo1 = ""
-		if(shortInfo == ""){
-			shortInfo1 = (homeDataState.updateTourData.tour.shortInfo.english)
-		}else{
-			shortInfo1 = shortInfo
-		}
-
-		var shortInfoTransl1 = ""
-		if(shortInfoTransl == ""){
-			shortInfoTransl1 = (homeDataState.updateTourData.tour.shortInfo.slovenian)
-		}else{
-			shortInfoTransl1 = shortInfoTransl
-		}
-
-		var longInfo1 = ""
-		if(longInfo == ""){
-			longInfo1 = (homeDataState.updateTourData.tour.longInfo.english)
-		}else{
-			longInfo1 = longInfo
-		}
-
-		var longInfoTransl1 = ""
-		if(longInfoTransl == ""){
-			longInfoTransl1 = (homeDataState.updateTourData.tour.longInfo.slovenian)
-		}else{
-			longInfoTransl1 = longInfoTransl
-		}
-
-		
-		tour.title = JSON.parse(`{"english":" ${title1.trim()} ", "slovenian" : "${titleTransl1.trim()}"}`)
-		tour.agreementTitle = JSON.parse(`{"english":"${agreementTitle1.trim()} ", "slovenian" : " ${agreementTitleTransl1.trim()}"}`)
-		tour.agreementDesc = JSON.parse(`{"english":"${agreementDesc1.trim()}", "slovenian" : "${ agreementDescTransl1.trim()} "}`)
-		tour.shortInfo = JSON.parse(`{"english":" ${shortInfo1.trim()} ", "slovenian" : "${ shortInfoTransl1.trim()} "}`)
-		tour.longInfo = JSON.parse(`{"english":"${longInfo1.trim()} ", "slovenian" : "${longInfoTransl1.trim()}"}`)
-	
-
-		if (price != 0) {
-			tour.price = price
-		}
-		if (currency != "") {
-			tour.currency = currency
-		}
-		if (duration != "") {
-			tour.duration = duration
-		}
-		if (length != "") {
-			tour.length = length
-		}
-		if (highestPoint != "") {
-			tour.highestPoint = highestPoint
-		}
-		if (currency != "") {
-			tour.currency = currency
-		}
-
-		
-		tour.id = homeDataState.updateTourData.tour.tourId
-		
-		const formData = new FormData();
-		if (file != null) {
-			formData.append('file', file);
-		}
-		if (audio != null) {
-			formData.append('file', audio);
-		}
-		formData.append('tour', JSON.stringify(tour));
-		var token = authHeader()
-		var xhr = new XMLHttpRequest();
-	//	xhr.addEventListener("load", SuccessHandler, false);
-		//xhr.addEventListener("error", ErrorHandler, false);
-		//xhr.addEventListener("abort", AbortHandler, false);
-		xhr.open('POST', `${url}api/pnl/tour/update/tour`, true);
-		xhr.setRequestHeader('authorization', token);
-		xhr.onload = function () {
-			
-			if(xhr.status == "412"){
-			
-		homeDataService.updateTour(false, dispatch);
-		
-			}
-			if(xhr.status == "200"){
-			
-				homeDataService.updateTour(true, dispatch);
-				
-					}
-		};
-		xhr.send(formData);
-
-	};
-
-
-	const SuccessHandler = (e) => {
-
-
-		homeDataService.updateTour(true, dispatch);
-
-
-	};
-	const ErrorHandler = () => {
-
-		homeDataService.updateTour(false, dispatch);
-	};
-	const AbortHandler = () => {
-
-		//statusRef.current.innerHTML = "Upload aborted";
-
-		homeDataService.insertData(false, dispatch);
-	};
 	const handleModalClose = () => {
 		dispatch({ type: homeDataConstants.UPDATE_TOUR_DATA_MODAL_CLOSE });
 	};
-
-	const addFile = (e) => {
-		if (e.target.files[0]) {
-
-			var new_file = new File([e.target.files[0]], 'audio1' + titlePoint + "---" + [e.target.files[0].name]);
-
-			setAudio(new_file);
-			setAudioName(e.target.files[0].name)
-
-		}
-	};
-
-	const onFileChange = (event) => {
-
-		var new_file = new File([event.target.files[0]], 'image' + "---" + [event.target.files[0].name]);
-		setFile(new_file);
-		setImagePreview(URL.createObjectURL(event.target.files[0]));
-	}
-
-	const fileData = () => {
-		if (file) {
-
-			return (
-				<div>
-					<h2 style={{ marginTop: "20px" }}>File details</h2>
-					<p>File name: {file.name}</p>
-					<p>File type: {file.type}</p>
-					<p>
-						LAst modified:{" "}
-						{file.lastModifiedDate.toDateString()}
-					</p>
-				</div>
-			);
-		}
-	};
-
-
 	return (
 
 		<div>
@@ -416,20 +96,7 @@ const TourData = () => {
 								<div className="modal__body">
 									<form class="form" id="contactForm">
 
-										{!edit && <div className="grid place-items-end">
-											<button
-
-
-												onClick={(e) => {
-													setEdit(!edit)
-												}}
-												className="button button--primary"
-												id="sendMessageButton"
-												type="button"
-											>
-												Edit tour
-											</button>
-										</div>}
+										
 										<div
 											className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
 											<div className="form__group">
@@ -449,15 +116,7 @@ const TourData = () => {
 															onChange={(e) => setTitle(e.target.value)}
 															value={title === "" ? homeDataState.updateTourData.tour.title.english : title}
 														/>
-														{edit && <button
-
-															onClick={(e) => fetchData(title, 1)}
-															className="button button--primary"
-															id="sendMessageButton"
-															type="button"
-														>
-															Translate
-														</button>}
+														
 													</div>
 
 													<div class="flex flex-row gap-2 items-center">
@@ -506,16 +165,7 @@ const TourData = () => {
 
 														/>
 
-														{edit &&
-															<button
-
-																onClick={(e) => fetchData(agreementTitle, 2)}
-																className="button button--primary"
-																id="sendMessageButton"
-																type="button"
-															>
-																Translate
-															</button>}
+													
 
 													</div>
 													<div class="flex flex-row gap-2 items-center">
@@ -566,15 +216,7 @@ const TourData = () => {
 
 														/>
 
-														{edit && <button
-
-															onClick={(e) => fetchData(agreementDesc, 3)}
-															className="button button--primary"
-															id="sendMessageButton"
-															type="button"
-														>
-															Translate
-														</button>}
+														
 													</div>
 
 													<div class="flex flex-row gap-2 items-center">
@@ -605,32 +247,7 @@ const TourData = () => {
 										<div
 											className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
 											<div className="form__group">
-												{edit &&
-													<div class="flex flex-col gap-2">
-														<label class="form__label">Name of the place*</label>
-
-														<input
-
-															className={"form__input"}
-															placeholder='Title'
-															aria-describedby="basic-addon1"
-															id="name"
-															type="text"
-
-															onChange={(e) => setPlace(e.target.value)}
-															value={place}
-														/>
-														<button
-
-															onClick={(e) => makeShortAndLongDesc(place)}
-															className="button button--primary"
-															id="sendMessageButton"
-															type="button"
-														>
-															Generate short and long description
-														</button>
-													</div>
-												}
+												
 												<div class="form__group mt-4">
 													<label class="form__label">Short description</label>
 													<div class="flex flex-col gap-2">
@@ -675,13 +292,6 @@ const TourData = () => {
 													</div>
 												</div>
 											</div>
-
-
-
-
-
-
-
 
 
 											<div className="form__group">
@@ -747,15 +357,7 @@ const TourData = () => {
 													onChange={(e) => setPrice(e.target.value)}
 													value={price === 0 ? `${homeDataState.updateTourData.tour.price} ${homeDataState.updateTourData.tour.currency} incl tax` : price}
 												/>
-												{edit &&
-													<select onChange={(e) => setCurrency(e.target.value)}
-														name="currency" class="form__input"
-													>
-														{currencyList.map(item =>
-															<option key={item} value={item}>{item}</option>
-														)};
-
-													</select>}
+											
 											</div>
 										</div>
 
@@ -804,22 +406,8 @@ const TourData = () => {
 
 										<div className="form__group">
 											<label class="form__label">Background tour image</label>
-											{edit &&
-												<label
-													class="button button--secondary button--small">
-													<span>Upload image</span>
-													<input type={"file"} name={"file"}
-														onChange={onFileChange}
-														class="sr-only" />
-												</label>
-											}
+											
 
-											<br />
-
-
-											<div>
-												{fileData()}
-											</div>
 
 
 											<div class="mt-2">
@@ -839,18 +427,7 @@ const TourData = () => {
 
 
 											<div class="mt-2">
-												{edit &&
-													<label
-														class="button button--secondary button--small">
-														<span>Upload audio</span>
-														<input type={"file"} accept={".mp3"}
-															onChange={addFile}
-															class="sr-only" />
-													</label>
-
-
-
-												}
+												
 												{audioName &&
 
 
@@ -904,19 +481,7 @@ const TourData = () => {
 											{errMessage}
 										</div>
 
-										{edit && <div className="grid place-items-center form__group">
-											<button
-
-												onClick={(e) => {
-													handleSubmit(e)
-												}}
-												className="button button--primary"
-												id="sendMessageButton"
-												type="button"
-											>
-												Update tour
-											</button>
-										</div>}
+										
 									</form>
 								</div>
 							</div>
@@ -929,4 +494,4 @@ const TourData = () => {
 	);
 };
 
-export default TourData;
+export default UpdatedTourData;

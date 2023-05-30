@@ -208,6 +208,10 @@ const HomeData = forwardRef((props) => {
 		window.location.href = "#/businesspartners"
 	};
 
+	const updatedTours = () => {
+		window.location.href = "#/updatedtours"
+	};
+
 	const insertdata = () => {
 		window.location.href = "#/insertdata"
 	};
@@ -335,6 +339,15 @@ const HomeData = forwardRef((props) => {
 								</div>
 							}
 
+
+{adminOnly &&
+								<div>
+									<button className="button button--clear button--small" type="button"
+										onClick={updatedTours}>
+										Updated tours
+									</button>
+								</div>
+							}
 
 							{(!role && !adminOnly) &&
 								<div>

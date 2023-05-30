@@ -385,18 +385,14 @@ export const homeDataReducer = (state, action) => {
 
 
 		case homeDataConstants.TOUR_UPDATE_FAILURE:
+			prodCpy = { ...state };
 
+			prodCpy.updateTourData.show = false;
+			prodCpy.modalData.failure = true;
+			prodCpy.modalData.text = "This tour has already been updated by one of the providers. Review the updated tour first.";
+			return prodCpy;
 
-			return {
-				...state,
-
-				modalData: {
-					success: false,
-					failure: true,
-					text: "Error while updating tour. Please try again later.",
-				},
-
-			};
+			
 
 		case homeDataConstants.UPDATE_MENU_PHOTO_SUCCESS:
 
@@ -485,10 +481,8 @@ export const homeDataReducer = (state, action) => {
 
 			prodCpy = { ...state };
 
-
-			prodCpy.toursWithPoints.toursWithPoints = [];
 			prodCpy.modalData.failure = true;
-			prodCpy.modalData.text = "Error while updating data. Please try again later.";
+			prodCpy.modalData.text = "This point has already been updated by one of the providers. Review the updated point first.";
 
 			return prodCpy;
 
@@ -718,6 +712,61 @@ export const homeDataReducer = (state, action) => {
 				},
 
 			};
+
+			case homeDataConstants.APPROVE_SUCCESS:
+
+			prodCpy = { ...state };
+
+
+			prodCpy.toursWithPoints.toursWithPoints = action.data;
+			prodCpy.modalData.success = true;
+			prodCpy.modalData.failure = false;
+			prodCpy.modalData.text = "You have successfully approved data.";
+
+			return prodCpy;
+
+
+
+			case homeDataConstants.APPROVE_FAILURE:
+
+			prodCpy = { ...state };
+
+
+			prodCpy.toursWithPoints.toursWithPoints = action.data;
+			prodCpy.modalData.success = false;
+			prodCpy.modalData.failure = true;
+			prodCpy.modalData.text = "There has been an error while trying to approve data. Please try again later.";
+
+			return prodCpy;
+
+			case homeDataConstants.DISAPPROVE_SUCCESS:
+
+			prodCpy = { ...state };
+
+
+			prodCpy.toursWithPoints.toursWithPoints = action.data;
+			prodCpy.modalData.success = true;
+			prodCpy.modalData.failure = false;
+			prodCpy.modalData.text = "You have successfully disapproved data.";
+
+			return prodCpy;
+
+
+
+			case homeDataConstants.DISAPPROVE_FAILURE:
+
+			prodCpy = { ...state };
+
+
+			prodCpy.toursWithPoints.toursWithPoints = action.data;
+			prodCpy.modalData.success = false;
+			prodCpy.modalData.failure = true;
+			prodCpy.modalData.text = "There has been an error while trying to disapprove data. Please try again later.";
+
+			return prodCpy;
+
+
+
 
 		default:
 			return state;

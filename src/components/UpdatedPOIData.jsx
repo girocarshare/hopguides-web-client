@@ -14,7 +14,7 @@ const mapState = {
 	controls: [],
 };
 var url = process.env.REACT_APP_URL || "http://localhost:8080/";
-const POIData = () => {
+const UpdatedPOIData = () => {
 
 	const addressInput = React.createRef(null);
 	const [errImageTitle, setErrImageTitle] = useState("");
@@ -94,330 +94,11 @@ const POIData = () => {
 	const { homeDataState, dispatch } = useContext(HomeDataContext);
 
 
-	const fetchData = async (input, num) => {
-		const response = await Axios.post(
-			"https://api.openai.com/v1/completions",
-			{
-				prompt: `translate "${input}" to slovenian`,
-				model: 'text-davinci-002',
-				max_tokens: 500,
-				n: 1,
-			},
-			{
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: `Bearer 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`,
-				},
-			}
-		);
 
-
-		if (num == 1) {
-
-			setNameTransl(response.data.choices[0].text)
-		} else if (num == 2) {
-
-			setShortInfoPointTransl(response.data.choices[0].text)
-		} else if (num == 3) {
-
-			setLongInfoPointTransl(response.data.choices[0].text)
-		} else if (num == 4) {
-
-			setVoucherDescTransl(response.data.choices[0].text)
-		}
-
-		return response.data.choices[0].text;
-	};
-
-
-
-
-
-
-	const selectFiles = (event) => {
-		let images = [];
-
-
-		var fs = []
-		for (let i = 0; i < event.target.files.length; i++) {
-			images.push(URL.createObjectURL(event.target.files[i]));
-			var new_file = new File([event.target.files[i]], i + 'partner' + titlePoint + "---" + [event.target.files[i].name]);
-			fs.push(new_file)
-
-		}
-
-		setSelectedFiles(selectedFiles.concat(fs))
-		setImagePreviews(images);
-		setProgressInfos({ val: [] });
-
-	};
-	function isJsonString(str) {
-		try {
-			JSON.parse(str);
-		} catch (e) {
-			return false;
-		}
-		return true;
-	}
-
-	const handleSubmit = (e) => {
-		e.preventDefault();
-
-
-		setErrImageTitle("")
-		setErrLongDescriptionPoint("")
-		setErrShortDescriptionPoint("")
-		setErrVoucherDescriptionPoint("")
-		setErrTitlePoint("")
-
-
-		var point = homeDataState.updatePointData.point
-
-	
-
-		var name1 = ""
-		if(name == ""){
-			name1 = homeDataState.updatePointData.point.name.english
-		}else{
-			name1 = name
-		}
-
-		
-		var nameTransl1 = ""
-		if(nameTransl == ""){
-			nameTransl1 = homeDataState.updatePointData.point.name.slovenian
-		}else{
-			nameTransl1 = nameTransl
-		}
-
-		var shortInfo1 = ""
-		if(shortInfo == ""){
-			shortInfo1 = homeDataState.updatePointData.point.shortInfo.english
-		}else{
-			shortInfo1 = shortInfo
-		}
-
-		var shortInfoTransl1 = ""
-		if(shortInfoPointTransl == ""){
-			shortInfoTransl1 = homeDataState.updatePointData.point.shortInfo.slovenian
-		}else{
-			shortInfoTransl1 = shortInfoPointTransl
-		}
-
-		var longInfo1 = ""
-		if(longInfo == ""){
-			longInfo1 = homeDataState.updatePointData.point.longInfo.english
-		}else{
-			longInfo1 = longInfo
-		}
-
-		var longInfoTransl1 = ""
-		if(longInfoPointTransl == ""){
-			longInfoTransl1 = homeDataState.updatePointData.point.longInfo.slovenian
-		}else{
-			longInfoTransl1 = longInfoPointTransl
-		}
-
-
-		if(homeDataState.updatePointData.point.partner){
-		var voucherDesc1 = ""
-		if(voucherDesc == ""){
-			voucherDesc1 = homeDataState.updatePointData.point.voucherDesc.english
-		}else{
-			voucherDesc1 = longInfo
-		}
-
-		var voucherDescTransl1 = ""
-		if(voucherDescTransl == ""){
-			voucherDescTransl1 = homeDataState.updatePointData.point.voucherDesc.slovenian
-		}else{
-			voucherDescTransl1 = voucherDescTransl
-		}
-		point.voucherDesc = JSON.parse(`{"english":"${voucherDesc1.trim()} ", "slovenian" : "${voucherDescTransl1.trim()}"}`)
-	}
-		point.name = JSON.parse(`{"english":" ${name1.trim()} ", "slovenian" : "${nameTransl1.trim()}"}`)
-		point.shortInfo = JSON.parse(`{"english":" ${shortInfo1.trim()} ", "slovenian" : "${ shortInfoTransl1.trim()} "}`)
-		point.longInfo = JSON.parse(`{"english":"${longInfo1.trim()} ", "slovenian" : "${longInfoTransl1.trim()}"}`)
-		
-
-		if (price != 0) {
-			point.price = price
-		}
-		if (currency != "") {
-			point.currency = currency
-		}
-		if (offerName != "") {
-			point.offerName = offerName
-		}
-		if (responsiblePerson != "") {
-			point.contact.name = responsiblePerson
-		}
-		if (phone != "") {
-			point.contact.phone = phone
-		}
-		if (email != "") {
-			point.contact.email = email
-		}
-		if (weburl != "") {
-			point.contact.webURL = weburl
-		} if (longitude != "") {
-			point.location.longitude = longitude
-		}
-		if (latitude != "") {
-			point.location.latitude = latitude
-		}
-		if (category != "") {
-			point.category = category
-		} if (imageTitles != "") {
-			var jsonTitles = []
-			for (var ti of imageTitles) {
-				var help = ti.split("---")
-				if (!isJsonString(help[0])) {
-					setErrImageTitle("Please insert the proper JSON format. Pay attention on enter and quotes(\")")
-					setErrMessagePartner("JSON format invalid. Check the red fields.")
-				}
-				var titlee = JSON.parse(help[0])
-				var titleObj = {
-					number: help[1],
-					name: titlee
-
-				}
-				jsonTitles.push(titleObj)
-			}
-			point.imageTitles = jsonTitles
-		}
-		point.id = homeDataState.updatePointData.point.id
-		point.workingHours = { monday: { from: mondayFrom, to: mondayTo }, tuesday: { from: tuesdayFrom, to: tuesdayTo }, wednesday: { from: wednesdayFrom, to: wednesdayTo }, thursday: { from: thursdayFrom, to: thursdayTo }, friday: { from: fridayFrom, to: fridayTo }, saturday: { from: saturdayFrom, to: saturdayTo }, sunday: { from: sundayFrom, to: sundayTo } }
-		const formData = new FormData();
-		if (file != null) {
-			formData.append('file', file);
-		}
-		if (audio != null) {
-			formData.append('file', audio);
-		}
-		if (selectedFiles != []) {
-			for (var f of selectedFiles) {
-				formData.append('file', f);
-			}
-		}
-		formData.append('point', JSON.stringify(point));
-		var token = authHeader()
-		var xhr = new XMLHttpRequest();
-		
-		xhr.addEventListener("load", SuccessHandler, false);
-		xhr.addEventListener("error", ErrorHandler, false);
-		xhr.addEventListener("abort", AbortHandler, false);
-		
-		xhr.open('POST', `${url}api/poi/update`, true);
-		xhr.setRequestHeader('authorization', token);
-		xhr.onload = function () {
-			if(xhr.status == "412"){
-			
-				homeDataService.updatePoint(false, dispatch);
-				
-					}
-					if(xhr.status == "200"){
-					
-						homeDataService.updatePoint(true, dispatch);
-						
-							}
-		};
-		
-		xhr.send(formData);
-
-
-	};
-
-
-	const SuccessHandler = (e) => {
-
-		homeDataService.updatePoint(true, dispatch);
-
-	};
-	const ErrorHandler = () => {
-
-		homeDataService.updatePoint(false, dispatch);
-	};
-	const AbortHandler = () => {
-
-		homeDataService.insertData(false, dispatch);
-	};
 	const handleModalClose = () => {
 		dispatch({ type: homeDataConstants.UPDATE_POINT_DATA_MODAL_CLOSE });
 	};
 
-	const addFile = (e) => {
-		if (e.target.files[0]) {
-
-			var new_file = new File([e.target.files[0]], 'audio2' + titlePoint + "---" + [e.target.files[0].name]);
-			setAudio(new_file);
-
-			setAudioNamePoint(e.target.files[0].name)
-
-		}
-	};
-
-	const onFileChange = (event) => {
-
-		var new_file = new File([event.target.files[0]], 'menu' + "---" + [event.target.files[0].name]);
-		setFile(new_file);
-		setImagePreview(URL.createObjectURL(event.target.files[0]));
-	}
-	const changeImageTitle = (e, i) => {
-
-		var tf = false;
-		if (imageTitles.length == 0) {
-			var p = e + "---" + i
-			const newData = [p, ...imageTitles];
-			setImageTitles(newData)
-		} else {
-
-			for (var a of imageTitles) {
-				var h = a.split('---')
-				if (h[1] == i) {
-					tf = true
-				}
-			}
-
-			if (tf) {
-				for (var a of imageTitles) {
-
-					var h = a.split('---')
-					if (h[1] == i) {
-						var arr = imageTitles
-						arr.pop(a)
-						var p = e + "---" + i
-						arr.push(p)
-						setImageTitles(arr)
-					}
-
-				}
-			} else {
-				var p = e + "---" + i
-				var arr = imageTitles
-				arr.push(p)
-				setImageTitles(arr)
-
-			}
-
-		}
-	};
-	const fileData = () => {
-		if (file) {
-
-			return (
-				<div>
-					<h2 style={{ marginTop: "20px" }}>File details</h2>
-					<p>File name: {file.name}</p>
-					<p>File type: {file.type}</p>
-					<p>
-						LAst modified:{" "}
-						{file.lastModifiedDate.toDateString()}
-					</p>
-				</div>
-			);
-		}
-	};
 
 
 	return (
@@ -449,63 +130,21 @@ const POIData = () => {
 
 								<div className="modal__body">
 									<form class="form" id="contactForm">
-										{!edit && <div className="grid place-items-end">
-											<button
-												onClick={(e) => {
-													setEdit(!edit)
-												}}
-												className="button button--primary"
-												id="sendMessageButton"
-												type="button"
-											>
-												Edit poi
-											</button>
-										</div>}
+
 										<div className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
 											<div className="form__group">
 												<label class="form__label">Name</label>
-
 												<div class="flex flex-col gap-2">
-													<div class="flex flex-row gap-2 items-center">
-														<label class="form__label" style={{ marginRight: "18px" }}>English:</label>
-														<input
 
-															className={"form__input"}
-															placeholder="Name"
-															aria-describedby="basic-addon1"
-															id="name"
-															type="text"
-
-															onChange={(e) => setName(e.target.value)}
-															value={name === "" ? homeDataState.updatePointData.point.name.english : name}
-
-														/>
-
-
-														{edit &&
-															<button
-
-
-																onClick={(e) => fetchData(name, 1)}
-																className="button button--primary"
-																id="sendMessageButton"
-																type="button"
-															>
-																Translate
-															</button>}
-													</div>
-													<div class="flex flex-row gap-2 items-center">
-														<label class="form__label">Slovenian:</label>
-														<input
-															className={"form__input"}
-															readOnly={!edit}
-															aria-describedby="basic-addon1"
-															id="name"
-															type="text"
-															onChange={(e) => setNameTransl(e.target.value)}
-															value={nameTransl === "" ? homeDataState.updatePointData.point.name.slovenian : nameTransl}
-														/>
-													</div>
+													<input
+														className={"form__input"}
+														readOnly={!edit}
+														aria-describedby="basic-addon1"
+														id="name"
+														type="text"
+														onChange={(e) => setNameTransl(e.target.value)}
+														value={nameTransl === "" ? JSON.stringify(homeDataState.updatePointData.point.name) : nameTransl}
+													/>
 												</div>
 											</div>
 										</div>
@@ -514,89 +153,43 @@ const POIData = () => {
 											<div className="form__group">
 												<label class="form__label">Short description</label>
 
-												<div class="flex flex-col gap-2">
-													<div class="flex flex-row gap-2 items-center">
-														<label class="form__label" style={{ marginRight: "18px" }}>English:</label>
-														<textarea
-															className={"form__input text-sm h-32"}
-															type="textarea" required name="message"
-															placeholder='Short description'
-															onChange={(e) => setShortInfo(e.target.value)}
-															value={shortInfo === "" ? homeDataState.updatePointData.point.shortInfo.english : shortInfo}
-														/>
-														{edit && <button
 
-															onClick={(e) => fetchData(shortInfo, 2)}
-															className="button button--primary"
-															id="sendMessageButton"
-															type="button"
-														>
-															Translate
-														</button>}
-
-													</div>
-													<div class="flex flex-row gap-2 items-center">
-														<label class="form__label">Slovenian:</label>
-														<textarea
-															readOnly={!edit}
-															className={!errShortDescriptionPoint ? "form__input text-sm h-32" : "form__input text-sm h-32 !border !border-red-500"}
-															placeholder="Short description"
-															aria-describedby="basic-addon1"
-															id="name"
-															type="textarea"
-															onChange={(e) => setShortInfoPointTransl(e.target.value)}
-															value={shortInfoPointTransl === "" ? homeDataState.updatePointData.point.shortInfo.slovenian : shortInfoPointTransl}
-														/>
-														<div className="paragraph-box2 grid dgrid-row place-items-center"
-															style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }}
-															hidden={!errShortDescriptionPoint}>
-															{errShortDescriptionPoint}
-														</div>
-													</div>
+												<textarea
+													readOnly={!edit}
+													className={!errShortDescriptionPoint ? "form__input text-sm h-32" : "form__input text-sm h-32 !border !border-red-500"}
+													placeholder="Short description"
+													aria-describedby="basic-addon1"
+													id="name"
+													type="textarea"
+													onChange={(e) => setShortInfoPointTransl(e.target.value)}
+													value={shortInfoPointTransl === "" ? JSON.stringify(homeDataState.updatePointData.point.shortInfo) : shortInfoPointTransl}
+												/>
+												<div className="paragraph-box2 grid dgrid-row place-items-center"
+													style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }}
+													hidden={!errShortDescriptionPoint}>
+													{errShortDescriptionPoint}
 												</div>
 											</div>
 										</div>
 										<div className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
 											<div className="form__group">
 												<label class="form__label">Long description</label>
-												<div class="flex flex-col gap-2">
-													<div class="flex flex-row gap-2 items-center">
-														<label class="form__label" style={{ marginRight: "18px" }}>English:</label>
-														<textarea className="form__input h-32" type="textarea" required
-															name="message"
-															placeholder='Long description'
-															value={longInfo === "" ? homeDataState.updatePointData.point.longInfo.english : longInfo}
-															onChange={(e) => setLongInfo(e.target.value)}></textarea>
-														{edit && <button
 
-															onClick={(e) => fetchData(longInfo, 3)}
-															className="button button--primary"
-															id="sendMessageButton"
-															type="button"
-														>
-															Translate
-														</button>}
-													</div>
-													<div class="flex flex-row gap-2 items-center">
-														<label class="form__label">Slovenian:</label>
-														<textarea
-															readOnly={!edit}
-															className={!errLongDescriptionPoint ? "form__input text-sm h-32" : "form__input text-sm h-32 !border !border-red-500"}
-															placeholder="Long description"
-															aria-describedby="basic-addon1"
-															id="name"
-															type="textarea"
-															onChange={(e) => setLongInfoPointTransl(e.target.value)}
-															value={longInfoPointTransl === "" ? homeDataState.updatePointData.point.longInfo.slovenian : longInfoPointTransl}
-														/>
-														<div className="paragraph-box2 grid dgrid-row place-items-center"
-															style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }}
-															hidden={!errLongDescriptionPoint}>
-															{errLongDescriptionPoint}
-														</div>
-													</div>
+												<textarea
+													readOnly={!edit}
+													className={!errLongDescriptionPoint ? "form__input text-sm h-32" : "form__input text-sm h-32 !border !border-red-500"}
+													placeholder="Long description"
+													aria-describedby="basic-addon1"
+													id="name"
+													type="textarea"
+													onChange={(e) => setLongInfoPointTransl(e.target.value)}
+													value={longInfoPointTransl === "" ? JSON.stringify(homeDataState.updatePointData.point.longInfo) : longInfoPointTransl}
+												/>
+												<div className="paragraph-box2 grid dgrid-row place-items-center"
+													style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }}
+													hidden={!errLongDescriptionPoint}>
+													{errLongDescriptionPoint}
 												</div>
-
 											</div>
 										</div>
 										{homeDataState.updatePointData.point.offerName &&
@@ -632,46 +225,22 @@ const POIData = () => {
 												<div className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
 													<div className="form__group">
 														<label class="form__label">Voucher description*</label>
+														
+														<textarea
 
-														<div class="flex flex-col gap-2">
-															<div class="flex flex-row gap-2 items-center">
-																<label class="form__label" style={{ marginRight: "18px" }}>English:</label>
-																
-																	<textarea className={"form__input text-sm h-32"}
-																		type="textarea" required
-																		name="message"
-																		placeholder='Voucher description'
-																		value={voucherDesc === "" ? homeDataState.updatePointData.point.longInfo.english : voucherDesc}
-																		onChange={(e) => setVoucherDesc(e.target.value)}></textarea>
-																	{edit && <button
+															className={!errVoucherDescriptionPoint ? "form__input text-sm h-32" : "form__input text-sm h-32 !border !border-red-500"}
+															placeholder='Voucher description translated'
+															aria-describedby="basic-addon1"
+															id="name"
+															type="text"
 
-																		onClick={(e) => fetchData(voucherDesc, 4)}
-																		className="button button--primary"
-																		id="sendMessageButton"
-																		type="button"
-																	>
-																		Translate
-																	</button>}
-																
-															</div><div class="flex flex-row gap-2 items-center">
-																<label class="form__label">Slovenian:</label>
-																<textarea
-
-																	className={!errVoucherDescriptionPoint ? "form__input text-sm h-32" : "form__input text-sm h-32 !border !border-red-500"}
-																	placeholder='Voucher description translated'
-																	aria-describedby="basic-addon1"
-																	id="name"
-																	type="text"
-
-																	onChange={(e) => setVoucherDescTransl(e.target.value)}
-																	value={voucherDescTransl === "" ? homeDataState.updatePointData.point.longInfo.slovenian : voucherDescTransl}
-																/>
-																<div className="paragraph-box2 grid dgrid-row place-items-center"
-																	style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }}
-																	hidden={!errVoucherDescriptionPoint}>
-																	{errVoucherDescriptionPoint}
-																</div>
-															</div>
+															onChange={(e) => setVoucherDescTransl(e.target.value)}
+															value={voucherDescTransl}
+														/>
+														<div className="paragraph-box2 grid dgrid-row place-items-center"
+															style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }}
+															hidden={!errVoucherDescriptionPoint}>
+															{errVoucherDescriptionPoint}
 														</div>
 													</div>
 												</div>
@@ -1073,19 +642,7 @@ const POIData = () => {
 
 										<div className="form__group">
 											<label class="form__label">Menu image</label>
-											{edit &&
-
-												<label
-													class="button button--secondary button--small">
-													<span>Upload menu image</span>
-													<input type={"file"} accept="image/*"
-														onChange={onFileChange}
-														class="sr-only" />
-												</label>
-											}
-
-											{fileData()}
-
+											
 											{imagePreview &&
 												<img className="preview" src={imagePreview}
 													alt={"image-"} />}
@@ -1097,15 +654,6 @@ const POIData = () => {
 										<div>
 
 											<label class="form__label">Image gallery</label>
-											{edit &&
-												<label
-													class="button button--secondary button--small">
-													<span>Upload image</span>
-													<input type={"file"} multiple
-														onChange={selectFiles}
-														class="sr-only" />
-												</label>
-											}
 
 											<br />
 
@@ -1119,16 +667,7 @@ const POIData = () => {
 																	alt={"image-" + i} key={i} />
 
 																<br />
-																<input
 
-																	className={"form__input"}
-																	placeholder={'JSON FORMAT: { "language": "Text"}'}
-																	aria-describedby="basic-addon1"
-																	id="name"
-																	type="text"
-
-																	onChange={(e) => changeImageTitle(e.target.value, i)}
-																/>
 																<br />
 															</div>
 														);
@@ -1158,21 +697,7 @@ const POIData = () => {
 
 
 
-											{edit &&
-												<div> <label
-													class="button button--secondary button--small">
-													<span>Upload audio</span>
-													<input type={"file"} accept={".mp3"}
-														onChange={addFile}
-														class="sr-only" />
-												</label>
-													<div>
-														{audioNamePoint &&
 
-
-															<label >{audioNamePoint}</label>}
-													</div>
-												</div>}
 										</div>
 
 										{!audio && <ReactAudioPlayer
@@ -1187,19 +712,7 @@ const POIData = () => {
 										</div>
 
 
-										{edit &&
-											<div className="form__group grid dgrid-row place-items-center">
-												<button
-													onClick={(e) => {
-														handleSubmit(e)
-													}}
-													className="button button--primary"
-													id="sendMessageButton"
-													type="button"
-												>
-													Update point
-												</button>
-											</div>}
+
 									</form>
 								</div>
 							</div>
@@ -1212,4 +725,4 @@ const POIData = () => {
 	);
 };
 
-export default POIData;
+export default UpdatedPOIData;
