@@ -107,11 +107,10 @@ const AddNewPartnerForm = (props) => {
 		const response = await Axios.post(
 			"https://api.openai.com/v1/completions",
 			{
-				prompt: `translate "${input}" to english, spanish, serbian and slovenian and make it as one json with lower case letters as keys`,
+				prompt: `translate "${input}" to slovenian`,
 				model: 'text-davinci-002',
 				max_tokens: 500,
 				n: 1,
-				stop: ".",
 			},
 			{
 				headers: {
@@ -121,22 +120,25 @@ const AddNewPartnerForm = (props) => {
 			}
 		);
 
-		if (num == 4) {
+
+		if (num == 1) {
 
 			setTitlePointTransl(response.data.choices[0].text)
-		} else if (num == 5) {
+		} else if (num == 2) {
 
 			setShortInfoPointTransl(response.data.choices[0].text)
-		} else if (num == 6) {
+		} else if (num == 3) {
 
 			setLongInfoPointTransl(response.data.choices[0].text)
-		} else if (num == 7) {
+		} else if (num == 4) {
 
 			setVoucherDescTransl(response.data.choices[0].text)
 		}
 
 		return response.data.choices[0].text;
 	};
+
+
 	const addPartner = () => {
 		setPartner(true)
 		setPoint(false)
@@ -171,9 +173,9 @@ const AddNewPartnerForm = (props) => {
 		setErrVoucherDescriptionPoint("")
 		setErrTitlePoint("")
 
-		if (partner && (titlePointTransl == "" || shortInfoPointTransl == "" || longInfoPointTransl == "" || category == "" || pointPrice == "" || offerName == "" || responsiblePerson == "" || voucherDescTransl == "" || phone == "" || email == "" || longitude == "" || latitude == "" || audio2 == null || selectedFiles.length == 0 || (!mondayclosed && (mondayFrom == "" || mondayTo == "")) || (!tuesdayclosed && (tuesdayFrom == "" || tuesdayTo == "")) || (!wednesdayclosed && (wednesdayFrom == "" || wednesdayTo == "")) || (!thursdayclosed && (thursdayFrom == "" || thursdayTo == "")) || (!fridayclosed && (fridayFrom == "" || fridayTo == "")) || (!saturdayclosed && (saturdayFrom == "" || saturdayTo == "")) || (!sundayclosed && (sundayFrom == "" || sundayTo == "")))) {
+		if (partner && (titlePoint == "" || titlePointTransl == "" || shortInfoPoint == "" || shortInfoPointTransl == "" || longInfoPoint == "" || longInfoPointTransl == "" || category == "" || pointPrice == "" || offerName == "" || responsiblePerson == "" || voucherDesc == "" || voucherDescTransl == "" || phone == "" || email == "" || longitude == "" || latitude == "" || audio2 == null || selectedFiles.length == 0 || (!mondayclosed && (mondayFrom == "" || mondayTo == "")) || (!tuesdayclosed && (tuesdayFrom == "" || tuesdayTo == "")) || (!wednesdayclosed && (wednesdayFrom == "" || wednesdayTo == "")) || (!thursdayclosed && (thursdayFrom == "" || thursdayTo == "")) || (!fridayclosed && (fridayFrom == "" || fridayTo == "")) || (!saturdayclosed && (saturdayFrom == "" || saturdayTo == "")) || (!sundayclosed && (sundayFrom == "" || sundayTo == "")))) {
 			setErrMessagePartner("Please insert mandatory fields for partner (marked with *)")
-		} else if (point && (titlePointTransl == "" || shortInfoPointTransl == "" || longInfoPointTransl == "" || category == "" || longitude == "" || latitude == "" || audio2 == null || selectedFiles.length == 0)) {
+		} else if (point && (titlePoint == "" || titlePointTransl == "" || shortInfoPoint == "" || shortInfoPointTransl == "" || longInfoPoint == "" || longInfoPointTransl == "" || category == "" || longitude == "" || latitude == "" || audio2 == null || selectedFiles.length == 0)) {
 
 			setErrMessagePartner("Please insert mandatory fields for point of interest (marked with *)")
 		} else {
@@ -197,7 +199,7 @@ const AddNewPartnerForm = (props) => {
 				}
 			}
 
-			if (!isJsonString(titlePointTransl)) {
+			/*if (!isJsonString(titlePointTransl)) {
 				setErrTitlePoint("Please insert the proper JSON format. Pay attention on enter and quotes(\")")
 				setErrMessagePartner("JSON format invalid. Check the red fields.")
 			}
@@ -213,13 +215,14 @@ const AddNewPartnerForm = (props) => {
 				setErrVoucherDescriptionPoint("Please insert the proper JSON format. Pay attention on enter and quotes(\")")
 				setErrMessagePartner("JSON format invalid. Check the red fields.")
 			}
+*/
 
 
 			var point = {
 				num: num,
-				name: JSON.parse(titlePointTransl),
-				shortInfo: JSON.parse(shortInfoPointTransl),
-				longInfo: JSON.parse(longInfoPointTransl),
+			//	name: JSON.parse(titlePointTransl),
+			//	shortInfo: JSON.parse(shortInfoPointTransl),
+			//	longInfo: JSON.parse(longInfoPointTransl),
 				price: pointPrice,
 				offerName: offerName,
 				contact: { phone: phone, email: email, webURL: webURL, name: responsiblePerson },
@@ -229,7 +232,19 @@ const AddNewPartnerForm = (props) => {
 				bpartnerId: homeDataState.showAddPartnerModal.bpartnerId,
 				imageTitles: jsonTitles
 			}
-			if (voucherDesc == "") {
+
+			
+			if (partner) {
+				point.voucherDesc = JSON.parse(`{"english":"${voucherDesc.trim()} ", "slovenian" : "${voucherDescTransl.trim()}"}`)
+			}
+
+
+			point.name = JSON.parse(`{"english":" ${titlePoint.trim()} ", "slovenian" : "${titlePointTransl.trim()}"}`)
+			point.shortInfo = JSON.parse(`{"english":" ${shortInfoPoint.trim()} ", "slovenian" : "${shortInfoPointTransl.trim()} "}`)
+			point.longInfo = JSON.parse(`{"english":"${longInfoPoint.trim()} ", "slovenian" : "${longInfoPointTransl.trim()}"}`)
+
+
+			/*if (voucherDesc == "") {
 				point.voucherDesc = JSON.parse(`{
 				  "english": "",
 				  "spanish": "",
@@ -240,8 +255,9 @@ const AddNewPartnerForm = (props) => {
 			} else {
 				point.voucherDesc = JSON.parse(voucherDescTransl)
 				point.partner = true
-			}
-			const newData = [ ...points, point];
+			}*/
+
+			const newData = [...points, point];
 			setPoints(newData)
 			setTitlePoint("")
 			setShortInfoPoint("")
@@ -470,8 +486,11 @@ const AddNewPartnerForm = (props) => {
 														className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
 														<div className="form__group">
 															<label class="form__label">Name *</label>
+
+
 															<div class="flex flex-col gap-2">
-																<div class="flex flex-row items-center gap-2">
+																<div class="flex flex-row gap-2 items-center">
+																	<label class="form__label" style={{ marginRight: "18px" }}>English:</label>
 																	<input
 
 																		className={"form__input"}
@@ -487,7 +506,7 @@ const AddNewPartnerForm = (props) => {
 																	<button
 
 
-																		onClick={(e) => fetchData(titlePoint, 4)}
+																		onClick={(e) => fetchData(titlePoint, 1)}
 																		className="button button--primary"
 																		id="sendMessageButton"
 																		type="button"
@@ -495,19 +514,17 @@ const AddNewPartnerForm = (props) => {
 																		Translate
 																	</button>
 																</div>
+																<div class="flex flex-row gap-2 items-center">
+																	<label class="form__label">Slovenian:</label>
+																	<input
+																		className={"form__input"}
+																		aria-describedby="basic-addon1"
+																		id="name"
+																		type="text"
+																		onChange={(e) => setTitlePointTransl(e.target.value)}
+																		value={titlePointTransl} />
+																</div>
 
-																<input
-
-																	className={!errTitlePoint ? "form__input text-sm" : "form__input text-sm !border !border-red-500"}
-																	placeholder='JSON FORMAT: { "language": "Text"}'
-																	aria-describedby="basic-addon1"
-																	id="name"
-																	type="text"
-
-
-																	onChange={(e) => setTitlePointTransl(e.target.value)}
-																	value={titlePointTransl}
-																/>
 																<div className="paragraph-box2 grid dgrid-row place-items-center"
 																	style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }}
 																	hidden={!errTitlePoint}>
@@ -522,41 +539,47 @@ const AddNewPartnerForm = (props) => {
 															<div className="form__group"
 																style={{ opacity: 1 }}>
 																<label class="form__label">Short description* </label>
-																<div class="flex flex-col items-start gap-2">
-																	<textarea className="form__input h-32"
 
-																		type="textarea" required name="message"
-																		placeholder='Short description'
-																		value={shortInfoPoint}
-																		onChange={(e) => setShortInfoPoint(e.target.value)}></textarea>
+																<div class="flex flex-col gap-2">
+																	<div class="flex flex-row gap-2 items-center">
+																		<label class="form__label" style={{ marginRight: "18px" }}>English:</label>
 
-																	<button
+																		<textarea className="form__input h-32"
 
+																			type="textarea" required name="message"
+																			placeholder='Short description'
+																			value={shortInfoPoint}
+																			onChange={(e) => setShortInfoPoint(e.target.value)}></textarea>
 
-																		onClick={(e) => fetchData(shortInfoPoint, 5)}
-																		className="button button--primary"
-																		id="sendMessageButton"
-																		type="button"
-																	>
-																		Translate
-																	</button>
+																		<button
 
 
+																			onClick={(e) => fetchData(shortInfoPoint, 2)}
+																			className="button button--primary"
+																			id="sendMessageButton"
+																			type="button"
+																		>
+																			Translate
+																		</button>
 
-																	<textarea
-																		className={!errShortDescriptionPoint ? "form__input text-sm h-32" : "form__input text-sm h-32 !border !border-red-500"}
-																		placeholder='JSON FORMAT: { "language": "Text"}'
-																		aria-describedby="basic-addon1"
-																		id="name"
-																		type="text"
-																		onChange={(e) => setShortInfoPointTransl(e.target.value)}
-																		value={shortInfoPointTransl}
-																	/>
+																	</div>
+																	<div class="flex flex-row gap-2 items-center">
+																		<label class="form__label">Slovenian:</label>
+																		<textarea
+																			className={!errShortDescriptionPoint ? "form__input text-sm h-32" : "form__input text-sm h-32 !border !border-red-500"}
+																			placeholder=''
+																			aria-describedby="basic-addon1"
+																			id="name"
+																			type="text"
+																			onChange={(e) => setShortInfoPointTransl(e.target.value)}
+																			value={shortInfoPointTransl}
+																		/>
 
-																	<div className="paragraph-box2 grid dgrid-row place-items-center"
-																		style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }}
-																		hidden={!errShortDescriptionPoint}>
-																		{errShortDescriptionPoint}
+																		<div className="paragraph-box2 grid dgrid-row place-items-center"
+																			style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }}
+																			hidden={!errShortDescriptionPoint}>
+																			{errShortDescriptionPoint}
+																		</div>
 																	</div>
 																</div>
 															</div>
@@ -566,37 +589,42 @@ const AddNewPartnerForm = (props) => {
 														className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
 														<div className="form__group">
 															<label class="form__label">Long description*</label>
-															<div class="flex flex-col items-start gap-2">
-																<textarea className="form__input h-32"
-																	type="textarea" required name="message"
-																	placeholder='Long description'
-																	value={longInfoPoint}
-																	onChange={(e) => setLongInfoPoint(e.target.value)}></textarea>
-																<button
+															<div class="flex flex-col gap-2">
+																<div class="flex flex-row gap-2 items-center">
+																	<label class="form__label" style={{ marginRight: "18px" }}>English:</label>
+
+																	<textarea className="form__input h-32"
+																		type="textarea" required name="message"
+																		placeholder='Long description'
+																		value={longInfoPoint}
+																		onChange={(e) => setLongInfoPoint(e.target.value)}></textarea>
+																	<button
 
 
-																	onClick={(e) => fetchData(longInfoPoint, 6)}
-																	className="button button--primary"
-																	id="sendMessageButton"
-																	type="button"
-																>
-																	Translate
-																</button>
+																		onClick={(e) => fetchData(longInfoPoint, 3)}
+																		className="button button--primary"
+																		id="sendMessageButton"
+																		type="button"
+																	>
+																		Translate
+																	</button>
+																</div><div class="flex flex-row gap-2 items-center">
+																	<label class="form__label">Slovenian:</label>
+																	<textarea
 
-																<textarea
-
-																	className={!errLongDescriptionPoint ? "form__input text-sm h-32" : "form__input text-sm h-32 !border !border-red-500"}
-																	placeholder='JSON FORMAT: { "language": "Text"}'
-																	aria-describedby="basic-addon1"
-																	id="name"
-																	type="text"
-																	onChange={(e) => setLongInfoPointTransl(e.target.value)}
-																	value={longInfoPointTransl}
-																/>
-																<div className="paragraph-box2 grid dgrid-row place-items-center"
-																	style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }}
-																	hidden={!errLongDescriptionPoint}>
-																	{errLongDescriptionPoint}
+																		className={!errLongDescriptionPoint ? "form__input text-sm h-32" : "form__input text-sm h-32 !border !border-red-500"}
+																		placeholder=''
+																		aria-describedby="basic-addon1"
+																		id="name"
+																		type="text"
+																		onChange={(e) => setLongInfoPointTransl(e.target.value)}
+																		value={longInfoPointTransl}
+																	/>
+																	<div className="paragraph-box2 grid dgrid-row place-items-center"
+																		style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }}
+																		hidden={!errLongDescriptionPoint}>
+																		{errLongDescriptionPoint}
+																	</div>
 																</div>
 															</div>
 														</div>
@@ -606,37 +634,42 @@ const AddNewPartnerForm = (props) => {
 															className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
 															<div className="form__group">
 																<label class="form__label">Voucher description*</label>
-																<div class="flex flex-col items-start gap-2">
-																	<textarea className="form__input h-32"
-																		type="textarea" required name="message"
-																		placeholder='Voucher description'
-																		value={voucherDesc}
-																		onChange={(e) => setVoucherDesc(e.target.value)}></textarea>
-																	<button
+																<div class="flex flex-col gap-2">
+																	<div class="flex flex-row gap-2 items-center">
+																		<label class="form__label" style={{ marginRight: "18px" }}>English:</label>
+
+																		<textarea className="form__input h-32"
+																			type="textarea" required name="message"
+																			placeholder='Voucher description'
+																			value={voucherDesc}
+																			onChange={(e) => setVoucherDesc(e.target.value)}></textarea>
+																		<button
 
 
-																		onClick={(e) => fetchData(voucherDesc, 7)}
-																		className="button button--primary"
-																		id="sendMessageButton"
-																		type="button"
-																	>
-																		Translate
-																	</button>
+																			onClick={(e) => fetchData(voucherDesc, 4)}
+																			className="button button--primary"
+																			id="sendMessageButton"
+																			type="button"
+																		>
+																			Translate
+																		</button>
+																	</div><div class="flex flex-row gap-2 items-center">
+																		<label class="form__label">Slovenian:</label>
+																		<textarea
 
-																	<textarea
-
-																		className={!props.errVoucherDescriptionPoint ? "form__input text-sm h-32" : "form__input text-sm h-32 !border !border-red-500"}
-																		placeholder='JSON FORMAT: { "language": "Text"}'
-																		aria-describedby="basic-addon1"
-																		id="name"
-																		type="text"
-																		onChange={(e) => setVoucherDescTransl(e.target.value)}
-																		value={voucherDescTransl}
-																	/>
-																	<div className="paragraph-box2 grid dgrid-row place-items-center"
-																		style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }}
-																		hidden={!errVoucherDescriptionPoint}>
-																		{errVoucherDescriptionPoint}
+																			className={!props.errVoucherDescriptionPoint ? "form__input text-sm h-32" : "form__input text-sm h-32 !border !border-red-500"}
+																			placeholder=''
+																			aria-describedby="basic-addon1"
+																			id="name"
+																			type="text"
+																			onChange={(e) => setVoucherDescTransl(e.target.value)}
+																			value={voucherDescTransl}
+																		/>
+																		<div className="paragraph-box2 grid dgrid-row place-items-center"
+																			style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }}
+																			hidden={!errVoucherDescriptionPoint}>
+																			{errVoucherDescriptionPoint}
+																		</div>
 																	</div>
 																</div>
 															</div>
@@ -1194,94 +1227,94 @@ const AddNewPartnerForm = (props) => {
 									points.length > 0 &&
 									<div>
 										<div class="modal__footer">
-										<DragDropContext onDragEnd={handleDragEnd}>
-													<table className="table borderd">
-														<thead>
+											<DragDropContext onDragEnd={handleDragEnd}>
+												<table className="table borderd">
+													<thead>
 
-															<tr>
+														<tr>
 															<th> =
-																</th>
-																<th>Title
-																</th>
-																<th>Short
-																	description
-																</th>
-																<th>Long
-																	description
-																</th>
-																<th>Category
-																</th>
-																<th>Price
-																</th>
-																<th>Offer name
-																</th>
-																<th>Responsible
-																	person
-																</th>
-																<th>Email
-																</th>
-																<th>Phone
-																</th>
-																<th>Web
-																	page
-																</th>
-																<th>Location
-																</th>
-															</tr>
-														</thead>
-														<Droppable droppableId="droppable-1">
-															{(provider) => (
-																<tbody
-																	className="text-capitalize"
-																	ref={provider.innerRef}
-																	{...provider.droppableProps}
-																>
-																	{points.map((point, index) => (
-																		<Draggable
-																			key={point.name.english}
-																			draggableId={point.name.english}
-																			index={index}
-																		>
-																			{(provider) => (
+															</th>
+															<th>Title
+															</th>
+															<th>Short
+																description
+															</th>
+															<th>Long
+																description
+															</th>
+															<th>Category
+															</th>
+															<th>Price
+															</th>
+															<th>Offer name
+															</th>
+															<th>Responsible
+																person
+															</th>
+															<th>Email
+															</th>
+															<th>Phone
+															</th>
+															<th>Web
+																page
+															</th>
+															<th>Location
+															</th>
+														</tr>
+													</thead>
+													<Droppable droppableId="droppable-1">
+														{(provider) => (
+															<tbody
+																className="text-capitalize"
+																ref={provider.innerRef}
+																{...provider.droppableProps}
+															>
+																{points.map((point, index) => (
+																	<Draggable
+																		key={point.name.english}
+																		draggableId={point.name.english}
+																		index={index}
+																	>
+																		{(provider) => (
 
-																				<tr {...provider.draggableProps} ref={provider.innerRef} >
-																				 <td {...provider.dragHandleProps}>=</td>
-																					<td>{point.name.english}</td>
-																					<td>{point.shortInfo.english}</td>
-																					<td>{point.longInfo.english}</td>
-																					<td>{point.category}</td>
-																					{point.price == "" ?
-																						<td>/</td> :
-																						<td>{point.price} {currency}</td>}
-																					{point.offerName == "" ?
-																						<td>/</td> :
-																						<td>{point.offerName}</td>}
-																					{point.contact.name == "" ?
-																						<td>/</td> :
-																						<td>{point.contact.name}</td>}
-																					{point.contact.email == "" ?
-																						<td>/</td> :
-																						<td>{point.contact.email}</td>}
-																					{point.contact.phone == "" ?
-																						<td>/</td> :
-																						<td>{point.contact.phone}</td>}
-																					{point.contact.webURL == "" ?
-																						<td>/</td> :
-																						<td>{point.contact.webURL}</td>}
+																			<tr {...provider.draggableProps} ref={provider.innerRef} >
+																				<td {...provider.dragHandleProps}>=</td>
+																				<td>{point.name.english}</td>
+																				<td>{point.shortInfo.english}</td>
+																				<td>{point.longInfo.english}</td>
+																				<td>{point.category}</td>
+																				{point.price == "" ?
+																					<td>/</td> :
+																					<td>{point.price} {currency}</td>}
+																				{point.offerName == "" ?
+																					<td>/</td> :
+																					<td>{point.offerName}</td>}
+																				{point.contact.name == "" ?
+																					<td>/</td> :
+																					<td>{point.contact.name}</td>}
+																				{point.contact.email == "" ?
+																					<td>/</td> :
+																					<td>{point.contact.email}</td>}
+																				{point.contact.phone == "" ?
+																					<td>/</td> :
+																					<td>{point.contact.phone}</td>}
+																				{point.contact.webURL == "" ?
+																					<td>/</td> :
+																					<td>{point.contact.webURL}</td>}
 
-																					<td>{`${point.location.latitude}  ${point.location.longitude}`}</td>
+																				<td>{`${point.location.latitude}  ${point.location.longitude}`}</td>
 
 
-																				</tr>
-																			)}
-																		</Draggable>
-																	))}
-																	{provider.placeholder}
-																</tbody>
-															)}
-														</Droppable>
-													</table>
-												</DragDropContext>
+																			</tr>
+																		)}
+																	</Draggable>
+																))}
+																{provider.placeholder}
+															</tbody>
+														)}
+													</Droppable>
+												</table>
+											</DragDropContext>
 
 										</div>
 

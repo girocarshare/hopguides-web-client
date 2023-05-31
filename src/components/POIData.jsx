@@ -295,6 +295,8 @@ const POIData = () => {
 		if (audio != null) {
 			formData.append('file', audio);
 		}
+
+		console.log(selectedFiles)
 		if (selectedFiles != []) {
 			for (var f of selectedFiles) {
 				formData.append('file', f);

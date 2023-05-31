@@ -75,10 +75,6 @@ const HomeData = forwardRef((props) => {
 
 	useEffect(() => {
 
-		const element = ref.current;
-		console.log(element);
-		console.log(element.id);
-
 
 		var token = authHeader()
 		if (token == "null") {
@@ -149,6 +145,10 @@ const HomeData = forwardRef((props) => {
 		window.location = "#/termsAndConditions/" + data;
 	};
 
+	const seeHomePage = (e) => {
+
+		window.location = "#/";
+	};
 
 	const updateLogo = (e) => {
 
@@ -269,7 +269,7 @@ const HomeData = forwardRef((props) => {
 			const newData = [...reorganizeData, obj];
 			setReorganizeData(newData)
 		}
-		
+
 		setReorganize(!reorganize)
 	};
 
@@ -304,7 +304,13 @@ const HomeData = forwardRef((props) => {
 						</div>
 						<div className="hidden lg:flex flex-row items-center gap-2">
 
-
+							{(role || adminOnly) &&
+								<div>
+									<button className="button button--clear button--small" type="button" onClick={seeHomePage}>
+										Home page
+									</button>
+								</div>
+							}
 							{role &&
 								<div>
 									<button className="button button--clear button--small" type="button" onClick={updateLogo}>
@@ -340,7 +346,7 @@ const HomeData = forwardRef((props) => {
 							}
 
 
-{adminOnly &&
+							{adminOnly &&
 								<div>
 									<button className="button button--clear button--small" type="button"
 										onClick={updatedTours}>
@@ -411,6 +417,7 @@ const HomeData = forwardRef((props) => {
 
 				</div>
 
+
 				<div className="p-2 md:p-4 bg-black/[3%] rounded-2xl mb-12">
 					<div className="py-3 px-2 pb-4 md:pb-6 flex flex-row items-center justify-between gap-4">
 						<h4 className="text-heading6">
@@ -429,26 +436,36 @@ const HomeData = forwardRef((props) => {
 						</div>
 					</div>
 
-					<div className="table-frame">
 
 
-						<table ref={ref} id="my-table">
-							<thead>
-								<tr>
-									<th>Name</th>
-									<th className="whitespace-nowrap">Price<span
-										className="text-xs font-normal text-black/60 ml-1">/ incl tax</span>
-									</th>
-									<th className="whitespace-nowrap">Tours booked<span
-										className="text-xs font-normal text-black/60 ml-1">/ this month</span></th>
-									<th>Options</th>
-								</tr>
-							</thead>
+					{homeDataState.toursWithPoints.toursWithPoints.map((tour) => (
+						<div className="table-frame" style={{ marginBottom: "30px" }}>
+							<table ref={ref} id="my-table">
+								<thead>
+									<tr><div className="py-3 px-2 pb-4 md:pb-6 flex flex-row items-center justify-between gap-4">
+										<h4 className="text-heading6">
+											{tour.title.english} tour
+										</h4>
 
-							{homeDataState.toursWithPoints.toursWithPoints.map((tour) => (
+									</div></tr>
+									<tr>
+										<th class="w-1/2">Name</th>
+										<th className="w-1/2 whitespace-nowrap">Price<span
+											className="w-1/2 text-xs font-normal text-black/60 ml-1">/ incl tax</span>
+										</th>
+										<th className="w-1/2 whitespace-nowrap">Tours booked<span
+											className="text-xs font-normal text-black/60 ml-1">/ this month</span></th>
+										<th>Options</th>
+									</tr>
+								</thead>
+
+
+
+
 								<tbody>
+									<tr><td>     </td></tr>
 									<tr class="text-sm transition-all hover:bg-gray-100">
-										<td id={tour.tourId} onClick={(e) => {
+										<td style={{ width: "10px" }} id={tour.tourId} onClick={(e) => {
 
 											const element = document.getElementById(tour.tourId);
 											if (element) {
@@ -472,7 +489,7 @@ const HomeData = forwardRef((props) => {
 												</button>
 												{adminOnly && <button className="button button--secondary button--small" onClick={(e) => getQrCodes(e, tour.tourId)} >Get qr codes</button>}
 												<button className="button button--secondary button--small"
-													onClick={(e) => update(e, tour)}>{updateField}</button>
+													onClick={(e) => update(e, tour)}>View data</button>
 												{adminOnly && <button className="button button--secondary button--small"
 													onClick={(e) => deleteTour(e, tour)}>Delete
 												</button>}
@@ -480,232 +497,90 @@ const HomeData = forwardRef((props) => {
 										</td>
 
 									</tr>
+
+
+
+
+									<tr colspan="4">
+										<td colspan="4">
+											<div className="p-2 md:p-4 bg-black/[3%] rounded-2xl mb-12">
+
+												<table >
+
+													<thead>
+
+														<tr>
+															<th>Name</th>
+															<th className="whitespace-nowrap">Price<span
+																className="text-xs font-normal text-black/60 ml-1">/ incl tax</span>
+															</th>
+															<th className="whitespace-nowrap">Offer name</th>
+															<th>Category</th>
+															<th className="whitespace-nowrap">Used coupons<span
+																className="text-xs font-normal text-black/60 ml-1">/ this month</span></th>
+															<th>Options</th>
+														</tr>
+													</thead>
+
+													{tour.points.map((points) => (
+														<tbody>
+															<tr id={tour.tourId}>
+
+																<td>{points.point.name.english}</td>
+																<td>
+																	{points.point.price == "" ? "/" : `${points.point.price} ${tour.currency} including tax`}
+																</td>
+																<td>
+																	{points.point.offerName == "" ? "/" : `${points.point.offerName} `}
+																</td>
+
+																<td>{points.point.category}</td>
+
+																<td>{points.monthlyUsed}</td>
+																<td>
+																	<div className="flex flex-row items-center gap-2 justify-end">
+																		{points.point.offerName != "" && <button className="button button--secondary button--small"
+																			onClick={(event) => {
+																				visitWebsite(event, points.point.id)
+																			}}>
+																			Web
+																		</button>}
+																		{points.point.offerName != "" && <button className="button button--secondary button--small"
+																			onClick={(event) => {
+																				getQrCode(event, points.point.id)
+																			}}>
+																			Get QR
+																		</button>}
+																		<button className="button button--secondary button--small"
+																			onClick={(e) => updatePartnerPrice(e, points, tour)}>
+																			{updatePartner}
+																		</button>
+																		{adminOnly && <button className="button button--secondary button--small"
+																			onClick={(e) => deletePoi(e, tour, points.point.id)}>
+																			Delete
+																		</button>}
+																	</div>
+																</td>
+
+															</tr>
+														</tbody>
+													))}
+												</table>
+											</div>
+											<br /> <br />
+										</td>
+									</tr>
+
 								</tbody>
-							))
-							}
-						</table>
 
-					</div>
-				</div>
+							</table>
 
-				<div className="p-2 md:p-4 bg-black/[3%] rounded-2xl mb-12">
-
-					{!reorganize && <div>{homeDataState.toursWithPoints.toursWithPoints.map((tour, i) =>
-
-						<div >
-
-							<div className="py-3 px-2 pb-4 md:pb-6 flex flex-row items-center justify-between gap-4">
-								<h4 className="text-heading6">
-									POIs & Partners for {tour.title.english} tour
-								</h4>
-								<div>
-									{admin &&
-										<button className="button button--primary button--small" variant="contained"
-											onClick={(e) => addNewPartner(e, tour.tourId, tour.bpartnerId)}>
-											Add partner
-										</button>
-									}
-								</div>{/*<div>
-									{admin &&
-										<button className="button button--primary button--small" variant="contained"
-											onClick={(e) => reorgnizeTableRows(e, tour.points)}>
-											Change the order
-										</button>
-									}
-
-
-								</div>*/}
-							</div>
-
-
-							<div className="table-frame">
-
-								<table >
-									<thead>
-
-										<tr>
-											<th>Name</th>
-											<th className="whitespace-nowrap">Price<span
-												className="text-xs font-normal text-black/60 ml-1">/ incl tax</span>
-											</th>
-											<th className="whitespace-nowrap">Offer name</th>
-											<th>Category</th>
-											<th className="whitespace-nowrap">Used coupons<span
-												className="text-xs font-normal text-black/60 ml-1">/ this month</span></th>
-											<th>Options</th>
-										</tr>
-									</thead>
-
-									{tour.points.map((points) => (
-										<tbody>
-											<tr id={tour.tourId}>
-
-												<td>{points.point.name.english}</td>
-												<td>
-													{points.point.price == "" ? "/" : `${points.point.price} ${tour.currency} including tax`}
-												</td>
-												<td>
-													{points.point.offerName == "" ? "/" : `${points.point.offerName} `}
-												</td>
-
-												<td>{points.point.category}</td>
-
-												<td>{points.monthlyUsed}</td>
-												<td>
-													<div className="flex flex-row items-center gap-2 justify-end">
-														{points.point.offerName != "" && <button className="button button--secondary button--small"
-															onClick={(event) => {
-																visitWebsite(event, points.point.id)
-															}}>
-															Web
-														</button>}
-														{points.point.offerName != "" && <button className="button button--secondary button--small"
-															onClick={(event) => {
-																getQrCode(event, points.point.id)
-															}}>
-															Get QR
-														</button>}
-														<button className="button button--secondary button--small"
-															onClick={(e) => updatePartnerPrice(e, points, tour)}>
-															{updatePartner}
-														</button>
-														{adminOnly && <button className="button button--secondary button--small"
-															onClick={(e) => deletePoi(e, tour, points.point.id)}>
-															Delete
-														</button>}
-													</div>
-												</td>
-
-											</tr>
-										</tbody>
-									))}
-								</table>
-
-							</div>
-
-							<br /> <br />
 						</div>
-					)}
-					</div>}
 
-					{reorganize && homeDataState.reorganizeData.length != 0 && <div>
-						{homeDataState.reorganizeData.map((tour, i) =>
-
-							<div >
-
-								<div className="py-3 px-2 pb-4 md:pb-6 flex flex-row items-center justify-between gap-4">
-									<h4 className="text-heading6">
-										POIs & Partners for {tour.title.english} tour
-									</h4>
-									<div>
-										{admin &&
-											<button className="button button--primary button--small" variant="contained"
-												onClick={(e) => addNewPartner(e, tour.tourId, tour.bpartnerId)}>
-												Add partner
-											</button>
-										}
-									</div><div>
-
-										{admin &&
-											<button className="button button--primary button--small" variant="contained"
-												onClick={(e) => reorgnizeTableRows(e, tour.points)}>
-												Save
-											</button>
-										}
-									</div>
-								</div>
-
-
-								<div className="table-frame">
-
-
-									<DragDropContext onDragEnd={handleDragEnd}>
-										<table className="table borderd">
-											<thead>
-
-												<tr>
-													<th>Name</th>
-													<th className="whitespace-nowrap">Price<span
-														className="text-xs font-normal text-black/60 ml-1">/ incl tax</span>
-													</th>
-													<th className="whitespace-nowrap">Offer name</th>
-													<th>Category</th>
-													<th className="whitespace-nowrap">Used coupons<span
-														className="text-xs font-normal text-black/60 ml-1">/ this month</span></th>
-													<th>Options</th>
-												</tr>
-											</thead>
-											<Droppable droppableId="droppable-1">
-												{(provider) => (
-													<tbody
-														className="text-capitalize"
-														ref={provider.innerRef}
-														{...provider.droppableProps}
-													>
-														{tour.points.map((points, index) => (
-															<Draggable
-																key={points.point.id}
-																draggableId={points.point.id}
-																index={index}
-															>
-																{(provider) => (
-
-																	<tr {...provider.draggableProps} ref={provider.innerRef} id={tour.tourId}>
-																		{reorganize && <td {...provider.dragHandleProps}>=</td>}
-																		<td > {points.point.name.english}</td>
-																		<td>
-																			{points.point.price == "" ? "/" : `${points.point.price} ${tour.currency} including tax`}
-																		</td>
-																		<td>
-																			{points.point.offerName == "" ? "/" : `${points.point.offerName} `}
-																		</td>
-
-																		<td>{points.point.category}</td>
-
-																		<td>{points.monthlyUsed}</td>
-																		<td>
-																			<div className="flex flex-row items-center gap-2 justify-end">
-																				{points.point.offerName != "" && <button className="button button--secondary button--small"
-																					onClick={(event) => {
-																						visitWebsite(event, points.point.id)
-																					}}>
-																					Web
-																				</button>}
-																				{points.point.offerName != "" && <button className="button button--secondary button--small"
-																					onClick={(event) => {
-																						getQrCode(event, points.point.id)
-																					}}>
-																					Get QR
-																				</button>}
-																				<button className="button button--secondary button--small"
-																					onClick={(e) => updatePartnerPrice(e, points, tour)}>
-																					{updatePartner}
-																				</button>
-																				{adminOnly && <button className="button button--secondary button--small"
-																					onClick={(e) => deletePoi(e, tour, points.point.id)}>
-																					Delete
-																				</button>}
-																			</div>
-																		</td>
-
-																	</tr>
-																)}
-															</Draggable>
-														))}
-														{provider.placeholder}
-													</tbody>
-												)}
-											</Droppable>
-										</table>
-									</DragDropContext>
-
-								</div>
-
-								<br /> <br />
-							</div>
-						)}
-					</div>}
+					))
+					}
 				</div>
+
 
 			</div>
 

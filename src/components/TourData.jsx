@@ -431,6 +431,7 @@ const TourData = () => {
 											</button>
 										</div>}
 										<div
+										
 											className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
 											<div className="form__group">
 												<label class="form__label">Title</label>

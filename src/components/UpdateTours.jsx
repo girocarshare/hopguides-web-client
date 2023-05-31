@@ -142,7 +142,10 @@ const UpdateTours = forwardRef((props) => {
 
 
 	};
+	const seeHomePage = (e) => {
 
+		window.location = "#/" ;
+	};
 
 	const deletePoi = async (e, tour, poiId) => {
 
@@ -173,6 +176,14 @@ const UpdateTours = forwardRef((props) => {
 							<img className="h-8 w-auto" src="assets/img/logo.svg" />
 						</div>
 						<div className="hidden lg:flex flex-row items-center gap-2">
+
+						{(role || adminOnly) &&
+								<div>
+									<button className="button button--clear button--small" type="button" onClick={seeHomePage}>
+										Home page
+									</button>
+								</div>
+							}
 
 							{adminOnly &&
 								<div>
@@ -220,38 +231,12 @@ const UpdateTours = forwardRef((props) => {
 						&nbsp;
 					</div>
 					<div className="flex flex-col items-center justify-center gap-8 col-span-12 lg:col-span-6">
-						<div
-							className="w-48 h-48 rounded-full bg-white border border-black/10 oveflow-hidden bg-contain bg-center bg-no-repeat"
-							style={{ backgroundImage: `url(${("assets/img/turizem-lj.jpg")})`, }}>
-						</div>
+						
 						<h1 className=" text-heading4 text-center">
 							Updated tours
 						</h1>
 					</div>
 
-					{/*Contact*/}
-					<div
-						className="fixed z-20 left-0 bottom-0 right-0 col-span-12 lg:col-span-3 lg:relative flex flex-col items-center justify-center bg-white/80 backdrop-blur border-t lg:border-none border-black/10 drop-shadow-[0_-2px_6px_rgba(0,0,0,0.15)] lg:drop-shadow-none">
-						<div
-							className="flex flex-row lg:flex-col items-center lg:items-start gap-0 lg:gap-4 p-3 lg:p-6 lg:rounded-2xl lg:border lg:border-black/
-						10 lg:shadow-2xl lg:shadow-black/10 w-full">
-							<div className="label label--primary -rotate-90 lg:rotate-0 -ml-7 lg:ml-0">
-								Contact
-							</div>
-							{users.map((point) => (
-								<div className="flex flex-col gap-1 lg:gap-2 w-full overflow-hidden -ml-2 lg:ml-0">
-									<div className="text-sm lg:text-xl font-bold text-black">
-										{point.name}
-									</div>
-									<div className="flex flex-col gap-1 lg:gap-2 text-xs lg:text-sm">
-										<a className="link" href="mailto:'{point.email}'">{point.email}</a>
-										<div>{point.number}</div>
-									</div>
-								</div>
-							))
-							}
-						</div>
-					</div>
 
 				</div>
 

@@ -8,11 +8,7 @@ import ReactAudioPlayer from 'react-audio-player';
 import { deleteLocalStorage, authHeader } from "../helpers/auth-header";
 import Axios from "axios";
 
-const mapState = {
-	center: [44, 21],
-	zoom: 8,
-	controls: [],
-};
+
 var url = process.env.REACT_APP_URL || "http://localhost:8080/";
 const UpdatedPOIData = () => {
 
@@ -99,14 +95,13 @@ const UpdatedPOIData = () => {
 		dispatch({ type: homeDataConstants.UPDATE_POINT_DATA_MODAL_CLOSE });
 	};
 
-
+	
 
 	return (
 
 		<div>
 
 			{homeDataState.updatePointData.show &&
-
 
 				<div class="relative z-50" aria-labelledby="modal-title" role="dialog" aria-modal="true">
 
@@ -120,7 +115,7 @@ const UpdatedPOIData = () => {
 
 								<div class="modal__header">
 									<h2 class="text-leading">
-										Update POI
+										 POI
 									</h2>
 									<button class="button button--circle button--clear justify-self-end" type="button"
 										onClick={handleModalClose}>
@@ -130,21 +125,41 @@ const UpdatedPOIData = () => {
 
 								<div className="modal__body">
 									<form class="form" id="contactForm">
-
+										
 										<div className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
 											<div className="form__group">
 												<label class="form__label">Name</label>
-												<div class="flex flex-col gap-2">
 
-													<input
-														className={"form__input"}
-														readOnly={!edit}
-														aria-describedby="basic-addon1"
-														id="name"
-														type="text"
-														onChange={(e) => setNameTransl(e.target.value)}
-														value={nameTransl === "" ? JSON.stringify(homeDataState.updatePointData.point.name) : nameTransl}
-													/>
+												<div class="flex flex-col gap-2">
+													<div class="flex flex-row gap-2 items-center">
+														<label class="form__label" style={{ marginRight: "18px" }}>English:</label>
+														<input
+
+															className={"form__input"}
+															placeholder="Name"
+															aria-describedby="basic-addon1"
+															id="name"
+															type="text"
+
+															onChange={(e) => setName(e.target.value)}
+															value={name === "" ? homeDataState.updatePointData.point.name.english : name}
+
+														/>
+
+
+													</div>
+													<div class="flex flex-row gap-2 items-center">
+														<label class="form__label">Slovenian:</label>
+														<input
+															className={"form__input"}
+															readOnly={!edit}
+															aria-describedby="basic-addon1"
+															id="name"
+															type="text"
+															onChange={(e) => setNameTransl(e.target.value)}
+															value={nameTransl === "" ? homeDataState.updatePointData.point.name.slovenian : nameTransl}
+														/>
+													</div>
 												</div>
 											</div>
 										</div>
@@ -153,43 +168,73 @@ const UpdatedPOIData = () => {
 											<div className="form__group">
 												<label class="form__label">Short description</label>
 
+												<div class="flex flex-col gap-2">
+													<div class="flex flex-row gap-2 items-center">
+														<label class="form__label" style={{ marginRight: "18px" }}>English:</label>
+														<textarea
+															className={"form__input text-sm h-32"}
+															type="textarea" required name="message"
+															placeholder='Short description'
+															onChange={(e) => setShortInfo(e.target.value)}
+															value={shortInfo === "" ? homeDataState.updatePointData.point.shortInfo.english : shortInfo}
+														/>
+													
 
-												<textarea
-													readOnly={!edit}
-													className={!errShortDescriptionPoint ? "form__input text-sm h-32" : "form__input text-sm h-32 !border !border-red-500"}
-													placeholder="Short description"
-													aria-describedby="basic-addon1"
-													id="name"
-													type="textarea"
-													onChange={(e) => setShortInfoPointTransl(e.target.value)}
-													value={shortInfoPointTransl === "" ? JSON.stringify(homeDataState.updatePointData.point.shortInfo) : shortInfoPointTransl}
-												/>
-												<div className="paragraph-box2 grid dgrid-row place-items-center"
-													style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }}
-													hidden={!errShortDescriptionPoint}>
-													{errShortDescriptionPoint}
+													</div>
+													<div class="flex flex-row gap-2 items-center">
+														<label class="form__label">Slovenian:</label>
+														<textarea
+															readOnly={!edit}
+															className={!errShortDescriptionPoint ? "form__input text-sm h-32" : "form__input text-sm h-32 !border !border-red-500"}
+															placeholder="Short description"
+															aria-describedby="basic-addon1"
+															id="name"
+															type="textarea"
+															onChange={(e) => setShortInfoPointTransl(e.target.value)}
+															value={shortInfoPointTransl === "" ? homeDataState.updatePointData.point.shortInfo.slovenian : shortInfoPointTransl}
+														/>
+														<div className="paragraph-box2 grid dgrid-row place-items-center"
+															style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }}
+															hidden={!errShortDescriptionPoint}>
+															{errShortDescriptionPoint}
+														</div>
+													</div>
 												</div>
 											</div>
 										</div>
 										<div className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
 											<div className="form__group">
 												<label class="form__label">Long description</label>
-
-												<textarea
-													readOnly={!edit}
-													className={!errLongDescriptionPoint ? "form__input text-sm h-32" : "form__input text-sm h-32 !border !border-red-500"}
-													placeholder="Long description"
-													aria-describedby="basic-addon1"
-													id="name"
-													type="textarea"
-													onChange={(e) => setLongInfoPointTransl(e.target.value)}
-													value={longInfoPointTransl === "" ? JSON.stringify(homeDataState.updatePointData.point.longInfo) : longInfoPointTransl}
-												/>
-												<div className="paragraph-box2 grid dgrid-row place-items-center"
-													style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }}
-													hidden={!errLongDescriptionPoint}>
-													{errLongDescriptionPoint}
+												<div class="flex flex-col gap-2">
+													<div class="flex flex-row gap-2 items-center">
+														<label class="form__label" style={{ marginRight: "18px" }}>English:</label>
+														<textarea className="form__input h-32" type="textarea" required
+															name="message"
+															placeholder='Long description'
+															value={longInfo === "" ? homeDataState.updatePointData.point.longInfo.english : longInfo}
+															onChange={(e) => setLongInfo(e.target.value)}></textarea>
+														
+													</div>
+													<div class="flex flex-row gap-2 items-center">
+														<label class="form__label">Slovenian:</label>
+														<textarea
+															readOnly={!edit}
+															className={!errLongDescriptionPoint ? "form__input text-sm h-32" : "form__input text-sm h-32 !border !border-red-500"}
+															placeholder="Long description"
+															aria-describedby="basic-addon1"
+															id="name"
+															type="textarea"
+															onChange={(e) => setLongInfoPointTransl(e.target.value)}
+															value={longInfoPointTransl === "" ? homeDataState.updatePointData.point.longInfo.slovenian : longInfoPointTransl}
+														/>
+														<div className="paragraph-box2 grid dgrid-row place-items-center"
+															style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }}
+															hidden={!errLongDescriptionPoint}>
+															{errLongDescriptionPoint}
+														</div>
+													</div>
 												</div>
+
 											</div>
 										</div>
 										{homeDataState.updatePointData.point.offerName &&
@@ -211,36 +256,44 @@ const UpdatedPOIData = () => {
 															value={price === 0 ? `${homeDataState.updatePointData.point.price} ${homeDataState.updatePointData.point.currency} incl tax` : price}
 														/>
 
-														{edit && <select onChange={(e) => setCurrency(e.target.value)}
-															name="currency"
-															class="form__input shrink max-w-4 "
-														>
-															{currencyList.map(item =>
-																<option key={item} value={item}>{item}</option>
-															)};
-
-														</select>}
+														
 													</div>
 												</div>
 												<div className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
 													<div className="form__group">
 														<label class="form__label">Voucher description*</label>
-														
-														<textarea
 
-															className={!errVoucherDescriptionPoint ? "form__input text-sm h-32" : "form__input text-sm h-32 !border !border-red-500"}
-															placeholder='Voucher description translated'
-															aria-describedby="basic-addon1"
-															id="name"
-															type="text"
+														<div class="flex flex-col gap-2">
+															<div class="flex flex-row gap-2 items-center">
+																<label class="form__label" style={{ marginRight: "18px" }}>English:</label>
+																
+																	<textarea className={"form__input text-sm h-32"}
+																		type="textarea" required
+																		name="message"
+																		placeholder='Voucher description'
+																		value={voucherDesc === "" ? homeDataState.updatePointData.point.longInfo.english : voucherDesc}
+																		onChange={(e) => setVoucherDesc(e.target.value)}></textarea>
+																
+																
+															</div><div class="flex flex-row gap-2 items-center">
+																<label class="form__label">Slovenian:</label>
+																<textarea
 
-															onChange={(e) => setVoucherDescTransl(e.target.value)}
-															value={voucherDescTransl}
-														/>
-														<div className="paragraph-box2 grid dgrid-row place-items-center"
-															style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }}
-															hidden={!errVoucherDescriptionPoint}>
-															{errVoucherDescriptionPoint}
+																	className={!errVoucherDescriptionPoint ? "form__input text-sm h-32" : "form__input text-sm h-32 !border !border-red-500"}
+																	placeholder='Voucher description translated'
+																	aria-describedby="basic-addon1"
+																	id="name"
+																	type="text"
+
+																	onChange={(e) => setVoucherDescTransl(e.target.value)}
+																	value={voucherDescTransl === "" ? homeDataState.updatePointData.point.longInfo.slovenian : voucherDescTransl}
+																/>
+																<div className="paragraph-box2 grid dgrid-row place-items-center"
+																	style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }}
+																	hidden={!errVoucherDescriptionPoint}>
+																	{errVoucherDescriptionPoint}
+																</div>
+															</div>
 														</div>
 													</div>
 												</div>
@@ -360,16 +413,7 @@ const UpdatedPOIData = () => {
 													onChange={(e) => setCategory(e.target.value)}
 													value={category === "" ? homeDataState.updatePointData.point.category : category}
 												/>}
-											{edit &&
-												<select
-													onChange={(e) => setCategory(e.target.value)}
-													name="currency" class="form__input"
-												>
-													{categories.map(item =>
-														<option key={item}
-															value={item}>{item}</option>
-													)};
-												</select>}
+											
 										</div>
 										{homeDataState.updatePointData.point.partner &&
 											<div class="bg-black/[3%] p-4 rounded-xl gap-2 divide-y">
@@ -437,212 +481,13 @@ const UpdatedPOIData = () => {
 														</div>
 													</div>
 												}
-
-												{edit &&
-													<div>
-
-														<div className="form__group">
-
-															<label class="form__label">Monday</label>
-															<label>
-																<input
-																	type="checkbox"
-																	checked={mondayclosed}
-																	onChange={(e) => setMondayClosed(!mondayclosed)}
-																/>
-																closed
-															</label>
-															{!mondayclosed &&
-																<div>
-																	<span>
-																		<TimePicker disableClock={true}
-																			onChange={(newValue) => {
-																				setMondayFrom(newValue);
-																			}} value={mondayFrom} />
-																	</span>
-																	<span>
-																		<TimePicker disableClock={true}
-																			onChange={(newValue) => {
-																				setMondayTo(newValue);
-																			}} value={mondayTo} />
-																	</span>
-																</div>
-															}
-														</div>
-
-														<div className="form__group">
-															<label class="form__label">Tuesday</label>
-															<label>
-																<input
-																	type="checkbox"
-																	checked={tuesdayclosed}
-																	onChange={(e) => setTuesdayClosed(!tuesdayclosed)}
-																/>
-																closed
-															</label>
-															{!tuesdayclosed &&
-																<div>
-																	<span>
-																		<TimePicker disableClock={true}
-																			onChange={(newValue) => {
-																				setTuesdayFrom(newValue);
-																			}} value={tuesdayFrom} />
-																	</span>
-																	<span>
-																		<TimePicker disableClock={true}
-																			onChange={(newValue) => {
-																				setTuesdayTo(newValue);
-																			}} value={tuesdayTo} />
-																	</span>
-																</div>
-															}
-														</div>
-
-														<div className="form__group">
-															<label class="form__label">Wednesday</label>
-															<label>
-																<input
-																	type="checkbox"
-																	checked={wednesdayclosed}
-																	onChange={(e) => setWednesdayClosed(!wednesdayclosed)}
-																/>
-																closed
-															</label>
-															{!wednesdayclosed &&
-																<div>
-																	<span>
-																		<TimePicker disableClock={true}
-																			onChange={(newValue) => {
-																				setWednesdayFrom(newValue);
-																			}} value={wednesdayFrom} />
-																	</span>
-																	<span>
-																		<TimePicker disableClock={true}
-																			onChange={(newValue) => {
-																				setWednesdayTo(newValue);
-																			}} value={wednesdayTo} />
-																	</span>
-																</div>
-															}
-														</div>
-
-														<div className="form__group">
-															<label class="form__label">Thursday</label>
-															<label>
-																<input
-																	type="checkbox"
-																	checked={thursdayclosed}
-																	onChange={(e) => setThursdayClosed(!thursdayclosed)}
-																/>
-																closed
-															</label>
-															{!thursdayclosed &&
-																<div>
-
-																	<span>
-																		<TimePicker disableClock={true}
-																			onChange={(newValue) => {
-																				setThursdayFrom(newValue);
-																			}} value={thursdayFrom} />
-																	</span>
-																	<span>
-																		<TimePicker disableClock={true}
-																			onChange={(newValue) => {
-																				setThursdayTo(newValue);
-																			}} value={thursdayTo} />
-																	</span>
-																</div>
-															}
-														</div>
-
-														<div className="form__group">
-															<label class="form__label">Friday</label>
-															<label>
-																<input
-																	type="checkbox"
-																	checked={fridayclosed}
-																	onChange={(e) => setFridayClosed(!fridayclosed)}
-																/>
-																closed
-															</label>
-															{!fridayclosed &&
-																<div>
-
-																	<span>
-																		<TimePicker disableClock={true}
-																			onChange={(newValue) => {
-																				setFridayFrom(newValue);
-																			}} value={fridayFrom} />
-																	</span> <span>
-																		<TimePicker disableClock={true}
-																			onChange={(newValue) => {
-																				setFridayTo(newValue);
-																			}} value={fridayTo} /></span>
-
-
-																</div>}
-														</div>
-
-														<div className="form__group">
-															<label class="form__label">Saturday</label>
-															<label>
-																<input
-																	type="checkbox"
-																	checked={saturdayclosed}
-																	onChange={(e) => setSaturdayClosed(!saturdayclosed)}
-																/>
-																closed
-															</label>
-															{!saturdayclosed && <div>
-
-
-																<span>
-																	<TimePicker disableClock={true}
-																		onChange={(newValue) => {
-																			setSaturdayFrom(newValue);
-																		}} value={saturdayFrom} />
-																</span> <span>
-																	<TimePicker disableClock={true}
-																		onChange={(newValue) => {
-																			setSaturdayTo(newValue);
-																		}} value={saturdayTo} /></span>
-
-															</div>}
-														</div>
-
-														<div className="form__group">
-															<label class="form__label">Sunday</label>
-															<label>
-																<input
-																	type="checkbox"
-																	checked={sundayclosed}
-																	onChange={(e) => setSundayClosed(!sundayclosed)}
-																/>
-																closed
-															</label>
-															{!sundayclosed && <div>
-
-
-																<span>
-																	<TimePicker disableClock={true}
-																		onChange={(newValue) => {
-																			setSundayFrom(newValue);
-																		}} value={sundayFrom} />
-																</span> <span>
-																	<TimePicker disableClock={true}
-																		onChange={(newValue) => {
-																			setSundayTo(newValue);
-																		}} value={sundayTo} /></span>
-
-															</div>}
-														</div>
-
-													</div>}
+											
 											</div>}
 
 										<div className="form__group">
 											<label class="form__label">Menu image</label>
 											
+
 											{imagePreview &&
 												<img className="preview" src={imagePreview}
 													alt={"image-"} />}
@@ -654,6 +499,7 @@ const UpdatedPOIData = () => {
 										<div>
 
 											<label class="form__label">Image gallery</label>
+											
 
 											<br />
 
@@ -667,7 +513,7 @@ const UpdatedPOIData = () => {
 																	alt={"image-" + i} key={i} />
 
 																<br />
-
+																
 																<br />
 															</div>
 														);
@@ -691,14 +537,7 @@ const UpdatedPOIData = () => {
 
 										</div>
 
-										<div className="form__group">
-
-											<label class="form__label">Text to speach audio</label>
-
-
-
-
-										</div>
+									
 
 										{!audio && <ReactAudioPlayer
 											src={homeDataState.updatePointData.point.audio}
@@ -712,7 +551,7 @@ const UpdatedPOIData = () => {
 										</div>
 
 
-
+									
 									</form>
 								</div>
 							</div>

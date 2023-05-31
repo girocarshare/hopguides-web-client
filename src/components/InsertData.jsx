@@ -109,7 +109,8 @@ const InsertData = (props) => {
 	const [audios, setAudios] = useState([]);
 	const statusRef = React.useRef();
 	const progressRef = React.useRef();
-
+	const [shortInfoTransl, setShortInfoTransl] = useState("");
+	const [longInfoTransl, setLongInfoTransl] = useState("");
 	const [selectedFiles, setSelectedFiles] = useState([]);
 	const [files, setFiles] = useState([]);
 	const [categories, setCategories] = useState(["HISTORY", "DRINKS", "NATURE", "EATS", "BRIDGE", "MUSEUMS", "EXPERIENCE"]);
@@ -144,7 +145,7 @@ const InsertData = (props) => {
 		const response = await Axios.post(
 			"https://api.openai.com/v1/completions",
 			{
-				prompt: `translate "${input}" to english, spanish, serbian and slovenian and put it in json format`,
+				prompt: `translate "${input}" to slovenian`,
 				model: 'text-davinci-002',
 				max_tokens: 2500,
 				n: 1,
@@ -168,6 +169,7 @@ const InsertData = (props) => {
 			setAgreementDescTransl(response.data.choices[0].text)
 		} else if (num == 4) {
 
+			console.log(response.data.choices[0].text)
 			setTitlePointTransl(response.data.choices[0].text)
 		} else if (num == 5) {
 
@@ -188,9 +190,9 @@ const InsertData = (props) => {
 		const response = await Axios.post(
 			"https://api.openai.com/v1/completions",
 			{
-				prompt: `write me a short description about ${input}, translate it to english, spanish, serbian and slovenian and put it in json format`,
+				prompt: `in one paragraph write me a short description about ${input}`,
 				model: 'text-davinci-003',
-				max_tokens: 2500,
+				max_tokens: 2049,
 				n: 1,
 			},
 			{
@@ -203,10 +205,30 @@ const InsertData = (props) => {
 
 		setShortInfo(response.data.choices[0].text)
 
+
+		const responseSlo = await Axios.post(
+			"https://api.openai.com/v1/completions",
+			{
+				prompt: `translate ${response.data.choices[0].text} to slovenian`,
+				model: 'text-davinci-003',
+				max_tokens: 2049,
+				n: 1,
+			},
+			{
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer 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`,
+				},
+			}
+		);
+
+		setShortInfoTransl(responseSlo.data.choices[0].text)
+
+
 		const response2 = await Axios.post(
 			"https://api.openai.com/v1/completions",
 			{
-				prompt: `write me a long description about ${input}, translate it to to english, spanish, serbian and slovenian and put it in json format`,
+				prompt: ` write me a long description about ${input} and put it in one paragraph`,
 				model: 'text-davinci-003',
 				max_tokens: 2049,
 				n: 1,
@@ -221,6 +243,24 @@ const InsertData = (props) => {
 
 
 		setLongInfo(response2.data.choices[0].text)
+
+		const response2Slo = await Axios.post(
+			"https://api.openai.com/v1/completions",
+			{
+				prompt: `translate ${response2.data.choices[0].text} to slovenian`,
+				model: 'text-davinci-003',
+				max_tokens: 2049,
+				n: 1,
+			},
+			{
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer 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`,
+				},
+			}
+		);
+
+		setLongInfoTransl(response2Slo.data.choices[0].text)
 		return response.data.choices[0].text;
 	};
 
@@ -259,6 +299,7 @@ const InsertData = (props) => {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 
+		console.log(points)
 		setErrTitle("")
 		setErrLongDescription("")
 		setErrShortDescription("")
@@ -266,11 +307,11 @@ const InsertData = (props) => {
 		setErrAgreementTitle("")
 
 
-		if (titleTransl == "" || agreementDescTransl == "" || file == null || agreementDescTransl == "" || audio == null || shortInfo == "" || longInfo == "" || price == "" || hotelId == "" || duration == "" || length == "" || highestPoint == "") {
+		if (title == "" || titleTransl == "" || agreementDesc==""|| agreementDescTransl == "" || file == null || agreementTitle=="" || agreementTitleTransl == "" || audio == null || shortInfo == "" || shortInfoTransl=="" || longInfoTransl==""|| longInfo == "" || price == "" || hotelId == "" || duration == "" || length == "" || highestPoint == "") {
 			setErrMessage("Please fill in the fileds marked with *")
 		} else {
 
-			if (!isJsonString(titleTransl)) {
+			/*if (!isJsonString(titleTransl)) {
 				setErrTitle("Please insert the proper JSON format. Pay attention on enter and quotes(\")")
 				setErrMessage("JSON format invalid. Check the red fields.")
 			}
@@ -289,14 +330,16 @@ const InsertData = (props) => {
 			if (!isJsonString(longInfo)) {
 				setErrLongDescription("Please insert the proper JSON format. Pay attention on enter and quotes(\")")
 				setErrMessage("JSON format invalid. Check the red fields.")
-			}
+			}*/
+
+		
 
 			var tour = {
-				title: JSON.parse(titleTransl),
-				agreementTitle: JSON.parse(agreementTitleTransl),
-				agreementDesc: JSON.parse(agreementDescTransl),
-				shortInfo: JSON.parse(shortInfo),
-				longInfo: JSON.parse(longInfo),
+				//: JSON.parse(titleTransl),
+				//agreementTitle: JSON.parse(agreementTitleTransl),
+				//agreementDesc: JSON.parse(agreementDescTransl),
+				//shortInfo: JSON.parse(shortInfo),
+				//longInfo: JSON.parse(longInfo),
 				price: price,
 				points: points,
 				duration: duration,
@@ -305,7 +348,16 @@ const InsertData = (props) => {
 				termsAndConditions: termsAndConditions,
 				currency: currency,
 				bpartnerId: hotelId,
+				update:false
 			}
+
+			
+			tour.title = JSON.parse(`{"english":" ${title.trim()} ", "slovenian" : "${titleTransl.trim()}"}`)
+			tour.agreementTitle = JSON.parse(`{"english":"${agreementTitle.trim()} ", "slovenian" : " ${agreementTitleTransl.trim()}"}`)
+			tour.agreementDesc = JSON.parse(`{"english":"${agreementDesc.trim()}", "slovenian" : "${ agreementDescTransl.trim()} "}`)
+			tour.shortInfo = JSON.parse(`{"english":" ${shortInfo.trim()} ", "slovenian" : "${ shortInfoTransl.trim()} "}`)
+			tour.longInfo = JSON.parse(`{"english":"${longInfo.trim()} ", "slovenian" : "${longInfoTransl.trim()}"}`)
+
 			const formData = new FormData();
 			formData.append('file', file);
 			formData.append('file', audio);
@@ -395,17 +447,37 @@ const InsertData = (props) => {
 
 	}, [dispatch]);
 	const addPartner = () => {
+	
 		setPartner(true)
 		setPoint(false)
 		window.scrollTo(0, 0);
+		
 
 	};
 
 	const addPoint = () => {
-		console.log("Evoo")
+	
 		setPartner(false)
 		setPoint(true)
 		window.scrollTo(0, 0);
+
+	};
+
+	const setBusinessPartner = (data) => {
+	
+		setHotelId(data)
+		
+
+		if(points!=[]){
+			var pointsChanged = []
+			for(var poi of points){
+				poi.bpartnerId = data;
+				pointsChanged.push(poi)
+			}
+
+			console.log(pointsChanged)
+			setPoints(pointsChanged)
+		}
 
 	};
 
@@ -425,9 +497,9 @@ const InsertData = (props) => {
 		setErrTitlePoint("")
 
 
-		if (partner && (titlePointTransl == "" || shortInfoPointTransl == "" || longInfoPointTransl == "" || category == "" || pointPrice == "" || offerName == "" || responsiblePerson == "" || voucherDescTransl == "" || phone == "" || email == "" || longitude == "" || latitude == "" || audio2 == null || selectedFiles.length == 0 || (!mondayclosed && (mondayFrom == "" || mondayTo == "")) || (!tuesdayclosed && (tuesdayFrom == "" || tuesdayTo == "")) || (!wednesdayclosed && (wednesdayFrom == "" || wednesdayTo == "")) || (!thursdayclosed && (thursdayFrom == "" || thursdayTo == "")) || (!fridayclosed && (fridayFrom == "" || fridayTo == "")) || (!saturdayclosed && (saturdayFrom == "" || saturdayTo == "")) || (!sundayclosed && (sundayFrom == "" || sundayTo == "")))) {
+		if (partner && (titlePoint=="" || titlePointTransl == "" || shortInfoPoint=="" || shortInfoPointTransl == "" || longInfoPoint=="" || longInfoPointTransl == "" || category == "" || pointPrice == "" || offerName == "" || responsiblePerson == "" || voucherDesc=="" || voucherDescTransl == "" || phone == "" || email == "" || longitude == "" || latitude == "" || audio2 == null || selectedFiles.length == 0 || (!mondayclosed && (mondayFrom == "" || mondayTo == "")) || (!tuesdayclosed && (tuesdayFrom == "" || tuesdayTo == "")) || (!wednesdayclosed && (wednesdayFrom == "" || wednesdayTo == "")) || (!thursdayclosed && (thursdayFrom == "" || thursdayTo == "")) || (!fridayclosed && (fridayFrom == "" || fridayTo == "")) || (!saturdayclosed && (saturdayFrom == "" || saturdayTo == "")) || (!sundayclosed && (sundayFrom == "" || sundayTo == "")))) {
 			setErrMessagePartner("Please insert mandatory fields for partner (marked with *)")
-		} else if (point && (titlePointTransl == "" || shortInfoPointTransl == "" || longInfoPointTransl == "" || category == "" || longitude == "" || latitude == "" || audio2 === null || selectedFiles.length === 0)) {
+		} else if (point && (titlePoint=="" || titlePointTransl == "" || shortInfoPoint=="" || shortInfoPointTransl == "" || longInfoPoint=="" ||  longInfoPointTransl == "" || category == "" || longitude == "" || latitude == "" || audio2 === null || selectedFiles.length === 0)) {
 
 			setErrMessagePartner("Please insert mandatory fields for point of interest (marked with *)")
 		} else {
@@ -450,7 +522,7 @@ const InsertData = (props) => {
 			}
 
 
-			if (!isJsonString(titlePointTransl)) {
+			/*if (!isJsonString(titlePointTransl)) {
 				setErrTitlePoint("Please insert the proper JSON format. Pay attention on enter and quotes(\")")
 				setErrMessagePartner("JSON format invalid. Check the red fields.")
 			}
@@ -465,13 +537,13 @@ const InsertData = (props) => {
 			if (partner && !isJsonString(voucherDescTransl)) {
 				setErrVoucherDescriptionPoint("Please insert the proper JSON format. Pay attention on enter and quotes(\")")
 				setErrMessagePartner("JSON format invalid. Check the red fields.")
-			}
+			}*/
 			console.log(hotelId)
 			var pointObj = {
 				num: num,
-				name: JSON.parse(titlePointTransl),
-				shortInfo: JSON.parse(shortInfoPointTransl),
-				longInfo: JSON.parse(longInfoPointTransl),
+				//name: JSON.parse(titlePointTransl),
+				//shortInfo: JSON.parse(shortInfoPointTransl),
+				//longInfo: JSON.parse(longInfoPointTransl),
 				price: pointPrice.toString(),
 				offerName: offerName,
 				contact: { phone: phone, email: email, webURL: webURL, name: responsiblePerson },
@@ -481,7 +553,15 @@ const InsertData = (props) => {
 				category: category,
 				imageTitles: jsonTitles,
 			}
-			if (voucherDesc == "") {
+
+			if(partner){
+				pointObj.voucherDesc = JSON.parse(`{"english":"${voucherDesc.trim()} ", "slovenian" : "${voucherDescTransl.trim()}"}`)
+			}
+			pointObj.name = JSON.parse(`{"english":" ${titlePoint.trim()} ", "slovenian" : "${titlePointTransl.trim()}"}`)
+			pointObj.shortInfo = JSON.parse(`{"english":" ${shortInfoPoint.trim()} ", "slovenian" : "${ shortInfoPointTransl.trim()} "}`)
+			pointObj.longInfo = JSON.parse(`{"english":"${longInfoPoint.trim()} ", "slovenian" : "${longInfoPointTransl.trim()}"}`)
+
+			/*if (voucherDesc == "") {
 				pointObj.voucherDesc = JSON.parse(`{
                   "english": "",
                   "spanish": "",
@@ -492,7 +572,7 @@ const InsertData = (props) => {
 			} else {
 				pointObj.voucherDesc = JSON.parse(voucherDescTransl)
 				pointObj.partner = true
-			}
+			}*/
 			const newData = [ ...points, pointObj];
 			setPoints(newData)
 			setTitlePoint("")
@@ -758,6 +838,11 @@ const InsertData = (props) => {
 											errShortDescription={errShortDescription}
 											errAgreementTitle={errAgreementTitle}
 											errAgreementDescription={errAgreementDescription}
+											shortInfoTransl = {shortInfoTransl}
+											setShortInfoTransl = {setShortInfoTransl}
+											longInfoTransl = {longInfoTransl}
+											setLongInfoTransl = {setLongInfoTransl}
+											setBusinessPartner = {setBusinessPartner}
 										/>
 
 
