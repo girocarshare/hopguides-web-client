@@ -110,7 +110,7 @@ const AddNewPartnerForm = (props) => {
 			{
 				prompt: `translate "${input}" to slovenian`,
 				model: 'text-davinci-002',
-				max_tokens: 500,
+				max_tokens: 2500,
 				n: 1,
 			},
 			{
