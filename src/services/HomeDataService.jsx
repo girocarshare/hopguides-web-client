@@ -6,6 +6,7 @@ var url = process.env.REACT_APP_URL || "http://localhost:8080/";
 
 export const homeDataService = {
 	getToursAndPointsData,
+	getUpdatedToursAndPointsData,
 	getPreviousMonthsData,
 	addTour,
 	addPartner,
@@ -20,7 +21,9 @@ export const homeDataService = {
 	getTermsAndConditions,
 	confirm,
 	getQrCodes,
-	generateQrCode
+	generateQrCode,
+	approve,
+	disapprove
 
 };
 
@@ -40,6 +43,79 @@ function insertData( tf, dispatch) {
 	}
 	function failure(error) {
 		return { type: homeDataConstants.INSERT_DATA_FAILURE, error };
+	}
+}
+
+
+async function approve(dispatch ,id) {
+	
+
+	dispatch(request());
+	var token = authHeader()
+	await Axios.get(`${url}api/pnl/tour/approve/` + id, {
+		headers: {
+		  Authorization: token 
+		}},{ validateStatus: () => true })
+		.then((res) => {
+			if (res.status === 200) {
+				dispatch(success(res.data));
+			} else {
+				var error = "Error while fetching data"
+				dispatch(failure(error));
+			}
+		})
+		.catch((err) => {
+		
+			var error = "Unknown error, please try again later."
+				dispatch(failure(error));
+		});
+
+	function request() {
+		return { type: homeDataConstants.APPROVE_REQUEST };
+	}
+	function success(data) {
+		
+		return { type: homeDataConstants.APPROVE_SUCCESS, data: data };
+	}
+	function failure(message) {
+		return { type: homeDataConstants.APPROVE_FAILURE, errorMessage: message };
+	}
+}
+
+
+async function disapprove(dispatch ,id) {
+	
+
+	dispatch(request());
+	var token = authHeader()
+	
+	await Axios.get(`${url}api/pnl/tour/disapprove/` + id,{
+		headers: {
+		  Authorization: token 
+		}},{ validateStatus: () => true })
+		.then((res) => {
+			if (res.status === 200) {
+				dispatch(success(res.data));
+			} else {
+				var error = "Error while fetching data"
+				dispatch(failure(error));
+			}
+		})
+		.catch((err) => {
+		
+			var error = "Unknown error, please try again later."
+				dispatch(failure(error));
+		});
+
+	function request() {
+		return { type: homeDataConstants.DISAPPROVE_REQUEST };
+	}
+	function success(data) {
+		
+		return { type: homeDataConstants.DISAPPROVE_SUCCESS, data: data };
+	}
+	function failure(message) {
+		return { type: homeDataConstants.DISAPPROVE_FAILURE, errorMessage: message };
 	}
 }
 
@@ -117,7 +193,7 @@ function updateTour( tf, dispatch) {
 
 		dispatch(success());
 	}else{
-		dispatch(failure("Error while updateing tour"));
+		dispatch(failure("Error while updating tour"));
 	}
 
 	function success() {
@@ -125,6 +201,8 @@ function updateTour( tf, dispatch) {
 		return { type: homeDataConstants.TOUR_UPDATE_SUCCESS };
 	}
 	function failure(error) {
+		
+		console.log("evo me")
 		return { type: homeDataConstants.TOUR_UPDATE_FAILURE, error };
 	}
 }
@@ -459,6 +537,43 @@ async function getToursAndPointsData(dispatch) {
 
 		return { type: homeDataConstants.DATA_TOUR_POINTS_GET_FAILURE, errorMessage: message };
 	}
+}
+
+
+
+async function getUpdatedToursAndPointsData(dispatch) {
+
+
+	dispatch(request());
+	var token = authHeader()
+
+await Axios.get(`${url}api/pnl/tour/allUpdatedToursWithPoints`,{ headers: { Authorization: token},  validateStatus: () => true })
+
+	.then((res) => {
+		if (res.status === 200) {
+			dispatch(success(res.data));
+		} else {
+			
+			var error = "Error while fetching data"
+			dispatch(failure(error));
+		}
+	})
+	.catch((err) => {
+	
+		var error = "Unknown error, please try again later."
+			dispatch(failure(error));
+	});
+
+function request() {
+	return { type: homeDataConstants.DATA_TOUR_POINTS_GET_REQUEST };
+}
+function success(data) {
+	return { type: homeDataConstants.DATA_TOUR_POINTS_GET_SUCCESS, data: data };
+}
+function failure(message) {
+
+	return { type: homeDataConstants.DATA_TOUR_POINTS_GET_FAILURE, errorMessage: message };
+}
 }
 
 

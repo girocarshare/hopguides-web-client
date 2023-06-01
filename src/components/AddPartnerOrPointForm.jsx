@@ -11,7 +11,7 @@ var url = process.env.REACT_APP_URL || "http://localhost:8080/";
 var num = 1;
 const AddPartnerOrPointForm = (props) => {
 
-    
+
 
     return (
 
@@ -21,7 +21,6 @@ const AddPartnerOrPointForm = (props) => {
                     aria-modal="true">
 
                     <div class="modal-overlay"></div>
-
                     <div class="fixed inset-0 z-10 overflow-y-auto">
 
                         <div class="modal-frame">
@@ -47,46 +46,47 @@ const AddPartnerOrPointForm = (props) => {
                                             <div className="form__group">
                                                 <label class="form__label">Name
                                                     *</label>
-                                                <div
-                                                    class="flex flex-row items-center gap-2">
-                                                    <input
+                                                <div class="flex flex-col gap-2">
+                                                    <div class="flex flex-row gap-2 items-center">
+                                                        <label class="form__label" style={{ marginRight: "18px" }}>English:</label>
+                                                        <input
 
-                                                        className={"form__input"}
-                                                        placeholder="Name"
-                                                        aria-describedby="basic-addon1"
-                                                        id="name"
-                                                        type="text"
+                                                            className={"form__input"}
+                                                            placeholder="Name"
+                                                            aria-describedby="basic-addon1"
+                                                            id="name"
+                                                            type="text"
 
-                                                        onChange={(e) => props.setTitlePoint(e.target.value)}
-                                                        value={props.titlePoint}
-                                                    />
+                                                            onChange={(e) => props.setTitlePoint(e.target.value)}
+                                                            value={props.titlePoint}
 
-                                                    <button
+                                                        />
 
-                                                        onClick={(e) => props.fetchData(props.titlePoint, 4)}
-                                                        className="button button--primary"
-                                                        id="sendMessageButton"
-                                                        type="button"
-                                                    >
-                                                        Translate
-                                                    </button>
+
+
+                                                        <button
+
+
+                                                            onClick={(e) => props.fetchData(props.titlePoint, 4)}
+                                                            className="button button--primary"
+                                                            id="sendMessageButton"
+                                                            type="button"
+                                                        >
+                                                            Translate
+                                                        </button>
+                                                    </div>
+                                                    <div class="flex flex-row gap-2 items-center">
+                                                        <label class="form__label">Slovenian:</label>
+                                                        <input
+                                                            className={"form__input"}
+                                                            aria-describedby="basic-addon1"
+                                                            id="name"
+                                                            type="text"
+                                                            onChange={(e) => props.setTitlePointTransl(e.target.value)}
+                                                            value={props.titlePointTransl}
+                                                        />
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <textarea
-
-                                                className={!props.errTitlePoint ? "form__input text-sm" : "form__input text-sm !border !border-red-500"}
-                                                style={{ height: 80 }}
-                                                placeholder='JSON FORMAT: { "language": "Text"}'
-                                                aria-describedby="basic-addon1"
-                                                id="name"
-                                                type="text"
-                                                onChange={(e) => props.setTitlePointTransl(e.target.value)}
-                                                value={props.titlePointTransl}
-                                            />
-                                            <div className="paragraph-box2 grid dgrid-row place-items-center"
-                                                style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }}
-                                                hidden={!props.errTitlePoint}>
-                                                {props.errTitlePoint}
                                             </div>
 
                                         </div>
@@ -96,37 +96,45 @@ const AddPartnerOrPointForm = (props) => {
                                             <div className="form__group">
                                                 <label class="form__label">Short
                                                     description* </label>
-                                                <textarea className="form__input h-32"
-                                                    type="textarea" required
-                                                    name="message"
-                                                    placeholder='Short description'
-                                                    value={props.shortInfoPoint}
-                                                    onChange={(e) => props.setShortInfoPoint(e.target.value)}></textarea>
+                                                <div class="flex flex-col gap-2">
+                                                    <div class="flex flex-row gap-2 items-center">
+                                                        <label class="form__label" style={{ marginRight: "18px" }}>English:</label>
+                                                        <textarea
+                                                            className={"form__input text-sm h-32"}
+                                                            type="textarea" required name="message"
+                                                            placeholder='Short description'
+                                                            onChange={(e) => props.setShortInfoPoint(e.target.value)}
+                                                            value={props.shortInfoPoint}
+                                                        />
+                                                        <button
 
-                                                <button
+                                                            onClick={(e) => props.fetchData(props.shortInfoPoint, 5)}
+                                                            className="button button--primary"
+                                                            id="sendMessageButton"
+                                                            type="button"
+                                                        >
+                                                            Translate
+                                                        </button>
 
-                                                    onClick={(e) => props.fetchData(props.shortInfoPoint, 5)}
-                                                    className="button button--primary mt-2"
-                                                    id="sendMessageButton"
-                                                    type="button"
-                                                >
-                                                    Translate
-                                                </button>
-
-                                            </div>
-                                            <textarea
-                                                className={!props.errShortDescriptionPoint ? "form__input text-sm h-32" : "form__input text-sm h-32 !border !border-red-500"}
-                                                placeholder='JSON FORMAT: { "language": "Text"}'
-                                                aria-describedby="basic-addon1"
-                                                id="name"
-                                                type="text"
-                                                onChange={(e) => props.setShortInfoPointTransl(e.target.value)}
-                                                value={props.shortInfoPointTransl}
-                                            />
-                                            <div className="paragraph-box2 grid dgrid-row place-items-center"
-                                                style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }}
-                                                hidden={!props.errShortDescriptionPoint}>
-                                                {props.errShortDescriptionPoint}
+                                                    </div>
+                                                    <div class="flex flex-row gap-2 items-center">
+                                                        <label class="form__label">Slovenian:</label>
+                                                        <textarea
+                                                            className={!props.errShortDescriptionPoint ? "form__input text-sm h-32" : "form__input text-sm h-32 !border !border-red-500"}
+                                                            placeholder="Short description"
+                                                            aria-describedby="basic-addon1"
+                                                            id="name"
+                                                            type="textarea"
+                                                            onChange={(e) => props.setShortInfoPointTransl(e.target.value)}
+                                                            value={props.shortInfoPointTransl}
+                                                        />
+                                                        <div className="paragraph-box2 grid dgrid-row place-items-center"
+                                                            style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }}
+                                                            hidden={!props.errShortDescriptionPoint}>
+                                                            {props.errShortDescriptionPoint}
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
 
@@ -135,36 +143,42 @@ const AddPartnerOrPointForm = (props) => {
                                             <div className="form__group">
                                                 <label class="form__label">Long
                                                     description*</label>
-                                                <textarea className="form__input h-32"
-                                                    type="textarea" required
-                                                    name="message"
-                                                    placeholder='Long description'
-                                                    value={props.longInfoPoint}
-                                                    onChange={(e) => props.setLongInfoPoint(e.target.value)}></textarea>
-                                                <button
+                                                <div class="flex flex-col gap-2">
+                                                    <div class="flex flex-row gap-2 items-center">
+                                                        <label class="form__label" style={{ marginRight: "18px" }}>English:</label>
+                                                        <textarea className="form__input h-32" type="textarea" required
+                                                            name="message"
+                                                            placeholder='Long description'
+                                                            value={props.longInfoPoint}
+                                                            onChange={(e) => props.setLongInfoPoint(e.target.value)}></textarea>
+                                                        <button
 
-                                                    onClick={(e) => props.fetchData(props.longInfoPoint, 6)}
-                                                    className="button button--primary mt-2"
-                                                    id="sendMessageButton"
-                                                    type="button"
-                                                >
-                                                    Translate
-                                                </button>
-                                            </div>
-                                            <textarea
-
-                                                className={!props.errLongDescriptionPoint ? "form__input text-sm h-32" : "form__input text-sm h-32 !border !border-red-500"}
-                                                placeholder='JSON FORMAT: { "language": "Text"}'
-                                                aria-describedby="basic-addon1"
-                                                id="name"
-                                                type="text"
-                                                onChange={(e) => props.setLongInfoPointTransl(e.target.value)}
-                                                value={props.longInfoPointTransl}
-                                            />
-                                            <div className="paragraph-box2 grid dgrid-row place-items-center"
-                                                style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }}
-                                                hidden={!props.errLongDescriptionPoint}>
-                                                {props.errLongDescriptionPoint}
+                                                            onClick={(e) => props.fetchData(props.longInfoPoint, 6)}
+                                                            className="button button--primary"
+                                                            id="sendMessageButton"
+                                                            type="button"
+                                                        >
+                                                            Translate
+                                                        </button>
+                                                    </div>
+                                                    <div class="flex flex-row gap-2 items-center">
+                                                        <label class="form__label">Slovenian:</label>
+                                                        <textarea
+                                                            className={!props.errLongDescriptionPoint ? "form__input text-sm h-32" : "form__input text-sm h-32 !border !border-red-500"}
+                                                            placeholder="Long description"
+                                                            aria-describedby="basic-addon1"
+                                                            id="name"
+                                                            type="textarea"
+                                                            onChange={(e) => props.setLongInfoPointTransl(e.target.value)}
+                                                            value={props.longInfoPointTransl}
+                                                        />
+                                                        <div className="paragraph-box2 grid dgrid-row place-items-center"
+                                                            style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }}
+                                                            hidden={!props.errLongDescriptionPoint}>
+                                                            {props.errLongDescriptionPoint}
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
 
@@ -175,37 +189,46 @@ const AddPartnerOrPointForm = (props) => {
                                                 <div className="form__group">
                                                     <label class="form__label">Voucher
                                                         description*</label>
-                                                    <textarea
-                                                        className="form__input h-32"
-                                                        type="textarea" required
-                                                        name="message"
-                                                        placeholder='Voucher description'
-                                                        value={props.voucherDesc}
-                                                        onChange={(e) => props.setVoucherDesc(e.target.value)}></textarea>
-                                                    <button
+                                                    <div class="flex flex-col gap-2">
+                                                        <div class="flex flex-row gap-2 items-center">
+                                                            <label class="form__label" style={{ marginRight: "18px" }}>English:</label>
 
-                                                        onClick={(e) => props.fetchData(props.voucherDesc, 7)}
-                                                        className="button button--primary mt-2"
-                                                        id="sendMessageButton"
-                                                        type="button"
-                                                    >
-                                                        Translate
-                                                    </button>
-                                                </div>
-                                                <textarea
+                                                            <textarea className={"form__input text-sm h-32"}
+                                                                type="textarea" required
+                                                                name="message"
+                                                                placeholder='Voucher description'
+                                                                value={props.voucherDesc}
+                                                                onChange={(e) => props.setVoucherDesc(e.target.value)}></textarea>
+                                                            <button
 
-                                                    className={!props.errVoucherDescriptionPoint ? "form__input text-sm h-32" : "form__input text-sm h-32 !border !border-red-500"}
-                                                    placeholder='JSON FORMAT: { "language": "Text"}'
-                                                    aria-describedby="basic-addon1"
-                                                    id="name"
-                                                    type="text"
-                                                    onChange={(e) => props.setVoucherDescTransl(e.target.value)}
-                                                    value={props.voucherDescTransl}
-                                                />
-                                                <div className="paragraph-box2 grid dgrid-row place-items-center"
-                                                    style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }}
-                                                    hidden={!props.errVoucherDescriptionPoint}>
-                                                    {props.errVoucherDescriptionPoint}
+                                                                onClick={(e) => props.fetchData(props.voucherDesc, 7)}
+                                                                className="button button--primary"
+                                                                id="sendMessageButton"
+                                                                type="button"
+                                                            >
+                                                                Translate
+                                                            </button>
+
+                                                        </div><div class="flex flex-row gap-2 items-center">
+                                                            <label class="form__label">Slovenian:</label>
+                                                            <textarea
+
+                                                                className={!props.errVoucherDescriptionPoint ? "form__input text-sm h-32" : "form__input text-sm h-32 !border !border-red-500"}
+                                                                placeholder='Voucher description translated'
+                                                                aria-describedby="basic-addon1"
+                                                                id="name"
+                                                                type="text"
+
+                                                                onChange={(e) => props.setVoucherDescTransl(e.target.value)}
+                                                                value={props.voucherDescTransl}
+                                                            />
+                                                            <div className="paragraph-box2 grid dgrid-row place-items-center"
+                                                                style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }}
+                                                                hidden={!props.errVoucherDescriptionPoint}>
+                                                                {props.errVoucherDescriptionPoint}
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
 
@@ -586,11 +609,12 @@ const AddPartnerOrPointForm = (props) => {
                                             <label
                                                 class="button button--secondary button--small">
                                                 <span>Upload image</span>
-                                                <input type={"file"}  multiple
+                                                <input type={"file"} multiple
                                                     onChange={props.selectFiles}
                                                     class="sr-only" />
                                             </label>
-
+                                            {props.videoPreview && <video className="image__preview" controls src={props.videoPreview}
+												alt={"video-"} />}
                                             {props.imagePreviews && (
                                                 <div>
                                                     {props.imagePreviews.map((img, i) => {

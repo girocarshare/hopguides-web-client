@@ -21,7 +21,7 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 var url = process.env.REACT_APP_URL || "http://localhost:8080/";
 
 
-const HomeData = forwardRef((props) => {
+const UpdateTours = forwardRef((props) => {
 
 	const { homeDataState, dispatch } = useContext(HomeDataContext);
 	const [users, setUsers] = useState([]);
@@ -41,23 +41,6 @@ const HomeData = forwardRef((props) => {
 	var myElementRef = React.createRef();
 	const [reorganize, setReorganize] = useState(false);
 	const [reorganizeData, setReorganizeData] = useState([]);
-	const [data, setData] = useState([
-		{
-			name: "Jeevan",
-			age: 21,
-			gender: "male"
-		},
-		{
-			name: "Piyush",
-			age: 17,
-			gender: "male"
-		},
-		{
-			name: "Arti",
-			age: 22,
-			gender: "female"
-		}
-	]);
 
 	const ref = useRef(null);
 	const handleLogout = () => {
@@ -74,6 +57,8 @@ const HomeData = forwardRef((props) => {
 	};
 
 	useEffect(() => {
+
+
 
 
 		var token = authHeader()
@@ -113,26 +98,19 @@ const HomeData = forwardRef((props) => {
 		setUsers(arr)
 	}, [dispatch]);
 
-	const getHistory = (e, data) => {
-		const getDocumentsInfoHandlerr = async () => {
-			await homeDataService.getPreviousMonthsData(dispatch, data);
-		};
-
-		getDocumentsInfoHandlerr();
-	};
-
-
-
-	const getQrCodes = (e, data) => {
-
-		window.location = "#/qrcodes/" + data;
-	};
-
 
 	const getQrCode = (e, data) => {
 		homeDataService.getQrCode(dispatch, data);
 	};
 
+
+	const approve = (e, data) => {
+		homeDataService.approve(dispatch, data);
+	};
+
+	const disapprove = (e, data) => {
+		homeDataService.disapprove(dispatch, data);
+	};
 
 	const visitWebsite = (e, data) => {
 
@@ -140,61 +118,7 @@ const HomeData = forwardRef((props) => {
 	};
 
 
-	const seeTermsAndConditions = (e, data) => {
 
-		window.location = "#/termsAndConditions/" + data;
-	};
-
-	const seeHomePage = (e) => {
-
-		window.location = "#/";
-	};
-
-	const updateLogo = (e) => {
-
-
-		dispatch({ type: homeDataConstants.SHOW_UPDATE_LOGO_MODAL });
-	};
-
-
-	const editLockCode = (e) => {
-
-
-		dispatch({ type: homeDataConstants.SHOW_CHANGE_LOCK_CODE_MODAL });
-	};
-
-
-	const addNew = (e) => {
-
-		dispatch({ type: homeDataConstants.SHOW_ADD_MODAL });
-	};
-	const addNewPartner = (e, id, bpartnerId) => {
-
-		console.log(bpartnerId)
-		dispatch({ type: homeDataConstants.SHOW_ADD_PARTNER_MODAL, id: id, bpartnerId: bpartnerId });
-	};
-
-
-	const onUpdatePoint = (oldData, newData) => {
-
-		const getUpdateHandlerr = async () => {
-			return await homeDataService.updatePoint(dispatch, oldData);
-		};
-
-		return getUpdateHandlerr();
-
-	};
-	const onUpdate = async (oldData, newData) => {
-
-		const getUpdateHandlerr = async () => {
-			return await homeDataService.updateTour(dispatch, oldData);
-		};
-
-
-		return await getUpdateHandlerr();
-
-
-	};
 	const handleLogin = () => {
 		window.location.href = "#/login"
 	};
@@ -208,13 +132,7 @@ const HomeData = forwardRef((props) => {
 		window.location.href = "#/businesspartners"
 	};
 
-	const updatedTours = () => {
-		window.location.href = "#/updatedtours"
-	};
 
-	const insertdata = () => {
-		window.location.href = "#/insertdata"
-	};
 
 
 	const update = (e, tour) => {
@@ -224,13 +142,9 @@ const HomeData = forwardRef((props) => {
 
 
 	};
+	const seeHomePage = (e) => {
 
-	const deleteTour = async (e, tour) => {
-
-
-		await homeDataService.deleteTour(dispatch, tour.tourId);
-
-
+		window.location = "#/" ;
 	};
 
 	const deletePoi = async (e, tour, poiId) => {
@@ -247,52 +161,11 @@ const HomeData = forwardRef((props) => {
 
 
 	};
-	function timeout(delay) {
-		return new Promise(res => setTimeout(res, delay));
-	}
-
-
-
-
-	const reorgnizeTableRows = async (e, data) => {
-
-		console.log(data)
-		/*for(var obj of data){
-			setReorganizeData(reorganizeData => [...reorganizeData, obj])
-		}*/
-
-		// setReorganizeData([...data])    
-		// setState(prevState => [...prevState, obj1])
-		//setReorganizeData(data)
-
-		for (var obj of data) {
-			const newData = [...reorganizeData, obj];
-			setReorganizeData(newData)
-		}
-
-		setReorganize(!reorganize)
-	};
 
 
 	return (
 
 		<div>
-
-			{homeDataState.showModal && <div>
-				<AddNewTourForm />
-			</div>}
-
-			{homeDataState.showEditLogoModal && <div>
-				<UpdateLogoModal />
-			</div>}
-
-			{homeDataState.showEditLockCodeModal && <div>
-				<ChangeLockCodeModal />
-			</div>}
-
-			{homeDataState.updateTourData.show && <div>
-				<TourData />
-			</div>}
 
 			<div className="container pt-20 lg:pt-40 pb-12">
 
@@ -304,25 +177,10 @@ const HomeData = forwardRef((props) => {
 						</div>
 						<div className="hidden lg:flex flex-row items-center gap-2">
 
-							{(role || adminOnly) &&
+						{(role || adminOnly) &&
 								<div>
 									<button className="button button--clear button--small" type="button" onClick={seeHomePage}>
 										Home page
-									</button>
-								</div>
-							}
-							{role &&
-								<div>
-									<button className="button button--clear button--small" type="button" onClick={updateLogo}>
-										Edit logo
-									</button>
-								</div>
-							}
-
-							{role &&
-								<div>
-									<button className="button button--clear button--small" type="button" onClick={editLockCode}>
-										Edit lock code
 									</button>
 								</div>
 							}
@@ -345,15 +203,6 @@ const HomeData = forwardRef((props) => {
 								</div>
 							}
 
-
-							{adminOnly &&
-								<div>
-									<button className="button button--clear button--small" type="button"
-										onClick={updatedTours}>
-										Updated tours
-									</button>
-								</div>
-							}
 
 							{(!role && !adminOnly) &&
 								<div>
@@ -382,123 +231,65 @@ const HomeData = forwardRef((props) => {
 						&nbsp;
 					</div>
 					<div className="flex flex-col items-center justify-center gap-8 col-span-12 lg:col-span-6">
-						<div
-							className="w-48 h-48 rounded-full bg-white border border-black/10 oveflow-hidden bg-contain bg-center bg-no-repeat"
-							style={{ backgroundImage: `url(${("assets/img/turizem-lj.jpg")})`, }}>
-						</div>
+						
 						<h1 className=" text-heading4 text-center">
-							Tourism Ljubljana
+							Updated tours
 						</h1>
 					</div>
 
-					{/*Contact*/}
-					<div
-						className="fixed z-20 left-0 bottom-0 right-0 col-span-12 lg:col-span-3 lg:relative flex flex-col items-center justify-center bg-white/80 backdrop-blur border-t lg:border-none border-black/10 drop-shadow-[0_-2px_6px_rgba(0,0,0,0.15)] lg:drop-shadow-none">
-						<div
-							className="flex flex-row lg:flex-col items-center lg:items-start gap-0 lg:gap-4 p-3 lg:p-6 lg:rounded-2xl lg:border lg:border-black/
-						10 lg:shadow-2xl lg:shadow-black/10 w-full">
-							<div className="label label--primary -rotate-90 lg:rotate-0 -ml-7 lg:ml-0">
-								Contact
-							</div>
-							{users.map((point) => (
-								<div className="flex flex-col gap-1 lg:gap-2 w-full overflow-hidden -ml-2 lg:ml-0">
-									<div className="text-sm lg:text-xl font-bold text-black">
-										{point.name}
-									</div>
-									<div className="flex flex-col gap-1 lg:gap-2 text-xs lg:text-sm">
-										<a className="link" href="mailto:'{point.email}'">{point.email}</a>
-										<div>{point.number}</div>
-									</div>
-								</div>
-							))
-							}
-						</div>
-					</div>
 
 				</div>
-
 
 				<div className="p-2 md:p-4 bg-black/[3%] rounded-2xl mb-12">
 					<div className="py-3 px-2 pb-4 md:pb-6 flex flex-row items-center justify-between gap-4">
 						<h4 className="text-heading6">
 							Tours
 						</h4>
-						<div>
 
-
-							{admin &&
-								<div>
-									<button className="button button--primary button--small" variant="contained" type="button" onClick={insertdata}>
-										New tour
-									</button>
-								</div>
-							}
-						</div>
 					</div>
+
+
 
 					{homeDataState.toursWithPoints.toursWithPoints.map((tour) => (
 						<div className="table-frame" style={{ marginBottom: "30px" }}>
 							<table ref={ref} id="my-table">
 								<thead>
+									<tr>
+										<th>Name</th>
+										<th>Options</th>
+
+									</tr>
+								</thead>
+
+
+								<tbody>
 									<tr><div className="py-3 px-2 pb-4 md:pb-6 flex flex-row items-center justify-between gap-4">
 										<h4 className="text-heading6">
 											{tour.title.english} tour
 										</h4>
 
 									</div></tr>
-									<tr>
-										<th class="w-1/2">Name</th>
-										<th className="w-1/2 whitespace-nowrap">Price<span
-											className="w-1/2 text-xs font-normal text-black/60 ml-1">/ incl tax</span>
-										</th>
-										<th className="w-1/2 whitespace-nowrap">Tours booked<span
-											className="text-xs font-normal text-black/60 ml-1">/ this month</span></th>
-										<th>Options</th>
-									</tr>
-								</thead>
-
-								<tbody>
-									<tr><td>     </td></tr>
 									<tr class="text-sm transition-all hover:bg-gray-100">
-										<td style={{ width: "10px" }} id={tour.tourId} >{tour.title.english}</td>
-										<td>{`${tour.price} ${tour.currency} including tax`}</td>
 
-										<td>{tour.noOfRidesAMonth}</td>
-										<td>
-											<div className="flex flex-row items-center gap-2 justify-end">
-												<button className="button button--secondary button--small" onClick={(event) => {
-													seeTermsAndConditions(event, tour.tourId)
-												}}>
-													Terms and conditions
-												</button>
-												<button className="button button--secondary button--small"
-													onClick={(e) => getHistory(e, tour.tourId)}>Get report
-												</button>
-												{adminOnly && <button className="button button--secondary button--small" onClick={(e) => getQrCodes(e, tour.tourId)} >Get qr codes</button>}
+
+
+										<td colspan="2">
+											<div className="flex flex-row items-center gap-2 justify-center ">
 												<button className="button button--secondary button--small"
 													onClick={(e) => update(e, tour)}>View data</button>
-												{adminOnly && <button className="button button--secondary button--small"
-													onClick={(e) => deleteTour(e, tour)}>Delete
-												</button>}
+
 											</div>
 										</td>
 
 									</tr>
 
 
-									<tr colspan="4">
-										<td colspan="4">
+
+									<tr colspan="2">
+										<td colspan="2">
 											<div className="p-2 md:p-4 bg-black/[3%] rounded-2xl mb-12">
-											<div>
-									{admin &&
-										<button className="button button--primary button--small" variant="contained"
-											onClick={(e) => addNewPartner(e, tour.tourId, tour.bpartnerId)}>
-											Add partner
-										</button>
-									}
-								</div>
+
 												<table >
-										
 													<thead>
 
 														<tr>
@@ -531,26 +322,12 @@ const HomeData = forwardRef((props) => {
 																<td>{points.monthlyUsed}</td>
 																<td>
 																	<div className="flex flex-row items-center gap-2 justify-end">
-																		{points.point.offerName != "" && <button className="button button--secondary button--small"
-																			onClick={(event) => {
-																				visitWebsite(event, points.point.id)
-																			}}>
-																			Web
-																		</button>}
-																		{points.point.offerName != "" && <button className="button button--secondary button--small"
-																			onClick={(event) => {
-																				getQrCode(event, points.point.id)
-																			}}>
-																			Get QR
-																		</button>}
+
 																		<button className="button button--secondary button--small"
 																			onClick={(e) => updatePartnerPrice(e, points, tour)}>
-																			{updatePartner}
+																			View data
 																		</button>
-																		{adminOnly && <button className="button button--secondary button--small"
-																			onClick={(e) => deletePoi(e, tour, points.point.id)}>
-																			Delete
-																		</button>}
+
 																	</div>
 																</td>
 
@@ -562,7 +339,20 @@ const HomeData = forwardRef((props) => {
 											<br /> <br />
 										</td>
 									</tr>
+									<tr class="text-sm transition-all hover:bg-gray-100">
+										<td colspan="2">
+											<div className="flex flex-row items-center gap-2 justify-center">
 
+												{adminOnly && <button className="button button--secondary button--small"
+													onClick={(e) => approve(e, tour.tourId)}>Approve
+												</button>}
+												{adminOnly && <button className="button button--secondary button--small"
+													onClick={(e) => disapprove(e, tour.tourId)}>Disapprove
+												</button>}
+											</div>
+										</td>
+
+									</tr>
 								</tbody>
 
 							</table>
@@ -572,7 +362,6 @@ const HomeData = forwardRef((props) => {
 					))
 					}
 				</div>
-
 
 			</div>
 
@@ -603,4 +392,4 @@ const HomeData = forwardRef((props) => {
 		;
 });
 
-export default HomeData
+export default UpdateTours

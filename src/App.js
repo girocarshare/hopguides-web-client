@@ -21,6 +21,7 @@ import QRCodesPage from './pages/QRCodesPage';
 import TermsAndConditionsPage from './pages/TermsAndConditionsPage';
 import UnauthorizedPage from './pages/UnauthorizedPage.jsx';
 import LandingPage from './pages/LandingPage.jsx';
+import UpdatedToursPage from './pages/UpdatedToursPage.jsx';
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
       <Switch>
         <Route path="/unauthorized" component={UnauthorizedPage} />
         <Route path="/register" component={RegisterPage} />
+        <Route path="/updatedtours" component={UpdatedToursPage} />
         <Route path="/confirmation/:bookingId/:pointId" component={ConfirmationPage} />
         <Route path="/qrcodes/:tourId" component={QRCodesPage} />
         <Route path="/termsAndConditions/:id" component={TermsAndConditionsPage} />
