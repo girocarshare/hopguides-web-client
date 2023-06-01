@@ -58,6 +58,7 @@ const AddNewPartnerForm = (props) => {
 	const [sundayTo, setSundayTo] = useState("");
 	const [partner, setPartner] = useState(false);
 	const [point, setPoint] = useState(false);
+	const [videoPreview, setVideoPreview] = useState(null);
 	const [imageTitles, setImageTitles] = useState([]);
 
 	const [mondayclosed, setMondayClosed] = useState(false);
@@ -230,7 +231,8 @@ const AddNewPartnerForm = (props) => {
 				workingHours: { monday: { from: mondayFrom, to: mondayTo }, tuesday: { from: tuesdayFrom, to: tuesdayTo }, wednesday: { from: wednesdayFrom, to: wednesdayTo }, thursday: { from: thursdayFrom, to: thursdayTo }, friday: { from: fridayFrom, to: fridayTo }, saturday: { from: saturdayFrom, to: saturdayTo }, sunday: { from: sundayFrom, to: sundayTo } },
 				category: category,
 				bpartnerId: homeDataState.showAddPartnerModal.bpartnerId,
-				imageTitles: jsonTitles
+				imageTitles: jsonTitles,
+				
 			}
 
 			
@@ -291,6 +293,7 @@ const AddNewPartnerForm = (props) => {
 			setSelectedFiles([])
 			setAudio2(null)
 			setImagePreviews([])
+			setVideoPreview(null)
 			num = num + 1
 
 			setPartner(false)
@@ -314,15 +317,29 @@ const AddNewPartnerForm = (props) => {
 	const selectFiles = (event) => {
 		let images = [];
 
+
 		var fs = []
 		for (let i = 0; i < event.target.files.length; i++) {
-			images.push(URL.createObjectURL(event.target.files[i]));
-			var new_file = new File([event.target.files[i]], i + 'partner' + num + "---" + [event.target.files[i].name]);
-			fs.push(new_file)
+
+			if ((event.target.files[i].name).substring(event.target.files[i].name.length - 3) == "mp4") {
+				var new_file = new File([event.target.files[i]], i + 'partner' + num + "---" + [event.target.files[i].name]);
+			
+				fs.push(new_file)
+				setVideoPreview(URL.createObjectURL(event.target.files[i]))
+				break;
+			} else {
+
+				images.push(URL.createObjectURL(event.target.files[i]));
+				var new_file = new File([event.target.files[i]], i + 'partner' + num + "---" + [event.target.files[i].name]);
+			
+				fs.push(new_file)
+			}
 
 		}
 
+		console.log(fs)
 		setSelectedFiles(selectedFiles.concat(fs))
+		
 		setImagePreviews(images);
 		setProgressInfos({ val: [] });
 		setMessage([]);
@@ -357,12 +374,14 @@ const AddNewPartnerForm = (props) => {
 			}
 			const formData = new FormData();
 			for (var f of files) {
+				console.log("hdghsrhr")
 				formData.append('file', f);
 			}
 			for (var a of audios) {
 				formData.append('file', a);
 			}
 			//formData.append('audio', audio);
+			
 			formData.append('tour', JSON.stringify(tour));
 			var token = authHeader()
 			var xhr = new XMLHttpRequest();
@@ -1104,6 +1123,10 @@ const AddNewPartnerForm = (props) => {
 																})}
 															</div>
 														)}
+
+{videoPreview && <video className="image__preview" controls src={videoPreview}
+												alt={"video-"} />}
+										
 
 														{message.length > 0 && (
 															<div role="alert">

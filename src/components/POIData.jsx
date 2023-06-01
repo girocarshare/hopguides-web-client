@@ -22,6 +22,7 @@ const POIData = () => {
 	const [errShortDescriptionPoint, setErrShortDescriptionPoint] = useState("");
 	const [errLongDescriptionPoint, setErrLongDescriptionPoint] = useState("");
 	const [errVoucherDescriptionPoint, setErrVoucherDescriptionPoint] = useState("");
+	const [videoPreview, setVideoPreview] = useState(null);
 
 	const [audioNamePoint, setAudioNamePoint] = useState("");
 	const [name, setName] = useState("");
@@ -140,9 +141,18 @@ const POIData = () => {
 
 		var fs = []
 		for (let i = 0; i < event.target.files.length; i++) {
-			images.push(URL.createObjectURL(event.target.files[i]));
-			var new_file = new File([event.target.files[i]], i + 'partner' + titlePoint + "---" + [event.target.files[i].name]);
-			fs.push(new_file)
+
+			if ((event.target.files[0].name).substring(event.target.files[0].name.length - 3) == "mp4") {
+				var new_file = new File([event.target.files[i]], i + 'partner' + titlePoint + "---" + [event.target.files[i].name]);
+				fs.push(new_file)
+				setVideoPreview(URL.createObjectURL(event.target.files[0]))
+				break;
+			} else {
+
+				images.push(URL.createObjectURL(event.target.files[i]));
+				var new_file = new File([event.target.files[i]], i + 'partner' + titlePoint + "---" + [event.target.files[i].name]);
+				fs.push(new_file)
+			}
 
 		}
 
@@ -173,72 +183,72 @@ const POIData = () => {
 
 		var point = homeDataState.updatePointData.point
 
-	
+
 
 		var name1 = ""
-		if(name == ""){
+		if (name == "") {
 			name1 = homeDataState.updatePointData.point.name.english
-		}else{
+		} else {
 			name1 = name
 		}
 
-		
+
 		var nameTransl1 = ""
-		if(nameTransl == ""){
+		if (nameTransl == "") {
 			nameTransl1 = homeDataState.updatePointData.point.name.slovenian
-		}else{
+		} else {
 			nameTransl1 = nameTransl
 		}
 
 		var shortInfo1 = ""
-		if(shortInfo == ""){
+		if (shortInfo == "") {
 			shortInfo1 = homeDataState.updatePointData.point.shortInfo.english
-		}else{
+		} else {
 			shortInfo1 = shortInfo
 		}
 
 		var shortInfoTransl1 = ""
-		if(shortInfoPointTransl == ""){
+		if (shortInfoPointTransl == "") {
 			shortInfoTransl1 = homeDataState.updatePointData.point.shortInfo.slovenian
-		}else{
+		} else {
 			shortInfoTransl1 = shortInfoPointTransl
 		}
 
 		var longInfo1 = ""
-		if(longInfo == ""){
+		if (longInfo == "") {
 			longInfo1 = homeDataState.updatePointData.point.longInfo.english
-		}else{
+		} else {
 			longInfo1 = longInfo
 		}
 
 		var longInfoTransl1 = ""
-		if(longInfoPointTransl == ""){
+		if (longInfoPointTransl == "") {
 			longInfoTransl1 = homeDataState.updatePointData.point.longInfo.slovenian
-		}else{
+		} else {
 			longInfoTransl1 = longInfoPointTransl
 		}
 
 
-		if(homeDataState.updatePointData.point.partner){
-		var voucherDesc1 = ""
-		if(voucherDesc == ""){
-			voucherDesc1 = homeDataState.updatePointData.point.voucherDesc.english
-		}else{
-			voucherDesc1 = longInfo
-		}
+		if (homeDataState.updatePointData.point.partner) {
+			var voucherDesc1 = ""
+			if (voucherDesc == "") {
+				voucherDesc1 = homeDataState.updatePointData.point.voucherDesc.english
+			} else {
+				voucherDesc1 = longInfo
+			}
 
-		var voucherDescTransl1 = ""
-		if(voucherDescTransl == ""){
-			voucherDescTransl1 = homeDataState.updatePointData.point.voucherDesc.slovenian
-		}else{
-			voucherDescTransl1 = voucherDescTransl
+			var voucherDescTransl1 = ""
+			if (voucherDescTransl == "") {
+				voucherDescTransl1 = homeDataState.updatePointData.point.voucherDesc.slovenian
+			} else {
+				voucherDescTransl1 = voucherDescTransl
+			}
+			point.voucherDesc = JSON.parse(`{"english":"${voucherDesc1.trim()} ", "slovenian" : "${voucherDescTransl1.trim()}"}`)
 		}
-		point.voucherDesc = JSON.parse(`{"english":"${voucherDesc1.trim()} ", "slovenian" : "${voucherDescTransl1.trim()}"}`)
-	}
 		point.name = JSON.parse(`{"english":" ${name1.trim()} ", "slovenian" : "${nameTransl1.trim()}"}`)
-		point.shortInfo = JSON.parse(`{"english":" ${shortInfo1.trim()} ", "slovenian" : "${ shortInfoTransl1.trim()} "}`)
+		point.shortInfo = JSON.parse(`{"english":" ${shortInfo1.trim()} ", "slovenian" : "${shortInfoTransl1.trim()} "}`)
 		point.longInfo = JSON.parse(`{"english":"${longInfo1.trim()} ", "slovenian" : "${longInfoTransl1.trim()}"}`)
-		
+
 
 		if (price != 0) {
 			point.price = price
@@ -305,26 +315,26 @@ const POIData = () => {
 		formData.append('point', JSON.stringify(point));
 		var token = authHeader()
 		var xhr = new XMLHttpRequest();
-		
+
 		xhr.addEventListener("load", SuccessHandler, false);
 		xhr.addEventListener("error", ErrorHandler, false);
 		xhr.addEventListener("abort", AbortHandler, false);
-		
+
 		xhr.open('POST', `${url}api/poi/update`, true);
 		xhr.setRequestHeader('authorization', token);
 		xhr.onload = function () {
-			if(xhr.status == "412"){
-			
+			if (xhr.status == "412") {
+
 				homeDataService.updatePoint(false, dispatch);
-				
-					}
-					if(xhr.status == "200"){
-					
-						homeDataService.updatePoint(true, dispatch);
-						
-							}
+
+			}
+			if (xhr.status == "200") {
+
+				homeDataService.updatePoint(true, dispatch);
+
+			}
 		};
-		
+
 		xhr.send(formData);
 
 
@@ -638,23 +648,23 @@ const POIData = () => {
 														<div class="flex flex-col gap-2">
 															<div class="flex flex-row gap-2 items-center">
 																<label class="form__label" style={{ marginRight: "18px" }}>English:</label>
-																
-																	<textarea className={"form__input text-sm h-32"}
-																		type="textarea" required
-																		name="message"
-																		placeholder='Voucher description'
-																		value={voucherDesc === "" ? homeDataState.updatePointData.point.longInfo.english : voucherDesc}
-																		onChange={(e) => setVoucherDesc(e.target.value)}></textarea>
-																	{edit && <button
 
-																		onClick={(e) => fetchData(voucherDesc, 4)}
-																		className="button button--primary"
-																		id="sendMessageButton"
-																		type="button"
-																	>
-																		Translate
-																	</button>}
-																
+																<textarea className={"form__input text-sm h-32"}
+																	type="textarea" required
+																	name="message"
+																	placeholder='Voucher description'
+																	value={voucherDesc === "" ? homeDataState.updatePointData.point.longInfo.english : voucherDesc}
+																	onChange={(e) => setVoucherDesc(e.target.value)}></textarea>
+																{edit && <button
+
+																	onClick={(e) => fetchData(voucherDesc, 4)}
+																	className="button button--primary"
+																	id="sendMessageButton"
+																	type="button"
+																>
+																	Translate
+																</button>}
+
 															</div><div class="flex flex-row gap-2 items-center">
 																<label class="form__label">Slovenian:</label>
 																<textarea
@@ -1094,6 +1104,8 @@ const POIData = () => {
 											{!imagePreview && <img className="preview"
 												src={homeDataState.updatePointData.point.menu}
 												alt={"image-"} />}
+
+
 										</div>
 
 										<div>
@@ -1150,6 +1162,12 @@ const POIData = () => {
 													})}
 												</div>
 											)}
+
+											{videoPreview && <video className="image__preview" controls src={videoPreview}
+												alt={"video-"} />}
+											{!videoPreview && <video controls className="image__preview"
+												src={homeDataState.updatePointData.point.video}
+												alt={"video-"} />}
 
 
 										</div>

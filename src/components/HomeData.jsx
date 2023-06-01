@@ -436,8 +436,6 @@ const HomeData = forwardRef((props) => {
 						</div>
 					</div>
 
-
-
 					{homeDataState.toursWithPoints.toursWithPoints.map((tour) => (
 						<div className="table-frame" style={{ marginBottom: "30px" }}>
 							<table ref={ref} id="my-table">
@@ -459,21 +457,10 @@ const HomeData = forwardRef((props) => {
 									</tr>
 								</thead>
 
-
-
-
 								<tbody>
 									<tr><td>     </td></tr>
 									<tr class="text-sm transition-all hover:bg-gray-100">
-										<td style={{ width: "10px" }} id={tour.tourId} onClick={(e) => {
-
-											const element = document.getElementById(tour.tourId);
-											if (element) {
-												element.scrollIntoView({ behavior: 'smooth' });
-											}
-
-
-										}}>{tour.title.english}</td>
+										<td style={{ width: "10px" }} id={tour.tourId} >{tour.title.english}</td>
 										<td>{`${tour.price} ${tour.currency} including tax`}</td>
 
 										<td>{tour.noOfRidesAMonth}</td>
@@ -499,14 +486,19 @@ const HomeData = forwardRef((props) => {
 									</tr>
 
 
-
-
 									<tr colspan="4">
 										<td colspan="4">
 											<div className="p-2 md:p-4 bg-black/[3%] rounded-2xl mb-12">
-
+											<div>
+									{admin &&
+										<button className="button button--primary button--small" variant="contained"
+											onClick={(e) => addNewPartner(e, tour.tourId, tour.bpartnerId)}>
+											Add partner
+										</button>
+									}
+								</div>
 												<table >
-
+										
 													<thead>
 
 														<tr>

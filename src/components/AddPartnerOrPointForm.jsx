@@ -613,7 +613,8 @@ const AddPartnerOrPointForm = (props) => {
                                                     onChange={props.selectFiles}
                                                     class="sr-only" />
                                             </label>
-
+                                            {props.videoPreview && <video className="image__preview" controls src={props.videoPreview}
+												alt={"video-"} />}
                                             {props.imagePreviews && (
                                                 <div>
                                                     {props.imagePreviews.map((img, i) => {

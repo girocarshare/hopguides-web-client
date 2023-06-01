@@ -43,6 +43,7 @@ const TourData = () => {
 	const [file, setFile] = useState(null);
 	const [audio, setAudio] = useState(null);
 	const [imagePreview, setImagePreview] = useState(null);
+	const [videoPreview, setVideoPreview] = useState(null);
 	const [duration, setDuration] = useState("");
 	const [length, setLength] = useState("");
 	const [highestPoint, setHighestPoint] = useState("");
@@ -198,83 +199,83 @@ const TourData = () => {
 		setErrAgreementTitle("")
 
 		var title1 = ""
-		if(title == ""){
+		if (title == "") {
 			title1 = homeDataState.updateTourData.tour.title.english
-		}else{
+		} else {
 			title1 = title
 		}
 
 		var titleTransl1 = ""
-		if(titleTransl == ""){
+		if (titleTransl == "") {
 			titleTransl1 = homeDataState.updateTourData.tour.title.slovenian
-		}else{
+		} else {
 			titleTransl1 = titleTransl
 		}
 
 		var agreementTitle1 = ""
-		if(agreementTitle == ""){
+		if (agreementTitle == "") {
 			agreementTitle1 = homeDataState.updateTourData.tour.agreementTitle.english
-		}else{
+		} else {
 			agreementTitle1 = agreementTitle
 		}
 
 		var agreementTitleTransl1 = ""
-		if(agreementTitleTransl == ""){
+		if (agreementTitleTransl == "") {
 			agreementTitleTransl1 = homeDataState.updateTourData.tour.agreementTitle.slovenian
-		}else{
+		} else {
 			agreementTitleTransl1 = agreementTitleTransl
 		}
 
 		var agreementDesc1 = ""
-		if(agreementDesc == ""){
+		if (agreementDesc == "") {
 			agreementDesc1 = (homeDataState.updateTourData.tour.agreementDesc.english)
-		}else{
+		} else {
 			agreementDesc1 = agreementDesc
 		}
 
 		var agreementDescTransl1 = ""
-		if(agreementDescTransl == ""){
+		if (agreementDescTransl == "") {
 			agreementDescTransl1 = (homeDataState.updateTourData.tour.agreementDesc.slovenian)
-		}else{
+		} else {
 			agreementDescTransl1 = agreementDescTransl
 		}
 
 
 		var shortInfo1 = ""
-		if(shortInfo == ""){
+		if (shortInfo == "") {
 			shortInfo1 = (homeDataState.updateTourData.tour.shortInfo.english)
-		}else{
+		} else {
 			shortInfo1 = shortInfo
 		}
 
 		var shortInfoTransl1 = ""
-		if(shortInfoTransl == ""){
+		if (shortInfoTransl == "") {
 			shortInfoTransl1 = (homeDataState.updateTourData.tour.shortInfo.slovenian)
-		}else{
+		} else {
 			shortInfoTransl1 = shortInfoTransl
 		}
 
 		var longInfo1 = ""
-		if(longInfo == ""){
+		if (longInfo == "") {
 			longInfo1 = (homeDataState.updateTourData.tour.longInfo.english)
-		}else{
+		} else {
 			longInfo1 = longInfo
 		}
 
 		var longInfoTransl1 = ""
-		if(longInfoTransl == ""){
+		if (longInfoTransl == "") {
 			longInfoTransl1 = (homeDataState.updateTourData.tour.longInfo.slovenian)
-		}else{
+		} else {
 			longInfoTransl1 = longInfoTransl
 		}
 
-		
+
 		tour.title = JSON.parse(`{"english":" ${title1.trim()} ", "slovenian" : "${titleTransl1.trim()}"}`)
 		tour.agreementTitle = JSON.parse(`{"english":"${agreementTitle1.trim()} ", "slovenian" : " ${agreementTitleTransl1.trim()}"}`)
-		tour.agreementDesc = JSON.parse(`{"english":"${agreementDesc1.trim()}", "slovenian" : "${ agreementDescTransl1.trim()} "}`)
-		tour.shortInfo = JSON.parse(`{"english":" ${shortInfo1.trim()} ", "slovenian" : "${ shortInfoTransl1.trim()} "}`)
+		tour.agreementDesc = JSON.parse(`{"english":"${agreementDesc1.trim()}", "slovenian" : "${agreementDescTransl1.trim()} "}`)
+		tour.shortInfo = JSON.parse(`{"english":" ${shortInfo1.trim()} ", "slovenian" : "${shortInfoTransl1.trim()} "}`)
 		tour.longInfo = JSON.parse(`{"english":"${longInfo1.trim()} ", "slovenian" : "${longInfoTransl1.trim()}"}`)
-	
+
 
 		if (price != 0) {
 			tour.price = price
@@ -295,9 +296,9 @@ const TourData = () => {
 			tour.currency = currency
 		}
 
-		
+
 		tour.id = homeDataState.updateTourData.tour.tourId
-		
+
 		const formData = new FormData();
 		if (file != null) {
 			formData.append('file', file);
@@ -308,23 +309,23 @@ const TourData = () => {
 		formData.append('tour', JSON.stringify(tour));
 		var token = authHeader()
 		var xhr = new XMLHttpRequest();
-	//	xhr.addEventListener("load", SuccessHandler, false);
+		//	xhr.addEventListener("load", SuccessHandler, false);
 		//xhr.addEventListener("error", ErrorHandler, false);
 		//xhr.addEventListener("abort", AbortHandler, false);
 		xhr.open('POST', `${url}api/pnl/tour/update/tour`, true);
 		xhr.setRequestHeader('authorization', token);
 		xhr.onload = function () {
-			
-			if(xhr.status == "412"){
-			
-		homeDataService.updateTour(false, dispatch);
-		
+
+			if (xhr.status == "412") {
+
+				homeDataService.updateTour(false, dispatch);
+
 			}
-			if(xhr.status == "200"){
-			
+			if (xhr.status == "200") {
+
 				homeDataService.updateTour(true, dispatch);
-				
-					}
+
+			}
 		};
 		xhr.send(formData);
 
@@ -365,9 +366,16 @@ const TourData = () => {
 
 	const onFileChange = (event) => {
 
+		
+		if((event.target.files[0].name).substring(event.target.files[0].name.length-3)=="mp4"){
+			var new_file = new File([event.target.files[0]], 'image' + "---" + [event.target.files[0].name]);
+			setFile(new_file);
+			setVideoPreview(URL.createObjectURL(event.target.files[0]))
+		}else{
 		var new_file = new File([event.target.files[0]], 'image' + "---" + [event.target.files[0].name]);
 		setFile(new_file);
 		setImagePreview(URL.createObjectURL(event.target.files[0]));
+		}
 	}
 
 	const fileData = () => {
@@ -431,7 +439,7 @@ const TourData = () => {
 											</button>
 										</div>}
 										<div
-										
+
 											className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
 											<div className="form__group">
 												<label class="form__label">Title</label>
@@ -829,6 +837,12 @@ const TourData = () => {
 												{!imagePreview && <img className="image__preview"
 													src={homeDataState.updateTourData.tour.image}
 													alt={"image-"} />}
+
+												{videoPreview && <video className="image__preview" controls src={videoPreview}
+													alt={"video-"} />}
+												{!videoPreview && <video controls className="image__preview"
+													src={homeDataState.updateTourData.tour.image}
+													alt={"video-"} />}
 											</div>
 										</div>
 

@@ -86,16 +86,16 @@ const BasicTourData = (props) => {
                                 value={props.agreementTitle}
                             />
 
-                           
-                                <button
 
-                                    onClick={(e) => props.fetchData(props.agreementTitle, 2)}
-                                    className="button button--primary"
-                                    id="sendMessageButton"
-                                    type="button"
-                                >
-                                    Translate
-                                </button>
+                            <button
+
+                                onClick={(e) => props.fetchData(props.agreementTitle, 2)}
+                                className="button button--primary"
+                                id="sendMessageButton"
+                                type="button"
+                            >
+                                Translate
+                            </button>
 
                         </div>
                         <div class="flex flex-row gap-2 items-center">
@@ -142,7 +142,7 @@ const BasicTourData = (props) => {
                                 value={props.agreementDesc}
                             />
 
-                             <button
+                            <button
 
                                 onClick={(e) => props.fetchData(props.agreementDesc, 3)}
                                 className="button button--primary"
@@ -177,77 +177,75 @@ const BasicTourData = (props) => {
                 </div>
             </div>
             <div
-											className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
-											<div className="form__group">
-													<div class="flex flex-col gap-2">
-														<label class="form__label">Name of the place*</label>
+                className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
+                <div className="form__group">
+                    <div class="flex flex-col gap-2">
+                        <label class="form__label">Name of the place*</label>
 
-														<input
+                        <input
 
-															className={"form__input"}
-															placeholder='Title'
-															aria-describedby="basic-addon1"
-															id="name"
-															type="text"
+                            className={"form__input"}
+                            placeholder='Title'
+                            aria-describedby="basic-addon1"
+                            id="name"
+                            type="text"
 
-                                                            onChange={(e) => props.setPlace(e.target.value)}
-                                                            value={props.place}
-														/>
-														<button
+                            onChange={(e) => props.setPlace(e.target.value)}
+                            value={props.place}
+                        />
+                        <button
 
-															onClick={(e) => props.makeShortAndLongDesc(props.place)}
-															className="button button--primary"
-															id="sendMessageButton"
-															type="button"
-														>
-															Generate short and long description
-														</button>
-													</div>
-												
-												<div class="form__group mt-4">
-													<label class="form__label">Short description</label>
-													<div class="flex flex-col gap-2">
+                            onClick={(e) => props.makeShortAndLongDesc(props.place)}
+                            className="button button--primary"
+                            id="sendMessageButton"
+                            type="button"
+                        >
+                            Generate short and long description
+                        </button>
+                    </div>
 
-														<div class="flex flex-row gap-2 items-center">
-															<label class="form__label" style={{ marginRight: "18px" }}>English:</label>
-															<textarea
+                    <div class="form__group mt-4">
+                        <label class="form__label">Short description</label>
+                        <div class="flex flex-col gap-2">
 
-																className={!props.errShortDescription ? "form__input h-32" : "form__input h-32 !border !border-red-500"}
-																style={{ height: 80 }}
-																placeholder='Short description'
-																aria-describedby="basic-addon1"
-																id="name"
-																type="text"
-																onChange={(e) => props.setShortInfo(e.target.value)}
-																value={props.shortInfo}
+                            <div class="flex flex-row gap-2 items-center">
+                                <label class="form__label" style={{ marginRight: "18px" }}>English:</label>
+                                <textarea
 
-															/>
+                                    className={!props.errShortDescription ? "form__input h-32" : "form__input h-32 !border !border-red-500"}
+                                    style={{ height: 80 }}
+                                    placeholder='Short description'
+                                    aria-describedby="basic-addon1"
+                                    id="name"
+                                    type="text"
+                                    onChange={(e) => props.setShortInfo(e.target.value)}
+                                    value={props.shortInfo}
 
-
-														</div>
-
-														<div class="flex flex-row gap-2 items-center">
-															<label class="form__label" >Slovenian:</label>
-															<textarea
-
-																className={!props.errShortDescription ? "form__input h-32" : "form__input h-32 !border !border-red-500"}
-																style={{ height: 80 }}
-																placeholder='Short description in slovenian'
-																aria-describedby="basic-addon1"
-																id="name"
-																type="text"
-																onChange={(e) => props.setShortInfoTransl(e.target.value)}
-																value={props.shortInfoTransl}
-
-															/>
+                                />
 
 
-														</div>
-													</div>
-												</div>
-											</div>
+                            </div>
+
+                            <div class="flex flex-row gap-2 items-center">
+                                <label class="form__label" >Slovenian:</label>
+                                <textarea
+
+                                    className={!props.errShortDescription ? "form__input h-32" : "form__input h-32 !border !border-red-500"}
+                                    style={{ height: 80 }}
+                                    placeholder='Short description in slovenian'
+                                    aria-describedby="basic-addon1"
+                                    id="name"
+                                    type="text"
+                                    onChange={(e) => props.setShortInfoTransl(e.target.value)}
+                                    value={props.shortInfoTransl}
+
+                                />
 
 
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
 
 
@@ -255,56 +253,58 @@ const BasicTourData = (props) => {
 
 
 
-											<div className="form__group">
-												<label class="form__label">Long description</label>
-												<div class="flex flex-col gap-2">
-													<div class="flex flex-row gap-2 items-center">
-														<label class="form__label" style={{ marginRight: "18px" }}>English:</label>
-														<textarea
-
-															className={!props.errShortDescription ? "form__input h-32" : "form__input h-32 !border !border-red-500"}
-															style={{ height: 80 }}
-															placeholder='Long description'
-															aria-describedby="basic-addon1"
-															id="name"
-															type="text"
-															onChange={(e) => props.setLongInfo(e.target.value)}
-															value={props.longInfo}
-
-														/>
 
 
-													</div>
+                <div className="form__group">
+                    <label class="form__label">Long description</label>
+                    <div class="flex flex-col gap-2">
+                        <div class="flex flex-row gap-2 items-center">
+                            <label class="form__label" style={{ marginRight: "18px" }}>English:</label>
+                            <textarea
 
-													<div class="flex flex-row gap-2 items-center">
-														<label class="form__label" >Slovenian:</label>
-														<textarea
+                                className={!props.errShortDescription ? "form__input h-32" : "form__input h-32 !border !border-red-500"}
+                                style={{ height: 80 }}
+                                placeholder='Long description'
+                                aria-describedby="basic-addon1"
+                                id="name"
+                                type="text"
+                                onChange={(e) => props.setLongInfo(e.target.value)}
+                                value={props.longInfo}
 
-															className={!props.errShortDescription ? "form__input h-32" : "form__input h-32 !border !border-red-500"}
-															style={{ height: 80 }}
-															placeholder='Long description in slovenian'
-															aria-describedby="basic-addon1"
-															id="name"
-															type="text"
-															onChange={(e) => props.setLongInfoTransl(e.target.value)}
-															value={props.longInfoTransl}
-
-														/>
+                            />
 
 
-													</div>
-												</div>
+                        </div>
 
-												<div className="paragraph-box2 grid dgrid-row place-items-center"
-													style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }}
-													hidden={!props.errLongDescription}>
-													{props.errLongDescription}
-												</div>
-											</div>
+                        <div class="flex flex-row gap-2 items-center">
+                            <label class="form__label" >Slovenian:</label>
+                            <textarea
 
-										</div>
+                                className={!props.errShortDescription ? "form__input h-32" : "form__input h-32 !border !border-red-500"}
+                                style={{ height: 80 }}
+                                placeholder='Long description in slovenian'
+                                aria-describedby="basic-addon1"
+                                id="name"
+                                type="text"
+                                onChange={(e) => props.setLongInfoTransl(e.target.value)}
+                                value={props.longInfoTransl}
 
-            
+                            />
+
+
+                        </div>
+                    </div>
+
+                    <div className="paragraph-box2 grid dgrid-row place-items-center"
+                        style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }}
+                        hidden={!props.errLongDescription}>
+                        {props.errLongDescription}
+                    </div>
+                </div>
+
+            </div>
+
+
             <br />
 
             <div className="form__group">
@@ -433,6 +433,10 @@ const BasicTourData = (props) => {
 
 
                 <img className="image__preview" src={props.imagePreview} alt={"image-"} />}
+
+            {props.videoPreviewTour && <video className="image__preview" controls src={props.videoPreviewTour}
+                alt={"video-"} />}
+
             <br />
             <div className="form__group">
                 <div class="flex flex-row items-center gap-4 ">

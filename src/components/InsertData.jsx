@@ -119,6 +119,8 @@ const InsertData = (props) => {
 	const [progressInfos, setProgressInfos] = useState({ val: [] });
 	const [message, setMessage] = useState([]);
 	const [imageInfos, setImageInfos] = useState([]);
+	const [videoPreviewTour, setVideoPreviewTour] = useState(null);
+	const [videoPreview, setVideoPreview] = useState(null);
 
 	const { homeDataState, dispatch } = useContext(HomeDataContext);
 
@@ -279,13 +281,23 @@ const InsertData = (props) => {
 	}, [dispatch]);
 
 	const selectFiles = (event) => {
+
 		let images = [];
 
 		var fs = []
 		for (let i = 0; i < event.target.files.length; i++) {
-			images.push(URL.createObjectURL(event.target.files[i]));
-			var new_file = new File([event.target.files[i]], i + 'partner' + num + "---" + [event.target.files[i].name]);
-			fs.push(new_file)
+
+			if ((event.target.files[0].name).substring(event.target.files[0].name.length - 3) == "mp4") {
+				var new_file = new File([event.target.files[i]], i + 'partner' + num + "---" + [event.target.files[i].name]);
+				fs.push(new_file)
+				setVideoPreview(URL.createObjectURL(event.target.files[0]))
+				break;
+			} else {
+
+				images.push(URL.createObjectURL(event.target.files[i]));
+				var new_file = new File([event.target.files[i]], i + 'partner' + num + "---" + [event.target.files[i].name]);
+				fs.push(new_file)
+			}
 
 		}
 
@@ -293,6 +305,7 @@ const InsertData = (props) => {
 		setImagePreviews(images);
 		setProgressInfos({ val: [] });
 		setMessage([]);
+
 
 	};
 
@@ -606,6 +619,7 @@ const InsertData = (props) => {
 			setAudio2(null)
 			setAudioNamePoint("")
 			setImagePreviews([])
+			setVideoPreview(null)
 			num = num + 1
 
 			setPartner(false)
@@ -638,10 +652,17 @@ const InsertData = (props) => {
 	};
 
 	const onFileChange = (event) => {
-
+		if((event.target.files[0].name).substring(event.target.files[0].name.length-3)=="mp4"){
+			var new_file = new File([event.target.files[0]], 'image' + "---" + [event.target.files[0].name]);
+			setFile(new_file);
+			setVideoPreviewTour(URL.createObjectURL(event.target.files[0]))
+		}else{
 		var new_file = new File([event.target.files[0]], 'image' + "---" + [event.target.files[0].name]);
 		setFile(new_file);
 		setImagePreview(URL.createObjectURL(event.target.files[0]));
+		}
+
+		
 	}
 
 
@@ -843,6 +864,7 @@ const InsertData = (props) => {
 											longInfoTransl = {longInfoTransl}
 											setLongInfoTransl = {setLongInfoTransl}
 											setBusinessPartner = {setBusinessPartner}
+											videoPreviewTour ={videoPreviewTour}
 										/>
 
 
@@ -942,6 +964,7 @@ const InsertData = (props) => {
 											errVoucherDescriptionPoint={errVoucherDescriptionPoint}
 											errImageTitle={errImageTitle}
 											audioNamePoint={audioNamePoint}
+											videoPreview = {videoPreview}
 										/>
 									</form>
 
