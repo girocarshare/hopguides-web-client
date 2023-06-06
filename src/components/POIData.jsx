@@ -154,6 +154,7 @@ const POIData = () => {
 				images.push(URL.createObjectURL(event.target.files[i]));
 				var new_file = new File([event.target.files[i]], i + 'partner' + titlePoint + "---" + [event.target.files[i].name]);
 				fs.push(new_file)
+				setVideoPreview(null)
 			}
 
 		}
@@ -513,6 +514,7 @@ const POIData = () => {
 															aria-describedby="basic-addon1"
 															id="name"
 															type="text"
+															readOnly={!edit}
 
 															onChange={(e) => setName(e.target.value)}
 															value={name === "" ? homeDataState.updatePointData.point.name.english : name}
@@ -556,6 +558,7 @@ const POIData = () => {
 													<div class="flex flex-row gap-2 items-center">
 														<label class="form__label" style={{ marginRight: "18px" }}>English:</label>
 														<textarea
+														readOnly={!edit}
 															className={"form__input text-sm h-32"}
 															type="textarea" required name="message"
 															placeholder='Short description'
@@ -600,8 +603,9 @@ const POIData = () => {
 												<div class="flex flex-col gap-2">
 													<div class="flex flex-row gap-2 items-center">
 														<label class="form__label" style={{ marginRight: "18px" }}>English:</label>
-														<textarea className="form__input h-32" type="textarea" required
+														<textarea className="form__input text-sm h-32" type="textarea" required
 															name="message"
+															readOnly={!edit}
 															placeholder='Long description'
 															value={longInfo === "" ? homeDataState.updatePointData.point.longInfo.english : longInfo}
 															onChange={(e) => setLongInfo(e.target.value)}></textarea>
@@ -1127,7 +1131,7 @@ const POIData = () => {
 											{imagePreview &&
 												<img className="preview" src={imagePreview}
 													alt={"image-"} />}
-											{!imagePreview && <img className="preview"
+											{!imagePreview && homeDataState.updatePointData.point.menu && <img className="preview"
 												src={homeDataState.updatePointData.point.menu}
 												alt={"image-"} />}
 
@@ -1140,7 +1144,7 @@ const POIData = () => {
 											{edit &&
 												<label
 													class="button button--secondary button--small">
-													<span>Upload image</span>
+													<span>Upload image/video</span>
 													<input type={"file"} multiple
 														onChange={selectFiles}
 														class="sr-only" />
@@ -1150,7 +1154,7 @@ const POIData = () => {
 											<br />
 
 
-											{imagePreviews.length != 0 && (
+											{imagePreviews.length != 0 && !videoPreview &&(
 												<div>
 													{imagePreviews.map((img, i) => {
 														return (
@@ -1175,7 +1179,7 @@ const POIData = () => {
 													})}
 												</div>
 											)}
-											{imagePreviews.length == 0 && (
+											{imagePreviews.length == 0 && !videoPreview && !homeDataState.updatePointData.point.video &&(
 												<div>
 													{homeDataState.updatePointData.point.images.map((img, i) => {
 														return (
@@ -1189,9 +1193,9 @@ const POIData = () => {
 												</div>
 											)}
 
-											{videoPreview && <video className="image__preview" controls src={videoPreview}
+											{videoPreview && imagePreviews.length == 0  &&  <video className="image__preview" controls src={videoPreview}
 												alt={"video-"} />}
-											{!videoPreview && <video controls className="image__preview"
+											{!videoPreview  &&  imagePreviews.length == 0 && homeDataState.updatePointData.point.video && <video controls className="image__preview"
 												src={homeDataState.updatePointData.point.video}
 												alt={"video-"} />}
 
