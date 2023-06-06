@@ -14,6 +14,7 @@ const mapState = {
 };
 var url = process.env.REACT_APP_URL || "http://localhost:8080/";
 const TourData = () => {
+	const [loading, setLoading] = useState(false);
 	const [errTitle, setErrTitle] = useState("");
 	const [errLongDescription, setErrLongDescription] = useState("");
 	const [errShortDescription, setErrShortDescription] = useState("");
@@ -53,7 +54,7 @@ const TourData = () => {
 
 
 	const fetchData = async (input, num) => {
-		
+
 		input = input.replace(/(\r\n|\n|\r)/gm, " ");
 		const response = await Axios.post(
 			"https://api.openai.com/v1/completions",
@@ -283,18 +284,18 @@ const TourData = () => {
 		longInfo1 = longInfo1.replace(/(\r\n|\n|\r)/gm, " ");
 		longInfoTransl1 = longInfoTransl1.replace(/(\r\n|\n|\r)/gm, " ");
 
-		
+
 		title1 = title1.replace(/("|'|}|{)/g, "");
 		titleTransl1 = titleTransl1.replace(/("|'|}|{)/g, "");
-		agreementTitle1= agreementTitle1.replace(/("|'|}|{)/g, "");
+		agreementTitle1 = agreementTitle1.replace(/("|'|}|{)/g, "");
 		agreementTitleTransl1 = agreementTitleTransl1.replace(/("|'|}|{)/g, "");
 		agreementDesc1 = agreementDesc1.replace(/("|'|}|{)/g, "");
 		agreementDescTransl1 = agreementDescTransl1.replace(/("|'|}|{)/g, "");
 		shortInfo1 = shortInfo1.replace(/("|'|}|{)/g, "");
 		shortInfoTransl1 = shortInfoTransl1.replace(/("|'|}|{)/g, "");
-		longInfo1= longInfo1.replace(/("|'|}|{)/g, "");
+		longInfo1 = longInfo1.replace(/("|'|}|{)/g, "");
 		longInfoTransl1 = longInfoTransl1.replace(/("|'|}|{)/g, "");
-	
+
 		tour.title = JSON.parse(`{"english":" ${title1.trim()} ", "slovenian" : "${titleTransl1.trim()}"}`)
 		tour.agreementTitle = JSON.parse(`{"english":"${agreementTitle1.trim()} ", "slovenian" : " ${agreementTitleTransl1.trim()}"}`)
 		tour.agreementDesc = JSON.parse(`{"english":"${agreementDesc1.trim()}", "slovenian" : "${agreementDescTransl1.trim()} "}`)
@@ -337,10 +338,12 @@ const TourData = () => {
 		//	xhr.addEventListener("load", SuccessHandler, false);
 		//xhr.addEventListener("error", ErrorHandler, false);
 		//xhr.addEventListener("abort", AbortHandler, false);
+		xhr.upload.addEventListener("progress", ProgressHandler, false);
 		xhr.open('POST', `${url}api/pnl/tour/update/tour`, true);
 		xhr.setRequestHeader('authorization', token);
 		xhr.onload = function () {
 
+			setLoading(false)
 			if (xhr.status == "412") {
 
 				homeDataService.updateTour(false, dispatch);
@@ -356,7 +359,11 @@ const TourData = () => {
 
 	};
 
+	const ProgressHandler = (e) => {
 
+		setLoading(true)
+
+	};
 	const SuccessHandler = (e) => {
 
 
@@ -391,17 +398,17 @@ const TourData = () => {
 
 	const onFileChange = (event) => {
 
-		
-		if((event.target.files[0].name).substring(event.target.files[0].name.length-3)=="mp4"){
+
+		if ((event.target.files[0].name).substring(event.target.files[0].name.length - 3) == "mp4") {
 			var new_file = new File([event.target.files[0]], 'image' + "---" + [event.target.files[0].name]);
 			setFile(new_file);
 			setVideoPreview(URL.createObjectURL(event.target.files[0]))
 			setImagePreview(null)
-		}else{
-		var new_file = new File([event.target.files[0]], 'image' + "---" + [event.target.files[0].name]);
-		setFile(new_file);
-		setImagePreview(URL.createObjectURL(event.target.files[0]));
-		setVideoPreview(null)
+		} else {
+			var new_file = new File([event.target.files[0]], 'image' + "---" + [event.target.files[0].name]);
+			setFile(new_file);
+			setImagePreview(URL.createObjectURL(event.target.files[0]));
+			setVideoPreview(null)
 		}
 	}
 
@@ -861,13 +868,13 @@ const TourData = () => {
 											<div class="mt-2">
 												{imagePreview && !videoPreview && <img className="image__preview" src={imagePreview}
 													alt={"image-"} />}
-												{!imagePreview && !videoPreview && homeDataState.updateTourData.tour.image.substring(homeDataState.updateTourData.tour.image.length-3)!="mp4" && <img className="image__preview"
+												{!imagePreview && !videoPreview && homeDataState.updateTourData.tour.image.substring(homeDataState.updateTourData.tour.image.length - 3) != "mp4" && <img className="image__preview"
 													src={homeDataState.updateTourData.tour.image}
 													alt={"image-"} />}
 
-												{videoPreview  && !imagePreview && <video className="image__preview" controls src={videoPreview}
+												{videoPreview && !imagePreview && <video className="image__preview" controls src={videoPreview}
 													alt={"video-"} />}
-												{!videoPreview &&  !imagePreview && homeDataState.updateTourData.tour.image.substring(homeDataState.updateTourData.tour.image.length-3)=="mp4" &&<video controls className="image__preview"
+												{!videoPreview && !imagePreview && homeDataState.updateTourData.tour.image.substring(homeDataState.updateTourData.tour.image.length - 3) == "mp4" && <video controls className="image__preview"
 													src={homeDataState.updateTourData.tour.image}
 													alt={"video-"} />}
 											</div>
@@ -947,6 +954,8 @@ const TourData = () => {
 										</div>
 
 										{edit && <div className="grid place-items-center form__group">
+											{loading && <div ><img className="mx-8 my-8 h-20" src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif"></img></div>}
+
 											<button
 
 												onClick={(e) => {
