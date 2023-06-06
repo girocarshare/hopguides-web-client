@@ -37,12 +37,14 @@ const Register = () => {
 
 
 	const fetchData = async (input, num) => {
+		
+		input = input.replace(/(\r\n|\n|\r)/gm, " ");
 		const response = await Axios.post(
 			"https://api.openai.com/v1/completions",
 			{
 				prompt: `translate "${input}" to english, spanish, serbian and slovenian and make it as one json with lower case letters as keys`,
 				model: 'text-davinci-002',
-				max_tokens: 500,
+				max_tokens: 5500,
 				n: 1,
 				stop: ".",
 			},

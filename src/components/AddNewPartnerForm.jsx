@@ -105,6 +105,8 @@ const AddNewPartnerForm = (props) => {
 		setPoints(tempData);
 	};
 	const fetchData = async (input, num) => {
+		
+		input = input.replace(/(\r\n|\n|\r)/gm, " ");
 		const response = await Axios.post(
 			"https://api.openai.com/v1/completions",
 			{
@@ -237,13 +239,30 @@ const AddNewPartnerForm = (props) => {
 
 			
 			if (partner) {
-				point.voucherDesc = JSON.parse(`{"english":"${voucherDesc.trim()} ", "slovenian" : "${voucherDescTransl.trim()}"}`)
+				var voucherDesc1 = voucherDesc.replace(/(\r\n|\n|\r)/gm, " ");
+				var voucherDescTransl1 = voucherDescTransl.replace(/(\r\n|\n|\r)/gm, " ");
+				point.voucherDesc = JSON.parse(`{"english":"${voucherDesc1.trim()} ", "slovenian" : "${voucherDescTransl1.trim()}"}`)
 			}
 
 
-			point.name = JSON.parse(`{"english":" ${titlePoint.trim()} ", "slovenian" : "${titlePointTransl.trim()}"}`)
-			point.shortInfo = JSON.parse(`{"english":" ${shortInfoPoint.trim()} ", "slovenian" : "${shortInfoPointTransl.trim()} "}`)
-			point.longInfo = JSON.parse(`{"english":"${longInfoPoint.trim()} ", "slovenian" : "${longInfoPointTransl.trim()}"}`)
+			var titlePoint1 = titlePoint.replace(/(\r\n|\n|\r)/gm, " ");
+			var titlePointTransl1 = titlePointTransl.replace(/(\r\n|\n|\r)/gm, " ");
+			var shortInfoPoint1 = shortInfoPoint.replace(/(\r\n|\n|\r)/gm, " ");
+			var shortInfoPointTransl1 = shortInfoPointTransl.replace(/(\r\n|\n|\r)/gm, " ");
+			var longInfoPoint1 = longInfoPoint.replace(/(\r\n|\n|\r)/gm, " ");
+			var longInfoPointTransl1 = longInfoPointTransl.replace(/(\r\n|\n|\r)/gm, " ");
+
+			titlePoint1 = titlePoint1.replace(/("|'|}|{)/g, "");
+			titlePointTransl1 = titlePointTransl1.replace(/("|'|}|{)/g, "");
+			shortInfoPoint1= shortInfoPoint1.replace(/("|'|}|{)/g, "");
+			shortInfoPointTransl1 = shortInfoPointTransl1.replace(/("|'|}|{)/g, "");
+			longInfoPoint1 = longInfoPoint1.replace(/("|'|}|{)/g, "");
+			longInfoPointTransl1 = longInfoPointTransl1.replace(/("|'|}|{)/g, "");
+		
+
+			point.name = JSON.parse(`{"english":" ${titlePoint1.trim()} ", "slovenian" : "${titlePointTransl1.trim()}"}`)
+			point.shortInfo = JSON.parse(`{"english":" ${shortInfoPoint1.trim()} ", "slovenian" : "${shortInfoPointTransl1.trim()} "}`)
+			point.longInfo = JSON.parse(`{"english":"${longInfoPoint1.trim()} ", "slovenian" : "${longInfoPointTransl1.trim()}"}`)
 
 
 			/*if (voucherDesc == "") {

@@ -72,6 +72,8 @@ const BPartnerData = () => {
 
 
 	const fetchData = async (input, num) => {
+		
+		input = input.replace(/(\r\n|\n|\r)/gm, " ");
 		const response = await Axios.post(
 			"https://api.openai.com/v1/completions",
 			{

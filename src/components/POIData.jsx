@@ -96,6 +96,8 @@ const POIData = () => {
 
 
 	const fetchData = async (input, num) => {
+		
+		input = input.replace(/(\r\n|\n|\r)/gm, " ");
 		const response = await Axios.post(
 			"https://api.openai.com/v1/completions",
 			{
@@ -243,8 +245,32 @@ const POIData = () => {
 			} else {
 				voucherDescTransl1 = voucherDescTransl
 			}
+
+			
+			voucherDesc1 = voucherDesc1.replace(/(\r\n|\n|\r)/gm, " ");
+			voucherDescTransl1 = voucherDescTransl1.replace(/(\r\n|\n|\r)/gm, " ");
+
+			voucherDesc1 = voucherDesc1.replace(/("|'|}|{)/g, "");
+			voucherDescTransl1 = voucherDescTransl1.replace(/("|'|}|{)/g, "");
+
 			point.voucherDesc = JSON.parse(`{"english":"${voucherDesc1.trim()} ", "slovenian" : "${voucherDescTransl1.trim()}"}`)
 		}
+		
+		name1 = name1.replace(/(\r\n|\n|\r)/gm, " ");
+		nameTransl1 = nameTransl1.replace(/(\r\n|\n|\r)/gm, " ");
+		shortInfo1 = shortInfo1.replace(/(\r\n|\n|\r)/gm, " ");
+		shortInfoTransl1 = shortInfoTransl1.replace(/(\r\n|\n|\r)/gm, " ");
+		longInfo1 = longInfo1.replace(/(\r\n|\n|\r)/gm, " ");
+		longInfoTransl1 = longInfoTransl1.replace(/(\r\n|\n|\r)/gm, " ");
+
+		name1 = name1.replace(/("|'|}|{)/g, "");
+		nameTransl1 = nameTransl1.replace(/("|'|}|{)/g, "");
+		shortInfo1= shortInfo1.replace(/("|'|}|{)/g, "");
+		shortInfoTransl1 = shortInfoTransl1.replace(/("|'|}|{)/g, "");
+		longInfo1 = longInfo1.replace(/("|'|}|{)/g, "");
+		longInfoTransl1 = longInfoTransl1.replace(/("|'|}|{)/g, "");
+
+
 		point.name = JSON.parse(`{"english":" ${name1.trim()} ", "slovenian" : "${nameTransl1.trim()}"}`)
 		point.shortInfo = JSON.parse(`{"english":" ${shortInfo1.trim()} ", "slovenian" : "${shortInfoTransl1.trim()} "}`)
 		point.longInfo = JSON.parse(`{"english":"${longInfo1.trim()} ", "slovenian" : "${longInfoTransl1.trim()}"}`)

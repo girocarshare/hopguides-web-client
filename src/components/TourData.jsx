@@ -53,6 +53,8 @@ const TourData = () => {
 
 
 	const fetchData = async (input, num) => {
+		
+		input = input.replace(/(\r\n|\n|\r)/gm, " ");
 		const response = await Axios.post(
 			"https://api.openai.com/v1/completions",
 			{
@@ -270,6 +272,29 @@ const TourData = () => {
 		}
 
 
+		title1 = title1.replace(/(\r\n|\n|\r)/gm, " ");
+		titleTransl1 = titleTransl1.replace(/(\r\n|\n|\r)/gm, " ");
+		agreementTitle1 = agreementTitle1.replace(/(\r\n|\n|\r)/gm, " ");
+		agreementTitleTransl1 = agreementTitleTransl1.replace(/(\r\n|\n|\r)/gm, " ");
+		agreementDesc1 = agreementDesc1.replace(/(\r\n|\n|\r)/gm, " ");
+		agreementDescTransl1 = agreementDescTransl1.replace(/(\r\n|\n|\r)/gm, " ");
+		shortInfo1 = shortInfo1.replace(/(\r\n|\n|\r)/gm, " ");
+		shortInfoTransl1 = shortInfoTransl1.replace(/(\r\n|\n|\r)/gm, " ");
+		longInfo1 = longInfo1.replace(/(\r\n|\n|\r)/gm, " ");
+		longInfoTransl1 = longInfoTransl1.replace(/(\r\n|\n|\r)/gm, " ");
+
+		
+		title1 = title1.replace(/("|'|}|{)/g, "");
+		titleTransl1 = titleTransl1.replace(/("|'|}|{)/g, "");
+		agreementTitle1= agreementTitle1.replace(/("|'|}|{)/g, "");
+		agreementTitleTransl1 = agreementTitleTransl1.replace(/("|'|}|{)/g, "");
+		agreementDesc1 = agreementDesc1.replace(/("|'|}|{)/g, "");
+		agreementDescTransl1 = agreementDescTransl1.replace(/("|'|}|{)/g, "");
+		shortInfo1 = shortInfo1.replace(/("|'|}|{)/g, "");
+		shortInfoTransl1 = shortInfoTransl1.replace(/("|'|}|{)/g, "");
+		longInfo1= longInfo1.replace(/("|'|}|{)/g, "");
+		longInfoTransl1 = longInfoTransl1.replace(/("|'|}|{)/g, "");
+	
 		tour.title = JSON.parse(`{"english":" ${title1.trim()} ", "slovenian" : "${titleTransl1.trim()}"}`)
 		tour.agreementTitle = JSON.parse(`{"english":"${agreementTitle1.trim()} ", "slovenian" : " ${agreementTitleTransl1.trim()}"}`)
 		tour.agreementDesc = JSON.parse(`{"english":"${agreementDesc1.trim()}", "slovenian" : "${agreementDescTransl1.trim()} "}`)
