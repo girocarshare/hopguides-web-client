@@ -17,6 +17,7 @@ var url = process.env.REACT_APP_URL || "http://localhost:8080/";
 const POIData = () => {
 
 	const addressInput = React.createRef(null);
+	const [loading, setLoading] = useState(false);
 	const [errImageTitle, setErrImageTitle] = useState("");
 	const [errTitlePoint, setErrTitlePoint] = useState("");
 	const [errShortDescriptionPoint, setErrShortDescriptionPoint] = useState("");
@@ -333,7 +334,6 @@ const POIData = () => {
 			formData.append('file', audio);
 		}
 
-		console.log(selectedFiles)
 		if (selectedFiles != []) {
 			for (var f of selectedFiles) {
 				formData.append('file', f);
@@ -343,6 +343,7 @@ const POIData = () => {
 		var token = authHeader()
 		var xhr = new XMLHttpRequest();
 
+		xhr.upload.addEventListener("progress", ProgressHandler, false);
 		xhr.addEventListener("load", SuccessHandler, false);
 		xhr.addEventListener("error", ErrorHandler, false);
 		xhr.addEventListener("abort", AbortHandler, false);
@@ -350,6 +351,8 @@ const POIData = () => {
 		xhr.open('POST', `${url}api/poi/update`, true);
 		xhr.setRequestHeader('authorization', token);
 		xhr.onload = function () {
+			
+			setLoading(false)
 			if (xhr.status == "412") {
 
 				homeDataService.updatePoint(false, dispatch);
@@ -367,6 +370,11 @@ const POIData = () => {
 
 	};
 
+	const ProgressHandler = (e) => {
+
+		setLoading(true)
+
+	};
 
 	const SuccessHandler = (e) => {
 
@@ -382,6 +390,28 @@ const POIData = () => {
 		homeDataService.insertData(false, dispatch);
 	};
 	const handleModalClose = () => {
+		setEdit(false)
+		setName("")
+		setNameTransl("")
+		setShortInfo("")
+		setShortInfoPointTransl("")
+		setLongInfo("")
+		setLongInfoPointTransl("")
+		setVoucherDesc("")
+		setVoucherDescTransl("")
+		setPrice("")
+		setCategory("")
+		setLongitude("")
+		setLatitude("")
+		setResponsiblePerson("")
+		setEmail("")
+		setWebURL("")
+		setImagePreviews([])
+		setVideoPreview(null)
+		setFiles([])
+		setAudio(null)
+		setFile(null)
+
 		dispatch({ type: homeDataConstants.UPDATE_POINT_DATA_MODAL_CLOSE });
 	};
 
@@ -1239,6 +1269,8 @@ const POIData = () => {
 
 										{edit &&
 											<div className="form__group grid dgrid-row place-items-center">
+												{loading && <div ><img className="mx-8 my-8 h-20" src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif"></img></div>}
+
 												<button
 													onClick={(e) => {
 														handleSubmit(e)

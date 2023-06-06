@@ -306,7 +306,6 @@ async function generateQrCode(dispatch ,tourId, number) {
 		return { type: homeDataConstants.GENERATE_QRCODE_REQUEST };
 	}
 	function success(data) {
-		console.log(data)
 		return { type: homeDataConstants.GENERATE_QRCODE_SUCCESS, data: data };
 	}
 	function failure(message) {
@@ -377,7 +376,6 @@ function deleteTour( dispatch, tourId) {
 		return { type: homeDataConstants.DELETE_TOUR_REQUEST };
 	}
 	function success(data) {
-		console.log("evo me")
 		return { type: homeDataConstants.DELETE_TOUR_SUCCESS, data: data };
 	}
 	function failure(error) {

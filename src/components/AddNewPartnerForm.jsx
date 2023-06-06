@@ -13,6 +13,7 @@ var num = 1;
 var url = process.env.REACT_APP_URL || "http://localhost:8080/";
 const AddNewPartnerForm = (props) => {
 
+	const [loading, setLoading] = useState(false);
 	const [errImageTitle, setErrImageTitle] = useState("");
 	const [errTitlePoint, setErrTitlePoint] = useState("");
 	const [errShortDescriptionPoint, setErrShortDescriptionPoint] = useState("");
@@ -105,7 +106,7 @@ const AddNewPartnerForm = (props) => {
 		setPoints(tempData);
 	};
 	const fetchData = async (input, num) => {
-		
+
 		input = input.replace(/(\r\n|\n|\r)/gm, " ");
 		const response = await Axios.post(
 			"https://api.openai.com/v1/completions",
@@ -165,6 +166,7 @@ const AddNewPartnerForm = (props) => {
 	const handleModalClose = () => {
 		setPartner(false)
 		setPoint(false)
+		setPoints([])
 		dispatch({ type: homeDataConstants.HIDE_ADD_PARTNER_MODAL });
 
 	};
@@ -202,30 +204,10 @@ const AddNewPartnerForm = (props) => {
 				}
 			}
 
-			/*if (!isJsonString(titlePointTransl)) {
-				setErrTitlePoint("Please insert the proper JSON format. Pay attention on enter and quotes(\")")
-				setErrMessagePartner("JSON format invalid. Check the red fields.")
-			}
-			if (!isJsonString(shortInfoPointTransl)) {
-				setErrShortDescriptionPoint("Please insert the proper JSON format. Pay attention on enter and quotes(\")")
-				setErrMessagePartner("JSON format invalid. Check the red fields.")
-			}
-			if (!isJsonString(longInfoPointTransl)) {
-				setErrLongDescriptionPoint("Please insert the proper JSON format. Pay attention on enter and quotes(\")")
-				setErrMessagePartner("JSON format invalid. Check the red fields.")
-			}
-			if (partner && !isJsonString(voucherDescTransl)) {
-				setErrVoucherDescriptionPoint("Please insert the proper JSON format. Pay attention on enter and quotes(\")")
-				setErrMessagePartner("JSON format invalid. Check the red fields.")
-			}
-*/
 
 
 			var point = {
 				num: num,
-			//	name: JSON.parse(titlePointTransl),
-			//	shortInfo: JSON.parse(shortInfoPointTransl),
-			//	longInfo: JSON.parse(longInfoPointTransl),
 				price: pointPrice,
 				offerName: offerName,
 				contact: { phone: phone, email: email, webURL: webURL, name: responsiblePerson },
@@ -234,10 +216,10 @@ const AddNewPartnerForm = (props) => {
 				category: category,
 				bpartnerId: homeDataState.showAddPartnerModal.bpartnerId,
 				imageTitles: jsonTitles,
-				
+
 			}
 
-			
+
 			if (partner) {
 				var voucherDesc1 = voucherDesc.replace(/(\r\n|\n|\r)/gm, " ");
 				var voucherDescTransl1 = voucherDescTransl.replace(/(\r\n|\n|\r)/gm, " ");
@@ -254,29 +236,16 @@ const AddNewPartnerForm = (props) => {
 
 			titlePoint1 = titlePoint1.replace(/("|'|}|{)/g, "");
 			titlePointTransl1 = titlePointTransl1.replace(/("|'|}|{)/g, "");
-			shortInfoPoint1= shortInfoPoint1.replace(/("|'|}|{)/g, "");
+			shortInfoPoint1 = shortInfoPoint1.replace(/("|'|}|{)/g, "");
 			shortInfoPointTransl1 = shortInfoPointTransl1.replace(/("|'|}|{)/g, "");
 			longInfoPoint1 = longInfoPoint1.replace(/("|'|}|{)/g, "");
 			longInfoPointTransl1 = longInfoPointTransl1.replace(/("|'|}|{)/g, "");
-		
+
 
 			point.name = JSON.parse(`{"english":" ${titlePoint1.trim()} ", "slovenian" : "${titlePointTransl1.trim()}"}`)
 			point.shortInfo = JSON.parse(`{"english":" ${shortInfoPoint1.trim()} ", "slovenian" : "${shortInfoPointTransl1.trim()} "}`)
 			point.longInfo = JSON.parse(`{"english":"${longInfoPoint1.trim()} ", "slovenian" : "${longInfoPointTransl1.trim()}"}`)
 
-
-			/*if (voucherDesc == "") {
-				point.voucherDesc = JSON.parse(`{
-				  "english": "",
-				  "spanish": "",
-				  "serbian": "",
-				  "slovenian": ""
-				  }`)
-				point.partner = false
-			} else {
-				point.voucherDesc = JSON.parse(voucherDescTransl)
-				point.partner = true
-			}*/
 
 			const newData = [...points, point];
 			setPoints(newData)
@@ -342,7 +311,7 @@ const AddNewPartnerForm = (props) => {
 
 			if ((event.target.files[i].name).substring(event.target.files[i].name.length - 3) == "mp4") {
 				var new_file = new File([event.target.files[i]], i + 'partner' + num + "---" + [event.target.files[i].name]);
-			
+
 				fs.push(new_file)
 				setVideoPreview(URL.createObjectURL(event.target.files[i]))
 				setImagePreviews([])
@@ -351,7 +320,7 @@ const AddNewPartnerForm = (props) => {
 
 				images.push(URL.createObjectURL(event.target.files[i]));
 				var new_file = new File([event.target.files[i]], i + 'partner' + num + "---" + [event.target.files[i].name]);
-			
+
 				setVideoPreview(null)
 				fs.push(new_file)
 			}
@@ -360,7 +329,7 @@ const AddNewPartnerForm = (props) => {
 
 		console.log(fs)
 		setSelectedFiles(selectedFiles.concat(fs))
-		
+
 		setImagePreviews(images);
 		setProgressInfos({ val: [] });
 		setMessage([]);
@@ -370,6 +339,7 @@ const AddNewPartnerForm = (props) => {
 
 	const SuccessHandler = (e) => {
 
+		setLoading(false)
 		var arr = []
 		setPoints(arr)
 		homeDataService.addPartner(true, dispatch);
@@ -377,6 +347,7 @@ const AddNewPartnerForm = (props) => {
 	};
 	const ErrorHandler = () => {
 
+		setLoading(false)
 		homeDataService.addPartner(false, dispatch);
 	};
 	const AbortHandler = () => {
@@ -402,10 +373,11 @@ const AddNewPartnerForm = (props) => {
 				formData.append('file', a);
 			}
 			//formData.append('audio', audio);
-			
+
 			formData.append('tour', JSON.stringify(tour));
 			var token = authHeader()
 			var xhr = new XMLHttpRequest();
+			xhr.upload.addEventListener("progress", ProgressHandler, false);
 			xhr.addEventListener("load", SuccessHandler, false);
 			xhr.addEventListener("error", ErrorHandler, false);
 			xhr.addEventListener("abort", AbortHandler, false);
@@ -423,6 +395,11 @@ const AddNewPartnerForm = (props) => {
 
 	};
 
+	const ProgressHandler = (e) => {
+
+		setLoading(true)
+
+	};
 
 	const changeImageTitle = (e, i) => {
 
@@ -1096,9 +1073,9 @@ const AddNewPartnerForm = (props) => {
 																class="sr-only" />
 														</label>
 														<br />
-													
 
-														{imagePreviews && !videoPreview &&(
+
+														{imagePreviews && !videoPreview && (
 															<div>
 																{imagePreviews.map((img, i) => {
 																	return (
@@ -1129,9 +1106,9 @@ const AddNewPartnerForm = (props) => {
 															</div>
 														)}
 
-{videoPreview && imagePreviews.length == 0 && <video className="image__preview" controls src={videoPreview}
-												alt={"video-"} />}
-										
+														{videoPreview && imagePreviews.length == 0 && <video className="image__preview" controls src={videoPreview}
+															alt={"video-"} />}
+
 
 														{message.length > 0 && (
 															<div role="alert">
@@ -1256,92 +1233,94 @@ const AddNewPartnerForm = (props) => {
 									<div>
 										<div class="modal__footer">
 											<DragDropContext onDragEnd={handleDragEnd}>
-												<table className="table borderd">
-													<thead>
+												<div class="table-frame">
+													<table className="table borderd">
+														<thead>
 
-														<tr>
-															<th> =
-															</th>
-															<th>Title
-															</th>
-															<th>Short
-																description
-															</th>
-															<th>Long
-																description
-															</th>
-															<th>Category
-															</th>
-															<th>Price
-															</th>
-															<th>Offer name
-															</th>
-															<th>Responsible
-																person
-															</th>
-															<th>Email
-															</th>
-															<th>Phone
-															</th>
-															<th>Web
-																page
-															</th>
-															<th>Location
-															</th>
-														</tr>
-													</thead>
-													<Droppable droppableId="droppable-1">
-														{(provider) => (
-															<tbody
-																className="text-capitalize"
-																ref={provider.innerRef}
-																{...provider.droppableProps}
-															>
-																{points.map((point, index) => (
-																	<Draggable
-																		key={point.name.english}
-																		draggableId={point.name.english}
-																		index={index}
-																	>
-																		{(provider) => (
+															<tr>
+																<th> =
+																</th>
+																<th>Title
+																</th>
+																<th>Short
+																	description
+																</th>
+																<th>Long
+																	description
+																</th>
+																<th>Category
+																</th>
+																<th>Price
+																</th>
+																<th>Offer name
+																</th>
+																<th>Responsible
+																	person
+																</th>
+																<th>Email
+																</th>
+																<th>Phone
+																</th>
+																<th>Web
+																	page
+																</th>
+																<th>Location
+																</th>
+															</tr>
+														</thead>
+														<Droppable droppableId="droppable-1">
+															{(provider) => (
+																<tbody
+																	className="text-capitalize"
+																	ref={provider.innerRef}
+																	{...provider.droppableProps}
+																>
+																	{points.map((point, index) => (
+																		<Draggable
+																			key={point.name.english}
+																			draggableId={point.name.english}
+																			index={index}
+																		>
+																			{(provider) => (
 
-																			<tr {...provider.draggableProps} ref={provider.innerRef} >
-																				<td {...provider.dragHandleProps}>=</td>
-																				<td>{point.name.english}</td>
-																				<td>{point.shortInfo.english}</td>
-																				<td>{point.longInfo.english}</td>
-																				<td>{point.category}</td>
-																				{point.price == "" ?
-																					<td>/</td> :
-																					<td>{point.price} {currency}</td>}
-																				{point.offerName == "" ?
-																					<td>/</td> :
-																					<td>{point.offerName}</td>}
-																				{point.contact.name == "" ?
-																					<td>/</td> :
-																					<td>{point.contact.name}</td>}
-																				{point.contact.email == "" ?
-																					<td>/</td> :
-																					<td>{point.contact.email}</td>}
-																				{point.contact.phone == "" ?
-																					<td>/</td> :
-																					<td>{point.contact.phone}</td>}
-																				{point.contact.webURL == "" ?
-																					<td>/</td> :
-																					<td>{point.contact.webURL}</td>}
+																				<tr {...provider.draggableProps} ref={provider.innerRef} >
+																					<td {...provider.dragHandleProps}>=</td>
+																					<td>{point.name.english}</td>
+																					<td>{point.shortInfo.english}</td>
+																					<td>{point.longInfo.english}</td>
+																					<td>{point.category}</td>
+																					{point.price == "" ?
+																						<td>/</td> :
+																						<td>{point.price} {currency}</td>}
+																					{point.offerName == "" ?
+																						<td>/</td> :
+																						<td>{point.offerName}</td>}
+																					{point.contact.name == "" ?
+																						<td>/</td> :
+																						<td>{point.contact.name}</td>}
+																					{point.contact.email == "" ?
+																						<td>/</td> :
+																						<td>{point.contact.email}</td>}
+																					{point.contact.phone == "" ?
+																						<td>/</td> :
+																						<td>{point.contact.phone}</td>}
+																					{point.contact.webURL == "" ?
+																						<td>/</td> :
+																						<td>{point.contact.webURL}</td>}
 
-																				<td>{`${point.location.latitude}  ${point.location.longitude}`}</td>
+																					<td>{`${point.location.latitude}  ${point.location.longitude}`}</td>
 
 
-																			</tr>
-																		)}
-																	</Draggable>
-																))}
-																{provider.placeholder}
-															</tbody>
-														)}
-													</Droppable>
-												</table>
+																				</tr>
+																			)}
+																		</Draggable>
+																	))}
+																	{provider.placeholder}
+																</tbody>
+															)}
+														</Droppable>
+													</table>
+												</div>
 											</DragDropContext>
 
 										</div>
@@ -1352,6 +1331,8 @@ const AddNewPartnerForm = (props) => {
 												{errMessagePartner}
 											</div>
 											<div className="form__group ">
+												{loading && <div ><img className="mx-8 my-8 h-20" src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif"></img></div>}
+
 												<button
 													onClick={(e) => {
 														handleSubmit(e)
