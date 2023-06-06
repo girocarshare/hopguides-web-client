@@ -144,6 +144,7 @@ const InsertData = (props) => {
 	};
 
 	const fetchData = async (input, num) => {
+		input = input.replace(/(\r\n|\n|\r)/gm, " ");
 		const response = await Axios.post(
 			"https://api.openai.com/v1/completions",
 			{
@@ -171,7 +172,6 @@ const InsertData = (props) => {
 			setAgreementDescTransl(response.data.choices[0].text)
 		} else if (num == 4) {
 
-			console.log(response.data.choices[0].text)
 			setTitlePointTransl(response.data.choices[0].text)
 		} else if (num == 5) {
 
@@ -365,11 +365,34 @@ const InsertData = (props) => {
 			}
 
 			
-			tour.title = JSON.parse(`{"english":" ${title.trim()} ", "slovenian" : "${titleTransl.trim()}"}`)
-			tour.agreementTitle = JSON.parse(`{"english":"${agreementTitle.trim()} ", "slovenian" : " ${agreementTitleTransl.trim()}"}`)
-			tour.agreementDesc = JSON.parse(`{"english":"${agreementDesc.trim()}", "slovenian" : "${ agreementDescTransl.trim()} "}`)
-			tour.shortInfo = JSON.parse(`{"english":" ${shortInfo.trim()} ", "slovenian" : "${ shortInfoTransl.trim()} "}`)
-			tour.longInfo = JSON.parse(`{"english":"${longInfo.trim()} ", "slovenian" : "${longInfoTransl.trim()}"}`)
+			var title1 = title.replace(/(\r\n|\n|\r)/gm, " ");
+			var titleTransl1 = titleTransl.replace(/(\r\n|\n|\r)/gm, " ");
+			var agreementTitle1 = agreementTitle.replace(/(\r\n|\n|\r)/gm, " ");
+			var agreementTitleTransl1 = agreementTitleTransl.replace(/(\r\n|\n|\r)/gm, " ");
+			var agreementDesc1 = agreementDesc.replace(/(\r\n|\n|\r)/gm, " ");
+			var agreementDescTransl1 = agreementDescTransl.replace(/(\r\n|\n|\r)/gm, " ");
+			var shortInfo1 = shortInfo.replace(/(\r\n|\n|\r)/gm, " ");
+			var shortInfoTransl1 = shortInfoTransl.replace(/(\r\n|\n|\r)/gm, " ");
+			var longInfo1 = longInfo.replace(/(\r\n|\n|\r)/gm, " ");
+			var longInfoTransl1 = longInfoTransl.replace(/(\r\n|\n|\r)/gm, " ");
+
+
+			title1 = title1.replace(/("|'|}|{)/g, "");
+			titleTransl1 = titleTransl1.replace(/("|'|}|{)/g, "");
+			agreementTitle1= agreementTitle1.replace(/("|'|}|{)/g, "");
+			agreementTitleTransl1 = agreementTitleTransl1.replace(/("|'|}|{)/g, "");
+			agreementDesc1 = agreementDesc1.replace(/("|'|}|{)/g, "");
+			agreementDescTransl1 = agreementDescTransl1.replace(/("|'|}|{)/g, "");
+			shortInfo1 = shortInfo1.replace(/("|'|}|{)/g, "");
+			shortInfoTransl1 = shortInfoTransl1.replace(/("|'|}|{)/g, "");
+			longInfo1 = longInfo1.replace(/("|'|}|{)/g, "");
+			longInfoTransl1 = longInfoTransl1.replace(/("|'|}|{)/g, "");
+
+			tour.title = JSON.parse(`{"english":" ${title1.trim()} ", "slovenian" : "${titleTransl1.trim()}"}`)
+			tour.agreementTitle = JSON.parse(`{"english":"${agreementTitle1.trim()} ", "slovenian" : " ${agreementTitleTransl1.trim()}"}`)
+			tour.agreementDesc = JSON.parse(`{"english":"${agreementDesc1.trim()}", "slovenian" : "${ agreementDescTransl1.trim()} "}`)
+			tour.shortInfo = JSON.parse(`{"english":" ${shortInfo1.trim()} ", "slovenian" : "${ shortInfoTransl1.trim()} "}`)
+			tour.longInfo = JSON.parse(`{"english":"${longInfo1.trim()} ", "slovenian" : "${longInfoTransl1.trim()}"}`)
 
 			const formData = new FormData();
 			formData.append('file', file);
@@ -568,11 +591,35 @@ const InsertData = (props) => {
 			}
 
 			if(partner){
-				pointObj.voucherDesc = JSON.parse(`{"english":"${voucherDesc.trim()} ", "slovenian" : "${voucherDescTransl.trim()}"}`)
+				
+				var voucherDesc1 = voucherDesc.replace(/(\r\n|\n|\r)/gm, " ");
+				var  voucherDescTransl1 = voucherDescTransl.replace(/(\r\n|\n|\r)/gm, " ");
+
+				
+				voucherDesc1= voucherDesc1.replace(/("|'|}|{)/g, "");
+				voucherDescTransl1 = voucherDescTransl1.replace(/("|'|}|{)/g, "");
+
+				pointObj.voucherDesc = JSON.parse(`{"english":"${voucherDesc1.trim()} ", "slovenian" : "${voucherDescTransl1.trim()}"}`)
 			}
-			pointObj.name = JSON.parse(`{"english":" ${titlePoint.trim()} ", "slovenian" : "${titlePointTransl.trim()}"}`)
-			pointObj.shortInfo = JSON.parse(`{"english":" ${shortInfoPoint.trim()} ", "slovenian" : "${ shortInfoPointTransl.trim()} "}`)
-			pointObj.longInfo = JSON.parse(`{"english":"${longInfoPoint.trim()} ", "slovenian" : "${longInfoPointTransl.trim()}"}`)
+			
+			var titlePoint1 = titlePoint.replace(/(\r\n|\n|\r)/gm, " ");
+			var titlePointTransl1 = titlePointTransl.replace(/(\r\n|\n|\r)/gm, " ");
+			var shortInfoPoint1 = shortInfoPoint.replace(/(\r\n|\n|\r)/gm, " ");
+			var shortInfoPointTransl1 = shortInfoPointTransl.replace(/(\r\n|\n|\r)/gm, " ");
+			var longInfoPoint1 = longInfoPoint.replace(/(\r\n|\n|\r)/gm, " ");
+			var longInfoPointTransl1 = longInfoPointTransl.replace(/(\r\n|\n|\r)/gm, " ");
+
+			titlePoint1 = titlePoint1.replace(/("|'|}|{)/g, "");
+			titlePointTransl1 = titlePointTransl1.replace(/("|'|}|{)/g, "");
+			shortInfoPoint1 = shortInfoPoint1.replace(/("|'|}|{)/g, "");
+			shortInfoPointTransl1= shortInfoPointTransl1.replace(/("|'|}|{)/g, "");
+			longInfoPoint1= longInfoPoint1.replace(/("|'|}|{)/g, "");
+			longInfoPointTransl1 = longInfoPointTransl1.replace(/("|'|}|{)/g, "");
+
+			console.log(shortInfoPoint1)
+			pointObj.name = JSON.parse(`{"english":" ${titlePoint1.trim()} ", "slovenian" : "${titlePointTransl1.trim()}"}`)
+			pointObj.shortInfo = JSON.parse(`{"english":" ${shortInfoPoint1.trim()} ", "slovenian" : "${ shortInfoPointTransl1.trim()} "}`)
+			pointObj.longInfo = JSON.parse(`{"english":"${longInfoPoint1.trim()} ", "slovenian" : "${longInfoPointTransl1.trim()}"}`)
 
 			/*if (voucherDesc == "") {
 				pointObj.voucherDesc = JSON.parse(`{
@@ -625,8 +672,6 @@ const InsertData = (props) => {
 			setPartner(false)
 			setPoint(false)
 		}
-
-
 
 	}
 
