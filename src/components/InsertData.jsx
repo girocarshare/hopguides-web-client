@@ -16,6 +16,7 @@ var num = 1;
 const InsertData = (props) => {
 
 
+	const [loading, setLoading] = useState(false);
 	const [errTitle, setErrTitle] = useState("");
 	const [errLongDescription, setErrLongDescription] = useState("");
 	const [errShortDescription, setErrShortDescription] = useState("");
@@ -297,6 +298,7 @@ const InsertData = (props) => {
 				images.push(URL.createObjectURL(event.target.files[i]));
 				var new_file = new File([event.target.files[i]], i + 'partner' + num + "---" + [event.target.files[i].name]);
 				fs.push(new_file)
+				setVideoPreview(null)
 			}
 
 		}
@@ -320,39 +322,14 @@ const InsertData = (props) => {
 		setErrAgreementTitle("")
 
 
-		if (title == "" || titleTransl == "" || agreementDesc==""|| agreementDescTransl == "" || file == null || agreementTitle=="" || agreementTitleTransl == "" || audio == null || shortInfo == "" || shortInfoTransl=="" || longInfoTransl==""|| longInfo == "" || price == "" || hotelId == "" || duration == "" || length == "" || highestPoint == "") {
+		if (title == "" || titleTransl == "" || agreementDesc == "" || agreementDescTransl == "" || file == null || agreementTitle == "" || agreementTitleTransl == "" || audio == null || shortInfo == "" || shortInfoTransl == "" || longInfoTransl == "" || longInfo == "" || price == "" || hotelId == "" || duration == "" || length == "" || highestPoint == "") {
 			setErrMessage("Please fill in the fileds marked with *")
 		} else {
 
-			/*if (!isJsonString(titleTransl)) {
-				setErrTitle("Please insert the proper JSON format. Pay attention on enter and quotes(\")")
-				setErrMessage("JSON format invalid. Check the red fields.")
-			}
-			if (!isJsonString(agreementTitleTransl)) {
-				setErrAgreementTitle("Please insert the proper JSON format. Pay attention on enter and quotes(\")")
-				setErrMessage("JSON format invalid. Check the red fields.")
-			}
-			if (!isJsonString(agreementDescTransl)) {
-				setErrAgreementDescription("Please insert the proper JSON format. Pay attention on enter and quotes(\")")
-				setErrMessage("JSON format invalid. Check the red fields.")
-			}
-			if (!isJsonString(shortInfo)) {
-				setErrShortDescription("Please insert the proper JSON format. Pay attention on enter and quotes(\")")
-				setErrMessage("JSON format invalid. Check the red fields.")
-			}
-			if (!isJsonString(longInfo)) {
-				setErrLongDescription("Please insert the proper JSON format. Pay attention on enter and quotes(\")")
-				setErrMessage("JSON format invalid. Check the red fields.")
-			}*/
 
-		
+
 
 			var tour = {
-				//: JSON.parse(titleTransl),
-				//agreementTitle: JSON.parse(agreementTitleTransl),
-				//agreementDesc: JSON.parse(agreementDescTransl),
-				//shortInfo: JSON.parse(shortInfo),
-				//longInfo: JSON.parse(longInfo),
 				price: price,
 				points: points,
 				duration: duration,
@@ -361,10 +338,10 @@ const InsertData = (props) => {
 				termsAndConditions: termsAndConditions,
 				currency: currency,
 				bpartnerId: hotelId,
-				update:false
+				update: false
 			}
 
-			
+
 			var title1 = title.replace(/(\r\n|\n|\r)/gm, " ");
 			var titleTransl1 = titleTransl.replace(/(\r\n|\n|\r)/gm, " ");
 			var agreementTitle1 = agreementTitle.replace(/(\r\n|\n|\r)/gm, " ");
@@ -379,7 +356,7 @@ const InsertData = (props) => {
 
 			title1 = title1.replace(/("|'|}|{)/g, "");
 			titleTransl1 = titleTransl1.replace(/("|'|}|{)/g, "");
-			agreementTitle1= agreementTitle1.replace(/("|'|}|{)/g, "");
+			agreementTitle1 = agreementTitle1.replace(/("|'|}|{)/g, "");
 			agreementTitleTransl1 = agreementTitleTransl1.replace(/("|'|}|{)/g, "");
 			agreementDesc1 = agreementDesc1.replace(/("|'|}|{)/g, "");
 			agreementDescTransl1 = agreementDescTransl1.replace(/("|'|}|{)/g, "");
@@ -390,8 +367,8 @@ const InsertData = (props) => {
 
 			tour.title = JSON.parse(`{"english":" ${title1.trim()} ", "slovenian" : "${titleTransl1.trim()}"}`)
 			tour.agreementTitle = JSON.parse(`{"english":"${agreementTitle1.trim()} ", "slovenian" : " ${agreementTitleTransl1.trim()}"}`)
-			tour.agreementDesc = JSON.parse(`{"english":"${agreementDesc1.trim()}", "slovenian" : "${ agreementDescTransl1.trim()} "}`)
-			tour.shortInfo = JSON.parse(`{"english":" ${shortInfo1.trim()} ", "slovenian" : "${ shortInfoTransl1.trim()} "}`)
+			tour.agreementDesc = JSON.parse(`{"english":"${agreementDesc1.trim()}", "slovenian" : "${agreementDescTransl1.trim()} "}`)
+			tour.shortInfo = JSON.parse(`{"english":" ${shortInfo1.trim()} ", "slovenian" : "${shortInfoTransl1.trim()} "}`)
 			tour.longInfo = JSON.parse(`{"english":"${longInfo1.trim()} ", "slovenian" : "${longInfoTransl1.trim()}"}`)
 
 			const formData = new FormData();
@@ -409,12 +386,18 @@ const InsertData = (props) => {
 			var token = authHeader()
 			var xhr = new XMLHttpRequest();
 			xhr.upload.addEventListener("progress", ProgressHandler, false);
-			xhr.addEventListener("load", SuccessHandler, false);
-			xhr.addEventListener("error", ErrorHandler, false);
-			xhr.addEventListener("abort", AbortHandler, false);
+			//xhr.addEventListener("load", SuccessHandler, false);
+			//xhr.addEventListener("error", ErrorHandler, false);
+			//xhr.addEventListener("abort", AbortHandler, false);
 			xhr.open('POST', `${url}api/pnl/tour/addFull/add`, true);
 			xhr.setRequestHeader('authorization', token);
 			xhr.onload = function () {
+
+				if (xhr.status == 200) {
+					SuccessHandler()
+				} else {
+					ErrorHandler()
+				}
 			};
 			xhr.send(formData);
 		}
@@ -483,16 +466,16 @@ const InsertData = (props) => {
 
 	}, [dispatch]);
 	const addPartner = () => {
-	
+
 		setPartner(true)
 		setPoint(false)
 		window.scrollTo(0, 0);
-		
+
 
 	};
 
 	const addPoint = () => {
-	
+
 		setPartner(false)
 		setPoint(true)
 		window.scrollTo(0, 0);
@@ -500,18 +483,17 @@ const InsertData = (props) => {
 	};
 
 	const setBusinessPartner = (data) => {
-	
-		setHotelId(data)
-		
 
-		if(points!=[]){
+		setHotelId(data)
+
+
+		if (points != []) {
 			var pointsChanged = []
-			for(var poi of points){
+			for (var poi of points) {
 				poi.bpartnerId = data;
 				pointsChanged.push(poi)
 			}
 
-			console.log(pointsChanged)
 			setPoints(pointsChanged)
 		}
 
@@ -533,9 +515,9 @@ const InsertData = (props) => {
 		setErrTitlePoint("")
 
 
-		if (partner && (titlePoint=="" || titlePointTransl == "" || shortInfoPoint=="" || shortInfoPointTransl == "" || longInfoPoint=="" || longInfoPointTransl == "" || category == "" || pointPrice == "" || offerName == "" || responsiblePerson == "" || voucherDesc=="" || voucherDescTransl == "" || phone == "" || email == "" || longitude == "" || latitude == "" || audio2 == null || selectedFiles.length == 0 || (!mondayclosed && (mondayFrom == "" || mondayTo == "")) || (!tuesdayclosed && (tuesdayFrom == "" || tuesdayTo == "")) || (!wednesdayclosed && (wednesdayFrom == "" || wednesdayTo == "")) || (!thursdayclosed && (thursdayFrom == "" || thursdayTo == "")) || (!fridayclosed && (fridayFrom == "" || fridayTo == "")) || (!saturdayclosed && (saturdayFrom == "" || saturdayTo == "")) || (!sundayclosed && (sundayFrom == "" || sundayTo == "")))) {
+		if (partner && (titlePoint == "" || titlePointTransl == "" || shortInfoPoint == "" || shortInfoPointTransl == "" || longInfoPoint == "" || longInfoPointTransl == "" || category == "" || pointPrice == "" || offerName == "" || responsiblePerson == "" || voucherDesc == "" || voucherDescTransl == "" || phone == "" || email == "" || longitude == "" || latitude == "" || audio2 == null || selectedFiles.length == 0 || (!mondayclosed && (mondayFrom == "" || mondayTo == "")) || (!tuesdayclosed && (tuesdayFrom == "" || tuesdayTo == "")) || (!wednesdayclosed && (wednesdayFrom == "" || wednesdayTo == "")) || (!thursdayclosed && (thursdayFrom == "" || thursdayTo == "")) || (!fridayclosed && (fridayFrom == "" || fridayTo == "")) || (!saturdayclosed && (saturdayFrom == "" || saturdayTo == "")) || (!sundayclosed && (sundayFrom == "" || sundayTo == "")))) {
 			setErrMessagePartner("Please insert mandatory fields for partner (marked with *)")
-		} else if (point && (titlePoint=="" || titlePointTransl == "" || shortInfoPoint=="" || shortInfoPointTransl == "" || longInfoPoint=="" ||  longInfoPointTransl == "" || category == "" || longitude == "" || latitude == "" || audio2 === null || selectedFiles.length === 0)) {
+		} else if (point && (titlePoint == "" || titlePointTransl == "" || shortInfoPoint == "" || shortInfoPointTransl == "" || longInfoPoint == "" || longInfoPointTransl == "" || category == "" || longitude == "" || latitude == "" || audio2 === null || selectedFiles.length === 0)) {
 
 			setErrMessagePartner("Please insert mandatory fields for point of interest (marked with *)")
 		} else {
@@ -558,28 +540,9 @@ const InsertData = (props) => {
 			}
 
 
-			/*if (!isJsonString(titlePointTransl)) {
-				setErrTitlePoint("Please insert the proper JSON format. Pay attention on enter and quotes(\")")
-				setErrMessagePartner("JSON format invalid. Check the red fields.")
-			}
-			if (!isJsonString(shortInfoPointTransl)) {
-				setErrShortDescriptionPoint("Please insert the proper JSON format. Pay attention on enter and quotes(\")")
-				setErrMessagePartner("JSON format invalid. Check the red fields.")
-			}
-			if (!isJsonString(longInfoPointTransl)) {
-				setErrLongDescriptionPoint("Please insert the proper JSON format. Pay attention on enter and quotes(\")")
-				setErrMessagePartner("JSON format invalid. Check the red fields.")
-			}
-			if (partner && !isJsonString(voucherDescTransl)) {
-				setErrVoucherDescriptionPoint("Please insert the proper JSON format. Pay attention on enter and quotes(\")")
-				setErrMessagePartner("JSON format invalid. Check the red fields.")
-			}*/
 			console.log(hotelId)
 			var pointObj = {
 				num: num,
-				//name: JSON.parse(titlePointTransl),
-				//shortInfo: JSON.parse(shortInfoPointTransl),
-				//longInfo: JSON.parse(longInfoPointTransl),
 				price: pointPrice.toString(),
 				offerName: offerName,
 				contact: { phone: phone, email: email, webURL: webURL, name: responsiblePerson },
@@ -590,18 +553,18 @@ const InsertData = (props) => {
 				imageTitles: jsonTitles,
 			}
 
-			if(partner){
-				
-				var voucherDesc1 = voucherDesc.replace(/(\r\n|\n|\r)/gm, " ");
-				var  voucherDescTransl1 = voucherDescTransl.replace(/(\r\n|\n|\r)/gm, " ");
+			if (partner) {
 
-				
-				voucherDesc1= voucherDesc1.replace(/("|'|}|{)/g, "");
+				var voucherDesc1 = voucherDesc.replace(/(\r\n|\n|\r)/gm, " ");
+				var voucherDescTransl1 = voucherDescTransl.replace(/(\r\n|\n|\r)/gm, " ");
+
+
+				voucherDesc1 = voucherDesc1.replace(/("|'|}|{)/g, "");
 				voucherDescTransl1 = voucherDescTransl1.replace(/("|'|}|{)/g, "");
 
 				pointObj.voucherDesc = JSON.parse(`{"english":"${voucherDesc1.trim()} ", "slovenian" : "${voucherDescTransl1.trim()}"}`)
 			}
-			
+
 			var titlePoint1 = titlePoint.replace(/(\r\n|\n|\r)/gm, " ");
 			var titlePointTransl1 = titlePointTransl.replace(/(\r\n|\n|\r)/gm, " ");
 			var shortInfoPoint1 = shortInfoPoint.replace(/(\r\n|\n|\r)/gm, " ");
@@ -612,28 +575,28 @@ const InsertData = (props) => {
 			titlePoint1 = titlePoint1.replace(/("|'|}|{)/g, "");
 			titlePointTransl1 = titlePointTransl1.replace(/("|'|}|{)/g, "");
 			shortInfoPoint1 = shortInfoPoint1.replace(/("|'|}|{)/g, "");
-			shortInfoPointTransl1= shortInfoPointTransl1.replace(/("|'|}|{)/g, "");
-			longInfoPoint1= longInfoPoint1.replace(/("|'|}|{)/g, "");
+			shortInfoPointTransl1 = shortInfoPointTransl1.replace(/("|'|}|{)/g, "");
+			longInfoPoint1 = longInfoPoint1.replace(/("|'|}|{)/g, "");
 			longInfoPointTransl1 = longInfoPointTransl1.replace(/("|'|}|{)/g, "");
 
 			console.log(shortInfoPoint1)
 			pointObj.name = JSON.parse(`{"english":" ${titlePoint1.trim()} ", "slovenian" : "${titlePointTransl1.trim()}"}`)
-			pointObj.shortInfo = JSON.parse(`{"english":" ${shortInfoPoint1.trim()} ", "slovenian" : "${ shortInfoPointTransl1.trim()} "}`)
+			pointObj.shortInfo = JSON.parse(`{"english":" ${shortInfoPoint1.trim()} ", "slovenian" : "${shortInfoPointTransl1.trim()} "}`)
 			pointObj.longInfo = JSON.parse(`{"english":"${longInfoPoint1.trim()} ", "slovenian" : "${longInfoPointTransl1.trim()}"}`)
 
 			/*if (voucherDesc == "") {
 				pointObj.voucherDesc = JSON.parse(`{
-                  "english": "",
-                  "spanish": "",
-                  "serbian": "",
-                  "slovenian": ""
-                  }`)
+				  "english": "",
+				  "spanish": "",
+				  "serbian": "",
+				  "slovenian": ""
+				  }`)
 				pointObj.partner = false
 			} else {
 				pointObj.voucherDesc = JSON.parse(voucherDescTransl)
 				pointObj.partner = true
 			}*/
-			const newData = [ ...points, pointObj];
+			const newData = [...points, pointObj];
 			setPoints(newData)
 			setTitlePoint("")
 			setShortInfoPoint("")
@@ -697,17 +660,19 @@ const InsertData = (props) => {
 	};
 
 	const onFileChange = (event) => {
-		if((event.target.files[0].name).substring(event.target.files[0].name.length-3)=="mp4"){
+		if ((event.target.files[0].name).substring(event.target.files[0].name.length - 3) == "mp4") {
 			var new_file = new File([event.target.files[0]], 'image' + "---" + [event.target.files[0].name]);
 			setFile(new_file);
 			setVideoPreviewTour(URL.createObjectURL(event.target.files[0]))
-		}else{
-		var new_file = new File([event.target.files[0]], 'image' + "---" + [event.target.files[0].name]);
-		setFile(new_file);
-		setImagePreview(URL.createObjectURL(event.target.files[0]));
+			setImagePreview(null);
+		} else {
+			var new_file = new File([event.target.files[0]], 'image' + "---" + [event.target.files[0].name]);
+			setFile(new_file);
+			setImagePreview(URL.createObjectURL(event.target.files[0]));
+			setVideoPreviewTour(null)
 		}
 
-		
+
 	}
 
 
@@ -735,14 +700,13 @@ const InsertData = (props) => {
 	};
 
 	const ProgressHandler = (e) => {
-		var percent = (e.loaded / e.total) * 100;
-		progressRef.current.value = Math.round(percent);
-		statusRef.current.innerHTML = Math.round(percent) + "% uploaded...";
+
+		setLoading(true)
 
 	};
 
 	const SuccessHandler = (e) => {
-
+		setLoading(false)
 		homeDataService.insertData(true, dispatch);
 
 		setTitlePoint("")
@@ -853,7 +817,7 @@ const InsertData = (props) => {
 									</button>
 								</div>
 								<div class="modal__body">
-			
+
 									<form class="form" id="contactForm">
 
 										<BasicTourData
@@ -904,12 +868,12 @@ const InsertData = (props) => {
 											errShortDescription={errShortDescription}
 											errAgreementTitle={errAgreementTitle}
 											errAgreementDescription={errAgreementDescription}
-											shortInfoTransl = {shortInfoTransl}
-											setShortInfoTransl = {setShortInfoTransl}
-											longInfoTransl = {longInfoTransl}
-											setLongInfoTransl = {setLongInfoTransl}
-											setBusinessPartner = {setBusinessPartner}
-											videoPreviewTour ={videoPreviewTour}
+											shortInfoTransl={shortInfoTransl}
+											setShortInfoTransl={setShortInfoTransl}
+											longInfoTransl={longInfoTransl}
+											setLongInfoTransl={setLongInfoTransl}
+											setBusinessPartner={setBusinessPartner}
+											videoPreviewTour={videoPreviewTour}
 										/>
 
 
@@ -1009,7 +973,7 @@ const InsertData = (props) => {
 											errVoucherDescriptionPoint={errVoucherDescriptionPoint}
 											errImageTitle={errImageTitle}
 											audioNamePoint={audioNamePoint}
-											videoPreview = {videoPreview}
+											videoPreview={videoPreview}
 										/>
 									</form>
 
@@ -1018,96 +982,98 @@ const InsertData = (props) => {
 								{
 									points.length > 0 &&
 									<div class="modal__body">
-			
-												<DragDropContext onDragEnd={handleDragEnd}>
-													<table className="table borderd">
-														<thead>
 
-															<tr>
-															<th> =
-																</th>
-																<th>Title
-																</th>
-																<th>Short
-																	description
-																</th>
-																<th>Long
-																	description
-																</th>
-																<th>Category
-																</th>
-																<th>Price
-																</th>
-																<th>Offer name
-																</th>
-																<th>Responsible
-																	person
-																</th>
-																<th>Email
-																</th>
-																<th>Phone
-																</th>
-																<th>Web
-																	page
-																</th>
-																<th>Location
-																</th>
-															</tr>
-														</thead>
-														<Droppable droppableId="droppable-1">
-															{(provider) => (
-																<tbody
-																	className="text-capitalize"
-																	ref={provider.innerRef}
-																	{...provider.droppableProps}
+										<DragDropContext onDragEnd={handleDragEnd}>
+											<div class="table-frame">
+											<table className="table-fix borderd">
+												<thead>
+
+													<tr>
+														<th> =
+														</th>
+														<th>Title
+														</th>
+														<th>Short
+															description
+														</th>
+														<th>Long
+															description
+														</th>
+														<th>Category
+														</th>
+														<th>Price
+														</th>
+														<th>Offer name
+														</th>
+														<th>Responsible
+															person
+														</th>
+														<th>Email
+														</th>
+														<th>Phone
+														</th>
+														<th>Web
+															page
+														</th>
+														<th>Location
+														</th>
+													</tr>
+												</thead>
+												<Droppable droppableId="droppable-1">
+													{(provider) => (
+														<tbody
+															className="text-capitalize"
+															ref={provider.innerRef}
+															{...provider.droppableProps}
+														>
+															{points.map((point, index) => (
+																<Draggable
+																	key={point.name.english}
+																	draggableId={point.name.english}
+																	index={index}
 																>
-																	{points.map((point, index) => (
-																		<Draggable
-																			key={point.name.english}
-																			draggableId={point.name.english}
-																			index={index}
-																		>
-																			{(provider) => (
+																	{(provider) => (
 
-																				<tr {...provider.draggableProps} ref={provider.innerRef} >
-																				 <td {...provider.dragHandleProps}>=</td>
-																					<td>{point.name.english}</td>
-																					<td>{point.shortInfo.english}</td>
-																					<td>{point.longInfo.english}</td>
-																					<td>{point.category}</td>
-																					{point.price == "" ?
-																						<td>/</td> :
-																						<td>{point.price} {currency}</td>}
-																					{point.offerName == "" ?
-																						<td>/</td> :
-																						<td>{point.offerName}</td>}
-																					{point.contact.name == "" ?
-																						<td>/</td> :
-																						<td>{point.contact.name}</td>}
-																					{point.contact.email == "" ?
-																						<td>/</td> :
-																						<td>{point.contact.email}</td>}
-																					{point.contact.phone == "" ?
-																						<td>/</td> :
-																						<td>{point.contact.phone}</td>}
-																					{point.contact.webURL == "" ?
-																						<td>/</td> :
-																						<td>{point.contact.webURL}</td>}
+																		<tr {...provider.draggableProps} ref={provider.innerRef} >
+																			<td {...provider.dragHandleProps}>=</td>
+																			<td>{point.name.english}</td>
+																			<td>{point.shortInfo.english}</td>
+																			<td>{point.longInfo.english}</td>
+																			<td>{point.category}</td>
+																			{point.price == "" ?
+																				<td>/</td> :
+																				<td>{point.price} {currency}</td>}
+																			{point.offerName == "" ?
+																				<td>/</td> :
+																				<td>{point.offerName}</td>}
+																			{point.contact.name == "" ?
+																				<td>/</td> :
+																				<td>{point.contact.name}</td>}
+																			{point.contact.email == "" ?
+																				<td>/</td> :
+																				<td>{point.contact.email}</td>}
+																			{point.contact.phone == "" ?
+																				<td>/</td> :
+																				<td>{point.contact.phone}</td>}
+																			{point.contact.webURL == "" ?
+																				<td>/</td> :
+																				<td>{point.contact.webURL}</td>}
 
-																					<td>{`${point.location.latitude}  ${point.location.longitude}`}</td>
+																			<td>{`${point.location.latitude}  ${point.location.longitude}`}</td>
 
 
-																				</tr>
-																			)}
-																		</Draggable>
-																	))}
-																	{provider.placeholder}
-																</tbody>
-															)}
-														</Droppable>
-													</table>
-												</DragDropContext>
-
+																		</tr>
+																	)}
+																</Draggable>
+															))}
+															{provider.placeholder}
+														</tbody>
+													)}
+												</Droppable>
+											</table>
+											</div>
+										</DragDropContext>
+										
 										<div class="modal__body grid dgrid-row place-items-center">
 
 
@@ -1117,8 +1083,12 @@ const InsertData = (props) => {
 												{errMessage}
 											</div>
 
-
+											
+											
 											<div className="button-p grid dgrid-row place-items-center">
+											{ loading && <div ><img className="mx-8 my-8 h-20" src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif"></img></div>}
+											
+
 												<button
 
 													onClick={(e) => {

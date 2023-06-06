@@ -345,12 +345,14 @@ const AddNewPartnerForm = (props) => {
 			
 				fs.push(new_file)
 				setVideoPreview(URL.createObjectURL(event.target.files[i]))
+				setImagePreviews([])
 				break;
 			} else {
 
 				images.push(URL.createObjectURL(event.target.files[i]));
 				var new_file = new File([event.target.files[i]], i + 'partner' + num + "---" + [event.target.files[i].name]);
 			
+				setVideoPreview(null)
 				fs.push(new_file)
 			}
 
@@ -557,6 +559,7 @@ const AddNewPartnerForm = (props) => {
 																	<input
 																		className={"form__input"}
 																		aria-describedby="basic-addon1"
+																		placeholder="Name in slovenian"
 																		id="name"
 																		type="text"
 																		onChange={(e) => setTitlePointTransl(e.target.value)}
@@ -582,7 +585,7 @@ const AddNewPartnerForm = (props) => {
 																	<div class="flex flex-row gap-2 items-center">
 																		<label class="form__label" style={{ marginRight: "18px" }}>English:</label>
 
-																		<textarea className="form__input h-32"
+																		<textarea className="form__input text-sm h-32"
 
 																			type="textarea" required name="message"
 																			placeholder='Short description'
@@ -605,7 +608,7 @@ const AddNewPartnerForm = (props) => {
 																		<label class="form__label">Slovenian:</label>
 																		<textarea
 																			className={!errShortDescriptionPoint ? "form__input text-sm h-32" : "form__input text-sm h-32 !border !border-red-500"}
-																			placeholder=''
+																			placeholder='Short description in slovenian'
 																			aria-describedby="basic-addon1"
 																			id="name"
 																			type="text"
@@ -631,7 +634,7 @@ const AddNewPartnerForm = (props) => {
 																<div class="flex flex-row gap-2 items-center">
 																	<label class="form__label" style={{ marginRight: "18px" }}>English:</label>
 
-																	<textarea className="form__input h-32"
+																	<textarea className="form__input text-sm h-32"
 																		type="textarea" required name="message"
 																		placeholder='Long description'
 																		value={longInfoPoint}
@@ -651,7 +654,7 @@ const AddNewPartnerForm = (props) => {
 																	<textarea
 
 																		className={!errLongDescriptionPoint ? "form__input text-sm h-32" : "form__input text-sm h-32 !border !border-red-500"}
-																		placeholder=''
+																		placeholder='Long description in slovenian'
 																		aria-describedby="basic-addon1"
 																		id="name"
 																		type="text"
@@ -676,7 +679,7 @@ const AddNewPartnerForm = (props) => {
 																	<div class="flex flex-row gap-2 items-center">
 																		<label class="form__label" style={{ marginRight: "18px" }}>English:</label>
 
-																		<textarea className="form__input h-32"
+																		<textarea className="form__input text-sm h-32"
 																			type="textarea" required name="message"
 																			placeholder='Voucher description'
 																			value={voucherDesc}
@@ -696,7 +699,7 @@ const AddNewPartnerForm = (props) => {
 																		<textarea
 
 																			className={!props.errVoucherDescriptionPoint ? "form__input text-sm h-32" : "form__input text-sm h-32 !border !border-red-500"}
-																			placeholder=''
+																			placeholder='Voucher description in slovenian'
 																			aria-describedby="basic-addon1"
 																			id="name"
 																			type="text"
@@ -1086,33 +1089,16 @@ const AddNewPartnerForm = (props) => {
 
 														<label
 															class="button button--secondary button--small">
-															<span>Upload image</span>
+															<span>Upload image/video</span>
 															<input type="file"
 																multiple
 																onChange={selectFiles}
 																class="sr-only" />
 														</label>
 														<br />
-														{progressInfos &&
-															progressInfos.val.length > 0 &&
-															progressInfos.val.map((progressInfo, index) => (
-																<div key={index}>
-																	<span>{progressInfo.fileName}</span>
-																	<div>
-																		<div
-																			role="progressbar"
-																			aria-valuenow={progressInfo.percentage}
-																			aria-valuemin="0"
-																			aria-valuemax="100"
-																			style={{ width: progressInfo.percentage + "%" }}
-																		>
-																			{progressInfo.percentage}%
-																		</div>
-																	</div>
-																</div>
-															))}
+													
 
-														{imagePreviews && (
+														{imagePreviews && !videoPreview &&(
 															<div>
 																{imagePreviews.map((img, i) => {
 																	return (
@@ -1143,7 +1129,7 @@ const AddNewPartnerForm = (props) => {
 															</div>
 														)}
 
-{videoPreview && <video className="image__preview" controls src={videoPreview}
+{videoPreview && imagePreviews.length == 0 && <video className="image__preview" controls src={videoPreview}
 												alt={"video-"} />}
 										
 

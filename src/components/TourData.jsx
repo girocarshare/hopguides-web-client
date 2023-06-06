@@ -396,10 +396,12 @@ const TourData = () => {
 			var new_file = new File([event.target.files[0]], 'image' + "---" + [event.target.files[0].name]);
 			setFile(new_file);
 			setVideoPreview(URL.createObjectURL(event.target.files[0]))
+			setImagePreview(null)
 		}else{
 		var new_file = new File([event.target.files[0]], 'image' + "---" + [event.target.files[0].name]);
 		setFile(new_file);
 		setImagePreview(URL.createObjectURL(event.target.files[0]));
+		setVideoPreview(null)
 		}
 	}
 
@@ -499,7 +501,7 @@ const TourData = () => {
 														<input
 
 															className={"form__input"}
-															placeholder='Title'
+															placeholder='Title in slovenian'
 															aria-describedby="basic-addon1"
 															id="name"
 															type="text"
@@ -673,7 +675,7 @@ const TourData = () => {
 															<label class="form__label" style={{ marginRight: "18px" }}>English:</label>
 															<textarea
 
-																className={!errShortDescription ? "form__input h-32" : "form__input h-32 !border !border-red-500"}
+																className={!errShortDescription ? "form__input text-sm h-32" : "form__input text-sm h-32 !border !border-red-500"}
 																style={{ height: 80 }}
 																readOnly={!edit}
 																placeholder='Short description'
@@ -692,7 +694,7 @@ const TourData = () => {
 															<label class="form__label" >Slovenian:</label>
 															<textarea
 
-																className={!errShortDescription ? "form__input h-32" : "form__input h-32 !border !border-red-500"}
+																className={!errShortDescription ? "form__input text-sm h-32" : "form__input text-sm h-32 !border !border-red-500"}
 																style={{ height: 80 }}
 																readOnly={!edit}
 																placeholder='Short description in slovenian'
@@ -725,7 +727,7 @@ const TourData = () => {
 														<label class="form__label" style={{ marginRight: "18px" }}>English:</label>
 														<textarea
 
-															className={!errShortDescription ? "form__input h-32" : "form__input h-32 !border !border-red-500"}
+															className={!errShortDescription ? "form__input text-sm h-32" : "form__input text-sm h-32 !border !border-red-500"}
 															style={{ height: 80 }}
 															readOnly={!edit}
 															placeholder='Long description'
@@ -744,7 +746,7 @@ const TourData = () => {
 														<label class="form__label" >Slovenian:</label>
 														<textarea
 
-															className={!errShortDescription ? "form__input h-32" : "form__input h-32 !border !border-red-500"}
+															className={!errShortDescription ? "form__input text-sm h-32" : "form__input text-sm h-32 !border !border-red-500"}
 															style={{ height: 80 }}
 															readOnly={!edit}
 															placeholder='Long description in slovenian'
@@ -841,7 +843,7 @@ const TourData = () => {
 											{edit &&
 												<label
 													class="button button--secondary button--small">
-													<span>Upload image</span>
+													<span>Upload image/video</span>
 													<input type={"file"} name={"file"}
 														onChange={onFileChange}
 														class="sr-only" />
@@ -857,15 +859,15 @@ const TourData = () => {
 
 
 											<div class="mt-2">
-												{imagePreview && <img className="image__preview" src={imagePreview}
+												{imagePreview && !videoPreview && <img className="image__preview" src={imagePreview}
 													alt={"image-"} />}
-												{!imagePreview && <img className="image__preview"
+												{!imagePreview && !videoPreview && homeDataState.updateTourData.tour.image.substring(homeDataState.updateTourData.tour.image.length-3)!="mp4" && <img className="image__preview"
 													src={homeDataState.updateTourData.tour.image}
 													alt={"image-"} />}
 
-												{videoPreview && <video className="image__preview" controls src={videoPreview}
+												{videoPreview  && !imagePreview && <video className="image__preview" controls src={videoPreview}
 													alt={"video-"} />}
-												{!videoPreview && <video controls className="image__preview"
+												{!videoPreview &&  !imagePreview && homeDataState.updateTourData.tour.image.substring(homeDataState.updateTourData.tour.image.length-3)=="mp4" &&<video controls className="image__preview"
 													src={homeDataState.updateTourData.tour.image}
 													alt={"video-"} />}
 											</div>

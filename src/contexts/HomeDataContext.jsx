@@ -49,6 +49,8 @@ const HomeDataContextProvider = (props) => {
 
 
 		modalData: {
+			successInsert: false,
+			title: "",
 			success: false,
 			failure: false,
 			text: "",

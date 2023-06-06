@@ -81,6 +81,7 @@ const AddPartnerOrPointForm = (props) => {
                                                             className={"form__input"}
                                                             aria-describedby="basic-addon1"
                                                             id="name"
+                                                             placeholder="Name in slovenian"
                                                             type="text"
                                                             onChange={(e) => props.setTitlePointTransl(e.target.value)}
                                                             value={props.titlePointTransl}
@@ -608,14 +609,14 @@ const AddPartnerOrPointForm = (props) => {
 
                                             <label
                                                 class="button button--secondary button--small">
-                                                <span>Upload image</span>
+                                                <span>Upload image/video</span>
                                                 <input type={"file"} multiple
                                                     onChange={props.selectFiles}
                                                     class="sr-only" />
                                             </label>
-                                            {props.videoPreview && <video className="image__preview" controls src={props.videoPreview}
+                                            {props.videoPreview && props.imagePreviews.length == 0 && <video className="image__preview" controls src={props.videoPreview}
 												alt={"video-"} />}
-                                            {props.imagePreviews && (
+                                            {props.imagePreviews && !props.videoPreview &&(
                                                 <div>
                                                     {props.imagePreviews.map((img, i) => {
                                                         return (

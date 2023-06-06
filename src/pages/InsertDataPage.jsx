@@ -6,6 +6,7 @@ import HomeDataContextProvider from "../contexts/HomeDataContext";
 import InsertData from "../components/InsertData";
 import AddPartnerOrPointForm from "../components/AddPartnerOrPointForm";
 import SuccessModal from "../components/SuccessModal";
+import SuccessFailureModalAfterInsert from "../components/SuccessFailureModalAfterInsert";
 import FailureModal from "../components/FailureModal";
 import BasicTourData from "../components/BasicTourData";
 const InsertDataPage = () => {
@@ -16,7 +17,7 @@ const InsertDataPage = () => {
 				<BasicTourData/>
 				<AddPartnerOrPointForm />
 				<InsertData />
-				<SuccessModal />
+				<SuccessFailureModalAfterInsert />
 				<FailureModal />
 			</HomeDataContextProvider>
 		</div>

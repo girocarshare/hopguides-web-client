@@ -553,10 +553,8 @@ export const homeDataReducer = (state, action) => {
 			prodCpy = { ...state };
 
 
-			prodCpy.toursWithPoints.toursWithPoints = action.data;
-			prodCpy.showModal = false;
-			prodCpy.modalData.success = true;
-			prodCpy.modalData.failure = false;
+			prodCpy.modalData.successInsert = true;
+			prodCpy.modalData.title = "Success";
 			prodCpy.modalData.text = "You have successfully added new data.";
 
 			return prodCpy;
@@ -568,8 +566,8 @@ export const homeDataReducer = (state, action) => {
 				...state,
 
 				modalData: {
-					success: false,
-					failure: true,
+					successInsert: true,
+					title : "Error",
 					text: "Error while adding new data. Please try again later.",
 				},
 

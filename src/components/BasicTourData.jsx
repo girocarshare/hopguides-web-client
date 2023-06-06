@@ -19,18 +19,18 @@ const BasicTourData = (props) => {
 
                     <div class="flex flex-row gap-2 items-center">
                         <label class="form__label" style={{ marginRight: "18px" }}>English:</label>
-
-
-                        <input
-
-                            className={"form__input"}
-                            placeholder='Title'
-                            aria-describedby="basic-addon1"
-                            id="name"
-                            type="text"
-                            onChange={(e) => props.setTitle(e.target.value)}
+                        <textarea
+                        className={!props.errTitle ? "form__input text-sm" : "form__input text-sm !border !border-red-500"}
+                        style={{ height: 80 }}
+                        placeholder='Title'
+                        aria-describedby="basic-addon1"
+                        id="name"
+                        type="text"
+                        onChange={(e) => props.setTitle(e.target.value)}
                             value={props.title}
-                        />
+                    />
+
+                       
 
                         <button
 
@@ -48,7 +48,7 @@ const BasicTourData = (props) => {
                     <textarea
                         className={!props.errTitle ? "form__input text-sm" : "form__input text-sm !border !border-red-500"}
                         style={{ height: 80 }}
-                        placeholder=''
+                        placeholder='Title in slovenian'
                         aria-describedby="basic-addon1"
                         id="name"
                         type="text"
@@ -209,10 +209,10 @@ const BasicTourData = (props) => {
                         <div class="flex flex-col gap-2">
 
                             <div class="flex flex-row gap-2 items-center">
-                                <label class="form__label" style={{ marginRight: "18px" }}>English:</label>
+                                <label class="form__label " style={{ marginRight: "18px" }}>English:</label>
                                 <textarea
 
-                                    className={!props.errShortDescription ? "form__input h-32" : "form__input h-32 !border !border-red-500"}
+                                    className={!props.errShortDescription ? "form__input h-32 text-sm" : "form__input h-32 text-sm !border !border-red-500"}
                                     style={{ height: 80 }}
                                     placeholder='Short description'
                                     aria-describedby="basic-addon1"
@@ -230,7 +230,7 @@ const BasicTourData = (props) => {
                                 <label class="form__label" >Slovenian:</label>
                                 <textarea
 
-                                    className={!props.errShortDescription ? "form__input h-32" : "form__input h-32 !border !border-red-500"}
+                                    className={!props.errShortDescription ? "form__input h-32 text-sm" : "form__input h-32 text-sm !border !border-red-500"}
                                     style={{ height: 80 }}
                                     placeholder='Short description in slovenian'
                                     aria-describedby="basic-addon1"
@@ -262,7 +262,7 @@ const BasicTourData = (props) => {
                             <label class="form__label" style={{ marginRight: "18px" }}>English:</label>
                             <textarea
 
-                                className={!props.errShortDescription ? "form__input h-32" : "form__input h-32 !border !border-red-500"}
+                                className={!props.errShortDescription ? "form__input h-32 text-sm" : "form__input h-32 text-sm !border !border-red-500"}
                                 style={{ height: 80 }}
                                 placeholder='Long description'
                                 aria-describedby="basic-addon1"
@@ -280,7 +280,7 @@ const BasicTourData = (props) => {
                             <label class="form__label" >Slovenian:</label>
                             <textarea
 
-                                className={!props.errShortDescription ? "form__input h-32" : "form__input h-32 !border !border-red-500"}
+                                className={!props.errShortDescription ? "form__input h-32 text-sm" : "form__input h-32 text-sm !border !border-red-500"}
                                 style={{ height: 80 }}
                                 placeholder='Long description in slovenian'
                                 aria-describedby="basic-addon1"
@@ -419,7 +419,7 @@ const BasicTourData = (props) => {
                 <label class="form__label">Background tour image*</label>
 
                 <label class="button button--secondary button--small">
-                    <span>Upload image</span>
+                    <span>Upload image/video</span>
                     <input type={"file"} name="file" onChange={props.onFileChange}
                         class="sr-only" />
                 </label>
@@ -429,12 +429,12 @@ const BasicTourData = (props) => {
                 {props.fileData}
             </div>
 
-            {props.imagePreview &&
+            {props.imagePreview && !props.videoPreviewTour &&
 
 
                 <img className="image__preview" src={props.imagePreview} alt={"image-"} />}
 
-            {props.videoPreviewTour && <video className="image__preview" controls src={props.videoPreviewTour}
+            {props.videoPreviewTour && !props.imagePreview && <video className="image__preview" controls src={props.videoPreviewTour}
                 alt={"video-"} />}
 
             <br />
