@@ -397,7 +397,6 @@ export const homeDataReducer = (state, action) => {
 		case homeDataConstants.UPDATE_MENU_PHOTO_SUCCESS:
 
 
-			console.log("fjsfjd")
 			return {
 				...state,
 				showEditMenuModal: false,
@@ -763,7 +762,45 @@ export const homeDataReducer = (state, action) => {
 
 			return prodCpy;
 
+			case homeDataConstants.ADD_GPX_MODAL_SHOW:
 
+			prodCpy = { ...state };
+
+
+			prodCpy.addGpxModalShow = true;
+			prodCpy.id = action.data
+
+			return prodCpy;
+
+
+		case homeDataConstants.ADD_GPX_MODAL_HIDE:
+
+			return {
+				...state,
+
+				addGpxModalShow: false,
+
+			};
+
+			case homeDataConstants.ADD_GPX_SUCCESS:
+
+			prodCpy = { ...state };
+
+			prodCpy.modalData.success = true;
+			prodCpy.modalData.text = "You have successfully added gpx file.";
+			return prodCpy;
+
+
+			case homeDataConstants.ADD_GPX_FAILURE:
+
+			prodCpy = { ...state };
+
+			prodCpy.modalData.failure = true;
+			prodCpy.modalData.text = "There has been an error while adding gpx file. Please try again later.";
+			return prodCpy;
+
+
+		
 
 
 		default:

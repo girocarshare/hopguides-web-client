@@ -13,12 +13,14 @@ import SuccessModal from "../components/SuccessModal";
 import FailureModal from "../components/FailureModal";
 import TourData from "../components/TourData";
 import POIData from "../components/POIData";
+import AddGpxModal from "../components/AddGpxModal";
 
 const HomePage = () => {
 
 	return (
 		<HomeDataContextProvider>
 			<TourData/>
+			<AddGpxModal/>
 			<POIData/>
 			<FailureModal/>
 			<HomePageData/>
