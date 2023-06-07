@@ -23,7 +23,7 @@ export const homeDataService = {
 	getQrCodes,
 	generateQrCode,
 	approve,
-	disapprove
+	disapprove,
 
 };
 
@@ -626,3 +626,6 @@ async function getBPartners(dispatch ) {
 		return { type: homeDataConstants.GET_BPARTNERS_FAILURE, errorMessage: message };
 	}
 }
+
+
+

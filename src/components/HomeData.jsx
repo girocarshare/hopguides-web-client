@@ -122,6 +122,12 @@ const HomeData = forwardRef((props) => {
 	};
 
 
+	const addGpx = (e, data) => {
+	
+
+		dispatch({ type: homeDataConstants.ADD_GPX_MODAL_SHOW , data:data});
+	};
+
 
 	const getQrCodes = (e, data) => {
 
@@ -474,6 +480,9 @@ const HomeData = forwardRef((props) => {
 												<button className="button button--secondary button--small"
 													onClick={(e) => getHistory(e, tour.tourId)}>Get report
 												</button>
+												{adminOnly &&<button className="button button--secondary button--small"
+													onClick={(e) => addGpx(e, tour.tourId)}>Add gpx
+												</button>}
 												{adminOnly && <button className="button button--secondary button--small" onClick={(e) => getQrCodes(e, tour.tourId)} >Get qr codes</button>}
 												<button className="button button--secondary button--small"
 													onClick={(e) => update(e, tour)}>View data</button>
