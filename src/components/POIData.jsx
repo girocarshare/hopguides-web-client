@@ -364,6 +364,29 @@ const POIData = () => {
 				homeDataService.updatePoint(true, dispatch);
 
 			}
+
+			setEdit(false)
+		setName("")
+		setNameTransl("")
+		setShortInfo("")
+		setShortInfoPointTransl("")
+		setLongInfo("")
+		setLongInfoPointTransl("")
+		setVoucherDesc("")
+		setVoucherDescTransl("")
+		setPrice("")
+		setCategory("")
+		setLongitude("")
+		setLatitude("")
+		setResponsiblePerson("")
+		setEmail("")
+		setWebURL("")
+		setImagePreviews([])
+		setVideoPreview(null)
+		setFiles([])
+		setAudio(null)
+		setFile(null)
+
 		};
 
 		xhr.send(formData);
