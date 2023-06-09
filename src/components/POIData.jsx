@@ -336,6 +336,7 @@ const POIData = () => {
 
 		if (selectedFiles != []) {
 			for (var f of selectedFiles) {
+				console.log(f)
 				formData.append('file', f);
 			}
 		}
@@ -378,7 +379,7 @@ const POIData = () => {
 
 	const SuccessHandler = (e) => {
 
-		homeDataService.updatePoint(true, dispatch);
+		//homeDataService.updatePoint(true, dispatch);
 
 	};
 	const ErrorHandler = () => {
