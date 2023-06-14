@@ -97,7 +97,7 @@ const POIData = () => {
 
 
 	const fetchData = async (input, num) => {
-		
+
 		input = input.replace(/(\r\n|\n|\r)/gm, " ");
 		const response = await Axios.post(
 			"https://api.openai.com/v1/completions",
@@ -145,18 +145,12 @@ const POIData = () => {
 		var fs = []
 		for (let i = 0; i < event.target.files.length; i++) {
 
-			if ((event.target.files[0].name).substring(event.target.files[0].name.length - 3) == "mp4") {
-				var new_file = new File([event.target.files[i]], i + 'partner' + titlePoint + "---" + [event.target.files[i].name]);
-				fs.push(new_file)
-				setVideoPreview(URL.createObjectURL(event.target.files[0]))
-				break;
-			} else {
 
-				images.push(URL.createObjectURL(event.target.files[i]));
-				var new_file = new File([event.target.files[i]], i + 'partner' + titlePoint + "---" + [event.target.files[i].name]);
-				fs.push(new_file)
-				setVideoPreview(null)
-			}
+
+			images.push(URL.createObjectURL(event.target.files[i]));
+			var new_file = new File([event.target.files[i]], i + 'partner' + titlePoint + "---" + [event.target.files[i].name]);
+			fs.push(new_file)
+
 
 		}
 
@@ -165,6 +159,31 @@ const POIData = () => {
 		setProgressInfos({ val: [] });
 
 	};
+
+
+	const selectVideo = (event) => {
+
+
+
+		var fs = []
+		for (let i = 0; i < event.target.files.length; i++) {
+
+			if ((event.target.files[0].name).substring(event.target.files[0].name.length - 3) == "mp4") {
+				var new_file = new File([event.target.files[i]], i + 'partner' + titlePoint + "---" + [event.target.files[i].name]);
+				fs.push(new_file)
+				setVideoPreview(URL.createObjectURL(event.target.files[0]))
+				break;
+			}
+
+
+		}
+
+		setSelectedFiles(selectedFiles.concat(fs))
+		setProgressInfos({ val: [] });
+
+	};
+
+
 	function isJsonString(str) {
 		try {
 			JSON.parse(str);
@@ -248,7 +267,7 @@ const POIData = () => {
 				voucherDescTransl1 = voucherDescTransl
 			}
 
-			
+
 			voucherDesc1 = voucherDesc1.replace(/(\r\n|\n|\r)/gm, " ");
 			voucherDescTransl1 = voucherDescTransl1.replace(/(\r\n|\n|\r)/gm, " ");
 
@@ -257,7 +276,7 @@ const POIData = () => {
 
 			point.voucherDesc = JSON.parse(`{"english":"${voucherDesc1.trim()} ", "slovenian" : "${voucherDescTransl1.trim()}"}`)
 		}
-		
+
 		name1 = name1.replace(/(\r\n|\n|\r)/gm, " ");
 		nameTransl1 = nameTransl1.replace(/(\r\n|\n|\r)/gm, " ");
 		shortInfo1 = shortInfo1.replace(/(\r\n|\n|\r)/gm, " ");
@@ -267,7 +286,7 @@ const POIData = () => {
 
 		name1 = name1.replace(/("|'|}|{)/g, "");
 		nameTransl1 = nameTransl1.replace(/("|'|}|{)/g, "");
-		shortInfo1= shortInfo1.replace(/("|'|}|{)/g, "");
+		shortInfo1 = shortInfo1.replace(/("|'|}|{)/g, "");
 		shortInfoTransl1 = shortInfoTransl1.replace(/("|'|}|{)/g, "");
 		longInfo1 = longInfo1.replace(/("|'|}|{)/g, "");
 		longInfoTransl1 = longInfoTransl1.replace(/("|'|}|{)/g, "");
@@ -352,7 +371,7 @@ const POIData = () => {
 		xhr.open('POST', `${url}api/poi/update`, true);
 		xhr.setRequestHeader('authorization', token);
 		xhr.onload = function () {
-			
+
 			setLoading(false)
 			if (xhr.status == "412") {
 
@@ -366,26 +385,26 @@ const POIData = () => {
 			}
 
 			setEdit(false)
-		setName("")
-		setNameTransl("")
-		setShortInfo("")
-		setShortInfoPointTransl("")
-		setLongInfo("")
-		setLongInfoPointTransl("")
-		setVoucherDesc("")
-		setVoucherDescTransl("")
-		setPrice("")
-		setCategory("")
-		setLongitude("")
-		setLatitude("")
-		setResponsiblePerson("")
-		setEmail("")
-		setWebURL("")
-		setImagePreviews([])
-		setVideoPreview(null)
-		setFiles([])
-		setAudio(null)
-		setFile(null)
+			setName("")
+			setNameTransl("")
+			setShortInfo("")
+			setShortInfoPointTransl("")
+			setLongInfo("")
+			setLongInfoPointTransl("")
+			setVoucherDesc("")
+			setVoucherDescTransl("")
+			setPrice("")
+			setCategory("")
+			setLongitude("")
+			setLatitude("")
+			setResponsiblePerson("")
+			setEmail("")
+			setWebURL("")
+			setImagePreviews([])
+			setVideoPreview(null)
+			setFiles([])
+			setAudio(null)
+			setFile(null)
 
 		};
 
@@ -612,7 +631,7 @@ const POIData = () => {
 													<div class="flex flex-row gap-2 items-center">
 														<label class="form__label" style={{ marginRight: "18px" }}>English:</label>
 														<textarea
-														readOnly={!edit}
+															readOnly={!edit}
 															className={"form__input text-sm h-32"}
 															type="textarea" required name="message"
 															placeholder='Short description'
@@ -1198,7 +1217,7 @@ const POIData = () => {
 											{edit &&
 												<label
 													class="button button--secondary button--small">
-													<span>Upload image/video</span>
+													<span>Upload image gallery</span>
 													<input type={"file"} multiple
 														onChange={selectFiles}
 														class="sr-only" />
@@ -1208,7 +1227,7 @@ const POIData = () => {
 											<br />
 
 
-											{imagePreviews.length != 0 && !videoPreview &&(
+											{imagePreviews.length != 0 && 
 												<div>
 													{imagePreviews.map((img, i) => {
 														return (
@@ -1232,8 +1251,8 @@ const POIData = () => {
 														);
 													})}
 												</div>
-											)}
-											{imagePreviews.length == 0 && !videoPreview && !homeDataState.updatePointData.point.video &&(
+											} 
+											{imagePreviews.length == 0 &&(
 												<div>
 													{homeDataState.updatePointData.point.images.map((img, i) => {
 														return (
@@ -1247,14 +1266,39 @@ const POIData = () => {
 												</div>
 											)}
 
-											{videoPreview && imagePreviews.length == 0  &&  <video className="image__preview" controls src={videoPreview}
+
+
+										</div>
+
+
+										<div>
+
+											<label class="form__label">Video</label>
+											{edit &&
+												<label
+													class="button button--secondary button--small">
+													<span>Upload video</span>
+													<input type={"file"} multiple
+																accept={".mp4"}
+														onChange={selectVideo}
+														class="sr-only" />
+												</label>
+											}
+
+											<br />
+
+
+
+
+											{videoPreview && <video className="image__preview" controls src={videoPreview}
 												alt={"video-"} />}
-											{!videoPreview  &&  imagePreviews.length == 0 && homeDataState.updatePointData.point.video && <video controls className="image__preview"
+											{!videoPreview && <video controls className="image__preview"
 												src={homeDataState.updatePointData.point.video}
 												alt={"video-"} />}
 
 
 										</div>
+
 
 										<div className="form__group">
 

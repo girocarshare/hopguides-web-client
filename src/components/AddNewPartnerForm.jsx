@@ -309,28 +309,38 @@ const AddNewPartnerForm = (props) => {
 		var fs = []
 		for (let i = 0; i < event.target.files.length; i++) {
 
-			if ((event.target.files[i].name).substring(event.target.files[i].name.length - 3) == "mp4") {
-				var new_file = new File([event.target.files[i]], i + 'partner' + num + "---" + [event.target.files[i].name]);
-
-				fs.push(new_file)
-				setVideoPreview(URL.createObjectURL(event.target.files[i]))
-				setImagePreviews([])
-				break;
-			} else {
-
 				images.push(URL.createObjectURL(event.target.files[i]));
 				var new_file = new File([event.target.files[i]], i + 'partner' + num + "---" + [event.target.files[i].name]);
-
-				setVideoPreview(null)
 				fs.push(new_file)
-			}
+			
 
 		}
 
-		console.log(fs)
 		setSelectedFiles(selectedFiles.concat(fs))
-
 		setImagePreviews(images);
+		setProgressInfos({ val: [] });
+		setMessage([]);
+
+	};
+
+	const selectVideo = (event) => {
+
+
+
+		var fs = []
+		for (let i = 0; i < event.target.files.length; i++) {
+
+			if ((event.target.files[i].name).substring(event.target.files[i].name.length - 3) == "mp4") {
+			
+				var new_file = new File([event.target.files[i]], i + 'partner' + num + "---" + [event.target.files[i].name]);
+				fs.push(new_file)
+				setVideoPreview(URL.createObjectURL(event.target.files[i]))
+				
+			} 
+
+		}
+
+		setSelectedFiles(selectedFiles.concat(fs))
 		setProgressInfos({ val: [] });
 		setMessage([]);
 
@@ -1066,7 +1076,7 @@ const AddNewPartnerForm = (props) => {
 
 														<label
 															class="button button--secondary button--small">
-															<span>Upload image/video</span>
+															<span>Upload image gallery</span>
 															<input type="file"
 																multiple
 																onChange={selectFiles}
@@ -1075,7 +1085,7 @@ const AddNewPartnerForm = (props) => {
 														<br />
 
 
-														{imagePreviews && !videoPreview && (
+														{imagePreviews && (
 															<div>
 																{imagePreviews.map((img, i) => {
 																	return (
@@ -1106,19 +1116,29 @@ const AddNewPartnerForm = (props) => {
 															</div>
 														)}
 
-														{videoPreview && imagePreviews.length == 0 && <video className="image__preview" controls src={videoPreview}
+
+													</div>
+
+
+													<div>
+
+														<label class="form__label">Video*</label>
+
+														<label
+															class="button button--secondary button--small">
+															<span>Upload video</span>
+															<input type="file"
+																multiple
+																accept={".mp4"}
+																onChange={selectVideo}
+																class="sr-only" />
+														</label>
+														<br />
+
+
+														{videoPreview && <video className="image__preview" controls src={videoPreview}
 															alt={"video-"} />}
 
-
-														{message.length > 0 && (
-															<div role="alert">
-																<ul>
-																	{message.map((item, i) => {
-																		return <li key={i}>{item}</li>;
-																	})}
-																</ul>
-															</div>
-														)}
 
 
 													</div>

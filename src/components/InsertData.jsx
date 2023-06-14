@@ -288,23 +288,40 @@ const InsertData = (props) => {
 		var fs = []
 		for (let i = 0; i < event.target.files.length; i++) {
 
-			if ((event.target.files[0].name).substring(event.target.files[0].name.length - 3) == "mp4") {
-				var new_file = new File([event.target.files[i]], i + 'partner' + num + "---" + [event.target.files[i].name]);
-				fs.push(new_file)
-				setVideoPreview(URL.createObjectURL(event.target.files[0]))
-				break;
-			} else {
+			
 
 				images.push(URL.createObjectURL(event.target.files[i]));
 				var new_file = new File([event.target.files[i]], i + 'partner' + num + "---" + [event.target.files[i].name]);
 				fs.push(new_file)
-				setVideoPreview(null)
-			}
+		
 
 		}
 
 		setSelectedFiles(selectedFiles.concat(fs))
 		setImagePreviews(images);
+		setProgressInfos({ val: [] });
+		setMessage([]);
+
+
+	};
+
+	const selectVideo = (event) => {
+
+	
+
+		var fs = []
+		for (let i = 0; i < event.target.files.length; i++) {
+
+			if ((event.target.files[0].name).substring(event.target.files[0].name.length - 3) == "mp4") {
+				var new_file = new File([event.target.files[i]], i + 'partner' + num + "---" + [event.target.files[i].name]);
+				fs.push(new_file)
+				setVideoPreview(URL.createObjectURL(event.target.files[0]))
+			
+			} 
+
+		}
+
+		setSelectedFiles(selectedFiles.concat(fs))
 		setProgressInfos({ val: [] });
 		setMessage([]);
 
@@ -954,6 +971,7 @@ const InsertData = (props) => {
 											sundayTo={sundayTo}
 											addFile2={addFile2}
 											selectFiles={selectFiles}
+											selectVideo={selectVideo}
 											imagePreviews={imagePreviews}
 											changeImageTitle={changeImageTitle}
 											errMessagePhoto={errMessagePhoto}
