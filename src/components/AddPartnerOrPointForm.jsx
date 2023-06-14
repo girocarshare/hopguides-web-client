@@ -609,14 +609,13 @@ const AddPartnerOrPointForm = (props) => {
 
                                             <label
                                                 class="button button--secondary button--small">
-                                                <span>Upload image/video</span>
+                                                <span>Upload image gallery</span>
                                                 <input type={"file"} multiple
                                                     onChange={props.selectFiles}
                                                     class="sr-only" />
                                             </label>
-                                            {props.videoPreview && props.imagePreviews.length == 0 && <video className="image__preview" controls src={props.videoPreview}
-												alt={"video-"} />}
-                                            {props.imagePreviews && !props.videoPreview &&(
+                                            
+                                            {props.imagePreviews && (
                                                 <div>
                                                     {props.imagePreviews.map((img, i) => {
                                                         return (
@@ -647,6 +646,23 @@ const AddPartnerOrPointForm = (props) => {
                                                     })}
                                                 </div>
                                             )}
+
+
+                                        </div>
+
+                                        <div className="form__group">
+                                            <label class="form__label">Video*</label>
+
+                                            <label
+                                                class="button button--secondary button--small">
+                                                <span>Upload video</span>
+                                                <input type={"file"} multiple
+                                                    onChange={props.selectVideo}
+                                                    class="sr-only" />
+                                            </label>
+                                            {props.videoPreview && <video className="image__preview" controls src={props.videoPreview}
+												alt={"video-"} />}
+                                           
 
 
                                         </div>
