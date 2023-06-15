@@ -487,6 +487,7 @@ export const homeDataReducer = (state, action) => {
 
 		case homeDataConstants.HIDE_SUCCESS_FAILURE_MODAL:
 			prodCpy = { ...state };
+			
 			prodCpy.updatePointData.show = false;
 			prodCpy.modalData.success = false;
 			prodCpy.modalData.failure = false;
@@ -593,7 +594,7 @@ export const homeDataReducer = (state, action) => {
 		case homeDataConstants.UPDATE_POINT_DATA_MODAL_SHOW:
 
 			prodCpy = { ...state };
-
+			console.log(action.point)
 			prodCpy.updatePointData.show = true;
 			prodCpy.updatePointData.point = action.point.point;
 
