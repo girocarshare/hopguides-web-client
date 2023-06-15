@@ -123,9 +123,9 @@ const HomeData = forwardRef((props) => {
 
 
 	const addGpx = (e, data) => {
-	
 
-		dispatch({ type: homeDataConstants.ADD_GPX_MODAL_SHOW , data:data});
+
+		dispatch({ type: homeDataConstants.ADD_GPX_MODAL_SHOW, data: data });
 	};
 
 
@@ -299,9 +299,9 @@ const HomeData = forwardRef((props) => {
 			{homeDataState.updateTourData.show && <div>
 				<TourData />
 			</div>}
+			
 
 			<div className="container pt-20 lg:pt-40 pb-12">
-
 
 				<div className="navbar">
 					<div className="navbar__content">
@@ -441,23 +441,25 @@ const HomeData = forwardRef((props) => {
 							}
 						</div>
 					</div>
+				
 
 					{homeDataState.toursWithPoints.toursWithPoints.map((tour) => (
-						<div className="table-frame" style={{ marginBottom: "30px" }}>
-							<table ref={ref} id="my-table">
-								<thead>
-									<tr><div className="py-3 px-2 pb-4 md:pb-6 flex flex-row items-center justify-between gap-4">
+						<div className="table-frame" style={{ marginBottom: "30px" }} >
+							<table ref={ref} id="my-table" style={{ width: "100%", tableLayout: "fixed" }} >
+							<caption><div className="py-3 px-2 pb-4 md:pb-6 flex flex-row items-center justify-between gap-4">
 										<h4 className="text-heading6">
 											{tour.title.english} tour
 										</h4>
 
-									</div></tr>
+									</div></caption>
+								<thead>
+									
 									<tr>
-										<th class="w-1/2">Name</th>
-										<th className="w-1/2 whitespace-nowrap">Price<span
-											className="w-1/2 text-xs font-normal text-black/60 ml-1">/ incl tax</span>
+										<th style={{ width: "20%" }} >Name</th>
+										<th style={{ width: "15%" }} className=" whitespace-nowrap">Price<span
+											className=" text-xs font-normal text-black/60 ml-1">/ incl tax</span>
 										</th>
-										<th className="w-1/2 whitespace-nowrap">Tours booked<span
+										<th style={{ width: "10%" }} className=" whitespace-nowrap">Tours booked<span
 											className="text-xs font-normal text-black/60 ml-1">/ this month</span></th>
 										<th>Options</th>
 									</tr>
@@ -466,10 +468,10 @@ const HomeData = forwardRef((props) => {
 								<tbody>
 									<tr><td>     </td></tr>
 									<tr class="text-sm transition-all hover:bg-gray-100">
-										<td style={{ width: "10px" }} id={tour.tourId} >{tour.title.english}</td>
-										<td>{`${tour.price} ${tour.currency} including tax`}</td>
+										<td style={{ width: "20%", overflow: "hidden" }} id={tour.tourId} >{tour.title.english}</td>
+										<td style={{ width: "15%", overflow: "hidden" }}>{`${tour.price} ${tour.currency} including tax`}</td>
 
-										<td>{tour.noOfRidesAMonth}</td>
+										<td style={{ width: "10%", overflow: "hidden" }}>{tour.noOfRidesAMonth}</td>
 										<td>
 											<div className="flex flex-row items-center gap-2 justify-end">
 												<button className="button button--secondary button--small" onClick={(event) => {
@@ -480,7 +482,7 @@ const HomeData = forwardRef((props) => {
 												<button className="button button--secondary button--small"
 													onClick={(e) => getHistory(e, tour.tourId)}>Get report
 												</button>
-												{adminOnly &&<button className="button button--secondary button--small"
+												{adminOnly && <button className="button button--secondary button--small"
 													onClick={(e) => addGpx(e, tour.tourId)}>Add gpx
 												</button>}
 												{adminOnly && <button className="button button--secondary button--small" onClick={(e) => getQrCodes(e, tour.tourId)} >Get qr codes</button>}
@@ -498,26 +500,26 @@ const HomeData = forwardRef((props) => {
 									<tr colspan="4">
 										<td colspan="4">
 											<div className="p-2 md:p-4 bg-black/[3%] rounded-2xl mb-12">
-											<div>
-									{admin &&
-										<button className="button button--primary button--small" variant="contained"
-											onClick={(e) => addNewPartner(e, tour.tourId, tour.bpartnerId)}>
-											Add partner
-										</button>
-									}
-								</div>
-												<table >
-										
+												<div>
+													{admin &&
+														<button className="button button--primary button--small" variant="contained"
+															onClick={(e) => addNewPartner(e, tour.tourId, tour.bpartnerId)}>
+															Add partner
+														</button>
+													}
+												</div>
+												<table  style={{width:"100%", tableLayout: "fixed"}} >
+
 													<thead>
 
 														<tr>
-															<th>Name</th>
-															<th className="whitespace-nowrap">Price<span
+															<th style={{ width: "25%" }}>Name</th>
+															<th style={{ width: "15%" }} className="whitespace-nowrap">Price<span
 																className="text-xs font-normal text-black/60 ml-1">/ incl tax</span>
 															</th>
-															<th className="whitespace-nowrap">Offer name</th>
-															<th>Category</th>
-															<th className="whitespace-nowrap">Used coupons<span
+															<th style={{ width: "15%" }} className="whitespace-nowrap">Offer name</th>
+															<th style={{ width: "10%" }}>Category</th>
+															<th style={{ width: "10%" }} className="whitespace-nowrap">Used coupons<span
 																className="text-xs font-normal text-black/60 ml-1">/ this month</span></th>
 															<th>Options</th>
 														</tr>
@@ -527,17 +529,17 @@ const HomeData = forwardRef((props) => {
 														<tbody>
 															<tr id={tour.tourId}>
 
-																<td>{points.point.name.english}</td>
-																<td>
+																<td style={{ textAlign: "left", width: "25%", overflow: "hidden" }}>{points.point.name.english} </td>
+																<td style={{ textAlign: "left",width: "15%", overflow: "hidden" }}>
 																	{points.point.price == "" ? "/" : `${points.point.price} ${tour.currency} including tax`}
 																</td>
-																<td>
+																<td style={{ textAlign: "left",width: "15%", overflow: "hidden" }}>
 																	{points.point.offerName == "" ? "/" : `${points.point.offerName} `}
 																</td>
 
-																<td>{points.point.category}</td>
+																<td style={{ textAlign: "left",width: "10%", overflow: "hidden" }}>{points.point.category}</td>
 
-																<td>{points.monthlyUsed}</td>
+																<td style={{ textAlign: "left" }}>{points.monthlyUsed}</td>
 																<td>
 																	<div className="flex flex-row items-center gap-2 justify-end">
 																		{points.point.offerName != "" && <button className="button button--secondary button--small"
