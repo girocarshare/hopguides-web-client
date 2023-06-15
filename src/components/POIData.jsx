@@ -348,9 +348,16 @@ const POIData = () => {
 		const formData = new FormData();
 		if (file != null) {
 			formData.append('file', file);
+		}else{
+			console.log("fkjebnkfjerf")
+			point.menu = homeDataState.updatePointData.point.menu
 		}
 		if (audio != null) {
 			formData.append('file', audio);
+		}else{
+			
+			console.log("aaaaaa")
+			point.audio = homeDataState.updatePointData.point.audio
 		}
 
 		if (selectedFiles != []) {
@@ -358,7 +365,26 @@ const POIData = () => {
 				console.log(f)
 				formData.append('file', f);
 			}
+		}else{
+			
+			console.log("rrrrr")
+			point.images = homeDataState.updatePointData.point.images
 		}
+
+		if (videoPreview == null) {
+			
+			console.log("fffff")
+			point.video = homeDataState.updatePointData.point.video
+		}
+
+		if (imagePreviews == []) {
+			
+			console.log("fffff")
+			point.video = homeDataState.updatePointData.point.images
+		}
+
+		console.log(formData)
+
 		formData.append('point', JSON.stringify(point));
 		var token = authHeader()
 		var xhr = new XMLHttpRequest();
@@ -728,7 +754,6 @@ const POIData = () => {
 															aria-describedby="basic-addon1"
 															className={"form__input grow "}
 															id="name"
-															type="number"
 															onChange={(e) => setPrice(e.target.value)}
 															value={price === 0 ? `${homeDataState.updatePointData.point.price} ${homeDataState.updatePointData.point.currency} incl tax` : price}
 														/>
@@ -1227,7 +1252,7 @@ const POIData = () => {
 											<br />
 
 
-											{imagePreviews.length != 0 && 
+											{imagePreviews.length != 0 &&
 												<div>
 													{imagePreviews.map((img, i) => {
 														return (
@@ -1251,8 +1276,8 @@ const POIData = () => {
 														);
 													})}
 												</div>
-											} 
-											{imagePreviews.length == 0 &&(
+											}
+											{imagePreviews.length == 0 && (
 												<div>
 													{homeDataState.updatePointData.point.images.map((img, i) => {
 														return (
@@ -1279,7 +1304,7 @@ const POIData = () => {
 													class="button button--secondary button--small">
 													<span>Upload video</span>
 													<input type={"file"} multiple
-																accept={".mp4"}
+														accept={".mp4"}
 														onChange={selectVideo}
 														class="sr-only" />
 												</label>
@@ -1288,11 +1313,9 @@ const POIData = () => {
 											<br />
 
 
-
-
 											{videoPreview && <video className="image__preview" controls src={videoPreview}
 												alt={"video-"} />}
-											{!videoPreview && <video controls className="image__preview"
+											{!videoPreview && homeDataState.updatePointData.point.video && <video controls className="image__preview"
 												src={homeDataState.updatePointData.point.video}
 												alt={"video-"} />}
 

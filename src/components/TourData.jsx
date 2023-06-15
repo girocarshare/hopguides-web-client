@@ -328,9 +328,15 @@ const TourData = () => {
 		const formData = new FormData();
 		if (file != null) {
 			formData.append('file', file);
+		}else{
+			
+			tour.image = homeDataState.updateTourData.tour.image
 		}
 		if (audio != null) {
 			formData.append('file', audio);
+		}else{
+			
+			tour.audio = homeDataState.updateTourData.tour.audio
 		}
 		formData.append('tour', JSON.stringify(tour));
 		var token = authHeader()
