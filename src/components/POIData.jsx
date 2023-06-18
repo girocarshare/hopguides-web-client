@@ -349,41 +349,31 @@ const POIData = () => {
 		if (file != null) {
 			formData.append('file', file);
 		}else{
-			console.log("fkjebnkfjerf")
 			point.menu = homeDataState.updatePointData.point.menu
 		}
 		if (audio != null) {
 			formData.append('file', audio);
 		}else{
 			
-			console.log("aaaaaa")
 			point.audio = homeDataState.updatePointData.point.audio
 		}
 
-		if (selectedFiles != []) {
+		if (selectedFiles.length != 0) {
 			for (var f of selectedFiles) {
 				console.log(f)
 				formData.append('file', f);
 			}
 		}else{
 			
-			console.log("rrrrr")
 			point.images = homeDataState.updatePointData.point.images
 		}
 
 		if (videoPreview == null) {
 			
-			console.log("fffff")
 			point.video = homeDataState.updatePointData.point.video
 		}
 
-		if (imagePreviews == []) {
-			
-			console.log("fffff")
-			point.video = homeDataState.updatePointData.point.images
-		}
-
-		console.log(formData)
+		console.log(point)
 
 		formData.append('point', JSON.stringify(point));
 		var token = authHeader()
