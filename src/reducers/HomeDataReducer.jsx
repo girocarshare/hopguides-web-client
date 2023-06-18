@@ -596,7 +596,7 @@ export const homeDataReducer = (state, action) => {
 			prodCpy = { ...state };
 			console.log(action.point)
 			prodCpy.updatePointData.show = true;
-			prodCpy.updatePointData.point = action.point.point;
+			prodCpy.updatePointData.point = action.point;
 
 			return prodCpy;
 

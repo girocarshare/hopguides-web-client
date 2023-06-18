@@ -223,10 +223,11 @@ const HomeData = forwardRef((props) => {
 	};
 
 
-	const update = (e, tour) => {
+	const update = async (e, tour) => {
 
 
-		dispatch({ type: homeDataConstants.UPDATE_TOUR_DATA_MODAL_SHOW, tour });
+		await homeDataService.getTourData(dispatch, tour.tourId);
+		//dispatch({ type: homeDataConstants.UPDATE_TOUR_DATA_MODAL_SHOW, tour });
 
 
 	};
@@ -247,9 +248,10 @@ const HomeData = forwardRef((props) => {
 
 	};
 
-	const updatePartnerPrice = (e, point, tour) => {
+	const handleUpdatePartner = async (e, point) => {
 
-		dispatch({ type: homeDataConstants.UPDATE_POINT_DATA_MODAL_SHOW, point });
+		await homeDataService.getPoiData(dispatch, point.id);
+		//dispatch({ type: homeDataConstants.UPDATE_POINT_DATA_MODAL_SHOW, point });
 
 
 	};
@@ -555,7 +557,7 @@ const HomeData = forwardRef((props) => {
 																			Get QR
 																		</button>}
 																		<button className="button button--secondary button--small"
-																			onClick={(e) => updatePartnerPrice(e, points, tour)}>
+																			onClick={(e) => handleUpdatePartner(e, points.point)}>
 																			{updatePartner}
 																		</button>
 																		{adminOnly && <button className="button button--secondary button--small"

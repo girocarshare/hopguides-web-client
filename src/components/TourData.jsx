@@ -323,7 +323,7 @@ const TourData = () => {
 		}
 
 
-		tour.id = homeDataState.updateTourData.tour.tourId
+		tour.id = homeDataState.updateTourData.tour.id
 
 		const formData = new FormData();
 		if (file != null) {
@@ -338,12 +338,10 @@ const TourData = () => {
 			
 			tour.audio = homeDataState.updateTourData.tour.audio
 		}
+		console.log(tour)
 		formData.append('tour', JSON.stringify(tour));
 		var token = authHeader()
 		var xhr = new XMLHttpRequest();
-		//	xhr.addEventListener("load", SuccessHandler, false);
-		//xhr.addEventListener("error", ErrorHandler, false);
-		//xhr.addEventListener("abort", AbortHandler, false);
 		xhr.upload.addEventListener("progress", ProgressHandler, false);
 		xhr.open('POST', `${url}api/pnl/tour/update/tour`, true);
 		xhr.setRequestHeader('authorization', token);
