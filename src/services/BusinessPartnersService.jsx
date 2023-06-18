@@ -10,6 +10,11 @@ export const businessPartnersService = {
 
 
 };
+
+
+
+
+
 async function getBPartners(dispatch ) {
 
 	dispatch(request());

@@ -24,6 +24,8 @@ export const homeDataService = {
 	generateQrCode,
 	approve,
 	disapprove,
+	getTourData,
+	getPoiData
 
 };
 
@@ -43,6 +45,82 @@ function insertData( tf, dispatch) {
 	}
 	function failure(error) {
 		return { type: homeDataConstants.INSERT_DATA_FAILURE, error };
+	}
+}
+
+
+async function getTourData(dispatch ,id) {
+	
+
+	//dispatch(request());
+	var token = authHeader()
+	await Axios.get(`${url}api/pnl/tour/gettourdata/` + id, {
+		headers: {
+		  Authorization: token 
+		}},{ validateStatus: () => true })
+		.then((res) => {
+			if (res.status === 200) {
+				dispatch(success(res.data));
+			} else {
+				var error = "Error while fetching data"
+				dispatch(failure(error));
+			}
+		})
+		.catch((err) => {
+		
+			var error = "Unknown error, please try again later."
+				dispatch(failure(error));
+		});
+
+	/*function request() {
+		return { type: homeDataConstants.APPROVE_REQUEST };
+	}*/
+	function success(data) {
+		
+		console.log(data)
+		return { type: homeDataConstants.UPDATE_TOUR_DATA_MODAL_SHOW, tour: data };
+	}
+	function failure(message) {
+		return { type: homeDataConstants.APPROVE_FAILURE, errorMessage: message };
+	}
+}
+
+
+
+
+async function getPoiData(dispatch ,id) {
+	
+
+	//dispatch(request());
+	var token = authHeader()
+	await Axios.get(`${url}api/pnl/tour/getpoidata/` + id, {
+		headers: {
+		  Authorization: token 
+		}},{ validateStatus: () => true })
+		.then((res) => {
+			if (res.status === 200) {
+				dispatch(success(res.data));
+			} else {
+				var error = "Error while fetching data"
+				dispatch(failure(error));
+			}
+		})
+		.catch((err) => {
+		
+			var error = "Unknown error, please try again later."
+				dispatch(failure(error));
+		});
+
+	/*function request() {
+		return { type: homeDataConstants.APPROVE_REQUEST };
+	}*/
+	function success(data) {
+		
+		console.log(data)
+		return { type: homeDataConstants.UPDATE_POINT_DATA_MODAL_SHOW, point: data };
+	}
+	function failure(message) {
+		return { type: homeDataConstants.APPROVE_FAILURE, errorMessage: message };
 	}
 }
 
