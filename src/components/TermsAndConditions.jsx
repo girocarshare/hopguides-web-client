@@ -26,10 +26,7 @@ const Report = forwardRef((props, ref) => {
 		someFetchActionCreator();
 	}, [dispatch]);
 
-	const handleModalClose = () => {
-		window.location = "#/"
-		//dispatch({type: homeDataConstants.HIDE_MODAL});
-	};
+	
 
 
 	return (
@@ -43,13 +40,11 @@ const Report = forwardRef((props, ref) => {
 
 					<div id="myModal" class="modal modal--xl">
 						<div class="modal__header">
+							
 							<h2 class="text-leading">
 								Terms and conditions
 							</h2>
-							<button class="button button--circle button--clear justify-self-end" type="button"
-									onClick={handleModalClose}>
-								<AiOutlineClose/>
-							</button>
+							
 						</div>
 						<div class="modal__body">
 							{homeDataState.termsAndConditionsModal.text}

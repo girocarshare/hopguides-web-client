@@ -390,10 +390,10 @@ const HomeData = forwardRef((props) => {
 					<div className="flex flex-col items-center justify-center gap-8 col-span-12 lg:col-span-6">
 						<div
 							className="w-48 h-48 rounded-full bg-white border border-black/10 oveflow-hidden bg-contain bg-center bg-no-repeat"
-							style={{ backgroundImage: `url(${("assets/img/turizem-lj.jpg")})`, }}>
+							style={{ backgroundImage: `url(${("assets/img/logo.svg")})`, }}>
 						</div>
 						<h1 className=" text-heading4 text-center">
-							Tourism Ljubljana
+							Tours overview
 						</h1>
 					</div>
 
@@ -427,7 +427,7 @@ const HomeData = forwardRef((props) => {
 				<div className="p-2 md:p-4 bg-black/[3%] rounded-2xl mb-12">
 					<div className="py-3 px-2 pb-4 md:pb-6 flex flex-row items-center justify-between gap-4">
 						<h4 className="text-heading6">
-							Tours
+							
 						</h4>
 						<div>
 
@@ -448,7 +448,7 @@ const HomeData = forwardRef((props) => {
 							<table ref={ref} id="my-table" style={{ width: "100%", tableLayout: "fixed" }} >
 							<caption><div className="py-3 px-2 pb-4 md:pb-6 flex flex-row items-center justify-between gap-4">
 										<h4 className="text-heading6">
-											{tour.title.english} tour
+											{tour.title.english} 
 										</h4>
 
 									</div></caption>
