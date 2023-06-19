@@ -6,6 +6,8 @@ import React, {
 	useContext,
 	useRef
 } from "react";
+
+import { Link } from 'react-router-dom';
 import { HomeDataContext } from "../contexts/HomeDataContext";
 import { homeDataService } from "../services/HomeDataService";
 import { homeDataConstants } from "../constants/HomeDataConstants";
@@ -301,7 +303,7 @@ const HomeData = forwardRef((props) => {
 			{homeDataState.updateTourData.show && <div>
 				<TourData />
 			</div>}
-			
+
 
 			<div className="container pt-20 lg:pt-40 pb-12">
 
@@ -429,7 +431,7 @@ const HomeData = forwardRef((props) => {
 				<div className="p-2 md:p-4 bg-black/[3%] rounded-2xl mb-12">
 					<div className="py-3 px-2 pb-4 md:pb-6 flex flex-row items-center justify-between gap-4">
 						<h4 className="text-heading6">
-							
+
 						</h4>
 						<div>
 
@@ -443,19 +445,19 @@ const HomeData = forwardRef((props) => {
 							}
 						</div>
 					</div>
-				
+
 
 					{homeDataState.toursWithPoints.toursWithPoints.map((tour) => (
 						<div className="table-frame" style={{ marginBottom: "30px" }} >
 							<table ref={ref} id="my-table" style={{ width: "100%", tableLayout: "fixed" }} >
-							<caption><div className="py-3 px-2 pb-4 md:pb-6 flex flex-row items-center justify-between gap-4">
-										<h4 className="text-heading6">
-											{tour.title.english} 
-										</h4>
+								<caption><div className="py-3 px-2 pb-4 md:pb-6 flex flex-row items-center justify-between gap-4">
+									<h4 className="text-heading6">
+										{tour.title.english}
+									</h4>
 
-									</div></caption>
+								</div></caption>
 								<thead>
-									
+
 									<tr>
 										<th style={{ width: "20%" }} >Name</th>
 										<th style={{ width: "15%" }} className=" whitespace-nowrap">Price<span
@@ -510,7 +512,7 @@ const HomeData = forwardRef((props) => {
 														</button>
 													}
 												</div>
-												<table  style={{width:"100%", tableLayout: "fixed"}} >
+												<table style={{ width: "100%", tableLayout: "fixed" }} >
 
 													<thead>
 
@@ -532,14 +534,14 @@ const HomeData = forwardRef((props) => {
 															<tr id={tour.tourId}>
 
 																<td style={{ textAlign: "left", width: "25%", overflow: "hidden" }}>{points.point.name.english} </td>
-																<td style={{ textAlign: "left",width: "15%", overflow: "hidden" }}>
+																<td style={{ textAlign: "left", width: "15%", overflow: "hidden" }}>
 																	{points.point.price == "" ? "/" : `${points.point.price} ${tour.currency} including tax`}
 																</td>
-																<td style={{ textAlign: "left",width: "15%", overflow: "hidden" }}>
+																<td style={{ textAlign: "left", width: "15%", overflow: "hidden" }}>
 																	{points.point.offerName == "" ? "/" : `${points.point.offerName} `}
 																</td>
 
-																<td style={{ textAlign: "left",width: "10%", overflow: "hidden" }}>{points.point.category}</td>
+																<td style={{ textAlign: "left", width: "10%", overflow: "hidden" }}>{points.point.category}</td>
 
 																<td style={{ textAlign: "left" }}>{points.monthlyUsed}</td>
 																<td>
@@ -578,14 +580,40 @@ const HomeData = forwardRef((props) => {
 
 								</tbody>
 
+
+
 							</table>
+
+
 
 						</div>
 
 					))
 					}
 				</div>
-
+				<div className="card-footer pb-0 pt-3">
+					{homeDataState.toursWithPoints.pager &&
+						<ul className="pagination">
+							<li className={`page-item first-item ${homeDataState.toursWithPoints.pager.currentPage === 1 ? 'disabled' : ''}`}>
+								<button onClick = {(e) => props.setPage(e,0)} className="page-link">First</button>
+							</li>
+							<li className={`page-item previous-item ${homeDataState.toursWithPoints.pager.currentPage === 1 ? 'disabled' : ''}`}>
+								<button onClick = {(e) => props.setPage(e, homeDataState.toursWithPoints.pager.currentPage - 1)}  className="page-link">Previous</button>
+							</li>
+							{homeDataState.toursWithPoints.pager.pages.map(page =>
+								<li key={page} className={`page-item number-item ${homeDataState.toursWithPoints.pager.currentPage === page ? 'active' : ''}`}>
+									<button onClick = {(e) => props.setPage(e, page)} className="page-link">{page}</button>
+								</li>
+							)}
+							<li className={`page-item next-item ${homeDataState.toursWithPoints.pager.currentPage === homeDataState.toursWithPoints.pager.totalPages ? 'disabled' : ''}`}>
+								<button   onClick = {(e) => props.setPage(e, homeDataState.toursWithPoints.pager.currentPage + 1)}  className="page-link">Next</button>
+							</li>
+							<li className={`page-item last-item ${homeDataState.toursWithPoints.pager.currentPage === homeDataState.toursWithPoints.pager.totalPages ? 'disabled' : ''}`}>
+								<button  onClick = {(e) => props.setPage(e, homeDataState.toursWithPoints.pager.totalPages)} className="page-link">Last</button>
+							</li>
+						</ul>
+					}
+				</div>
 
 			</div>
 

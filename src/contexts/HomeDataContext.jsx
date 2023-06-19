@@ -39,6 +39,7 @@ const HomeDataContextProvider = (props) => {
 			toursWithPoints: [],
 			success: false,
 			failure: false,
+			pager: null,
 		},
 
 		previousReports: {

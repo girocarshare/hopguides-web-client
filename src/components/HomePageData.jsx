@@ -14,10 +14,27 @@ import { homeDataService } from "../services/HomeDataService";
 const HomePageData = forwardRef((props, ref) => {
 
     const { homeDataState, dispatch } = useContext(HomeDataContext);
-    const [tours, setTours] = useState([]);
+    const [page, setPagee] = useState(0);
+    const [pager, setPager] = useState({});
+
+
+    const loadPage = async () => {
+    
+            await homeDataService.getToursAndPointsData(dispatch, page);
+            
+    }
+
+
+    const setPageData = async (e,data) => {
+    
+       setPagee(data)
+       await homeDataService.getToursAndPointsData(dispatch, data);
+        
+    
+}
     const someFetchActionCreator = () => {
         const getDocumentsInfoHandler = async () => {
-            await homeDataService.getToursAndPointsData(dispatch);
+            await loadPage()
         };
 
         getDocumentsInfoHandler();
@@ -37,7 +54,9 @@ const HomePageData = forwardRef((props, ref) => {
         <div>
              <HomeData 
             data = {homeDataState.toursWithPoints.toursWithPoints}
-            tours = {homeDataState.toursWithPoints.toursWithPoints}/>
+            tours = {homeDataState.toursWithPoints.toursWithPoints}
+            page={page}
+            setPage = {setPageData}/>
         </div>
 
     );
