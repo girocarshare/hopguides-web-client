@@ -275,12 +275,11 @@ function updateTour( tf, dispatch) {
 	}
 
 	function success() {
-		getToursAndPointsData(dispatch)
+		getToursAndPointsDataUpdate(dispatch, 0)
 		return { type: homeDataConstants.TOUR_UPDATE_SUCCESS };
 	}
 	function failure(error) {
 		
-		console.log("evo me")
 		return { type: homeDataConstants.TOUR_UPDATE_FAILURE, error };
 	}
 }
@@ -512,7 +511,8 @@ function addPartner(tf, dispatch) {
 	}
 
 	function success() {
-		getToursAndPointsData(dispatch)
+		
+		getToursAndPointsDataUpdate(dispatch, 0)
 		return { type: homeDataConstants.PARTNER_SUBMIT_SUCCESS };
 	}
 	function failure(error) {
@@ -533,7 +533,8 @@ function updatePoint( tf, dispatch) {
 	}
 
 	function success() {
-		getToursAndPointsData(dispatch)
+		
+		getToursAndPointsDataUpdate(dispatch, 0)
 		return { type: homeDataConstants.POI_UPDATE_SUCCESS };
 	}
 	function failure(error) {
@@ -583,7 +584,6 @@ async function getPreviousMonthsData(dispatch ,id) {
 async function getToursAndPointsData(dispatch, page) {
 
 
-	console.log("evo meee")
 		dispatch(request());
 		var token = authHeader()
 	
@@ -618,13 +618,48 @@ async function getToursAndPointsData(dispatch, page) {
 
 
 
-async function getUpdatedToursAndPointsData(dispatch) {
+async function getToursAndPointsDataUpdate(dispatch, page) {
 
 
 	dispatch(request());
 	var token = authHeader()
 
-await Axios.get(`${url}api/pnl/tour/allUpdatedToursWithPoints`,{ headers: { Authorization: token},  validateStatus: () => true })
+await Axios.get(`${url}api/pnl/tour/allToursWithPoints/`+page,{ headers: { Authorization: token},  validateStatus: () => true })
+
+	.then((res) => {
+		if (res.status === 200) {
+			dispatch(success(res.data));
+		} else {
+			
+			var error = "Error while fetching data"
+			dispatch(failure(error));
+		}
+	})
+	.catch((err) => {
+	
+		var error = "Unknown error, please try again later."
+			dispatch(failure(error));
+	});
+
+function request() {
+	return { type: homeDataConstants.DATA_TOUR_POINTS_GET_REQUEST };
+}
+function success(data) {
+	return { type: homeDataConstants.DATA_TOUR_POINTS_GET_UPDATE_SUCCESS, data: data };
+}
+function failure(message) {
+
+	return { type: homeDataConstants.DATA_TOUR_POINTS_GET_UPDATE_FAILURE, errorMessage: message };
+}
+}
+
+
+async function getUpdatedToursAndPointsData(dispatch, page) {
+
+	dispatch(request());
+	var token = authHeader()
+
+await Axios.get(`${url}api/pnl/tour/allUpdatedToursWithPoints/` + page,{ headers: { Authorization: token},  validateStatus: () => true })
 
 	.then((res) => {
 		if (res.status === 200) {

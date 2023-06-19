@@ -26,20 +26,9 @@ const UpdateTours = forwardRef((props) => {
 	const { homeDataState, dispatch } = useContext(HomeDataContext);
 	const [users, setUsers] = useState([]);
 	const [tours, setTours] = useState(props.data);
-	const [tourPrice, setTourPrice] = useState("");
-	const [rowId, setRowId] = useState("");
-	const [rowIdTour, setRowIdTour] = useState("");
 	const [role, setRole] = useState(false);
 	const [admin, setAdmin] = useState(false);
 	const [adminOnly, setAdminOnly] = useState(false);
-	const [updateField, setUpdateField] = useState("Update");
-	const [updatePartner, setUpdatePartner] = useState("Update");
-	const [editTourPrice, setEditTourPrice] = useState(false);
-	const [editPartner, setEditPartner] = useState(false);
-	const [partnerPrice, setPartnerPrice] = useState("");
-	const [offerName, setOfferName] = useState("");
-	var myElementRef = React.createRef();
-	const [reorganize, setReorganize] = useState(false);
 	const [reorganizeData, setReorganizeData] = useState([]);
 
 	const ref = useRef(null);
@@ -48,17 +37,8 @@ const UpdateTours = forwardRef((props) => {
 		window.location = "#/login";
 	};
 
-	const handleDragEnd = (e) => {
-		if (!e.destination) return;
-		let tempData = Array.from(reorganizeData);
-		let [source_data] = tempData.splice(e.source.index, 1);
-		tempData.splice(e.destination.index, 0, source_data);
-		setReorganizeData(tempData);
-	};
 
 	useEffect(() => {
-
-
 
 
 		var token = authHeader()
@@ -96,6 +76,10 @@ const UpdateTours = forwardRef((props) => {
 		var arr = []
 		arr.push(contactUser)
 		setUsers(arr)
+		window.addEventListener("scroll", onScroll);
+		return () => {
+		  window.removeEventListener("scroll", onScroll);
+		};
 	}, [dispatch]);
 
 
@@ -147,13 +131,6 @@ const UpdateTours = forwardRef((props) => {
 		window.location = "#/" ;
 	};
 
-	const deletePoi = async (e, tour, poiId) => {
-
-
-		await homeDataService.deletePoi(dispatch, tour.tourId, poiId);
-
-
-	};
 
 	const updatePartnerPrice = (e, point, tour) => {
 
@@ -161,6 +138,21 @@ const UpdateTours = forwardRef((props) => {
 
 
 	};
+
+	const onScroll = (e) => {
+		const el = e.target.documentElement;
+		var bottom = el.scrollHeight - el.scrollTop === el.clientHeight;
+		if(el.clientHeight - (el.scrollHeight - el.scrollTop) > 0){
+			bottom = true
+		}
+
+		if (bottom) { 
+			props.setPage(homeDataState.toursWithPoints.page + 1)
+		 }
+
+
+	  };
+
 
 
 	return (

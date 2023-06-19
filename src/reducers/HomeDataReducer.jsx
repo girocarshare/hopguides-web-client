@@ -56,17 +56,33 @@ export const homeDataReducer = (state, action) => {
 			console.log(action.data)
 			prodCpy.toursWithPoints.pager = action.data.pager;
 			var array = prodCpy.toursWithPoints.toursWithPoints
-			if(action.data.pager.currentPage != prodCpy.toursWithPoints.page || action.data.pager.currentPage==0){
-			for(var tour of action.data.pageOfItems){
-				array.push(tour)
+			if (action.data.pager.currentPage != prodCpy.toursWithPoints.page || action.data.pager.currentPage == 0) {
+				for (var tour of action.data.pageOfItems) {
+					array.push(tour)
+				}
+				prodCpy.toursWithPoints.toursWithPoints = array;
 			}
-			prodCpy.toursWithPoints.toursWithPoints = array;
-		}
 
 			prodCpy.toursWithPoints.page = action.data.pager.currentPage;
 
-		
+
 			return prodCpy;
+
+
+
+			case homeDataConstants.DATA_TOUR_POINTS_GET_UPDATE_SUCCESS:
+
+
+			prodCpy = { ...state };
+
+			prodCpy.toursWithPoints.pager = action.data.pager;
+			prodCpy.toursWithPoints.toursWithPoints = action.data.pageOfItems;
+			prodCpy.toursWithPoints.page = action.data.pager.currentPage;
+
+
+			return prodCpy;
+
+
 
 
 
@@ -276,22 +292,20 @@ export const homeDataReducer = (state, action) => {
 			};
 		case homeDataConstants.DELETE_TOUR_SUCCESS:
 
-			return {
-				...state,
 
-				modalData: {
-
-					success: true,
-					failure: false,
-					text: "You have successfully deleted tour.",
-				},
-				toursWithPoints: {
-					toursWithPoints: action.data
-				}
-			};
+			prodCpy = { ...state };
+			prodCpy.modalData.success = true;
+			prodCpy.modalData.failure = false;
+			prodCpy.modalData.text = "You have successfully deleted tour.";
 
 
-		//prodCpy.toursWithPoints.toursWithPoints = action.data;
+			console.log(action.data.pager)
+			prodCpy.toursWithPoints.pager = action.data.pager;
+			var array = prodCpy.toursWithPoints.toursWithPoints
+			prodCpy.toursWithPoints.toursWithPoints = action.data.pageOfItems;
+			prodCpy.toursWithPoints.page = action.data.pager.currentPage;
+			return prodCpy;
+
 
 		case homeDataConstants.DELETE_TOUR_FAILURE:
 
@@ -309,19 +323,19 @@ export const homeDataReducer = (state, action) => {
 
 		case homeDataConstants.DELETE_POI_SUCCESS:
 
-			return {
-				...state,
-				toursWithPoints: {
-					toursWithPoints: action.data
-				},
-				modalData: {
+			prodCpy = { ...state };
+			prodCpy.modalData.success = true;
+			prodCpy.modalData.failure = false;
+			prodCpy.modalData.text = "You have successfully deleted point.";
 
-					success: true,
-					failure: false,
-					text: "You have successfully deleted point.",
-				},
 
-			};
+			prodCpy.toursWithPoints.pager = action.data.pager;
+			var array = prodCpy.toursWithPoints.toursWithPoints
+			prodCpy.toursWithPoints.toursWithPoints = action.data.pageOfItems;
+			prodCpy.toursWithPoints.page = action.data.pager.currentPage;
+			return prodCpy;
+
+
 
 		case homeDataConstants.DELETE_POI_FAILURE:
 
@@ -403,7 +417,7 @@ export const homeDataReducer = (state, action) => {
 			prodCpy.modalData.text = "This tour has already been updated by one of the providers. Review the updated tour first.";
 			return prodCpy;
 
-			
+
 
 		case homeDataConstants.UPDATE_MENU_PHOTO_SUCCESS:
 
@@ -498,7 +512,7 @@ export const homeDataReducer = (state, action) => {
 
 		case homeDataConstants.HIDE_SUCCESS_FAILURE_MODAL:
 			prodCpy = { ...state };
-			
+
 			prodCpy.updatePointData.show = false;
 			prodCpy.modalData.success = false;
 			prodCpy.modalData.failure = false;
@@ -578,7 +592,7 @@ export const homeDataReducer = (state, action) => {
 
 				modalData: {
 					successInsert: true,
-					title : "Error",
+					title: "Error",
 					text: "Error while adding new data. Please try again later.",
 				},
 
@@ -722,7 +736,7 @@ export const homeDataReducer = (state, action) => {
 
 			};
 
-			case homeDataConstants.APPROVE_SUCCESS:
+		case homeDataConstants.APPROVE_SUCCESS:
 
 			prodCpy = { ...state };
 
@@ -736,7 +750,7 @@ export const homeDataReducer = (state, action) => {
 
 
 
-			case homeDataConstants.APPROVE_FAILURE:
+		case homeDataConstants.APPROVE_FAILURE:
 
 			prodCpy = { ...state };
 
@@ -748,7 +762,7 @@ export const homeDataReducer = (state, action) => {
 
 			return prodCpy;
 
-			case homeDataConstants.DISAPPROVE_SUCCESS:
+		case homeDataConstants.DISAPPROVE_SUCCESS:
 
 			prodCpy = { ...state };
 
@@ -762,7 +776,7 @@ export const homeDataReducer = (state, action) => {
 
 
 
-			case homeDataConstants.DISAPPROVE_FAILURE:
+		case homeDataConstants.DISAPPROVE_FAILURE:
 
 			prodCpy = { ...state };
 
@@ -774,7 +788,7 @@ export const homeDataReducer = (state, action) => {
 
 			return prodCpy;
 
-			case homeDataConstants.ADD_GPX_MODAL_SHOW:
+		case homeDataConstants.ADD_GPX_MODAL_SHOW:
 
 			prodCpy = { ...state };
 
@@ -794,7 +808,7 @@ export const homeDataReducer = (state, action) => {
 
 			};
 
-			case homeDataConstants.ADD_GPX_SUCCESS:
+		case homeDataConstants.ADD_GPX_SUCCESS:
 
 			prodCpy = { ...state };
 
@@ -803,7 +817,7 @@ export const homeDataReducer = (state, action) => {
 			return prodCpy;
 
 
-			case homeDataConstants.ADD_GPX_FAILURE:
+		case homeDataConstants.ADD_GPX_FAILURE:
 
 			prodCpy = { ...state };
 
@@ -812,7 +826,7 @@ export const homeDataReducer = (state, action) => {
 			return prodCpy;
 
 
-		
+
 
 
 		default:
