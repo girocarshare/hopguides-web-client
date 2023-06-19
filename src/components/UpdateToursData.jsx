@@ -17,11 +17,24 @@ const HomePageData = forwardRef((props, ref) => {
     const [tours, setTours] = useState([]);
     const someFetchActionCreator = () => {
         const getDocumentsInfoHandler = async () => {
-            await homeDataService.getUpdatedToursAndPointsData(dispatch);
+            await loadPage()
         };
 
         getDocumentsInfoHandler();
     };
+
+    const loadPage = async () => {
+    
+        await homeDataService.getUpdatedToursAndPointsData(dispatch, 0);
+        
+}
+
+
+const setPageData = async (data) => {
+
+   await homeDataService.getUpdatedToursAndPointsData(dispatch, data);
+
+}
 
 
     useEffect(() => {
@@ -37,7 +50,8 @@ const HomePageData = forwardRef((props, ref) => {
         <div>
              <UpdateTours 
             data = {homeDataState.toursWithPoints.toursWithPoints}
-            tours = {homeDataState.toursWithPoints.toursWithPoints}/>
+            tours = {homeDataState.toursWithPoints.toursWithPoints}
+            setPage = {setPageData}/>
         </div>
 
     );

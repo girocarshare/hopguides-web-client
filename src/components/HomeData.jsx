@@ -242,21 +242,10 @@ const HomeData = forwardRef((props) => {
 
 		if (bottom) { 
 			console.log(homeDataState.toursWithPoints.page)
-			// This will be triggered after hitting the last element.
-			// API call should be made here while implementing pagination.
 			props.setPage(homeDataState.toursWithPoints.page + 1)
 		 }
 
 
-		/*if (listInnerRef.current) {
-		  const { scrollTop, scrollHeight, clientHeight } = listInnerRef.current;
-		  if (scrollTop + clientHeight === scrollHeight) {
-			console.log("tu samm")
-			// This will be triggered after hitting the last element.
-			// API call should be made here while implementing pagination.
-			props.setPage(props.page + 1)
-		  }
-		}*/
 	  };
 
 
