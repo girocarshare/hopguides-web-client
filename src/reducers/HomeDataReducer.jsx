@@ -55,13 +55,17 @@ export const homeDataReducer = (state, action) => {
 
 			console.log(action.data)
 			prodCpy.toursWithPoints.pager = action.data.pager;
-			prodCpy.toursWithPoints.page = action.data.pager.currentPage;
-
 			var array = prodCpy.toursWithPoints.toursWithPoints
+			if(action.data.pager.currentPage != prodCpy.toursWithPoints.page){
 			for(var tour of action.data.pageOfItems){
 				array.push(tour)
 			}
 			prodCpy.toursWithPoints.toursWithPoints = array;
+		}
+
+			prodCpy.toursWithPoints.page = action.data.pager.currentPage;
+
+		
 			return prodCpy;
 
 
