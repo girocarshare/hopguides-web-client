@@ -40,6 +40,7 @@ const HomeDataContextProvider = (props) => {
 			success: false,
 			failure: false,
 			pager: null,
+			page: 0
 		},
 
 		previousReports: {

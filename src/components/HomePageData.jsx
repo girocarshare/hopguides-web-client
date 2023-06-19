@@ -17,6 +17,12 @@ const HomePageData = forwardRef((props, ref) => {
     const [page, setPagee] = useState(0);
     const [pager, setPager] = useState({});
 
+    const [currPage, setCurrPage] = useState(1); // storing current page number
+    const [prevPage, setPrevPage] = useState(0); // storing prev page number
+    const [wasLastList, setWasLastList] = useState(false); // setting a flag to know the last list
+
+	const listInnerRef = useRef();
+
 
     const loadPage = async () => {
     
@@ -25,12 +31,11 @@ const HomePageData = forwardRef((props, ref) => {
     }
 
 
-    const setPageData = async (e,data) => {
+    const setPageData = async (data) => {
     
-       setPagee(data)
+       console.log(data)
        await homeDataService.getToursAndPointsData(dispatch, data);
-        
-    
+
 }
     const someFetchActionCreator = () => {
         const getDocumentsInfoHandler = async () => {
@@ -45,7 +50,7 @@ const HomePageData = forwardRef((props, ref) => {
 
         someFetchActionCreator();
       
-    }, [dispatch]);
+    }, [dispatch, , listInnerRef.current]);
 
 
     if(homeDataState.toursWithPoints.toursWithPoints == null) return (<span>loading...</span>);
@@ -56,7 +61,9 @@ const HomePageData = forwardRef((props, ref) => {
             data = {homeDataState.toursWithPoints.toursWithPoints}
             tours = {homeDataState.toursWithPoints.toursWithPoints}
             page={page}
-            setPage = {setPageData}/>
+            setPage = {setPageData}
+            listInnerRef = {listInnerRef}
+            setPagee = {setPagee}/>
         </div>
 
     );

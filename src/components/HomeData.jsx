@@ -28,38 +28,14 @@ const HomeData = forwardRef((props) => {
 	const { homeDataState, dispatch } = useContext(HomeDataContext);
 	const [users, setUsers] = useState([]);
 	const [tours, setTours] = useState(props.data);
-	const [tourPrice, setTourPrice] = useState("");
-	const [rowId, setRowId] = useState("");
-	const [rowIdTour, setRowIdTour] = useState("");
+	const [page, setPage] = useState(0);
 	const [role, setRole] = useState(false);
 	const [admin, setAdmin] = useState(false);
 	const [adminOnly, setAdminOnly] = useState(false);
-	const [updateField, setUpdateField] = useState("Update");
 	const [updatePartner, setUpdatePartner] = useState("Update");
-	const [editTourPrice, setEditTourPrice] = useState(false);
-	const [editPartner, setEditPartner] = useState(false);
-	const [partnerPrice, setPartnerPrice] = useState("");
-	const [offerName, setOfferName] = useState("");
 	var myElementRef = React.createRef();
-	const [reorganize, setReorganize] = useState(false);
-	const [reorganizeData, setReorganizeData] = useState([]);
-	const [data, setData] = useState([
-		{
-			name: "Jeevan",
-			age: 21,
-			gender: "male"
-		},
-		{
-			name: "Piyush",
-			age: 17,
-			gender: "male"
-		},
-		{
-			name: "Arti",
-			age: 22,
-			gender: "female"
-		}
-	]);
+	const listInnerRef = useRef();
+
 
 	const ref = useRef(null);
 	const handleLogout = () => {
@@ -67,17 +43,9 @@ const HomeData = forwardRef((props) => {
 		window.location = "#/login";
 	};
 
-	const handleDragEnd = (e) => {
-		if (!e.destination) return;
-		let tempData = Array.from(reorganizeData);
-		let [source_data] = tempData.splice(e.source.index, 1);
-		tempData.splice(e.destination.index, 0, source_data);
-		setReorganizeData(tempData);
-	};
 
 	useEffect(() => {
-
-
+	
 		var token = authHeader()
 		if (token == "null") {
 			window.location = "#/unauthorized";
@@ -113,6 +81,12 @@ const HomeData = forwardRef((props) => {
 		var arr = []
 		arr.push(contactUser)
 		setUsers(arr)
+
+		window.addEventListener("scroll", onScroll);
+		return () => {
+		  window.removeEventListener("scroll", onScroll);
+		};
+
 	}, [dispatch]);
 
 	const getHistory = (e, data) => {
@@ -257,36 +231,38 @@ const HomeData = forwardRef((props) => {
 
 
 	};
-	function timeout(delay) {
-		return new Promise(res => setTimeout(res, delay));
-	}
+	
 
-
-
-
-	const reorgnizeTableRows = async (e, data) => {
-
-		console.log(data)
-		/*for(var obj of data){
-			setReorganizeData(reorganizeData => [...reorganizeData, obj])
-		}*/
-
-		// setReorganizeData([...data])    
-		// setState(prevState => [...prevState, obj1])
-		//setReorganizeData(data)
-
-		for (var obj of data) {
-			const newData = [...reorganizeData, obj];
-			setReorganizeData(newData)
+	const onScroll = (e) => {
+		const el = e.target.documentElement;
+		var bottom = el.scrollHeight - el.scrollTop === el.clientHeight;
+		if(el.clientHeight - (el.scrollHeight - el.scrollTop) > 0){
+			bottom = true
 		}
 
-		setReorganize(!reorganize)
-	};
+		if (bottom) { 
+			console.log(homeDataState.toursWithPoints.page)
+			// This will be triggered after hitting the last element.
+			// API call should be made here while implementing pagination.
+			props.setPage(homeDataState.toursWithPoints.page + 1)
+		 }
+
+
+		/*if (listInnerRef.current) {
+		  const { scrollTop, scrollHeight, clientHeight } = listInnerRef.current;
+		  if (scrollTop + clientHeight === scrollHeight) {
+			console.log("tu samm")
+			// This will be triggered after hitting the last element.
+			// API call should be made here while implementing pagination.
+			props.setPage(props.page + 1)
+		  }
+		}*/
+	  };
 
 
 	return (
 
-		<div>
+		<div >
 
 			{homeDataState.showModal && <div>
 				<AddNewTourForm />
@@ -305,7 +281,7 @@ const HomeData = forwardRef((props) => {
 			</div>}
 
 
-			<div className="container pt-20 lg:pt-40 pb-12">
+			<div onScroll={onScroll} ref={ref} className="container pt-20 lg:pt-40 pb-12">
 
 				<div className="navbar">
 					<div className="navbar__content">
@@ -428,7 +404,7 @@ const HomeData = forwardRef((props) => {
 				</div>
 
 
-				<div className="p-2 md:p-4 bg-black/[3%] rounded-2xl mb-12">
+				<div className="p-2 md:p-4 bg-black/[3%] rounded-2xl mb-12"  >
 					<div className="py-3 px-2 pb-4 md:pb-6 flex flex-row items-center justify-between gap-4">
 						<h4 className="text-heading6">
 
@@ -591,29 +567,7 @@ const HomeData = forwardRef((props) => {
 					))
 					}
 				</div>
-				<div className="card-footer pb-0 pt-3">
-					{homeDataState.toursWithPoints.pager &&
-						<ul className="pagination">
-							<li className={`page-item first-item ${homeDataState.toursWithPoints.pager.currentPage === 1 ? 'disabled' : ''}`}>
-								<button onClick = {(e) => props.setPage(e,0)} className="page-link">First</button>
-							</li>
-							<li className={`page-item previous-item ${homeDataState.toursWithPoints.pager.currentPage === 1 ? 'disabled' : ''}`}>
-								<button onClick = {(e) => props.setPage(e, homeDataState.toursWithPoints.pager.currentPage - 1)}  className="page-link">Previous</button>
-							</li>
-							{homeDataState.toursWithPoints.pager.pages.map(page =>
-								<li key={page} className={`page-item number-item ${homeDataState.toursWithPoints.pager.currentPage === page ? 'active' : ''}`}>
-									<button onClick = {(e) => props.setPage(e, page)} className="page-link">{page}</button>
-								</li>
-							)}
-							<li className={`page-item next-item ${homeDataState.toursWithPoints.pager.currentPage === homeDataState.toursWithPoints.pager.totalPages ? 'disabled' : ''}`}>
-								<button   onClick = {(e) => props.setPage(e, homeDataState.toursWithPoints.pager.currentPage + 1)}  className="page-link">Next</button>
-							</li>
-							<li className={`page-item last-item ${homeDataState.toursWithPoints.pager.currentPage === homeDataState.toursWithPoints.pager.totalPages ? 'disabled' : ''}`}>
-								<button  onClick = {(e) => props.setPage(e, homeDataState.toursWithPoints.pager.totalPages)} className="page-link">Last</button>
-							</li>
-						</ul>
-					}
-				</div>
+				
 
 			</div>
 
