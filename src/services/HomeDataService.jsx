@@ -580,13 +580,14 @@ async function getPreviousMonthsData(dispatch ,id) {
 	}
 }
 
-async function getToursAndPointsData(dispatch) {
+async function getToursAndPointsData(dispatch, page) {
 
 
+	console.log("evo meee")
 		dispatch(request());
 		var token = authHeader()
 	
-	await Axios.get(`${url}api/pnl/tour/allToursWithPoints`,{ headers: { Authorization: token},  validateStatus: () => true })
+	await Axios.get(`${url}api/pnl/tour/allToursWithPoints/`+page,{ headers: { Authorization: token},  validateStatus: () => true })
 
 		.then((res) => {
 			if (res.status === 200) {

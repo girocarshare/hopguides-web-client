@@ -6,6 +6,8 @@ import React, {
 	useContext,
 	useRef
 } from "react";
+
+import { Link } from 'react-router-dom';
 import { HomeDataContext } from "../contexts/HomeDataContext";
 import { homeDataService } from "../services/HomeDataService";
 import { homeDataConstants } from "../constants/HomeDataConstants";
@@ -26,38 +28,14 @@ const HomeData = forwardRef((props) => {
 	const { homeDataState, dispatch } = useContext(HomeDataContext);
 	const [users, setUsers] = useState([]);
 	const [tours, setTours] = useState(props.data);
-	const [tourPrice, setTourPrice] = useState("");
-	const [rowId, setRowId] = useState("");
-	const [rowIdTour, setRowIdTour] = useState("");
+	const [page, setPage] = useState(0);
 	const [role, setRole] = useState(false);
 	const [admin, setAdmin] = useState(false);
 	const [adminOnly, setAdminOnly] = useState(false);
-	const [updateField, setUpdateField] = useState("Update");
 	const [updatePartner, setUpdatePartner] = useState("Update");
-	const [editTourPrice, setEditTourPrice] = useState(false);
-	const [editPartner, setEditPartner] = useState(false);
-	const [partnerPrice, setPartnerPrice] = useState("");
-	const [offerName, setOfferName] = useState("");
 	var myElementRef = React.createRef();
-	const [reorganize, setReorganize] = useState(false);
-	const [reorganizeData, setReorganizeData] = useState([]);
-	const [data, setData] = useState([
-		{
-			name: "Jeevan",
-			age: 21,
-			gender: "male"
-		},
-		{
-			name: "Piyush",
-			age: 17,
-			gender: "male"
-		},
-		{
-			name: "Arti",
-			age: 22,
-			gender: "female"
-		}
-	]);
+	const listInnerRef = useRef();
+
 
 	const ref = useRef(null);
 	const handleLogout = () => {
@@ -65,17 +43,9 @@ const HomeData = forwardRef((props) => {
 		window.location = "#/login";
 	};
 
-	const handleDragEnd = (e) => {
-		if (!e.destination) return;
-		let tempData = Array.from(reorganizeData);
-		let [source_data] = tempData.splice(e.source.index, 1);
-		tempData.splice(e.destination.index, 0, source_data);
-		setReorganizeData(tempData);
-	};
 
 	useEffect(() => {
-
-
+	
 		var token = authHeader()
 		if (token == "null") {
 			window.location = "#/unauthorized";
@@ -111,6 +81,12 @@ const HomeData = forwardRef((props) => {
 		var arr = []
 		arr.push(contactUser)
 		setUsers(arr)
+
+		window.addEventListener("scroll", onScroll);
+		return () => {
+		  window.removeEventListener("scroll", onScroll);
+		};
+
 	}, [dispatch]);
 
 	const getHistory = (e, data) => {
@@ -255,36 +231,38 @@ const HomeData = forwardRef((props) => {
 
 
 	};
-	function timeout(delay) {
-		return new Promise(res => setTimeout(res, delay));
-	}
+	
 
-
-
-
-	const reorgnizeTableRows = async (e, data) => {
-
-		console.log(data)
-		/*for(var obj of data){
-			setReorganizeData(reorganizeData => [...reorganizeData, obj])
-		}*/
-
-		// setReorganizeData([...data])    
-		// setState(prevState => [...prevState, obj1])
-		//setReorganizeData(data)
-
-		for (var obj of data) {
-			const newData = [...reorganizeData, obj];
-			setReorganizeData(newData)
+	const onScroll = (e) => {
+		const el = e.target.documentElement;
+		var bottom = el.scrollHeight - el.scrollTop === el.clientHeight;
+		if(el.clientHeight - (el.scrollHeight - el.scrollTop) > 0){
+			bottom = true
 		}
 
-		setReorganize(!reorganize)
-	};
+		if (bottom) { 
+			console.log(homeDataState.toursWithPoints.page)
+			// This will be triggered after hitting the last element.
+			// API call should be made here while implementing pagination.
+			props.setPage(homeDataState.toursWithPoints.page + 1)
+		 }
+
+
+		/*if (listInnerRef.current) {
+		  const { scrollTop, scrollHeight, clientHeight } = listInnerRef.current;
+		  if (scrollTop + clientHeight === scrollHeight) {
+			console.log("tu samm")
+			// This will be triggered after hitting the last element.
+			// API call should be made here while implementing pagination.
+			props.setPage(props.page + 1)
+		  }
+		}*/
+	  };
 
 
 	return (
 
-		<div>
+		<div >
 
 			{homeDataState.showModal && <div>
 				<AddNewTourForm />
@@ -301,9 +279,9 @@ const HomeData = forwardRef((props) => {
 			{homeDataState.updateTourData.show && <div>
 				<TourData />
 			</div>}
-			
 
-			<div className="container pt-20 lg:pt-40 pb-12">
+
+			<div onScroll={onScroll} ref={ref} className="container pt-20 lg:pt-40 pb-12">
 
 				<div className="navbar">
 					<div className="navbar__content">
@@ -426,10 +404,10 @@ const HomeData = forwardRef((props) => {
 				</div>
 
 
-				<div className="p-2 md:p-4 bg-black/[3%] rounded-2xl mb-12">
+				<div className="p-2 md:p-4 bg-black/[3%] rounded-2xl mb-12"  >
 					<div className="py-3 px-2 pb-4 md:pb-6 flex flex-row items-center justify-between gap-4">
 						<h4 className="text-heading6">
-							
+
 						</h4>
 						<div>
 
@@ -443,19 +421,19 @@ const HomeData = forwardRef((props) => {
 							}
 						</div>
 					</div>
-				
+
 
 					{homeDataState.toursWithPoints.toursWithPoints.map((tour) => (
 						<div className="table-frame" style={{ marginBottom: "30px" }} >
 							<table ref={ref} id="my-table" style={{ width: "100%", tableLayout: "fixed" }} >
-							<caption><div className="py-3 px-2 pb-4 md:pb-6 flex flex-row items-center justify-between gap-4">
-										<h4 className="text-heading6">
-											{tour.title.english} 
-										</h4>
+								<caption><div className="py-3 px-2 pb-4 md:pb-6 flex flex-row items-center justify-between gap-4">
+									<h4 className="text-heading6">
+										{tour.title.english}
+									</h4>
 
-									</div></caption>
+								</div></caption>
 								<thead>
-									
+
 									<tr>
 										<th style={{ width: "20%" }} >Name</th>
 										<th style={{ width: "15%" }} className=" whitespace-nowrap">Price<span
@@ -510,7 +488,7 @@ const HomeData = forwardRef((props) => {
 														</button>
 													}
 												</div>
-												<table  style={{width:"100%", tableLayout: "fixed"}} >
+												<table style={{ width: "100%", tableLayout: "fixed" }} >
 
 													<thead>
 
@@ -532,14 +510,14 @@ const HomeData = forwardRef((props) => {
 															<tr id={tour.tourId}>
 
 																<td style={{ textAlign: "left", width: "25%", overflow: "hidden" }}>{points.point.name.english} </td>
-																<td style={{ textAlign: "left",width: "15%", overflow: "hidden" }}>
+																<td style={{ textAlign: "left", width: "15%", overflow: "hidden" }}>
 																	{points.point.price == "" ? "/" : `${points.point.price} ${tour.currency} including tax`}
 																</td>
-																<td style={{ textAlign: "left",width: "15%", overflow: "hidden" }}>
+																<td style={{ textAlign: "left", width: "15%", overflow: "hidden" }}>
 																	{points.point.offerName == "" ? "/" : `${points.point.offerName} `}
 																</td>
 
-																<td style={{ textAlign: "left",width: "10%", overflow: "hidden" }}>{points.point.category}</td>
+																<td style={{ textAlign: "left", width: "10%", overflow: "hidden" }}>{points.point.category}</td>
 
 																<td style={{ textAlign: "left" }}>{points.monthlyUsed}</td>
 																<td>
@@ -578,14 +556,18 @@ const HomeData = forwardRef((props) => {
 
 								</tbody>
 
+
+
 							</table>
+
+
 
 						</div>
 
 					))
 					}
 				</div>
-
+				
 
 			</div>
 
