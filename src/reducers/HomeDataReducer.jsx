@@ -56,7 +56,7 @@ export const homeDataReducer = (state, action) => {
 			console.log(action.data)
 			prodCpy.toursWithPoints.pager = action.data.pager;
 			var array = prodCpy.toursWithPoints.toursWithPoints
-			if(action.data.pager.currentPage != prodCpy.toursWithPoints.page){
+			if(action.data.pager.currentPage != prodCpy.toursWithPoints.page || action.data.pager.currentPage==0){
 			for(var tour of action.data.pageOfItems){
 				array.push(tour)
 			}
