@@ -376,7 +376,6 @@ const AddNewPartnerForm = (props) => {
 			}
 			const formData = new FormData();
 			for (var f of files) {
-				console.log("hdghsrhr")
 				formData.append('file', f);
 			}
 			for (var a of audios) {
