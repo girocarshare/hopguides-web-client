@@ -525,6 +525,7 @@ export const homeDataReducer = (state, action) => {
 
 		case homeDataConstants.SHOW_ADD_PARTNER_MODAL:
 
+		console.log(action.bpartnerId)
 			return {
 				...state,
 				showAddPartnerModal: {
@@ -738,10 +739,11 @@ export const homeDataReducer = (state, action) => {
 
 		case homeDataConstants.APPROVE_SUCCESS:
 
+
 			prodCpy = { ...state };
 
 
-			prodCpy.toursWithPoints.toursWithPoints = action.data;
+			prodCpy.toursWithPoints.toursWithPoints = action.data.pageOfItems;
 			prodCpy.modalData.success = true;
 			prodCpy.modalData.failure = false;
 			prodCpy.modalData.text = "You have successfully approved data.";
@@ -755,7 +757,7 @@ export const homeDataReducer = (state, action) => {
 			prodCpy = { ...state };
 
 
-			prodCpy.toursWithPoints.toursWithPoints = action.data;
+			prodCpy.toursWithPoints.toursWithPoints = action.data.pageOfItems;
 			prodCpy.modalData.success = false;
 			prodCpy.modalData.failure = true;
 			prodCpy.modalData.text = "There has been an error while trying to approve data. Please try again later.";

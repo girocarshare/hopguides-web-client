@@ -152,7 +152,6 @@ const HomeData = forwardRef((props) => {
 	};
 	const addNewPartner = (e, id, bpartnerId) => {
 
-		console.log(bpartnerId)
 		dispatch({ type: homeDataConstants.SHOW_ADD_PARTNER_MODAL, id: id, bpartnerId: bpartnerId });
 	};
 
