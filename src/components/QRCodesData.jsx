@@ -23,8 +23,8 @@ const QRCodesData = forwardRef((props, ref) => {
     const [number, setNumber] = useState(0);
     const [clicked, setClicked] = useState(false);
 
-    const [color, setColor] = useState("");
     const [colorList, setColorList] = useState(["GREEN", "RED", "PURPLE"]);
+    const [color, setColor] = useState(colorList[0]);
     const [pdfBytesGreen, setPdfBytesGreen] = useState(null);
     const [pdfBytesRed, setPdfBytesRed] = useState(null);
     const [pdfBytesPurple, setPdfBytesPurple] = useState(null);
@@ -44,24 +44,7 @@ const QRCodesData = forwardRef((props, ref) => {
 
 
     useEffect(async () => {
-        const response = await fetch('https://hopguides.s3.eu-central-1.amazonaws.com/qrcodes/1687338815744-704.png', {
-          //  method: "POST", // *GET, POST, PUT, DELETE, etc.
-            mode: "no-cors", // no-cors, *cors, same-origin
-          //  cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-           // credentials: "same-origin", // include, *same-origin, omit
-           // headers: {
-           //   "Content-Type": "application/json",
-              // 'Content-Type': 'application/x-www-form-urlencoded',
-           // },
-           // redirect: "follow", // manual, *follow, error
-           // referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-         //   body: JSON.stringify(data), // body data type must match "Content-Type" header
-          }).then((res) => res.arrayBuffer())
-       // const pngUrl = 'https://hopguides.s3.eu-central-1.amazonaws.com/qrcodes/1685958191013-994.png'
-        //const pngImageBytes = await fetch(pngUrl).then((res) => res.arrayBuffer())
-
-
-        console.log(response)
+       
         window.scrollTo(0, 0);
         someFetchActionCreator()
         const loadPdf = async () => {
@@ -80,56 +63,7 @@ const QRCodesData = forwardRef((props, ref) => {
 
     }, [dispatch]);
 
-    /* useEffect(() => {
-         const createRoundedImagePDF = async () => {
-           // Create a new PDF document
-           const pdfDoc = await PDFDocument.create();
-     
-           // Add a new blank page
-           const page = pdfDoc.addPage();
-     
-           // Load the image
-           const imageUrl = '/assets/img/1687270454007-996.png'; // Replace with your image URL
-           const imageBytes = await fetch(imageUrl).then((res) => res.arrayBuffer());
-     
-           // Embed the image in the PDF document
-           const pdfImage = await pdfDoc.embedPng(imageBytes);
-     
-           // Draw the rounded image on the PDF page
-           const x = 100; // X coordinate of the image on the page
-           const y = 100; // Y coordinate of the image on the page
-           const width = 200; // Width of the image
-           const height = 200; // Height of the image
-           const borderRadius = 10; // Border radius for the rounded corners
-     
-           // Create a clipping region with rounded corners
-           page.clip(x, y, width, height, borderRadius);
-     
-           // Draw the image on the page within the clipping region
-           page.drawImage(pdfImage, {
-             x,
-             y,
-             width,
-             height,
-             opacity: 1,
-           });
-     
-           // Save the PDF document
-           const pdfBytes = await pdfDoc.save();
-     
-           // Create a Blob from the PDF bytes
-           const pdfBlob = new Blob([pdfBytes], { type: 'application/pdf' });
-     
-           // Create a download link and trigger the download
-           const downloadLink = document.createElement('a');
-           downloadLink.href = URL.createObjectURL(pdfBlob);
-           downloadLink.download = 'rounded_image.pdf';
-           downloadLink.click();
-         };
-     
-         createRoundedImagePDF();
-       }, []);*/
-
+   
  
     const handlePdfEdit = async () => {
         // Load the existing PDF document
@@ -158,26 +92,15 @@ const QRCodesData = forwardRef((props, ref) => {
             // Set text color
             const textColor = rgb(1, 1, 1);
 
-            // Add text to the page
 
-           // const pngUrl = '/assets/img/1687270454007-996.png'
-            //const pngImageBytes = await fetch(pngUrl).then((res) => res.arrayBuffer())
+       
 
 
-            const pngImageBytes = await fetch('https://hopguides.s3.eu-central-1.amazonaws.com/qrcodes/1687338815744-704.png', {
-              //  method: "POST", // *GET, POST, PUT, DELETE, etc.
-                mode: "no-cors", // no-cors, *cors, same-origin
-              //  cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-               // credentials: "same-origin", // include, *same-origin, omit
-              /*  headers: {
-                  "Content-Type": "application/json",
-                  // 'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                redirect: "follow", // manual, *follow, error
-                referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-             //   body: JSON.stringify(data), // body data type must match "Content-Type" header*/
-              }).then((res) => res.arrayBuffer())
+            const pngImageBytes = await fetch(qrcode.qrcode, {
+           
+               }).then((res) => res.arrayBuffer())
 
+              
 
               console.log(pngImageBytes)
 
