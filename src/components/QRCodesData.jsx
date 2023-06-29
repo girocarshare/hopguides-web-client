@@ -45,6 +45,7 @@ const QRCodesData = forwardRef((props, ref) => {
 
     useEffect(async () => {
        
+        
         window.scrollTo(0, 0);
         someFetchActionCreator()
         const loadPdf = async () => {

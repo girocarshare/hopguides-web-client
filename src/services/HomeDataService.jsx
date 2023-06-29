@@ -25,9 +25,51 @@ export const homeDataService = {
 	approve,
 	disapprove,
 	getTourData,
-	getPoiData
+	getPoiData,
+	addTeaserVideo
 
 };
+
+
+async function addTeaserVideo(dispatch ,tour) {
+	
+	
+	dispatch(request());
+	
+	var token = authHeader()
+	Axios.post(`${url}api/pnl/tour/add/teasertour`, tour, {
+		headers: {
+		  Authorization: token 
+		}},{ validateStatus: () => true })
+		.then((res) => {
+			if (res.status === 200) {
+				dispatch(success());
+			} else if (res.status === 215) {
+				dispatch(failure(res.data.response));
+			}else{
+				
+				dispatch(failure(res.data.error));
+			}
+		})
+		.catch((err) =>{		
+				dispatch(failure(err));
+			})
+
+	function request() {
+		
+		return { type: homeDataConstants.ADD_TEASER_REQUEST };
+	}
+	function success() {
+		
+		console.log("fdsfsf")
+		return { type: homeDataConstants.ADD_TEASER_SUCCESS };
+	}
+	function failure(error) {
+		
+		return { type: homeDataConstants.ADD_TEASER_FAILURE, error };
+	}
+}
+
 
 
 function insertData( tf, dispatch) {
