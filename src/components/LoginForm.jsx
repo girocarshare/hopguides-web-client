@@ -48,20 +48,16 @@ const LoginForm = () => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-
 		let loginRequest = {
 			email,
 			password,
 		};
-
-
 		userService.login(loginRequest, dispatch);
 	};
 
 	useEffect(() => {
-		
-		someFetchActionCreator();
-		/*const unregisterAuthObserver = firebase.auth().onAuthStateChanged(user => {
+		console.log("fksdjbfjsdbf\sdbjf")
+		const unregisterAuthObserver = firebase.auth().onAuthStateChanged(user => {
 			console.log(user.multiFactor.user.email)
 			if(user.multiFactor.user.email != null){
 				let loginRequest = {
@@ -75,19 +71,13 @@ const LoginForm = () => {
 		  setIsSignedIn(!!user);
       
 		});
-		return () => unregisterAuthObserver(); // Make sure we un-register Firebase observers when the component unmounts.*/
+		return unregisterAuthObserver(); // Make sure we un-register Firebase observers when the component unmounts.
 	  }, []);
 
 	const handleClose = () => {
 		window.location = "#/"
 	};
-	const someFetchActionCreator = () => {
-        const getDocumentsInfoHandler = async () => {
-			userService.chat(dispatch);
-        };
 
-        getDocumentsInfoHandler();
-    };
 	return (
 		<div>
 

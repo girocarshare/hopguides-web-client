@@ -5,8 +5,22 @@ import { reportService } from "../services/ReportService";
 import { reportConstants } from "../constants/ReportConstants";
 import { deleteLocalStorage, authHeader } from "../helpers/auth-header";
 import Axios from "axios";
-
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
 var url = process.env.REACT_APP_URL || "http://localhost:8080/";
+
+
+const firebaseConfig = {
+	apiKey: "AIzaSyCT-HKuQUQT94cSIF5Fu7zzPnWbn9ao8i0",
+	authDomain: "hopguides.firebaseapp.com",
+	projectId: "hopguides",
+	storageBucket: "hopguides.appspot.com",
+	messagingSenderId: "520191148823",
+	appId: "1:520191148823:web:f1920e502d3f692840ad52"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+
 
 const Report = forwardRef((props, ref) => {
 	const { reportState, dispatch } = useContext(ReportContext);
@@ -68,6 +82,11 @@ const Report = forwardRef((props, ref) => {
 
 	const handleLogout = () => {
 		deleteLocalStorage();
+		firebase.auth().signOut().then(function() {
+			// Sign-out successful.
+		  }).catch(function(error) {
+			// An error happened.
+		  });
 		window.location = "#/login";
 	};
 

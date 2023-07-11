@@ -10,7 +10,6 @@ export const userService = {
 	sendSetPassword,
 	forgotPassword,
 	registerandlogin,
-	chat
 };
 
 
@@ -48,18 +47,6 @@ function login(loginRequest, dispatch) {
 	}
 }
 
-
-function chat( dispatch) {
-
-	Axios.get(`http://localhost:5000/api/data`, { validateStatus: () => true })
-	.then(response => {
-        console.log("successssss")
-      })
-      .catch(error => {
-        console.error('Error fetching data:', error);
-      });
-	
-}
 
 
 
