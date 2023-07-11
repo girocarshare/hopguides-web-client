@@ -1,12 +1,45 @@
-import {useContext, useState} from "react";
+import {useContext, useState,useEffect} from "react";
 import {UserContext} from "../contexts/UserContext";
 import {userService} from "../services/UserService";
 import {AiOutlineClose} from 'react-icons/ai';
 
+import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
 var url = process.env.REACT_APP_URL || "http://localhost:8080/";
+//var ui = new firebaseui.auth.AuthUI(firebase.auth());
 
+
+const firebaseConfig = {
+	apiKey: "AIzaSyCT-HKuQUQT94cSIF5Fu7zzPnWbn9ao8i0",
+	authDomain: "hopguides.firebaseapp.com",
+	projectId: "hopguides",
+	storageBucket: "hopguides.appspot.com",
+	messagingSenderId: "520191148823",
+	appId: "1:520191148823:web:f1920e502d3f692840ad52"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+
+  const uiConfig = {
+	// Popup signin flow rather than redirect flow.
+	signInFlow: 'popup',
+	// Redirect to /signedIn after sign in is successful. Alternatively you can provide a callbacks.signInSuccess function.
+	signInSuccessUrl: '/#/',
+	// We will display Google and Facebook as auth providers.
+	signInOptions: [
+	  firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+	  firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+	],
+	callbacks: {
+	
+		// Avoid redirects after sign-in.
+		//signInSuccessWithAuthResult: () => false, 
+		//redirectUrl : `/users/hgh`
+	  },
+  };
 const LoginForm = () => {
-
+	const [isSignedIn, setIsSignedIn] = useState(false); // Local signed-in state.
 	const {userState, dispatch} = useContext(UserContext);
 
 	const [email, setEmail] = useState("");
@@ -25,10 +58,36 @@ const LoginForm = () => {
 		userService.login(loginRequest, dispatch);
 	};
 
+	useEffect(() => {
+		
+		someFetchActionCreator();
+		/*const unregisterAuthObserver = firebase.auth().onAuthStateChanged(user => {
+			console.log(user.multiFactor.user.email)
+			if(user.multiFactor.user.email != null){
+				let loginRequest = {
+					email : user.multiFactor.user.email,
+					password : "12345",
+					role: "PROVIDER"
+				};
+		
+				userService.registerandlogin(loginRequest, dispatch);
+			}
+		  setIsSignedIn(!!user);
+      
+		});
+		return () => unregisterAuthObserver(); // Make sure we un-register Firebase observers when the component unmounts.*/
+	  }, []);
+
 	const handleClose = () => {
 		window.location = "#/"
 	};
+	const someFetchActionCreator = () => {
+        const getDocumentsInfoHandler = async () => {
+			userService.chat(dispatch);
+        };
 
+        getDocumentsInfoHandler();
+    };
 	return (
 		<div>
 
@@ -41,7 +100,7 @@ const LoginForm = () => {
 					<div class="modal-frame">
 
 						<div id="myModal" class="modal modal--sm">
-
+	
 							<div class="modal__header">
 								<h2 class="text-leading">
 									Login
@@ -92,6 +151,10 @@ const LoginForm = () => {
 										>
 											{userState.loginError.errorMessage}
 										</div>
+
+										<StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
+
+										
 										<div class="form__group flex flex-col items-center">
 											<button
 												className="button button--primary min-w-[8rem]"
