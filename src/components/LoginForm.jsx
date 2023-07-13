@@ -21,23 +21,6 @@ const firebaseConfig = {
 
   firebase.initializeApp(firebaseConfig);
 
-  const uiConfig = {
-	// Popup signin flow rather than redirect flow.
-	signInFlow: 'popup',
-	// Redirect to /signedIn after sign in is successful. Alternatively you can provide a callbacks.signInSuccess function.
-	signInSuccessUrl: '/#/',
-	// We will display Google and Facebook as auth providers.
-	signInOptions: [
-	  firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-	  firebase.auth.FacebookAuthProvider.PROVIDER_ID,
-	],
-	callbacks: {
-	
-		// Avoid redirects after sign-in.
-		//signInSuccessWithAuthResult: () => false, 
-		//redirectUrl : `/users/hgh`
-	  },
-  };
 const LoginForm = () => {
 	const [isSignedIn, setIsSignedIn] = useState(false); // Local signed-in state.
 	const {userState, dispatch} = useContext(UserContext);
@@ -55,24 +38,35 @@ const LoginForm = () => {
 		userService.login(loginRequest, dispatch);
 	};
 
-	useEffect(() => {
-		console.log("fksdjbfjsdbf\sdbjf")
-		const unregisterAuthObserver = firebase.auth().onAuthStateChanged(user => {
-			console.log(user.multiFactor.user.email)
-			if(user.multiFactor.user.email != null){
-				let loginRequest = {
-					email : user.multiFactor.user.email,
-					password : "12345",
-					role: "PROVIDER"
-				};
-		
-				userService.registerandlogin(loginRequest, dispatch);
-			}
-		  setIsSignedIn(!!user);
-      
-		});
-		return unregisterAuthObserver(); // Make sure we un-register Firebase observers when the component unmounts.
-	  }, []);
+	
+	const uiConfig = {
+		// Popup signin flow rather than redirect flow.
+		signInFlow: 'popup',
+		// Redirect to /signedIn after sign in is successful. Alternatively you can provide a callbacks.signInSuccess function.
+		//signInSuccessUrl: '/#/',
+		// We will display Google and Facebook as auth providers.
+		signInOptions: [
+		  firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+		  firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+		],
+		callbacks: {
+			signInSuccessWithAuthResult: function(authResult, redirectUrl) {
+				console.log( authResult.user.multiFactor.user.email)
+				var user = authResult.user.multiFactor.user.email;
+				if(user != null){
+					let loginRequest = {
+						email : user,
+						password : "12345",
+						role: "PROVIDER"
+					};
+			
+					userService.registerandlogin(loginRequest, dispatch);
+				}
+			  },
+		  },
+	  };
+
+
 
 	const handleClose = () => {
 		window.location = "#/"
