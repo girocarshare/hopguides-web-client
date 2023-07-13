@@ -18,7 +18,7 @@ import JSZip from 'jszip';
 
 var url = process.env.REACT_APP_URL || "http://localhost:8080/";
 
-const QRCodesData = forwardRef((props, ref) => {
+const QRCodesData = () => {
     const { homeDataState, dispatch } = useContext(HomeDataContext);
     const [number, setNumber] = useState(0);
     const [clicked, setClicked] = useState(false);
@@ -41,25 +41,23 @@ const QRCodesData = forwardRef((props, ref) => {
 
         getReportInfoHandler();
     }
+    const loadPdf = async () => {
+        const response = await fetch('/assets/img/Hopguides-qr-card-GREEN.pdf');
+        const existingPdfBytes = await response.arrayBuffer();
+        setPdfBytesGreen(existingPdfBytes);
+        const responseRed = await fetch('/assets/img/Hopguides-qr-card-ORANGE.pdf');
+        const existingPdfBytesRed = await responseRed.arrayBuffer();
+        setPdfBytesRed(existingPdfBytesRed);
+        const responsePurple = await fetch('/assets/img/Hopguides-qr-card-PURPLE.pdf');
+        const existingPdfBytesPurple = await responsePurple.arrayBuffer();
+        setPdfBytesPurple(existingPdfBytesPurple);
+    };
 
-
-    useEffect(async () => {
+    useEffect(() => {
        
         
         window.scrollTo(0, 0);
         someFetchActionCreator()
-        const loadPdf = async () => {
-            const response = await fetch('/assets/img/Hopguides-qr-card-GREEN.pdf');
-            const existingPdfBytes = await response.arrayBuffer();
-            setPdfBytesGreen(existingPdfBytes);
-            const responseRed = await fetch('/assets/img/Hopguides-qr-card-ORANGE.pdf');
-            const existingPdfBytesRed = await responseRed.arrayBuffer();
-            setPdfBytesRed(existingPdfBytesRed);
-            const responsePurple = await fetch('/assets/img/Hopguides-qr-card-PURPLE.pdf');
-            const existingPdfBytesPurple = await responsePurple.arrayBuffer();
-            setPdfBytesPurple(existingPdfBytesPurple);
-        };
-
         loadPdf();
 
     }, [dispatch]);
@@ -197,7 +195,7 @@ const QRCodesData = forwardRef((props, ref) => {
         // dispatch({ type: homeDataConstants.SHOW_ADD_QR_CODE_MODAL });
     };
     const handleModalClose = () => {
-        window.location = "/#/"
+        window.location = "#/"
     };
 
     const setColorr = (color) => {
@@ -340,6 +338,6 @@ const QRCodesData = forwardRef((props, ref) => {
 
         </div >
     )
-});
+};
 
 export default QRCodesData;

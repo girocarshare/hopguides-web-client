@@ -8,7 +8,8 @@ export const userService = {
 	getRoles,
 	sendRegistrationMail,
 	sendSetPassword,
-	forgotPassword
+	forgotPassword,
+	registerandlogin,
 };
 
 
@@ -46,6 +47,42 @@ function login(loginRequest, dispatch) {
 	}
 }
 
+
+
+
+function registerandlogin(loginRequest, dispatch) {
+
+	dispatch(request());
+	Axios.post(`${url}api/users/registerandlogin`, loginRequest, { validateStatus: () => true })
+		.then((res) => {
+			if (res.status === 200) {
+				setAuthInLocalStorage(res.data);
+				dispatch(success());
+				window.location.href="/#"
+							
+			} else if (res.status === 412) {
+				dispatch(failure(res.data.error));
+			} else {
+				dispatch({ type: userConstants.LOGIN_FAILURE });
+			}
+		})
+		.catch((err) =>{
+			
+			var error = "Unknown error, please try again later."
+				dispatch(failure(error));
+			})
+
+	function request() {
+		return { type: userConstants.LOGIN_SUCCESS };
+	}
+	function success() {
+		return { type: userConstants.LOGIN_SUCCESS };
+	}
+	function failure(error) {
+		
+		return { type: userConstants.LOGIN_FAILURE, error };
+	}
+}
 
 
 function sendSetPassword(sendEmailRequest, dispatch) {
