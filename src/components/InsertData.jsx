@@ -556,8 +556,6 @@ const InsertData = (props) => {
 				jsonTitles.push(titleObj)
 			}
 
-
-			console.log(hotelId)
 			var pointObj = {
 				num: num,
 				price: pointPrice.toString(),
@@ -596,23 +594,11 @@ const InsertData = (props) => {
 			longInfoPoint1 = longInfoPoint1.replace(/("|'|}|{)/g, "");
 			longInfoPointTransl1 = longInfoPointTransl1.replace(/("|'|}|{)/g, "");
 
-			console.log(shortInfoPoint1)
 			pointObj.name = JSON.parse(`{"english":" ${titlePoint1.trim()} ", "slovenian" : "${titlePointTransl1.trim()}"}`)
 			pointObj.shortInfo = JSON.parse(`{"english":" ${shortInfoPoint1.trim()} ", "slovenian" : "${shortInfoPointTransl1.trim()} "}`)
 			pointObj.longInfo = JSON.parse(`{"english":"${longInfoPoint1.trim()} ", "slovenian" : "${longInfoPointTransl1.trim()}"}`)
 
-			/*if (voucherDesc == "") {
-				pointObj.voucherDesc = JSON.parse(`{
-				  "english": "",
-				  "spanish": "",
-				  "serbian": "",
-				  "slovenian": ""
-				  }`)
-				pointObj.partner = false
-			} else {
-				pointObj.voucherDesc = JSON.parse(voucherDescTransl)
-				pointObj.partner = true
-			}*/
+		
 			const newData = [...points, pointObj];
 			setPoints(newData)
 			setTitlePoint("")

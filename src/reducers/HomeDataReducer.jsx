@@ -83,6 +83,27 @@ export const homeDataReducer = (state, action) => {
 			return prodCpy;
 
 
+			case homeDataConstants.SEARCH_SUCCESS:
+
+
+			prodCpy = { ...state };
+
+			prodCpy.toursWithPoints.pager = action.data.pager;
+			prodCpy.toursWithPoints.toursWithPoints = action.data.pageOfItems;
+			prodCpy.toursWithPoints.page = action.data.pager.currentPage;
+
+
+			return prodCpy;
+
+
+			case homeDataConstants.SEARCH_FAILURE:
+
+			return {
+				...state,
+				toursWithPoints: {
+					toursWithPoints: []
+				},
+			};
 
 
 
