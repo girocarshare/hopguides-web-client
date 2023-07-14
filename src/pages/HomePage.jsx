@@ -13,7 +13,7 @@ import FailureModal from "../components/FailureModal";
 import TourData from "../components/TourData";
 import POIData from "../components/POIData";
 import AddGpxModal from "../components/AddGpxModal";
-import { Widget, addResponseMessage } from 'react-chat-widget';
+import { Widget, addResponseMessage, toggleMsgLoader } from 'react-chat-widget';
 import 'react-chat-widget/lib/styles.css';
 
 const HomePage = () => {
@@ -24,6 +24,7 @@ const HomePage = () => {
 	  const handleNewUserMessage = (newMessage) => {
 		console.log(`New message incoming! ${newMessage}`);
 		var question = newMessage
+	//	toggleMsgLoader();
 		Axios.get(`http://localhost:5000/api/data/` + question, { validateStatus: () => true })
 	.then(response => {
 		console.log(response.data.answer)

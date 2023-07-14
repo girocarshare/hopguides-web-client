@@ -45,6 +45,7 @@ const HomeData = forwardRef((props) => {
 	const [admin, setAdmin] = useState(false);
 	const [adminOnly, setAdminOnly] = useState(false);
 	const [updatePartner, setUpdatePartner] = useState("Update");
+	const [search, setSearch] = useState("");
 	var myElementRef = React.createRef();
 	const listInnerRef = useRef();
 
@@ -121,6 +122,12 @@ const HomeData = forwardRef((props) => {
 
 		dispatch({ type: homeDataConstants.ADD_GPX_MODAL_SHOW, data: data });
 	};
+
+	const handleSearch = async (e) => {
+		await homeDataService.search(dispatch, search);
+
+	};
+
 
 
 	const getQrCodes = (e, data) => {
@@ -383,6 +390,7 @@ const HomeData = forwardRef((props) => {
 						</h1>
 					</div>
 
+					
 					{/*Contact*/}
 					<div
 						className="fixed z-20 left-0 bottom-0 right-0 col-span-12 lg:col-span-3 lg:relative flex flex-col items-center justify-center bg-white/80 backdrop-blur border-t lg:border-none border-black/10 drop-shadow-[0_-2px_6px_rgba(0,0,0,0.15)] lg:drop-shadow-none">
@@ -408,8 +416,34 @@ const HomeData = forwardRef((props) => {
 					</div>
 
 				</div>
+				<div>
+				<div class="flex flex-row justify-end  gap-2 mb-12 ">
+                                        <input
 
+                                            className={"form__input"}
+                                            placeholder="Insert tours name"
+                                            aria-describedby="basic-addon1"
+                                            id="name"
+                                            type="text"
+											style={{ width: "30%" }}
 
+                                            onChange={(e) => setSearch(e.target.value)}
+                                            value={search}
+                                        />
+                                      
+                                        <button
+
+                                            onClick={(e) => {
+                                                handleSearch(e)
+                                            }}
+                                            className="button button--primary"
+                                            id="sendMessageButton"
+                                            type="button"
+                                        >
+                                            Search
+                                        </button>
+                                    </div>
+									</div>
 				<div className="p-2 md:p-4 bg-black/[3%] rounded-2xl mb-12"  >
 					<div className="py-3 px-2 pb-4 md:pb-6 flex flex-row items-center justify-between gap-4">
 						<h4 className="text-heading6">
