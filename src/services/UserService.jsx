@@ -58,7 +58,7 @@ function registerandlogin(loginRequest, dispatch) {
 			if (res.status === 200) {
 				setAuthInLocalStorage(res.data);
 				dispatch(success());
-				window.location.href="/#"
+				window.location.href="/#/welcome"
 							
 			} else if (res.status === 412) {
 				dispatch(failure(res.data.error));

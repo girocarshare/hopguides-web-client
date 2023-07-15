@@ -27,7 +27,8 @@ export const homeDataService = {
 	getTourData,
 	getPoiData,
 	addTeaserVideo,
-	search
+	search,
+	getDemoVideo,
 
 };
 
@@ -62,12 +63,52 @@ async function addTeaserVideo(dispatch ,tour) {
 	}
 	function success() {
 		
-		console.log("fdsfsf")
 		return { type: homeDataConstants.ADD_TEASER_SUCCESS };
 	}
 	function failure(error) {
 		
 		return { type: homeDataConstants.ADD_TEASER_FAILURE, error };
+	}
+}
+
+
+
+
+async function getDemoVideo(dispatch ,data) {
+	
+	
+	dispatch(request());
+	
+	var token = authHeader()
+	Axios.post(`${url}api/pnl/tour/get/demovideo`, data, {
+		headers: {
+		  Authorization: token 
+		}},{ validateStatus: () => true })
+		.then((res) => {
+			if (res.status === 200) {
+				dispatch(success());
+			} else if (res.status === 215) {
+				dispatch(failure(res.data.response));
+			}else{
+				
+				dispatch(failure(res.data.error));
+			}
+		})
+		.catch((err) =>{		
+				dispatch(failure(err));
+			})
+
+	function request() {
+		
+		return { type: homeDataConstants.SEND_DEMO_REQUEST };
+	}
+	function success() {
+		
+		return { type: homeDataConstants.SEND_DEMO_SUCCESS };
+	}
+	function failure(error) {
+		
+		return { type: homeDataConstants.SEND_DEMO_FAILURE, error };
 	}
 }
 
