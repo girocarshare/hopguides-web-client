@@ -23,11 +23,14 @@ import UnauthorizedPage from './pages/UnauthorizedPage.jsx';
 import LandingPage from './pages/LandingPage.jsx';
 import UpdatedToursPage from './pages/UpdatedToursPage.jsx';
 import TeaserTourPage from './pages/TeaserTourPage.jsx';
+import WelcomePage from './pages/WelcomePage.jsx';
 
 function App() {
   return (
     <Router>
       <Switch>
+        
+      <Route path="/welcome" component={WelcomePage} />
         <Route path="/unauthorized" component={UnauthorizedPage} />
         <Route path="/register" component={RegisterPage} />
         <Route path="/teasertour" component={TeaserTourPage} />

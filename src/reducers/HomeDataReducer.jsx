@@ -865,6 +865,25 @@ export const homeDataReducer = (state, action) => {
 			prodCpy.modalData.text = "There has been an error while adding teser tour. Please try again later.";
 			return prodCpy;
 
+			case homeDataConstants.SEND_DEMO_SUCCESS:
+
+			prodCpy = { ...state };
+
+			console.log("tu smammmmm")
+
+			prodCpy.modalData.success = true;
+			prodCpy.modalData.text = "You have successfully send a request for demo video";
+			return prodCpy;
+
+			case homeDataConstants.SEND_DEMO_FAILURE:
+
+			prodCpy = { ...state };
+
+			prodCpy.modalData.failure = true;
+			prodCpy.modalData.text = "There has been an error while sending a request for demo video. Please try again later.";
+			return prodCpy;
+
+
 
 		default:
 			return state;
