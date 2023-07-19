@@ -25,9 +25,8 @@ const HomePage = () => {
 		console.log(`New message incoming! ${newMessage}`);
 		var question = newMessage
 	//	toggleMsgLoader();
-		Axios.get(`http://localhost:5000/api/data/` + question, { validateStatus: () => true })
+		Axios.get(`https://hopguides-chatgpt-main-j7limbsbmq-oc.a.run.app/api/data/` + question, { validateStatus: () => true })
 	.then(response => {
-		console.log(response.data.answer)
         addResponseMessage(response.data.answer);
       })
       .catch(error => {
