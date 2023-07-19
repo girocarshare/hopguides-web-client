@@ -40,8 +40,8 @@ const HomePage = () => {
 		<HomeDataContextProvider>
 		<Widget 
 		 handleNewUserMessage={handleNewUserMessage}
-		 title="Hopguides support chat"
-		 subtitle="Hi!"
+		 title="Hopguides AI"
+		 subtitle=" "
 		 emojis />
 			<TourData/>
 			<AddGpxModal/>
