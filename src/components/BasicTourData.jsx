@@ -249,12 +249,6 @@ const BasicTourData = (props) => {
 
 
 
-
-
-
-
-
-
                 <div className="form__group">
                     <label class="form__label">Long description</label>
                     <div class="flex flex-col gap-2">
@@ -430,7 +424,6 @@ const BasicTourData = (props) => {
             </div>
 
             {props.imagePreview && !props.videoPreviewTour &&
-
 
                 <img className="image__preview" src={props.imagePreview} alt={"image-"} />}
 

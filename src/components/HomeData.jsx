@@ -30,9 +30,9 @@ const firebaseConfig = {
 	storageBucket: "hopguides.appspot.com",
 	messagingSenderId: "520191148823",
 	appId: "1:520191148823:web:f1920e502d3f692840ad52"
-  };
+};
 
-  firebase.initializeApp(firebaseConfig);
+firebase.initializeApp(firebaseConfig);
 
 
 const HomeData = forwardRef((props) => {
@@ -53,18 +53,18 @@ const HomeData = forwardRef((props) => {
 	const ref = useRef(null);
 	const handleLogout = () => {
 		deleteLocalStorage();
-		firebase.auth().signOut().then(function() {
+		firebase.auth().signOut().then(function () {
 			// Sign-out successful.
-		  }).catch(function(error) {
+		}).catch(function (error) {
 			// An error happened.
-		  });
+		});
 
 		window.location = "#/login";
 	};
 
 
 	useEffect(() => {
-	
+
 		var token = authHeader()
 		if (token == "null") {
 			window.location = "#/unauthorized";
@@ -103,7 +103,7 @@ const HomeData = forwardRef((props) => {
 
 		window.addEventListener("scroll", onScroll);
 		return () => {
-		  window.removeEventListener("scroll", onScroll);
+			window.removeEventListener("scroll", onScroll);
 		};
 
 	}, [dispatch]);
@@ -218,6 +218,10 @@ const HomeData = forwardRef((props) => {
 		window.location.href = "#/updatedtours"
 	};
 
+	const teaserTour = () => {
+		window.location.href = "#/teasertour"
+	};
+
 	const insertdata = () => {
 		window.location.href = "#/insertdata"
 	};
@@ -255,22 +259,22 @@ const HomeData = forwardRef((props) => {
 
 
 	};
-	
+
 
 	const onScroll = (e) => {
 		const el = e.target.documentElement;
 		var bottom = el.scrollHeight - el.scrollTop === el.clientHeight;
-		if(el.clientHeight - (el.scrollHeight - el.scrollTop) > 0){
+		console.log(el.clientHeight - (el.scrollHeight - el.scrollTop))
+		if (el.clientHeight - (el.scrollHeight - el.scrollTop) > -0.7) {
 			bottom = true
 		}
 
-		if (bottom) { 
-			console.log(homeDataState.toursWithPoints.page)
+		if (bottom) {
 			props.setPage(homeDataState.toursWithPoints.page + 1)
-		 }
+		}
 
 
-	  };
+	};
 
 
 	return (
@@ -354,6 +358,15 @@ const HomeData = forwardRef((props) => {
 								</div>
 							}
 
+							{adminOnly &&
+								<div>
+									<button className="button button--clear button--small" type="button"
+										onClick={teaserTour}>
+										Teaser tour
+									</button>
+								</div>
+							}
+
 							{(!role && !adminOnly) &&
 								<div>
 									<button className="button button--clear button--small" type="button"
@@ -390,7 +403,7 @@ const HomeData = forwardRef((props) => {
 						</h1>
 					</div>
 
-					
+
 					{/*Contact*/}
 					<div
 						className="fixed z-20 left-0 bottom-0 right-0 col-span-12 lg:col-span-3 lg:relative flex flex-col items-center justify-center bg-white/80 backdrop-blur border-t lg:border-none border-black/10 drop-shadow-[0_-2px_6px_rgba(0,0,0,0.15)] lg:drop-shadow-none">
@@ -417,33 +430,33 @@ const HomeData = forwardRef((props) => {
 
 				</div>
 				<div>
-				<div class="flex flex-row justify-end  gap-2 mb-12 ">
-                                        <input
+					<div class="flex flex-row justify-end  gap-2 mb-12 ">
+						<input
 
-                                            className={"form__input"}
-                                            placeholder="Insert tours name"
-                                            aria-describedby="basic-addon1"
-                                            id="name"
-                                            type="text"
-											style={{ width: "30%" }}
+							className={"form__input"}
+							placeholder="Insert tours name"
+							aria-describedby="basic-addon1"
+							id="name"
+							type="text"
+							style={{ width: "30%" }}
 
-                                            onChange={(e) => setSearch(e.target.value)}
-                                            value={search}
-                                        />
-                                      
-                                        <button
+							onChange={(e) => setSearch(e.target.value)}
+							value={search}
+						/>
 
-                                            onClick={(e) => {
-                                                handleSearch(e)
-                                            }}
-                                            className="button button--primary"
-                                            id="sendMessageButton"
-                                            type="button"
-                                        >
-                                            Search
-                                        </button>
-                                    </div>
-									</div>
+						<button
+
+							onClick={(e) => {
+								handleSearch(e)
+							}}
+							className="button button--primary"
+							id="sendMessageButton"
+							type="button"
+						>
+							Search
+						</button>
+					</div>
+				</div>
 				<div className="p-2 md:p-4 bg-black/[3%] rounded-2xl mb-12"  >
 					<div className="py-3 px-2 pb-4 md:pb-6 flex flex-row items-center justify-between gap-4">
 						<h4 className="text-heading6">
@@ -607,7 +620,7 @@ const HomeData = forwardRef((props) => {
 					))
 					}
 				</div>
-				
+
 
 			</div>
 
