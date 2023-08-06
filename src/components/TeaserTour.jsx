@@ -110,7 +110,6 @@ const TeaserTour = () => {
 		setSelectedFiles([])
 		setImagePreviews([])
 		setVideoPreview(null)
-		setFile(null)
 		num = num + 1
 	};
 
