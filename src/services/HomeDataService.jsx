@@ -29,38 +29,22 @@ export const homeDataService = {
 	addTeaserVideo,
 	search,
 	getDemoVideo,
+	
 
 };
 
 
-async function addTeaserVideo(dispatch ,tour) {
-	
-	
-	dispatch(request());
-	
-	var token = authHeader()
-	Axios.post(`${url}api/pnl/tour/add/teasertour`, tour, {
-		headers: {
-		  Authorization: token 
-		}},{ validateStatus: () => true })
-		.then((res) => {
-			if (res.status === 200) {
-				dispatch(success());
-			} else if (res.status === 215) {
-				dispatch(failure(res.data.response));
-			}else{
-				
-				dispatch(failure(res.data.error));
-			}
-		})
-		.catch((err) =>{		
-				dispatch(failure(err));
-			})
 
-	function request() {
-		
-		return { type: homeDataConstants.ADD_TEASER_REQUEST };
+function addTeaserVideo( tf, dispatch) {
+	
+	if(tf){
+
+
+		dispatch(success());
+	}else{
+		dispatch(failure("Error while creating teaser video"));
 	}
+
 	function success() {
 		
 		return { type: homeDataConstants.ADD_TEASER_SUCCESS };
@@ -70,7 +54,6 @@ async function addTeaserVideo(dispatch ,tour) {
 		return { type: homeDataConstants.ADD_TEASER_FAILURE, error };
 	}
 }
-
 
 
 
@@ -709,6 +692,7 @@ async function getPreviousMonthsData(dispatch ,id) {
 async function getToursAndPointsData(dispatch, page) {
 
 
+	console.log(page)
 		dispatch(request());
 		var token = authHeader()
 	
