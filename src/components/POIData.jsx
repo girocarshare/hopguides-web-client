@@ -358,6 +358,9 @@ const POIData = () => {
 			point.audio = homeDataState.updatePointData.point.audio
 		}
 
+		console.log("SELECTED FILESSS")
+		console.log(selectedFiles)
+
 		if (selectedFiles.length != 0) {
 			for (var f of selectedFiles) {
 				console.log(f)
@@ -421,6 +424,7 @@ const POIData = () => {
 			setFiles([])
 			setAudio(null)
 			setFile(null)
+			setSelectedFiles([])
 
 		};
 
