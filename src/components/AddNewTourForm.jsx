@@ -641,9 +641,7 @@ const AddNewTourForm = () => {
 																</div>}
 															</div>
 														</div>
-
 													</div>
-
 
 													<br />
 

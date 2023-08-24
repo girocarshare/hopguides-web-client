@@ -48,7 +48,7 @@ const InsertData = (props) => {
 	const [currencyList, setCurrencyList] = useState(["£", "€", "$"]);
 	const [price, setPrice] = useState("");
 	const [showModal, setShowModal] = useState(false);
-
+	const [videoSizeError, setVideoSizeError] = useState(null);
 
 	const [titlePoint, setTitlePoint] = useState("");
 	const [titlePointTransl, setTitlePointTransl] = useState("");
@@ -304,28 +304,38 @@ const InsertData = (props) => {
 
 
 	};
-
 	const selectVideo = (event) => {
-
+		const maxSize = 30 * 1024 * 1024; // 30MB in bytes
+		let fs = [];
+		let hasSizeError = false;
 	
-
-		var fs = []
 		for (let i = 0; i < event.target.files.length; i++) {
-
-			if ((event.target.files[0].name).substring(event.target.files[0].name.length - 3) == "mp4") {
-				var new_file = new File([event.target.files[i]], i + 'partner' + num + "---" + [event.target.files[i].name]);
-				fs.push(new_file)
-				setVideoPreview(URL.createObjectURL(event.target.files[0]))
+			const file = event.target.files[i];
 			
-			} 
-
+			// Check file extension and size
+			if (file.name.substring(file.name.length - 3) === "mp4") {
+				if (file.size > maxSize) {
+					hasSizeError = true;
+					break; // Break the loop if any file exceeds the size limit
+				}
+				
+				const new_file = new File([file], i + 'partner' + num + "---" + file.name);
+				fs.push(new_file);
+				
+				// Set the video preview for the first MP4 file
+				if (!videoPreview) {
+					setVideoPreview(URL.createObjectURL(file));
+				}
+			}
 		}
-
-		setSelectedFiles(selectedFiles.concat(fs))
-		setProgressInfos({ val: [] });
-		setMessage([]);
-
-
+	
+		if (hasSizeError) {
+			setVideoSizeError("One or more videos exceed the 30MB size limit.");
+		} else {
+			setSelectedFiles(prevFiles => prevFiles.concat(fs));
+			setProgressInfos({ val: [] });
+			setMessage([]);
+		}
 	};
 
 	const handleSubmit = (e) => {
@@ -978,6 +988,7 @@ const InsertData = (props) => {
 											errImageTitle={errImageTitle}
 											audioNamePoint={audioNamePoint}
 											videoPreview={videoPreview}
+											videoSizeError= {videoSizeError}
 										/>
 									</form>
 

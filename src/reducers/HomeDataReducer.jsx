@@ -869,10 +869,10 @@ export const homeDataReducer = (state, action) => {
 
 			prodCpy = { ...state };
 
-			console.log("tu smammmmm")
-
-			prodCpy.modalData.success = true;
-			prodCpy.modalData.text = "You have successfully send a request for demo video";
+			//prodCpy.modalData.success = true;
+			//prodCpy.modalData.text = "You have successfully send a request for demo video";
+			console.log(action.data)
+			prodCpy.video = action.data.data
 			return prodCpy;
 
 			case homeDataConstants.SEND_DEMO_FAILURE:
