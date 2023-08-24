@@ -662,7 +662,7 @@ const AddPartnerOrPointForm = (props) => {
                                             </label>
                                             {props.videoPreview && <video className="image__preview" controls src={props.videoPreview}
 												alt={"video-"} />}
-                                           
+                                           {props.videoSizeError && <div style={{ color: "red", marginTop: "10px" }}>{props.videoSizeError}</div>}
 
 
                                         </div>

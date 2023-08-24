@@ -63,13 +63,13 @@ async function getDemoVideo(dispatch ,data) {
 	dispatch(request());
 	
 	var token = authHeader()
-	Axios.post(`${url}api/pnl/tour/get/demovideo`, data, {
+	Axios.post(`${url}api/pnl/tour/d-id/generate`, data, {
 		headers: {
 		  Authorization: token 
 		}},{ validateStatus: () => true })
 		.then((res) => {
 			if (res.status === 200) {
-				dispatch(success());
+				dispatch(success(res.data));
 			} else if (res.status === 215) {
 				dispatch(failure(res.data.response));
 			}else{
@@ -85,9 +85,9 @@ async function getDemoVideo(dispatch ,data) {
 		
 		return { type: homeDataConstants.SEND_DEMO_REQUEST };
 	}
-	function success() {
-		
-		return { type: homeDataConstants.SEND_DEMO_SUCCESS };
+	function success(data) {
+		console.log(data)
+		return { type: homeDataConstants.SEND_DEMO_SUCCESS , data};
 	}
 	function failure(error) {
 		

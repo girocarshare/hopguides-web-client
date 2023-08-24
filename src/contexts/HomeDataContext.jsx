@@ -88,7 +88,8 @@ const HomeDataContextProvider = (props) => {
 		
 		addGpxModalShow: false,
 
-		
+		video: null,
+
 		termsAndConditionsModal: {
 			show: false,
 			text: "${title} global terms of service, effective as of 1.3.2023\n"+
