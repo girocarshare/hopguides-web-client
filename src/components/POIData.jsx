@@ -68,7 +68,7 @@ const POIData = () => {
 	const [errMessagePhoto, setErrMessagePhoto] = useState("");
 	const [imageTitles, setImageTitles] = useState([]);
 
-
+	const defaultValue = new Date();
 	const [mondayFrom, setMondayFrom] = useState("");
 	const [mondayTo, setMondayTo] = useState("");
 	const [tuesdayFrom, setTuesdayFrom] = useState("");
@@ -252,12 +252,13 @@ const POIData = () => {
 		}
 
 
-		if (homeDataState.updatePointData.point.partner) {
+		if (homeDataState.updatePointData.point.offerName) {
+			console.log("evo meeee")
 			var voucherDesc1 = ""
 			if (voucherDesc == "") {
 				voucherDesc1 = homeDataState.updatePointData.point.voucherDesc.english
 			} else {
-				voucherDesc1 = longInfo
+				voucherDesc1 = voucherDesc
 			}
 
 			var voucherDescTransl1 = ""
@@ -358,8 +359,6 @@ const POIData = () => {
 			point.audio = homeDataState.updatePointData.point.audio
 		}
 
-		console.log("SELECTED FILESSS")
-		console.log(selectedFiles)
 
 		if (selectedFiles.length != 0) {
 			for (var f of selectedFiles) {
@@ -734,6 +733,9 @@ const POIData = () => {
 
 											</div>
 										</div>
+
+						
+
 										{homeDataState.updatePointData.point.offerName &&
 											<div class="form">
 
@@ -775,7 +777,7 @@ const POIData = () => {
 																	type="textarea" required
 																	name="message"
 																	placeholder='Voucher description'
-																	value={voucherDesc === "" ? homeDataState.updatePointData.point.longInfo.english : voucherDesc}
+																	value={voucherDesc === "" ? homeDataState.updatePointData.point.voucherDesc.english : voucherDesc}
 																	onChange={(e) => setVoucherDesc(e.target.value)}></textarea>
 																{edit && <button
 
@@ -798,7 +800,7 @@ const POIData = () => {
 																	type="text"
 
 																	onChange={(e) => setVoucherDescTransl(e.target.value)}
-																	value={voucherDescTransl === "" ? homeDataState.updatePointData.point.longInfo.slovenian : voucherDescTransl}
+																	value={voucherDescTransl === "" ? homeDataState.updatePointData.point.voucherDesc.slovenian : voucherDescTransl}
 																/>
 																<div className="paragraph-box2 grid dgrid-row place-items-center"
 																	style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }}
