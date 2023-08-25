@@ -16,7 +16,7 @@ const WelcomePageForm = forwardRef((props, ref) => {
 	const { homeDataState, dispatch } = useContext(HomeDataContext);
 	const [checkInOptions, setCheckInOptions] = useState(["2pm", "3pm", "4pm"]);
 	const [checkOutOptions, setCheckOutOptions] = useState(["10am", "11am", "12am"]);
-	const [characterList, setCharacterList] = useState(["assets/img/vodic.png", "assets/img/vodic2.png"]);
+	const [characterList, setCharacterList] = useState(["https://hopguides.s3.eu-central-1.amazonaws.com/video-images/Klemen_Furlan_ultrarealistic_portrait_photo_extremely_handsome__68a25b9b-74fc-4d9c-a270-f9ea802a231f.png", "https://hopguides.s3.eu-central-1.amazonaws.com/video-images/Klemen_Furlan_ultrarealistic_close_up_portrait_photo_of_beautif_a106ea0f-dfe0-4d7c-b80d-504c2274826a.png", "https://hopguides.s3.eu-central-1.amazonaws.com/video-images/Klemen_Furlan_ultrarealistic_close_up_portrait_photo_of_beautif_2ba1303a-99f4-477c-a7bc-cfbce87bb16f.png", "https://hopguides.s3.eu-central-1.amazonaws.com/video-images/vodic2.png"]);
 	const [checkIn, setCheckIn] = useState(checkInOptions[0]);
 	const [checkOut, setCheckOut] = useState(checkOutOptions[0]);
 	const [character, setCharacter] = useState(characterList[0]);
