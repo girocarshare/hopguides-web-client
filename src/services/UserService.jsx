@@ -79,7 +79,7 @@ function registerandlogin(loginRequest, dispatch) {
 		return { type: userConstants.LOGIN_SUCCESS };
 	}
 	function failure(error) {
-		
+		console.log(error)
 		return { type: userConstants.LOGIN_FAILURE, error };
 	}
 }
