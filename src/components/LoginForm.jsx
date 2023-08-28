@@ -9,15 +9,15 @@ import 'firebase/compat/auth';
 var url = process.env.REACT_APP_URL || "http://localhost:8080/";
 //var ui = new firebaseui.auth.AuthUI(firebase.auth());
 
-
+console.log(process.env.REACT_APP_FIREBASE_APP_ID)
 const firebaseConfig = {
-	apiKey: "AIzaSyCT-HKuQUQT94cSIF5Fu7zzPnWbn9ao8i0",
-	authDomain: "hopguides.firebaseapp.com",
-	projectId: "hopguides",
-	storageBucket: "hopguides.appspot.com",
-	messagingSenderId: "520191148823",
-	appId: "1:520191148823:web:f1920e502d3f692840ad52"
-  };
+	apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+	authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+	projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+	storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+	messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+	appId: process.env.REACT_APP_FIREBASE_APP_ID
+};
 
   firebase.initializeApp(firebaseConfig);
 
@@ -99,7 +99,7 @@ const LoginForm = () => {
 								<div class="flex flex-col items-stretch">
 									<div
 										class="w-32 h-32 rounded-full bg-white border border-black/10 oveflow-hidden bg-contain bg-center bg-no-repeat mx-auto mb-8"
-										style={{backgroundImage: `url(${("assets/img/turizem-lj.jpg")})`,}}>
+										style={{backgroundImage: `url(${("assets/img/logo.svg")})`,}}>
 									</div>
 									<form class="form" method="post" onSubmit={handleSubmit}>
 										<div className="form__group">
