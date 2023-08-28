@@ -90,7 +90,7 @@ async function getDemoVideo(dispatch ,data) {
 		return { type: homeDataConstants.SEND_DEMO_SUCCESS , data};
 	}
 	function failure(error) {
-		
+		console.log(error)
 		return { type: homeDataConstants.SEND_DEMO_FAILURE, error };
 	}
 }
