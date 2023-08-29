@@ -20,6 +20,7 @@ import TourData from "./TourData";
 import ChangeLockCodeModal from "./ChangeLockCodeModal";
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
+import Tour from "./Tour";
 var url = process.env.REACT_APP_URL || "http://localhost:8080/";
 
 
@@ -44,10 +45,9 @@ const HomeData = forwardRef((props) => {
 	const [role, setRole] = useState(false);
 	const [admin, setAdmin] = useState(false);
 	const [adminOnly, setAdminOnly] = useState(false);
-	const [updatePartner, setUpdatePartner] = useState("Update");
+	const [view, setView] = useState(false);
 	const [search, setSearch] = useState("");
-	var myElementRef = React.createRef();
-	const listInnerRef = useRef();
+	const [selectedTour, setSelectedTour] = useState(null);
 
 
 	const ref = useRef(null);
@@ -92,15 +92,7 @@ const HomeData = forwardRef((props) => {
 				})
 		}
 		setTours(homeDataState.toursWithPoints.toursWithPoints)
-		var contactUser = {
-			name: "Danijel Omrzel",
-			email: "danijel.omrzel@visitlljubljana.si",
-			number: "0038641386295"
-		}
-		var arr = []
-		arr.push(contactUser)
-		setUsers(arr)
-
+	
 		window.addEventListener("scroll", onScroll);
 		return () => {
 			window.removeEventListener("scroll", onScroll);
@@ -108,48 +100,10 @@ const HomeData = forwardRef((props) => {
 
 	}, [dispatch]);
 
-	const getHistory = (e, data) => {
-		const getDocumentsInfoHandlerr = async () => {
-			await homeDataService.getPreviousMonthsData(dispatch, data);
-		};
-
-		getDocumentsInfoHandlerr();
-	};
-
-
-	const addGpx = (e, data) => {
-
-
-		dispatch({ type: homeDataConstants.ADD_GPX_MODAL_SHOW, data: data });
-	};
 
 	const handleSearch = async (e) => {
 		await homeDataService.search(dispatch, search);
 
-	};
-
-
-
-	const getQrCodes = (e, data) => {
-
-		window.location = "#/qrcodes/" + data;
-	};
-
-
-	const getQrCode = (e, data) => {
-		homeDataService.getQrCode(dispatch, data);
-	};
-
-
-	const visitWebsite = (e, data) => {
-
-		window.location = "#/report/" + data;
-	};
-
-
-	const seeTermsAndConditions = (e, data) => {
-
-		window.location = "#/termsAndConditions/" + data;
 	};
 
 	const seeHomePage = (e) => {
@@ -171,36 +125,6 @@ const HomeData = forwardRef((props) => {
 	};
 
 
-	const addNew = (e) => {
-
-		dispatch({ type: homeDataConstants.SHOW_ADD_MODAL });
-	};
-	const addNewPartner = (e, id, bpartnerId) => {
-
-		dispatch({ type: homeDataConstants.SHOW_ADD_PARTNER_MODAL, id: id, bpartnerId: bpartnerId });
-	};
-
-
-	const onUpdatePoint = (oldData, newData) => {
-
-		const getUpdateHandlerr = async () => {
-			return await homeDataService.updatePoint(dispatch, oldData);
-		};
-
-		return getUpdateHandlerr();
-
-	};
-	const onUpdate = async (oldData, newData) => {
-
-		const getUpdateHandlerr = async () => {
-			return await homeDataService.updateTour(dispatch, oldData);
-		};
-
-
-		return await getUpdateHandlerr();
-
-
-	};
 	const handleLogin = () => {
 		window.location.href = "#/login"
 	};
@@ -227,35 +151,11 @@ const HomeData = forwardRef((props) => {
 	};
 
 
-	const update = async (e, tour) => {
+	const viewTour = async (e, tour) => {
 
 
-		await homeDataService.getTourData(dispatch, tour.tourId);
-		//dispatch({ type: homeDataConstants.UPDATE_TOUR_DATA_MODAL_SHOW, tour });
-
-
-	};
-
-	const deleteTour = async (e, tour) => {
-
-
-		await homeDataService.deleteTour(dispatch, tour.tourId);
-
-
-	};
-
-	const deletePoi = async (e, tour, poiId) => {
-
-
-		await homeDataService.deletePoi(dispatch, tour.tourId, poiId);
-
-
-	};
-
-	const handleUpdatePartner = async (e, point) => {
-
-		await homeDataService.getPoiData(dispatch, point.id);
-		//dispatch({ type: homeDataConstants.UPDATE_POINT_DATA_MODAL_SHOW, point });
+		setSelectedTour(tour)
+		setView(true)
 
 
 	};
@@ -297,8 +197,14 @@ const HomeData = forwardRef((props) => {
 				<TourData />
 			</div>}
 
+			{view && <div>
+				<Tour
+					tour = {selectedTour}
+					setView = {setView} />
+			</div>}
 
-			<div onScroll={onScroll} ref={ref} className="container pt-20 lg:pt-40 pb-12">
+
+			{!view && <div onScroll={onScroll} ref={ref} className="container pt-20 lg:pt-40 pb-12">
 
 				<div className="navbar">
 					<div className="navbar__content">
@@ -404,29 +310,6 @@ const HomeData = forwardRef((props) => {
 					</div>
 
 
-					{/*Contact*/}
-					<div
-						className="fixed z-20 left-0 bottom-0 right-0 col-span-12 lg:col-span-3 lg:relative flex flex-col items-center justify-center bg-white/80 backdrop-blur border-t lg:border-none border-black/10 drop-shadow-[0_-2px_6px_rgba(0,0,0,0.15)] lg:drop-shadow-none">
-						<div
-							className="flex flex-row lg:flex-col items-center lg:items-start gap-0 lg:gap-4 p-3 lg:p-6 lg:rounded-2xl lg:border lg:border-black/
-						10 lg:shadow-2xl lg:shadow-black/10 w-full">
-							<div className="label label--primary -rotate-90 lg:rotate-0 -ml-7 lg:ml-0">
-								Contact
-							</div>
-							{users.map((point) => (
-								<div className="flex flex-col gap-1 lg:gap-2 w-full overflow-hidden -ml-2 lg:ml-0">
-									<div className="text-sm lg:text-xl font-bold text-black">
-										{point.name}
-									</div>
-									<div className="flex flex-col gap-1 lg:gap-2 text-xs lg:text-sm">
-										<a className="link" href="mailto:'{point.email}'">{point.email}</a>
-										<div>{point.number}</div>
-									</div>
-								</div>
-							))
-							}
-						</div>
-					</div>
 
 				</div>
 				<div>
@@ -476,153 +359,49 @@ const HomeData = forwardRef((props) => {
 					</div>
 
 
-					{homeDataState.toursWithPoints.toursWithPoints.map((tour) => (
-						<div className="table-frame" style={{ marginBottom: "30px" }} >
-							<table ref={ref} id="my-table" style={{ width: "100%", tableLayout: "fixed" }} >
-								<caption><div className="py-3 px-2 pb-4 md:pb-6 flex flex-row items-center justify-between gap-4">
-									<h4 className="text-heading6">
-										{tour.title.english}
-									</h4>
+					<div className="table-frame" style={{ marginBottom: "30px" }} >
+						<table ref={ref} id="my-table" style={{ width: "100%", tableLayout: "fixed" }} >
+							<caption><div className="py-3 px-2 pb-4 md:pb-6 flex flex-row items-center justify-between gap-4">
+								<h4 className="text-heading6">
+									Tours
+								</h4>
 
-								</div></caption>
-								<thead>
+							</div></caption>
+							<thead>
 
-									<tr>
-										<th style={{ width: "20%" }} >Name</th>
-										<th style={{ width: "15%" }} className=" whitespace-nowrap">Price<span
-											className=" text-xs font-normal text-black/60 ml-1">/ incl tax</span>
-										</th>
-										<th style={{ width: "10%" }} className=" whitespace-nowrap">Tours booked<span
-											className="text-xs font-normal text-black/60 ml-1">/ this month</span></th>
-										<th>Options</th>
-									</tr>
-								</thead>
+								<tr>
+									
 
-								<tbody>
-									<tr><td>     </td></tr>
-									<tr class="text-sm transition-all hover:bg-gray-100">
-										<td style={{ width: "20%", overflow: "hidden" }} id={tour.tourId} >{tour.title.english}</td>
-										<td style={{ width: "15%", overflow: "hidden" }}>{`${tour.price} ${tour.currency} including tax`}</td>
+								</tr>
+							</thead>
 
-										<td style={{ width: "10%", overflow: "hidden" }}>{tour.noOfRidesAMonth}</td>
-										<td>
-											<div className="flex flex-row items-center gap-2 justify-end">
-												<button className="button button--secondary button--small" onClick={(event) => {
-													seeTermsAndConditions(event, tour.tourId)
-												}}>
-													Terms and conditions
-												</button>
-												<button className="button button--secondary button--small"
-													onClick={(e) => getHistory(e, tour.tourId)}>Get report
-												</button>
-												{adminOnly && <button className="button button--secondary button--small"
-													onClick={(e) => addGpx(e, tour.tourId)}>Add gpx
-												</button>}
-												{adminOnly && <button className="button button--secondary button--small" onClick={(e) => getQrCodes(e, tour.tourId)} >Get qr codes</button>}
-												<button className="button button--secondary button--small"
-													onClick={(e) => update(e, tour)}>View data</button>
-												{adminOnly && <button className="button button--secondary button--small"
-													onClick={(e) => deleteTour(e, tour)}>Delete
-												</button>}
-											</div>
-										</td>
+							<tbody>
+								{homeDataState.toursWithPoints.toursWithPoints.map((tour) => (
+									<div>
+										<tr class="text-sm transition-all hover:bg-gray-100">
+											<td style={{ width: "100%", overflow: "hidden" }} id={tour.tourId} >{tour.title.english}</td>
 
-									</tr>
+											<td>
+												<div className="flex flex-row items-center gap-2 justify-end">
 
+													<button className="button button--secondary button--small"
+														onClick={(e) => viewTour(e, tour)}>View tour
+													</button>
 
-									<tr colspan="4">
-										<td colspan="4">
-											<div className="p-2 md:p-4 bg-black/[3%] rounded-2xl mb-12">
-												<div>
-													{admin &&
-														<button className="button button--primary button--small" variant="contained"
-															onClick={(e) => addNewPartner(e, tour.tourId, tour.bpartnerId)}>
-															Add partner
-														</button>
-													}
 												</div>
-												<table style={{ width: "100%", tableLayout: "fixed" }} >
+											</td>
+										</tr>
+									</div>
 
-													<thead>
-
-														<tr>
-															<th style={{ width: "25%" }}>Name</th>
-															<th style={{ width: "15%" }} className="whitespace-nowrap">Price<span
-																className="text-xs font-normal text-black/60 ml-1">/ incl tax</span>
-															</th>
-															<th style={{ width: "15%" }} className="whitespace-nowrap">Offer name</th>
-															<th style={{ width: "10%" }}>Category</th>
-															<th style={{ width: "10%" }} className="whitespace-nowrap">Used coupons<span
-																className="text-xs font-normal text-black/60 ml-1">/ this month</span></th>
-															<th>Options</th>
-														</tr>
-													</thead>
-
-													{tour.points.map((points) => (
-														<tbody>
-															<tr id={tour.tourId}>
-
-																<td style={{ textAlign: "left", width: "25%", overflow: "hidden" }}>{points.point.name.english} </td>
-																<td style={{ textAlign: "left", width: "15%", overflow: "hidden" }}>
-																	{points.point.price == "" ? "/" : `${points.point.price} ${tour.currency} including tax`}
-																</td>
-																<td style={{ textAlign: "left", width: "15%", overflow: "hidden" }}>
-																	{points.point.offerName == "" ? "/" : `${points.point.offerName} `}
-																</td>
-
-																<td style={{ textAlign: "left", width: "10%", overflow: "hidden" }}>{points.point.category}</td>
-
-																<td style={{ textAlign: "left" }}>{points.monthlyUsed}</td>
-																<td>
-																	<div className="flex flex-row items-center gap-2 justify-end">
-																		{points.point.offerName != "" && <button className="button button--secondary button--small"
-																			onClick={(event) => {
-																				visitWebsite(event, points.point.id)
-																			}}>
-																			Web
-																		</button>}
-																		{points.point.offerName != "" && <button className="button button--secondary button--small"
-																			onClick={(event) => {
-																				getQrCode(event, points.point.id)
-																			}}>
-																			Get QR
-																		</button>}
-																		<button className="button button--secondary button--small"
-																			onClick={(e) => handleUpdatePartner(e, points.point)}>
-																			{updatePartner}
-																		</button>
-																		{adminOnly && <button className="button button--secondary button--small"
-																			onClick={(e) => deletePoi(e, tour, points.point.id)}>
-																			Delete
-																		</button>}
-																	</div>
-																</td>
-
-															</tr>
-														</tbody>
-													))}
-												</table>
-											</div>
-											<br /> <br />
-										</td>
-									</tr>
-
-								</tbody>
-
-
-
-							</table>
-
-
-
-						</div>
-
-					))
-					}
+								))
+								}
+							</tbody>
+						</table>
+					</div>
 				</div>
 
 
-			</div>
+			</div>}
 
 			<div className="text-sm text-black/40">
 				<div className="container pb-40 lg:pb-16">

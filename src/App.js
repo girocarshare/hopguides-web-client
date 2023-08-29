@@ -25,6 +25,7 @@ import UpdatedToursPage from './pages/UpdatedToursPage.jsx';
 import TeaserTourPage from './pages/TeaserTourPage.jsx';
 import WelcomePage from './pages/WelcomePage.jsx';
 import ChatbotPage from './pages/ChatbotPage.jsx';
+import TourPage from './pages/TourPage.jsx'
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
         
       <Route path="/chatbot" component={ChatbotPage} />
       <Route path="/welcome" component={WelcomePage} />
+      <Route path="/tour/:id" component={TourPage} />
         <Route path="/unauthorized" component={UnauthorizedPage} />
         <Route path="/register" component={RegisterPage} />
         <Route path="/teasertour" component={TeaserTourPage} />
