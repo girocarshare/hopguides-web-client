@@ -98,36 +98,14 @@ const Tour = forwardRef((props) => {
 	const [role, setRole] = useState(false);
 	const [admin, setAdmin] = useState(false);
 	const [adminOnly, setAdminOnly] = useState(false);
-	const [updatePartner, setUpdatePartner] = useState("Update");
-	const [search, setSearch] = useState("");
-	var myElementRef = React.createRef();
-	const listInnerRef = useRef();
-
-	const defaultMaterialTheme = createTheme();
+	const [move, setMove] = useState(false);
 
 	const ref = useRef(null);
-	const handleLogout = () => {
-		deleteLocalStorage();
-		firebase.auth().signOut().then(function () {
-			// Sign-out successful.
-		}).catch(function (error) {
-			// An error happened.
-		});
-
-		window.location = "#/login";
-	};
+	
 
 	const [data, setData] = useState(props.tour.points); // Assuming your data is in props.tour.points
 
-	const handleDragEnd = (result) => {
-		if (!result.destination) return;
 
-		const items = Array.from(data);
-		const [reorderedItem] = items.splice(result.source.index, 1);
-		items.splice(result.destination.index, 0, reorderedItem);
-
-		setData(items);
-	};
 	useEffect(() => {
 
 		var token = authHeader()
@@ -184,11 +162,7 @@ const Tour = forwardRef((props) => {
 		dispatch({ type: homeDataConstants.ADD_GPX_MODAL_SHOW, data: data });
 	};
 
-	const handleSearch = async (e) => {
-		await homeDataService.search(dispatch, search);
-
-	};
-
+	
 
 
 	const getQrCodes = (e, data) => {
@@ -213,80 +187,14 @@ const Tour = forwardRef((props) => {
 		window.location = "#/termsAndConditions/" + data;
 	};
 
-	const seeHomePage = (e) => {
 
-		window.location = "#/";
-	};
-
-	const updateLogo = (e) => {
-
-
-		dispatch({ type: homeDataConstants.SHOW_UPDATE_LOGO_MODAL });
-	};
-
-
-	const editLockCode = (e) => {
-
-
-		dispatch({ type: homeDataConstants.SHOW_CHANGE_LOCK_CODE_MODAL });
-	};
-
-
-	const addNew = (e) => {
-
-		dispatch({ type: homeDataConstants.SHOW_ADD_MODAL });
-	};
 	const addNewPartner = (e, id, bpartnerId) => {
 
 		dispatch({ type: homeDataConstants.SHOW_ADD_PARTNER_MODAL, id: id, bpartnerId: bpartnerId });
 	};
 
 
-	const onUpdatePoint = (oldData, newData) => {
-
-		const getUpdateHandlerr = async () => {
-			return await homeDataService.updatePoint(dispatch, oldData);
-		};
-
-		return getUpdateHandlerr();
-
-	};
-	const onUpdate = async (oldData, newData) => {
-
-		const getUpdateHandlerr = async () => {
-			return await homeDataService.updateTour(dispatch, oldData);
-		};
-
-
-		return await getUpdateHandlerr();
-
-
-	};
-	const handleLogin = () => {
-		window.location.href = "#/login"
-	};
-
-
-	const handleRegister = () => {
-		window.location.href = "#/register"
-	};
-
-	const allBusinessPartners = () => {
-		window.location.href = "#/businesspartners"
-	};
-
-	const updatedTours = () => {
-		window.location.href = "#/updatedtours"
-	};
-
-	const teaserTour = () => {
-		window.location.href = "#/teasertour"
-	};
-
-	const insertdata = () => {
-		window.location.href = "#/insertdata"
-	};
-
+	
 
 	const update = async (e, tour) => {
 
@@ -315,7 +223,6 @@ const Tour = forwardRef((props) => {
 
 	const handleUpdatePartner = async (e, point) => {
 
-		console.log("blalbalbl")
 		await homeDataService.getPoiData(dispatch, point.id);
 		//dispatch({ type: homeDataConstants.UPDATE_POINT_DATA_MODAL_SHOW, point });
 
@@ -337,65 +244,6 @@ const Tour = forwardRef((props) => {
 
 
 	};
-	const handleRowDragEnd = (source, destination) => {
-		const newData = [...data];
-		const [removed] = newData.splice(source.index, 1);
-		newData.splice(destination.index, 0, removed);
-		setData(newData);
-	};
-	const states = [
-		'Alabama',
-		'Alaska',
-		'Arizona',
-		'Arkansas',
-		'California',
-		'Colorado',
-		'Connecticut',
-		'Delaware',
-		'Florida',
-		'Georgia',
-		'Hawaii',
-		'Idaho',
-		'Illinois',
-		'Indiana',
-		'Iowa',
-		'Kansas',
-		'Kentucky',
-		'Louisiana',
-		'Maine',
-		'Maryland',
-		'Massachusetts',
-		'Michigan',
-		'Minnesota',
-		'Mississippi',
-		'Missouri',
-		'Montana',
-		'Nebraska',
-		'Nevada',
-		'New Hampshire',
-		'New Jersey',
-		'New Mexico',
-		'New York',
-		'North Carolina',
-		'North Dakota',
-		'Ohio',
-		'Oklahoma',
-		'Oregon',
-		'Pennsylvania',
-		'Rhode Island',
-		'South Carolina',
-		'South Dakota',
-		'Tennessee',
-		'Texas',
-		'Utah',
-		'Vermont',
-		'Virginia',
-		'Washington',
-		'West Virginia',
-		'Wisconsin',
-		'Wyoming',
-		'Puerto Rico',
-	];
 
 	return (
 
@@ -467,14 +315,26 @@ const Tour = forwardRef((props) => {
 								<tr colspan="4">
 									<td colspan="4">
 										<div className="p-2 md:p-4 bg-black/[3%] rounded-2xl mb-12">
-											<div>
-												{admin &&
-													<button className="button button--primary button--small" variant="contained"
-														onClick={(e) => addNewPartner(e, props.tour.tourId, props.tour.bpartnerId)}>
-														Add partner
-													</button>
-												}
-											</div>
+										<div className="flex" style={{ justifyContent: "flex-end"}}>
+    {admin &&
+        <>
+            <button 
+                className="button button--primary button--small" 
+                variant="contained"
+                onClick={(e) => addNewPartner(e, props.tour.tourId, props.tour.bpartnerId)}>
+                Add partner
+            </button>
+
+            <button 
+                className="button button--primary button--small ml-2" 
+                variant="contained"
+                onClick={(e) => setMove(!move)}>
+                Reorder partners
+            </button>
+        </>
+    }
+</div>
+											<br/>
 
 
 											<MaterialReactTable
@@ -534,7 +394,7 @@ const Tour = forwardRef((props) => {
 
 												]}
 												data={props.tour.points}
-												enableRowOrdering
+												enableRowOrdering = {!move}
 												enableSorting={false}
 												muiTableBodyRowDragHandleProps={({ table }) => ({
 													onDragEnd: () => {
