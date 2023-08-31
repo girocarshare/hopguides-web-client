@@ -162,6 +162,7 @@ const InsertData = (props) => {
 			}
 		);
 
+		console.log(response)
 		if (num == 1) {
 
 			setTitleTransl(response.data.choices[0].text)

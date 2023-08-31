@@ -6,7 +6,19 @@ import React, {
 	useContext,
 	useRef
 } from "react";
-
+import {
+	Box,
+	Button,
+	Dialog,
+	DialogActions,
+	DialogContent,
+	DialogTitle,
+	IconButton,
+	MenuItem,
+	Stack,
+	TextField,
+	Tooltip,
+} from '@mui/material';
 import { Link } from 'react-router-dom';
 import { HomeDataContext } from "../contexts/HomeDataContext";
 import { homeDataService } from "../services/HomeDataService";
@@ -19,8 +31,49 @@ import UpdateLogoModal from "./UpdateLogoModal";
 import TourData from "./TourData";
 import ChangeLockCodeModal from "./ChangeLockCodeModal";
 import firebase from 'firebase/compat/app';
+import { ThemeProvider, createTheme } from '@mui/material';
 import 'firebase/compat/auth';
 import { AiOutlineClose } from 'react-icons/ai';
+import MaterialTable from 'material-table';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+import { MaterialReactTable } from 'material-react-table';
+import AddBox from '@material-ui/icons/AddBox';
+import ArrowDownward from '@material-ui/icons/ArrowDownward';
+import Check from '@material-ui/icons/Check';
+import ChevronLeft from '@material-ui/icons/ChevronLeft';
+import ChevronRight from '@material-ui/icons/ChevronRight';
+import Clear from '@material-ui/icons/Clear';
+import DeleteOutline from '@material-ui/icons/DeleteOutline';
+import Edit from '@material-ui/icons/Edit';
+import FilterList from '@material-ui/icons/FilterList';
+import FirstPage from '@material-ui/icons/FirstPage';
+import LastPage from '@material-ui/icons/LastPage';
+import Remove from '@material-ui/icons/Remove';
+import SaveAlt from '@material-ui/icons/SaveAlt';
+import Search from '@material-ui/icons/Search';
+import ViewColumn from '@material-ui/icons/ViewColumn';
+
+const tableIcons = {
+	Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
+	Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
+	Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
+	Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),
+	DetailPanel: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
+	Edit: forwardRef((props, ref) => <Edit {...props} ref={ref} />),
+	Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
+	Filter: forwardRef((props, ref) => <FilterList {...props} ref={ref} />),
+	FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
+	LastPage: forwardRef((props, ref) => <LastPage {...props} ref={ref} />),
+	NextPage: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
+	PreviousPage: forwardRef((props, ref) => <ChevronLeft {...props} ref={ref} />),
+	ResetSearch: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
+	Search: forwardRef((props, ref) => <Search {...props} ref={ref} />),
+	SortArrow: forwardRef((props, ref) => <ArrowDownward {...props} ref={ref} />),
+	ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
+	ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
+};
+
+
 var url = process.env.REACT_APP_URL || "http://localhost:8080/";
 
 
@@ -50,6 +103,7 @@ const Tour = forwardRef((props) => {
 	var myElementRef = React.createRef();
 	const listInnerRef = useRef();
 
+	const defaultMaterialTheme = createTheme();
 
 	const ref = useRef(null);
 	const handleLogout = () => {
@@ -63,7 +117,17 @@ const Tour = forwardRef((props) => {
 		window.location = "#/login";
 	};
 
+	const [data, setData] = useState(props.tour.points); // Assuming your data is in props.tour.points
 
+	const handleDragEnd = (result) => {
+		if (!result.destination) return;
+
+		const items = Array.from(data);
+		const [reorderedItem] = items.splice(result.source.index, 1);
+		items.splice(result.destination.index, 0, reorderedItem);
+
+		setData(items);
+	};
 	useEffect(() => {
 
 		var token = authHeader()
@@ -251,6 +315,7 @@ const Tour = forwardRef((props) => {
 
 	const handleUpdatePartner = async (e, point) => {
 
+		console.log("blalbalbl")
 		await homeDataService.getPoiData(dispatch, point.id);
 		//dispatch({ type: homeDataConstants.UPDATE_POINT_DATA_MODAL_SHOW, point });
 
@@ -272,7 +337,65 @@ const Tour = forwardRef((props) => {
 
 
 	};
-
+	const handleRowDragEnd = (source, destination) => {
+		const newData = [...data];
+		const [removed] = newData.splice(source.index, 1);
+		newData.splice(destination.index, 0, removed);
+		setData(newData);
+	};
+	const states = [
+		'Alabama',
+		'Alaska',
+		'Arizona',
+		'Arkansas',
+		'California',
+		'Colorado',
+		'Connecticut',
+		'Delaware',
+		'Florida',
+		'Georgia',
+		'Hawaii',
+		'Idaho',
+		'Illinois',
+		'Indiana',
+		'Iowa',
+		'Kansas',
+		'Kentucky',
+		'Louisiana',
+		'Maine',
+		'Maryland',
+		'Massachusetts',
+		'Michigan',
+		'Minnesota',
+		'Mississippi',
+		'Missouri',
+		'Montana',
+		'Nebraska',
+		'Nevada',
+		'New Hampshire',
+		'New Jersey',
+		'New Mexico',
+		'New York',
+		'North Carolina',
+		'North Dakota',
+		'Ohio',
+		'Oklahoma',
+		'Oregon',
+		'Pennsylvania',
+		'Rhode Island',
+		'South Carolina',
+		'South Dakota',
+		'Tennessee',
+		'Texas',
+		'Utah',
+		'Vermont',
+		'Virginia',
+		'Washington',
+		'West Virginia',
+		'Wisconsin',
+		'Wyoming',
+		'Puerto Rico',
+	];
 
 	return (
 
@@ -283,17 +406,17 @@ const Tour = forwardRef((props) => {
 				<div>
 
 
-					<div className="table-frame" style={{ marginBottom: "30px", marginLeft: "30px", marginTop:"70px", marginRight: "30px" }} >
+					<div className="table-frame" style={{ marginBottom: "30px", marginLeft: "30px", marginTop: "70px", marginRight: "30px" }} >
 						<table ref={ref} id="my-table" style={{ width: "100%", tableLayout: "fixed" }} >
 							<caption><div className="py-3 px-2 pb-4 md:pb-6 flex flex-row items-center justify-between gap-4">
 								<h4 className="text-heading6">
 									{props.tour.title.english}
 								</h4>
 								<button class="button button--circle button--clear justify-self-end"
-										type="button"
-										onClick={handleCloseMain}>
-										<AiOutlineClose />
-									</button>
+									type="button"
+									onClick={handleCloseMain}>
+									<AiOutlineClose />
+								</button>
 
 							</div></caption>
 							<thead>
@@ -352,67 +475,83 @@ const Tour = forwardRef((props) => {
 													</button>
 												}
 											</div>
-											<table style={{ width: "100%", tableLayout: "fixed" }} >
 
-												<thead>
 
-													<tr>
-														<th style={{ width: "25%" }}>Name</th>
-														<th style={{ width: "15%" }} className="whitespace-nowrap">Price<span
-															className="text-xs font-normal text-black/60 ml-1">/ incl tax</span>
-														</th>
-														<th style={{ width: "15%" }} className="whitespace-nowrap">Offer name</th>
-														<th style={{ width: "10%" }}>Category</th>
-														<th style={{ width: "10%" }} className="whitespace-nowrap">Used coupons<span
-															className="text-xs font-normal text-black/60 ml-1">/ this month</span></th>
-														<th>Options</th>
-													</tr>
-												</thead>
-
-												{props.tour.points.map((points) => (
-													<tbody>
-														<tr id={props.tour.tourId}>
-
-															<td style={{ textAlign: "left", width: "25%", overflow: "hidden" }}>{points.point.name.english} </td>
-															<td style={{ textAlign: "left", width: "15%", overflow: "hidden" }}>
-																{points.point.price == "" ? "/" : `${points.point.price} ${props.tour.currency} including tax`}
-															</td>
-															<td style={{ textAlign: "left", width: "15%", overflow: "hidden" }}>
-																{points.point.offerName == "" ? "/" : `${points.point.offerName} `}
-															</td>
-
-															<td style={{ textAlign: "left", width: "10%", overflow: "hidden" }}>{points.point.category}</td>
-
-															<td style={{ textAlign: "left" }}>{points.monthlyUsed}</td>
-															<td>
+											<MaterialReactTable
+												displayColumnDefOptions={{
+													'mrt-row-actions': {
+														muiTableHeadCellProps: {
+															align: 'center',
+														},
+														size: 120,
+													},
+												}}
+												renderRowActions={({ row, table }) => (
+													<Box sx={{ display: 'flex', gap: '1rem' }}>
+														<Tooltip arrow placement="left" title="Edit">
+															<IconButton onClick={() => table.setEditingRow(row)}>
+																<Edit />
+															</IconButton>
+														</Tooltip>
+														<Tooltip arrow placement="right" title="Delete">
+															<IconButton color="error" onClick={() => handleCloseMain(row)}>
+																<Remove />
+															</IconButton>
+														</Tooltip>
+													</Box>
+												)}
+												autoResetPageIndex={false}
+												columns={[
+													{ header: 'Name', accessorKey: 'point.name.english' },
+													{
+														header: 'Price',
+														accessorKey: 'point.price',
+														Cell: ({ cell }) => (
+															<>
+																{cell.getValue() === "" ? "/" : `${cell.getValue()} ${props.tour.currency} including tax`}
+															</>
+														),
+													},
+													{ header: 'Offer Name', accessorKey: 'point.offerName' },
+													{ header: 'Category', accessorKey: 'point.category' },
+													{ header: 'Used Coupons', accessorKey: 'monthlyUsed' },
+													{
+														header: 'Options',
+														accessorKey: 'point',
+														Cell: ({ cell }) => (
+															<>
 																<div className="flex flex-row items-center gap-2 justify-end">
-																	{points.point.offerName != "" && <button className="button button--secondary button--small"
-																		onClick={(event) => {
-																			visitWebsite(event, points.point.id)
-																		}}>
-																		Web
-																	</button>}
-																	{points.point.offerName != "" && <button className="button button--secondary button--small"
-																		onClick={(event) => {
-																			getQrCode(event, points.point.id)
-																		}}>
-																		Get QR
-																	</button>}
-																	<button className="button button--secondary button--small"
-																		onClick={(e) => handleUpdatePartner(e, points.point)}>
-																		{updatePartner}
-																	</button>
-																	{adminOnly && <button className="button button--secondary button--small"
-																		onClick={(e) => deletePoi(e, props.tour, points.point.id)}>
-																		Delete
-																	</button>}
-																</div>
-															</td>
+																	{cell.getValue().offerName !== "" && <button className="button button--secondary button--small" onClick={() => visitWebsite(cell.getValue().id)}>Web</button>}
+																	{cell.getValue().offerName !== "" && <button className="button button--secondary button--small" onClick={(e) => getQrCode(e, cell.getValue().id)}>Get QR</button>}
+																	<button className="button button--secondary button--small" onClick={(e) => handleUpdatePartner(e, cell.getValue())}>Update</button>
+																	{adminOnly && <button className="button button--secondary button--small" onClick={(e) => deletePoi(e, props.tour, cell.getValue().id)}>Delete</button>}
 
-														</tr>
-													</tbody>
-												))}
-											</table>
+																</div>
+															</>
+														),
+													},
+
+
+												]}
+												data={props.tour.points}
+												enableRowOrdering
+												enableSorting={false}
+												muiTableBodyRowDragHandleProps={({ table }) => ({
+													onDragEnd: () => {
+														const { draggingRow, hoveredRow } = table.getState();
+														if (hoveredRow && draggingRow) {
+															data.splice(
+																hoveredRow.index,
+																0,
+																data.splice(draggingRow.index, 1)[0],
+															);
+															setData([...data]);
+														}
+													},
+												})}
+											/>
+
+
 										</div>
 										<br /> <br />
 									</td>
