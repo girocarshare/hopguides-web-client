@@ -1,0 +1,178 @@
+
+  
+  .textarea-1 {
+    width: 100%;
+    height: 150px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    resize: vertical;}
+  
+    .character-image.highlighted {
+        border: 6px solid blue;
+        /* You can change the color or style of the border as you like */
+        box-shadow: 0 0 10px blue;
+        /* Optional: Adds a glow effect around the highlighted image */
+    }
+  
+  
+ 
+  
+  
+  
+  .container-1 {
+    max-width: 800px;
+    margin: 50px auto;
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  h1 {
+    color: #333;
+  }
+  
+  p {
+    color: #666;
+    line-height: 1.5;
+  }
+  
+  .admin-login {
+    margin-top: 20px;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 10px;
+  }
+  
+  input[type="text"],
+  input[type="password"],
+  select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+  }
+  
+  .button-1 {
+    border-radius: 25px;
+    /* Adjust this value for more or less roundedness */
+    padding: 10px 20px;
+    /* Additional padding to make the button look better */
+    cursor: pointer;
+    /* Changes the cursor to a hand when hovering over the button */
+    border: none;
+    /* Removes the default border */
+    background-color: #17368d;
+    /* A blue color for the button (you can change this) */
+    color: white;
+    /* White text color */
+    transition: background-color 0.3s;
+    /* Smooth transition effect for hover */
+  }
+  
+  .button-1:hover {
+    background-color: #0056b3;
+    /* Darker blue color when hovering over the button */
+  }
+  
+  
+  .description {
+    margin-top: 20px;
+    border-top: 1px solid #ccc;
+    padding-top: 20px;
+    font-family: sans-serif;
+  }
+  
+  .photo-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    /* Allows the images to wrap to the next line if there's not enough space */
+    gap: 10px;
+    /* Provides a gap between the images */
+  }
+  
+  .character-image {
+    width: 300px; 
+    height: 300px; 
+    object-fit: cover; 
+  }
+  
+  textarea {
+    font-family: 'Inter', sans-serif;
+  }
+  
+  .character-container {
+    position: relative; 
+    display: inline-block; 
+    margin: 10px; 
+  }
+  
+  .overlay-button {
+    position: absolute;
+    top: 50%;  /* Position the button at the middle vertically */
+    left: 50%;    /* Position the button at the middle horizontally */
+    transform: translate(-50%, -50%);  /* Center the button */
+    padding: 10px 20px; 
+    background-color: rgba(0, 0, 0, 0.5); 
+    color: white; 
+    border: none; 
+    cursor: pointer; 
+  }
+  
+  .overlay-button:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+
+  .divider-container {
+    position: relative;
+    text-align: center;
+    margin: 2rem 0;
+}
+
+.divider-container::before,
+.divider-container::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 40%;  /* You can adjust this value as needed */
+    height: 1px;
+    background-color: #a0a0a0;  /* Adjust color as needed */
+}
+
+.divider-container::before {
+    left: 0;
+}
+
+.divider-container::after {
+    right: 0;
+}
+
+.divider-text {
+    background-color: #fff;  /* Adjust to the background color of your modal */
+    padding: 0 1rem;
+    position: relative;
+    z-index: 1;
+}
+
+.form__input {
+    height: 50px;  /* Larger height for the input fields */
+    width: 100%; /* Making sure input fields take up full width of their container */
+    /* ... any other styles you want to maintain */
+}
+
+
+.button--primary-1 {
+    width: 100%;  /* Making the button as wide as the input fields */
+    background-color: #87CEEB;  /* Light blue background */
+    color: #ffffff;  /* White text */
+    border: none; 
+    height: 50px; /* Removing any borders */
+    /* ... any other button styles you want to maintain */
+}
+
+
+.button--primary-1:hover {
+    background-color: #76b4d8;  /* Slightly darker blue for hover effect */
+}
+

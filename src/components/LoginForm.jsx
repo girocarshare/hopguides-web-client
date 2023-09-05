@@ -1,7 +1,7 @@
-import {useContext, useState,useEffect} from "react";
-import {UserContext} from "../contexts/UserContext";
-import {userService} from "../services/UserService";
-import {AiOutlineClose} from 'react-icons/ai';
+import { useContext, useState, useEffect } from "react";
+import { UserContext } from "../contexts/UserContext";
+import { userService } from "../services/UserService";
+import { AiOutlineClose } from 'react-icons/ai';
 
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import firebase from 'firebase/compat/app';
@@ -19,15 +19,16 @@ const firebaseConfig = {
 	appId: process.env.REACT_APP_FIREBASE_APP_ID
 };
 
-  firebase.initializeApp(firebaseConfig);
+firebase.initializeApp(firebaseConfig);
 
 const LoginForm = () => {
 	const [isSignedIn, setIsSignedIn] = useState(false); // Local signed-in state.
-	const {userState, dispatch} = useContext(UserContext);
+	const { userState, dispatch } = useContext(UserContext);
 
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [lang, setLang] = useState("");
+	const [emailInserted, setEmailInserted] = useState(false)
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
@@ -38,7 +39,7 @@ const LoginForm = () => {
 		userService.login(loginRequest, dispatch);
 	};
 
-	
+
 	const uiConfig = {
 		// Popup signin flow rather than redirect flow.
 		signInFlow: 'popup',
@@ -46,25 +47,25 @@ const LoginForm = () => {
 		//signInSuccessUrl: '/#/',
 		// We will display Google and Facebook as auth providers.
 		signInOptions: [
-		  firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-		  firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+			firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+			firebase.auth.FacebookAuthProvider.PROVIDER_ID,
 		],
 		callbacks: {
-			signInSuccessWithAuthResult: function(authResult, redirectUrl) {
-				console.log( authResult.user.multiFactor.user.email)
+			signInSuccessWithAuthResult: function (authResult, redirectUrl) {
+				console.log(authResult.user.multiFactor.user.email)
 				var user = authResult.user.multiFactor.user.email;
-				if(user != null){
+				if (user != null) {
 					let loginRequest = {
-						email : user,
-						password : "12345",
+						email: user,
+						password: "12345",
 						role: "PROVIDER"
 					};
-			
+
 					userService.registerandlogin(loginRequest, dispatch);
 				}
-			  },
-		  },
-	  };
+			},
+		},
+	};
 
 
 
@@ -74,46 +75,42 @@ const LoginForm = () => {
 
 	return (
 		<div>
-
 			<div class="relative z-50" aria-labelledby="modal-title" role="dialog" aria-modal="true">
 
-				<div class="modal-overlay"></div>
+<div class="modal-overlay"></div>
 
-				<div class="fixed inset-0 z-10 overflow-y-auto">
+<div class="fixed inset-0 z-10 overflow-y-auto">
 
-					<div class="modal-frame">
+	<div class="modal-frame">
 
-						<div id="myModal" class="modal modal--sm">
-	
-							<div class="modal__header">
-								<h2 class="text-leading">
-									Login
-								</h2>
-								<button class="button button--circle button--clear justify-self-end" type="button"
-										onClick={handleClose}>
-									<AiOutlineClose/>
-								</button>
-							</div>
+		<div id="myModal" class="modal modal--md">
 
-							<div class="modal__body">
-								<div class="flex flex-col items-stretch">
-									<div
-										class="w-32 h-32 rounded-full bg-white border border-black/10 oveflow-hidden bg-contain bg-center bg-no-repeat mx-auto mb-8"
-										style={{backgroundImage: `url(${("assets/img/logo.svg")})`,}}>
+		
+			<div class="modal__body">
+								<div class="flex flex-col ">
+
+									<div class="w-24 h-24 rounded-full bg-white border border-black/10 oveflow-hidden bg-contain bg-center bg-no-repeat mx-auto mb-4" style={{ backgroundImage: `url(${("assets/img/logo.svg")})`, }}></div>
+
+									<h1 class="text-center text-2xl mb-2">Let's get started</h1>
+									<h3 class="text-center text-m mb-8">Transform your photos into stunning videos</h3>
+									<StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
+									<div class="divider-container">
+										<span class="divider-text">or</span>
 									</div>
-									<form class="form" method="post" onSubmit={handleSubmit}>
-										<div className="form__group">
-											<input
+									<form method="post" onSubmit={handleSubmit}>
+										<div >
+											{!emailInserted && <input
 												className="form__input"
+												style={{marginBottom: "30px"}}
 												required
 												name="Email"
 												type="Email"
 												placeholder="Your email"
 												value={email}
 												onChange={(e) => setEmail(e.target.value)}
-											></input>
+											></input>}
 										</div>
-										<div className="form__group">
+										{emailInserted && <div>
 											<input
 												className="form__input"
 												type="password"
@@ -124,11 +121,13 @@ const LoginForm = () => {
 												onChange={(e) => setPassword(e.target.value)}
 											></input>
 											<div
-												className="form__helper text-right"
+												className="form__helper text-right " style={{ marginBottom: "10px" }}
 											>
-												<a class="link" href="#/forgotPassword"> Forgot password? </a>
+
+												<a class="link" href="#/forgotPassword" > Forgot password? </a>
 											</div>
-										</div>
+
+										</div>}
 										<div
 											className="form__group"
 											hidden={!userState.loginError.showError}
@@ -136,24 +135,49 @@ const LoginForm = () => {
 											{userState.loginError.errorMessage}
 										</div>
 
-										<StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
 
-										
-										<div class="form__group flex flex-col items-center">
+
+
+										{!emailInserted && <div class="form__group flex flex-col items-center">
 											<button
-												className="button button--primary min-w-[8rem]"
+												className="button button--primary-1 min-w-[8rem]"
+												onClick={e => setEmailInserted(true)}
+												id="kayitol"
+												value="Continue"
+											>
+												Continue
+											</button>
+										</div>}
+										{emailInserted && <div class="form__group flex flex-col items-center">
+											<button
+												className="button button--primary-1 min-w-[8rem]"
 												type="submit"
 												id="kayitol"
 												value="Log in"
 											>
 												Login
 											</button>
-										</div>
+
+										</div>}
+										<br />
+										<p style={{ display: "inline", fontSize: "0.8rem" }}>Don't have an account? </p>
+										<a class="link text-sm" style={{ color: "blue", fontSize: "0.8rem" }} href="#/signup"> Sign up</a>
+
 									</form>
 								</div>
+
 							</div>
 						</div>
+
+
+					</div>					  <div class="text-center w-full max-w-sm mx-auto">
+						<p style={{ display: "inline", fontSize: "0.8rem" }}>By signing in, I confirm that I have read and accepted Hopguide's</p>
+						<a class="link text-sm" style={{ color: "blue", fontSize: "0.8rem" }} href="#/forgotPassword"> Terms and conditions </a>
+						<p style={{ display: "inline", fontSize: "0.8rem" }}>and</p>
+						<a class="link text-sm" style={{ color: "blue", fontSize: "0.8rem" }} href="#/forgotPassword"> Privacy policy</a>
 					</div>
+					
+
 				</div>
 			</div>
 		</div>

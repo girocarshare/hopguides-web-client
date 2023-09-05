@@ -25,13 +25,18 @@ import UpdatedToursPage from './pages/UpdatedToursPage.jsx';
 import TeaserTourPage from './pages/TeaserTourPage.jsx';
 import WelcomePage from './pages/WelcomePage.jsx';
 import ChatbotPage from './pages/ChatbotPage.jsx';
+import SignupPage from './pages/SignupPage.jsx';
 import TourPage from './pages/TourPage.jsx'
+import VerificationSentPage from './pages/VerificationSentPage.jsx'
+import VerifiedPage from './pages/VerifiedPage.jsx'
 
 function App() {
   return (
     <Router>
       <Switch>
         
+      <Route path="/verificationsent" component={VerificationSentPage} />
+      <Route path="/verified" component={VerifiedPage} />
       <Route path="/chatbot" component={ChatbotPage} />
       <Route path="/welcome" component={WelcomePage} />
       <Route path="/tour/:id" component={TourPage} />
@@ -49,6 +54,7 @@ function App() {
         <Route path="/forgotPassword" component={ForgotPasswordPage} />
         <Route path="/404" component={PageNotFound} />
         <Route path="/login" component={LoginPage} />
+        <Route path="/signup" component={SignupPage} />
         <Route path="/businesspartners" component={BusinessPartnersPage} />
         <Route path="/" component={HomePage} />
         <Redirect to="/404" />

@@ -10,6 +10,7 @@ export const userService = {
 	sendSetPassword,
 	forgotPassword,
 	registerandlogin,
+	signup
 };
 
 
@@ -47,6 +48,41 @@ function login(loginRequest, dispatch) {
 	}
 }
 
+
+
+function signup(loginRequest, dispatch) {
+
+	dispatch(request());
+	Axios.post(`${url}api/users/addUser`, loginRequest, { validateStatus: () => true })
+		.then((res) => {
+			if (res.status === 200) {
+				setAuthInLocalStorage(res.data);
+				dispatch(success());
+				window.location.href="/#/verificationsent"
+							
+			} else if (res.status === 412) {
+				dispatch(failure(res.data.error));
+			} else {
+				dispatch({ type: userConstants.LOGIN_FAILURE });
+			}
+		})
+		.catch((err) =>{
+			
+			var error = "Unknown error, please try again later."
+				dispatch(failure(error));
+			})
+
+	function request() {
+		return { type: userConstants.LOGIN_SUCCESS };
+	}
+	function success() {
+		return { type: userConstants.LOGIN_SUCCESS };
+	}
+	function failure(error) {
+		
+		return { type: userConstants.LOGIN_FAILURE, error };
+	}
+}
 
 
 
