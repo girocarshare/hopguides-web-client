@@ -5,8 +5,6 @@ import { AiOutlineClose } from 'react-icons/ai';
 import { HomeDataContext } from "../contexts/HomeDataContext";
 import HomeData from "./HomeData";
 import { homeDataService } from "../services/HomeDataService";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faVideo, faInfoCircle, faEnvelope } from '@fortawesome/free-solid-svg-icons'
 
 import { deleteLocalStorage, authHeader, gettokens } from "../helpers/auth-header";
 
