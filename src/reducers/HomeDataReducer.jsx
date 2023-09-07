@@ -871,6 +871,8 @@ export const homeDataReducer = (state, action) => {
 
 			//prodCpy.modalData.success = true;
 			//prodCpy.modalData.text = "You have successfully send a request for demo video";
+			
+			prodCpy.loading = false
 			console.log(action.data)
 			prodCpy.video = action.data.data
 			return prodCpy;
@@ -879,11 +881,20 @@ export const homeDataReducer = (state, action) => {
 
 			prodCpy = { ...state };
 
+			prodCpy.loading = false
 			prodCpy.modalData.failure = true;
 			prodCpy.modalData.text = "There has been an error while sending a request for demo video. Please try again later.";
 			return prodCpy;
 
+			case homeDataConstants.SEND_DEMO_REQUEST:
 
+			prodCpy = { ...state };
+
+			//prodCpy.modalData.success = true;
+			//prodCpy.modalData.text = "You have successfully send a request for demo video";
+		
+			prodCpy.loading = true
+			return prodCpy;
 
 		default:
 			return state;

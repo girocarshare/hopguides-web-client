@@ -1,37 +1,35 @@
 import React from 'react';
 import '../App.css'
 
+import { AiOutlineClose } from 'react-icons/ai';
 import { HomeDataContext } from "../contexts/HomeDataContext";
 import HomeData from "./HomeData";
 import { homeDataService } from "../services/HomeDataService";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faVideo, faInfoCircle, faEnvelope } from '@fortawesome/free-solid-svg-icons'
 
+import { deleteLocalStorage, authHeader, gettokens } from "../helpers/auth-header";
 
-
-function AdminLogin() {
+function LoadingOverlay() {
 	return (
-		<div className="admin-login">
-			<h2>Admin Login</h2>
-			<form action="/login" method="post">
-				<label htmlFor="username">Username:</label>
-				<input type="text" id="username" name="username" placeholder="Enter your username" />
-				<label htmlFor="password">Password:</label>
-				<input type="password" id="password" name="password" placeholder="Enter your password" />
-				<button className = "button-1" type="submit">Login</button>
-			</form>
+		<div className="loading-overlay">
+			<div className="loading-spinner"></div>
 		</div>
 	);
 }
 
-function TextBoxes() {
+function TextBoxes({ selectedImage }) {
 
 	const [checkInOptions, setCheckInOptions] = React.useState(["2pm", "3pm", "4pm"]);
 	const [checkOutOptions, setCheckOutOptions] = React.useState(["10am", "11am", "12am"]);
 	const [checkIn, setCheckIn] = React.useState(checkInOptions[0]);
 	const [checkOut, setCheckOut] = React.useState(checkOutOptions[0]);
 
+	const [countTokens, setCountTokens] = React.useState(false);
+	const [tokens, setTokens] = React.useState("");
 	const { homeDataState, dispatch } = React.useContext(HomeDataContext);
 	const descriptions = {
-		1: `Hello and welcome to [Property Name]! We're genuinely excited to have you here. Let's quickly touch on a few essentials to make your arrival seamless. Once you're here, our reception desk is where you'll start. They'll guide you through the check-in process. You'll be given access to your room, either through a key card or a digital method. Please remember that check-in starts from ${checkIn}, and we'd appreciate it if you could check out by ${checkOut}. Of course, we're always here to help, so if you have any questions or need flexibility, don't hesitate to ask. Welcome to [Property Name], and we hope you have a memorable stay. `,
+		1: `Hello and welcome to [Property Name]! We're genuinely excited to have you here. Let's quickly touch on a few essentials to make your arrival seamless. Once you're here, our reception desk is where you'll start. They'll guide you through the check-in process. You'll be given access to your room, either through a key card or a digital method. Please remember that check-in starts from ${checkIn}, and please check out by ${checkOut}. Of course, we're always here to help, so if you have any questions or need flexibility, don't hesitate to ask. Welcome to [Property Name], and we hope you have a memorable stay. `,
 		2: `Safety first, right? At [Property Name], we genuinely believe that. I want to guide you through some key safety features. Our property has clearly marked emergency exits on every floor. Do take a moment to check the evacuation plan in your room. And for your valuables, each room has a secure safe. It's straightforward to use, but we're just a call away if you need help. And just so you know, we've got a 24/7 security system in place, ensuring your peace of mind. Your comfort and security are our top priorities. `,
 		3: `Now, let's talk about the fun stuff - our amenities! Right here at [Property Name], we've created spaces for relaxation, activity, and indulgence. Imagine taking a dip in our refreshing pool or keeping up with your fitness goals in our modern gym. And for those moments when you just want to unwind and treat yourself, our spa offers a range of therapies. There's so much to experience and enjoy here. So, go ahead, explore, and make the most of your stay. `,
 		4: `Hello again! Let's familiarize you with the comfort and convenience we've packed into each room at [Property Name]. Every room is equipped with modern amenities to make your stay truly seamless. Whether it's adjusting the room's temperature for your comfort, enjoying a variety of entertainment on the television, or brewing a fresh cup of coffee in the morning, we've got you covered. And if you're unsure about how to use anything, don't hesitate. We're just a call away, always ready to assist. `,
@@ -61,14 +59,46 @@ function TextBoxes() {
 		10: " French Hotel Receptionist. Samuel, a friendly man in his early 40s, works at a hotel in Accra. Known for his excellent customer service and captivating stories about local folklore, Samuel converses with guests in English and French."
 	};
 
+	function roundUp(number) {
+		return Math.ceil(number);
+	}
+
+
+
+	React.useEffect(() => {
+
+		var token = authHeader()
+		if (token == "null") {
+			window.location = "#/unauthorized";
+		}
+
+	}, [dispatch]);
+
+
+	const handleCountTokens = async () => {
+		if (!selectedImage || !checkIn || !checkOut || !selectedDescription) {
+			setErrorMessage("All fields must be filled out!");
+			return;
+		} else {
+			console.log(checkIn + checkOut)
+			setCountTokens(true)
+			var tokens = selectedDescription.length / 100
+			setTokens(roundUp(tokens))
+		}
+
+	}
+
+	const handleClose = () => {
+
+		setCountTokens(false)
+	};
 
 
 	const [language, setLanguage] = React.useState("");
 	const [text, setText] = React.useState("");
 	const [edit, setEdit] = React.useState(false);
 
-	const [selectedCharacter, setSelectedCharacter] = React.useState('1');
-	const [selectedDescription, setSelectedDescription] = React.useState(descriptions[1]);
+	const [selectedDescription, setSelectedDescription] = React.useState("");
 
 	const [errorMessage, setErrorMessage] = React.useState("");
 
@@ -79,10 +109,7 @@ function TextBoxes() {
 		setSelectedDescription(descriptions[value] || '');
 	};
 
-	const handleCharacterDescriptionChange = (event) => {
-		setSelectedCharacter(event.target.value);
-		setSelectedCharacterDescription(characterDescriptions[event.target.value] || '');
-	};
+
 
 	const editText = (event) => {
 
@@ -109,41 +136,92 @@ function TextBoxes() {
 		//}
 	}
 
+
 	const handleSend = async () => {
 
-		if (!selectedCharacter || !checkIn || !checkOut || !language || !selectedDescription) {
-			setErrorMessage("All fields must be filled out!");
-			return;
-		} else {
-			var data = {
-				checkIn: checkIn,
-				checkOut: checkOut,
-				character: selectedCharacter,
-				language: language,
-				words: selectedDescription
-			}
+		var ofTokens = parseFloat(gettokens()) - parseFloat(tokens)
 
-			console.log(data)
-			await homeDataService.getDemoVideo(dispatch, data);
+		var data = {
+			checkIn: checkIn,
+			checkOut: checkOut,
+			character: selectedImage,
+			//language: language,
+			words: selectedDescription,
+			tokens: ofTokens,
 		}
+
+		await homeDataService.getDemoVideo(dispatch, data, ofTokens);
+
 	};
+
+
+
 
 	return (
 		<div className="textboxes">
-		<h1 class="text-center text-2xl mb-2">
-	Text boxes
-		</h1>
-			<label htmlFor="language">Language:</label>
-			<select id="language" onChange={(e) => redirectToUrl(e)}>
-				<option value="0">Select a Language...</option>
-				<option value="1">English</option>
-				<option value="2">German</option>
-				<option value="3">Italian</option>
-				<option value="4">Spanish</option>
-				<option value="5">French</option>
-			</select>
+			<div>
+				{countTokens &&
+
+					<div class="relative z-50" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+						<div class="modal-overlay"></div>
+						<div class="fixed inset-0 z-10 overflow-y-auto">
+							<div class="modal-frame">
+								<div id="myModal" class="modal modal--md">
+									<div class="modal__header">
+										<h2 class="text-leading">
+											Tokens
+										</h2>
+										<button class="button button--circle button--clear justify-self-end" type="button"
+											onClick={handleClose}>
+											<AiOutlineClose />
+										</button>
+									</div>
+
+									<div class="modal__body flex flex-col items-center justify-center p-5">
+										<p class="text-center text-xl font-bold mb-4">
+											Number of tokens needed for generating this video is:
+										</p>
+										<div class="text-4xl mb-6">
+											{tokens}
+										</div>
+										<p class="text-center text-xl font-bold mb-4">
+											available tokens: {gettokens()}
+										</p>
+
+										<div class="flex space-x-4">
+											<button onClick={e => handleClose(e)} class="px-4 py-2 bg-gray-300 rounded">
+												Cancel
+											</button>
+											<button onClick={e => handleSend(e)} class="px-4 py-2 bg-blue-500 text-white rounded">
+												OK
+											</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>}
+			</div>
+			<div className="mb-2">
+				<label className="block text-sm font-medium text-gray-700 mb-2">Choose when your guests check in</label>
+				<select name="checkin" onChange={e => setCheckIn(e.target.value)} className="form__input w-full p-2 text-sm border rounded-md">
+					{checkInOptions.map((checkin, idx) => (
+						<option key={idx} value={checkin}>{checkin}</option>
+					))}
+				</select>
+			</div>
+
+			<div className="mb-2">
+				<label className="block text-sm font-medium text-gray-700 mb-2">Choose when your guests check out</label>
+				<select name="checkout" onChange={e => setCheckOut(e.target.value)} className="form__input w-full p-2 text-sm border rounded-md">
+					{checkOutOptions.map((checkout, idx) => (
+						<option key={idx} value={checkout}>{checkout}</option>
+					))}
+				</select>
+			</div>
+
 			<label htmlFor="useCases">Use Cases:</label>
-			<select id="useCases" defaultValue="1" onChange={handleDescriptionChange}>
+			<select id="useCases" defaultValue="0" onChange={handleDescriptionChange}>
 				<option value="0">Select a Use Case...</option>
 				<option value="1">Welcome Video (Check-In and Check-Out Procedures)</option>
 				<option value="2">Safety and Security</option>
@@ -163,110 +241,14 @@ function TextBoxes() {
 			</select>
 
 			<div className="description">
-				<button  className = "button-1"  onClick={(e) => editText(e)} style={{ marginBottom: "10px" }}>Edit text</button>
+				<button className="button-1" onClick={(e) => editText(e)} style={{ marginBottom: "10px" }}>Edit text</button>
 
-				<textarea  className="textarea-1" onChange={e => setSelectedDescription(e.target.value)} readOnly={!edit} value={selectedDescription}></textarea>
+				<textarea className="textarea-1" onChange={e => setSelectedDescription(e.target.value)} readOnly={!edit} value={selectedDescription}></textarea>
 			</div>
 
-			<label htmlFor="character">Character:</label>
-			<select id="character" onChange={(e) => handleCharacterDescriptionChange(e)} >
-				<option value="0">Select a Character...</option>
-				<option value="6">Sam Swaney</option>
-				<option value="1">Isabella Rossi</option>
-				<option value="2">Lorenzo Furlan</option>
-				<option value="3">Maria Silva</option>
-				<option value="4">Johann Bauer</option>
-				<option value="5">Nia Jones</option>
-				<option value="7">Esperanza Gomez</option>
-				<option value="8">Diego Martinez</option>
-				<option value="9">Sophie Leblanc</option>
-				<option value="10">Samuel Agyei</option>
 
 
-			</select>
 
-			<textarea className="textarea-1" value={selectedCharacterDescription} readOnly />
-
-			<div className="photo-gallery">
-				{selectedCharacter === '6' && (
-					<div className="character-container">
-						<img id="imgSam" src="https://hopguides.s3.eu-central-1.amazonaws.com/video-images/character_descriptions/sam.png" alt="Sam Swaney" className="character-image" />
-						<a href="https://hopguides.s3.eu-central-1.amazonaws.com/video-images/character_descriptions/6+Sam.mp4" target="_blank" rel="noopener noreferrer" className="overlay-button">Watch Video</a>
-					</div>
-				)}
-				{selectedCharacter === '1' && (
-					<div className="character-container">
-						<img id="imgIsabella" src="https://hopguides.s3.eu-central-1.amazonaws.com/video-images/character_descriptions/isabella.png" alt="Isabella Rossi" className="character-image" />
-						<a href="https://hopguides.s3.eu-central-1.amazonaws.com/video-images/character_descriptions/1+Isabella.mp4" target="_blank" rel="noopener noreferrer" className="overlay-button">Watch Video</a>
-					</div>
-				)}
-				{selectedCharacter === '2' && (
-					<div className="character-container">
-						<img id="imgLorenzo" src="https://hopguides.s3.eu-central-1.amazonaws.com/video-images/character_descriptions/lorenzo.png" alt="Lorenzo Furlan" className="character-image" />
-						<a href="https://hopguides.s3.eu-central-1.amazonaws.com/video-images/character_descriptions/2+Lorenzo.mp4" target="_blank" rel="noopener noreferrer" className="overlay-button">Watch Video</a>
-					</div>
-				)}
-				{selectedCharacter === '3' && (
-					<div className="character-container">
-						<img id="imgMaria" src="https://hopguides.s3.eu-central-1.amazonaws.com/video-images/character_descriptions/maria.png" alt="Maria Silva" className="character-image" />
-						<a href="https://hopguides.s3.eu-central-1.amazonaws.com/video-images/character_descriptions/3+Maria.mp4" target="_blank" rel="noopener noreferrer" className="overlay-button">Watch Video</a>
-					</div>
-				)}
-				{selectedCharacter === '4' && (
-					<div className="character-container">
-						<img id="imgJohann" src="https://hopguides.s3.eu-central-1.amazonaws.com/video-images/character_descriptions/johann.png" alt="Johann Bauer" className="character-image" />
-						<a href="https://hopguides.s3.eu-central-1.amazonaws.com/video-images/character_descriptions/4+Johann.mp4" target="_blank" rel="noopener noreferrer" className="overlay-button">Watch Video</a>
-					</div>
-				)}
-				{selectedCharacter === '5' && (
-					<div className="character-container">
-						<img id="imgNia" src="https://hopguides.s3.eu-central-1.amazonaws.com/video-images/character_descriptions/nia.png" alt="Nia Jones" className="character-image" />
-						<a href="https://hopguides.s3.eu-central-1.amazonaws.com/video-images/character_descriptions/5+Nia.mp4" target="_blank" rel="noopener noreferrer" className="overlay-button">Watch Video</a>
-					</div>
-				)}
-				{selectedCharacter === '7' && (
-					<div className="character-container">
-						<img id="imgEsperanza" src="https://hopguides.s3.eu-central-1.amazonaws.com/video-images/character_descriptions/esperanza.png" alt="Esperanza Gomez" className="character-image" />
-						<a href="https://hopguides.s3.eu-central-1.amazonaws.com/video-images/character_descriptions/7+Esperanza.mp4" target="_blank" rel="noopener noreferrer" className="overlay-button">Watch Video</a>
-					</div>
-				)}
-				{selectedCharacter === '8' && (
-					<div className="character-container">
-						<img id="imgDiego" src="https://hopguides.s3.eu-central-1.amazonaws.com/video-images/character_descriptions/diego.png" alt="Diego Martinez" className="character-image" />
-						<a href="https://hopguides.s3.eu-central-1.amazonaws.com/video-images/character_descriptions/8+Diego.mp4" target="_blank" rel="noopener noreferrer" className="overlay-button">Watch Video</a>
-					</div>
-				)}
-				{selectedCharacter === '9' && (
-					<div className="character-container">
-						<img id="imgSophie" src="https://hopguides.s3.eu-central-1.amazonaws.com/video-images/character_descriptions/sophie.png" alt="Sophie Leblanc" className="character-image" />
-						<a href="https://hopguides.s3.eu-central-1.amazonaws.com/video-images/character_descriptions/9+Sophia.mp4" target="_blank" rel="noopener noreferrer" className="overlay-button">Watch Video</a>
-					</div>
-				)}
-				{selectedCharacter === '10' && (
-					<div className="character-container">
-						<img id="imgSamuel" src="https://hopguides.s3.eu-central-1.amazonaws.com/video-images/character_descriptions/samuel.png" alt="Samuel Agyei" className="character-image" />
-						<a href="https://hopguides.s3.eu-central-1.amazonaws.com/video-images/character_descriptions/10+Samuel.mp4" target="_blank" rel="noopener noreferrer" className="overlay-button">Watch Video</a>
-					</div>
-				)}
-			</div>
-
-			<div className="mb-2">
-				<label className="block text-sm font-medium text-gray-700 mb-2">Choose when your guests check in</label>
-				<select name="checkin" onChange={e => setCheckIn(e.target.value)} className="form__input w-full p-2 text-sm border rounded-md">
-					{checkInOptions.map((checkin, idx) => (
-						<option key={idx} value={checkin}>{checkin}</option>
-					))}
-				</select>
-			</div>
-
-			<div className="mb-2">
-				<label className="block text-sm font-medium text-gray-700 mb-2">Choose when your guests check out</label>
-				<select name="checkout" onChange={e => setCheckOut(e.target.value)} className="form__input w-full p-2 text-sm border rounded-md">
-					{checkOutOptions.map((checkout, idx) => (
-						<option key={idx} value={checkout}>{checkout}</option>
-					))}
-				</select>
-			</div>
 
 			{errorMessage && (
 				<div className="text-sm text-red-500 mb-4">
@@ -274,7 +256,7 @@ function TextBoxes() {
 				</div>
 			)}
 
-			<button  className = "button-1"  id="generateVideo" onClick={handleSend}>Generate Video</button>
+			<button className="button-1" id="generateVideo" onClick={handleCountTokens}>Generate Video</button>
 
 			{homeDataState.video && <div className="video-section w-2/3 pl-4 h-full">
 				<iframe
@@ -292,23 +274,141 @@ function TextBoxes() {
 	);
 }
 
+function SideMenu() {
+	return (
+		<div className="side-menu bg-black text-white w-64 min-h-screen p-4 flex flex-col">
+			<ul className="flex-1 space-y-4">
+				<li className="flex items-center space-x-2 py-2">
+					<i className="fas fa-video"></i>
+					<span>Create Video</span>
+				</li>
+				<li className="flex items-center space-x-2 py-2 border-t border-white">
+					<i className="fas fa-info-circle"></i>
+					<span>About Us</span>
+				</li>
+				<li className="flex items-center space-x-2 py-2 border-t border-white">
+					<i className="fas fa-envelope"></i>
+					<span>Contact</span>
+				</li>
+				<li className="flex items-center space-x-2 py-2 border-t border-white">
+					<i className="fas fa-envelope"></i>
+					<span>Pricing</span>
+				</li>
+				{/* Add more menu items here */}
+			</ul>
+			<div className="flex items-center space-x-2 mt-4 py-2 border-t border-white">
+				<i className="fas fa-coins"></i>
+				<span>Available tokens {gettokens()}</span>
+			</div>
+		</div>
+	);
+}
+function PhotoGallery({ selectedImage, setSelectedImage, videoMapping }) {
+	// Placeholder video mapping (this remains the same)
 
+
+	return (
+		<div className="photo-gallery">
+			{['Sam', 'Isabella', 'Lorenzo', 'Maria', 'Johann', 'Nia', 'Esperanza', 'Diego', 'Sophie', 'Samuel'].map(name => (
+				<div className="character-container" key={name}>
+					<img
+						id={`img${name}`}
+						src={`https://hopguides.s3.eu-central-1.amazonaws.com/video-images/character_descriptions/${name.toLowerCase()}.png`}
+						alt={`${name}`}
+						className={`character-image ${selectedImage === `img${name}` ? 'selected' : ''}`}
+
+						onClick={() => {
+							setSelectedImage(`img${name}`);
+							console.log(`Selected image: img${name}`);
+						}}
+					/>
+				</div>
+			))}
+		</div>
+	);
+}
 
 
 function WelcomePageForm() {
+	// Moved state to this parent component
+	const [selectedImage, setSelectedImage] = React.useState(null);
+
+	const { homeDataState, dispatch } = React.useContext(HomeDataContext);
+	const videoMapping = {
+		'imgSam': 'https://hopguides.s3.eu-central-1.amazonaws.com/video-images/character_descriptions/6+Sam.mp4',
+		'imgIsabella': 'https://hopguides.s3.eu-central-1.amazonaws.com/video-images/character_descriptions/1+Isabella.mp4',
+		'imgLorenzo': 'https://hopguides.s3.eu-central-1.amazonaws.com/video-images/character_descriptions/2+Lorenzo.mp4',
+		'imgMaria': 'https://hopguides.s3.eu-central-1.amazonaws.com/video-images/character_descriptions/3+Maria.mp4',
+		'imgJohann': 'https://hopguides.s3.eu-central-1.amazonaws.com/video-images/character_descriptions/4+Johann.mp4',
+		'imgNia': 'https://hopguides.s3.eu-central-1.amazonaws.com/video-images/character_descriptions/5+Nia.mp4',
+		'imgEsperanza': 'https://hopguides.s3.eu-central-1.amazonaws.com/video-images/character_descriptions/7+Esperanza.mp4',
+		'imgDiego': 'https://hopguides.s3.eu-central-1.amazonaws.com/video-images/character_descriptions/8+Diego.mp4',
+		'imgSophie': 'https://hopguides.s3.eu-central-1.amazonaws.com/video-images/character_descriptions/9+Sophia.mp4',
+		'imgSamuel': 'https://hopguides.s3.eu-central-1.amazonaws.com/video-images/character_descriptions/10+Samuel.mp4',
+		// ... add other mappings here
+	};
+
+	const characterDescriptions = {
+		'imgIsabella': "Italian Hotel Receptionist. Isabella is a charismatic woman in her early 30s who works at a boutique hotel in Rome. She's multilingual, fluent in Italian, English, Spanish, and French. Known for her stylish attire and warm personality, she always greets guests with her dazzling smile and helpful recommendations for local attractions.",
+		'imgLorenzo': "Ahistorian from Rome, Italy, hosts guests in his renovated apartment in a historic building, offering insightful guided tours and sharing lesser-known stories about the Eternal City's fascinating past.",
+		'imgMaria': "German Resort Receptionist. Maria, a charming woman in her late 30s, works at a beach resort in Rio de Janeiro. Her energy is infectious, and her helpful recommendations about the city's best samba clubs and hidden culinary gems are always on point. Maria speaks Portuguese and German.",
+		'imgJohann': " German Hostel Receptionist. Johann is a friendly, laid-back man in his mid-20s. He works at a popular youth hostel in Berlin and is known for his quick wit and extensive knowledge about the city's underground music scene. He loves connecting with guests from around the world and often organizes group outings to local concerts.",
+		'imgNia': "Welsh Bed & Breakfast Receptionist. Nia, a middle-aged woman with a cheery demeanor, works at a cozy B&B in the heart of Cardiff. Known for her infectious laughter and knack for storytelling, she can engage guests in English and Welsh, making their stay extra memorable.",
+		'imgSam': "an outdoor enthusiast from Colorado, USA, offers his rustic mountain cabin, enhancing the stay with guided hiking recommendations and showcasing his love for the Rockies' beauty.",
+		'imgEsperanza': "Spanish Hotel Receptionist. Esperanza is a vibrant woman in her late 20s, working at a beach resort in Ibiza. Known for her sunny disposition and excellent customer service, she always has the best recommendations for beaches, clubs, and restaurants on the island. Esperanza is fluent in Spanish and English, and can also converse in French and Italian.",
+		'imgDiego': "Mexican Hostel Receptionist. Diego, a lively man in his mid-20s, runs the front desk at a popular hostel in Cancun. With his insider tips on local eateries and hidden beaches, he is loved by backpackers. He's fluent in Spanish and English.",
+		'imgSophie': "French Bed & Breakfast Receptionist. Sophie, a charming woman in her early 50s, works at a quaint B&B in Provence. Her warm, maternal demeanor and her delicious homemade croissants make every guest feel like they're home. She speaks French and English fluently and has a basic understanding of German and Italian.",
+		'imgSamuel': " French Hotel Receptionist. Samuel, a friendly man in his early 40s, works at a hotel in Accra. Known for his excellent customer service and captivating stories about local folklore, Samuel converses with guests in English and French."
+	};
+
+
+
 	return (
-		<div className="container-1">
-			<header>
-				<img src="images/logo.png" alt="Logo" className="logo" style={{ width: "200px" }} />
-			</header>
-			
-		<h1 class="text-center text-2xl mb-2">
-	Welcome to hopguides
-		</h1>
-			<AdminLogin />
-			<TextBoxes />
+		<div>
+
+			{homeDataState.loading && <LoadingOverlay />}
+			<div className="bg-black">
+				<header>
+					<img src="https://hopguides.s3.eu-central-1.amazonaws.com/video-images/character_descriptions/Logo+white.png" alt="Logo" className="logo w-48" />
+					<h1 className="text-center text-2xl mb-2 text-white">Welcome to hopguides</h1>
+				</header>
+
+				<div className="flex-grow-container">
+					{/* Assuming SideMenu has a class you can target for width adjustment */}
+					<div className="side-menu w-64">
+						<SideMenu />
+					</div>
+					<div className="video-section-container">
+						{/* Top part of the video section */}
+						<div className="video-section-top bg-gray-200 p-2">
+							{/* Display video based on selected character */}
+							{selectedImage && (
+								<video width="300" height="300" controls key={videoMapping[selectedImage]}>
+									<source src={videoMapping[selectedImage]} type="video/mp4" />
+									Your browser does not support the video tag.
+								</video>
+							)}
+						</div>
 
 
+
+						{/* Bottom part of the video section */}
+						<div className="video-section-bottom bg-gray-200 p-2">
+							<PhotoGallery selectedImage={selectedImage} setSelectedImage={setSelectedImage} videoMapping={videoMapping} />
+						</div>
+
+						{/* Middle part of the video section */}
+						<div className="video-section-middle bg-gray-300 p-4">
+							<textarea className="textarea-1" value={characterDescriptions[selectedImage]} readOnly />
+						</div>
+					</div>
+
+					{/* Adjusted the width from w-900 to w-full for maximum width */}
+					<div className="textboxes-section w-3/5 p-4 bg-white textbox-container">
+						<TextBoxes selectedImage={selectedImage} />
+					</div>
+				</div>
+			</div>
 		</div>
 	);
 }

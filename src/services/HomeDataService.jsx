@@ -1,6 +1,7 @@
 import Axios from "axios";
 import { homeDataConstants } from "../constants/HomeDataConstants";
 
+import { setTokens } from "../helpers/auth-header";
 import { authHeader } from "../helpers/auth-header";
 var url = process.env.REACT_APP_URL || "http://localhost:8080/";
 
@@ -57,7 +58,7 @@ function addTeaserVideo( tf, dispatch) {
 
 
 
-async function getDemoVideo(dispatch ,data) {
+async function getDemoVideo(dispatch ,data, tokens) {
 	
 	
 	dispatch(request());
@@ -69,6 +70,9 @@ async function getDemoVideo(dispatch ,data) {
 		}},{ validateStatus: () => true })
 		.then((res) => {
 			if (res.status === 200) {
+				
+	console.log(tokens)
+				setTokens(tokens);
 				dispatch(success(res.data));
 			} else if (res.status === 215) {
 				dispatch(failure(res.data.response));

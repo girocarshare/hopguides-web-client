@@ -6,14 +6,7 @@
     padding: 10px;
     border: 1px solid #ccc;
     resize: vertical;}
-  
-    .character-image.highlighted {
-        border: 6px solid blue;
-        /* You can change the color or style of the border as you like */
-        box-shadow: 0 0 10px blue;
-        /* Optional: Adds a glow effect around the highlighted image */
-    }
-  
+
   
  
   
@@ -92,12 +85,7 @@
     /* Provides a gap between the images */
   }
   
-  .character-image {
-    width: 300px; 
-    height: 300px; 
-    object-fit: cover; 
-  }
-  
+
   textarea {
     font-family: 'Inter', sans-serif;
   }
@@ -175,4 +163,97 @@
 .button--primary-1:hover {
     background-color: #76b4d8;  /* Slightly darker blue for hover effect */
 }
+.full-height {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
 
+/* Allow the main content area to grow and fill the space */
+.flex-grow-container {
+    flex-grow: 1;
+    display: flex;
+}
+
+/* Restrict the height of the text boxes and make them scrollable */
+.scrollable-content {
+    max-height: calc(100vh - [your_header_height]px);
+    overflow-y: auto;
+}
+
+.textbox-container {
+    height: 900px;
+    overflow-y: auto;
+}
+
+
+.character-image {
+    @apply w-full rounded-lg shadow-md;
+}
+
+.overlay-button {
+    @apply absolute bottom-2 right-2 px-4 py-2 bg-black bg-opacity-70 text-white rounded-lg cursor-pointer transition-all duration-300;
+}
+
+.overlay-button:hover {
+    @apply bg-opacity-90;
+}
+
+.video-section-top {
+    display: flex;
+    align-items: center; /* vertically centers children */
+    justify-content: center;
+    flex: 1; /* takes up all available space */
+    background-color: #eaeaea; /* or any desired color */
+}
+
+.video-section-container {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.video-section-bottom {
+    height: 300px; /* Adjust this value as needed */
+    overflow: auto; /* To allow scrolling if content overflows */
+}
+
+.character-image {
+    width: 100px;  /* Square dimensions */
+    height: 100px; /* Square dimensions */
+    object-fit: cover; /* To maintain aspect ratio */
+    margin: 5px;
+    cursor: pointer; /* Optional: Add some spacing around each image */
+}
+
+.character-image.selected {
+    border: 3px solid #00ff00; /* Green border for selected images */
+    cursor: pointer;
+}
+
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* semi-transparent background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* make sure it's on top of everything else */
+}
+
+.loading-spinner {
+  border: 16px solid #f3f3f3; 
+  border-top: 16px solid #3498db;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
