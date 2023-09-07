@@ -1,0 +1,259 @@
+
+  
+  .textarea-1 {
+    width: 100%;
+    height: 150px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    resize: vertical;}
+
+  
+ 
+  
+  
+  
+  .container-1 {
+    max-width: 800px;
+    margin: 50px auto;
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  h1 {
+    color: #333;
+  }
+  
+  p {
+    color: #666;
+    line-height: 1.5;
+  }
+  
+  .admin-login {
+    margin-top: 20px;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 10px;
+  }
+  
+  input[type="text"],
+  input[type="password"],
+  select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+  }
+  
+  .button-1 {
+    border-radius: 25px;
+    /* Adjust this value for more or less roundedness */
+    padding: 10px 20px;
+    /* Additional padding to make the button look better */
+    cursor: pointer;
+    /* Changes the cursor to a hand when hovering over the button */
+    border: none;
+    /* Removes the default border */
+    background-color: #17368d;
+    /* A blue color for the button (you can change this) */
+    color: white;
+    /* White text color */
+    transition: background-color 0.3s;
+    /* Smooth transition effect for hover */
+  }
+  
+  .button-1:hover {
+    background-color: #0056b3;
+    /* Darker blue color when hovering over the button */
+  }
+  
+  
+  .description {
+    margin-top: 20px;
+    border-top: 1px solid #ccc;
+    padding-top: 20px;
+    font-family: sans-serif;
+  }
+  
+  .photo-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    /* Allows the images to wrap to the next line if there's not enough space */
+    gap: 10px;
+    /* Provides a gap between the images */
+  }
+  
+
+  textarea {
+    font-family: 'Inter', sans-serif;
+  }
+  
+  .character-container {
+    position: relative; 
+    display: inline-block; 
+    margin: 10px; 
+  }
+  
+  .overlay-button {
+    position: absolute;
+    top: 50%;  /* Position the button at the middle vertically */
+    left: 50%;    /* Position the button at the middle horizontally */
+    transform: translate(-50%, -50%);  /* Center the button */
+    padding: 10px 20px; 
+    background-color: rgba(0, 0, 0, 0.5); 
+    color: white; 
+    border: none; 
+    cursor: pointer; 
+  }
+  
+  .overlay-button:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+
+  .divider-container {
+    position: relative;
+    text-align: center;
+    margin: 2rem 0;
+}
+
+.divider-container::before,
+.divider-container::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 40%;  /* You can adjust this value as needed */
+    height: 1px;
+    background-color: #a0a0a0;  /* Adjust color as needed */
+}
+
+.divider-container::before {
+    left: 0;
+}
+
+.divider-container::after {
+    right: 0;
+}
+
+.divider-text {
+    background-color: #fff;  /* Adjust to the background color of your modal */
+    padding: 0 1rem;
+    position: relative;
+    z-index: 1;
+}
+
+.form__input {
+    height: 50px;  /* Larger height for the input fields */
+    width: 100%; /* Making sure input fields take up full width of their container */
+    /* ... any other styles you want to maintain */
+}
+
+
+.button--primary-1 {
+    width: 100%;  /* Making the button as wide as the input fields */
+    background-color: #87CEEB;  /* Light blue background */
+    color: #ffffff;  /* White text */
+    border: none; 
+    height: 50px; /* Removing any borders */
+    /* ... any other button styles you want to maintain */
+}
+
+
+.button--primary-1:hover {
+    background-color: #76b4d8;  /* Slightly darker blue for hover effect */
+}
+.full-height {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Allow the main content area to grow and fill the space */
+.flex-grow-container {
+    flex-grow: 1;
+    display: flex;
+}
+
+/* Restrict the height of the text boxes and make them scrollable */
+.scrollable-content {
+    max-height: calc(100vh - [your_header_height]px);
+    overflow-y: auto;
+}
+
+.textbox-container {
+    height: 900px;
+    overflow-y: auto;
+}
+
+
+.character-image {
+    @apply w-full rounded-lg shadow-md;
+}
+
+.overlay-button {
+    @apply absolute bottom-2 right-2 px-4 py-2 bg-black bg-opacity-70 text-white rounded-lg cursor-pointer transition-all duration-300;
+}
+
+.overlay-button:hover {
+    @apply bg-opacity-90;
+}
+
+.video-section-top {
+    display: flex;
+    align-items: center; /* vertically centers children */
+    justify-content: center;
+    flex: 1; /* takes up all available space */
+    background-color: #eaeaea; /* or any desired color */
+}
+
+.video-section-container {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.video-section-bottom {
+    height: 300px; /* Adjust this value as needed */
+    overflow: auto; /* To allow scrolling if content overflows */
+}
+
+.character-image {
+    width: 100px;  /* Square dimensions */
+    height: 100px; /* Square dimensions */
+    object-fit: cover; /* To maintain aspect ratio */
+    margin: 5px;
+    cursor: pointer; /* Optional: Add some spacing around each image */
+}
+
+.character-image.selected {
+    border: 3px solid #00ff00; /* Green border for selected images */
+    cursor: pointer;
+}
+
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* semi-transparent background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* make sure it's on top of everything else */
+}
+
+.loading-spinner {
+  border: 16px solid #f3f3f3; 
+  border-top: 16px solid #3498db;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

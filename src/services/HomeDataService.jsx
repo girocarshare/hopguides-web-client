@@ -1,7 +1,7 @@
 import Axios from "axios";
 import { homeDataConstants } from "../constants/HomeDataConstants";
 
-import { authHeader } from "../helpers/auth-header";
+import { authHeader, setTokens } from "../helpers/auth-header";
 var url = process.env.REACT_APP_URL || "http://localhost:8080/";
 
 export const homeDataService = {
@@ -57,7 +57,7 @@ function addTeaserVideo( tf, dispatch) {
 
 
 
-async function getDemoVideo(dispatch ,data) {
+async function getDemoVideo(dispatch ,data, tokens) {
 	
 	
 	dispatch(request());
@@ -69,6 +69,9 @@ async function getDemoVideo(dispatch ,data) {
 		}},{ validateStatus: () => true })
 		.then((res) => {
 			if (res.status === 200) {
+				
+	console.log(tokens)
+				setTokens(tokens);
 				dispatch(success(res.data));
 			} else if (res.status === 215) {
 				dispatch(failure(res.data.response));
@@ -94,6 +97,7 @@ async function getDemoVideo(dispatch ,data) {
 		return { type: homeDataConstants.SEND_DEMO_FAILURE, error };
 	}
 }
+
 
 
 
