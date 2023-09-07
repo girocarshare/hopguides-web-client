@@ -1,6 +1,6 @@
 import React from 'react';
 import '../App.css'
-
+import { Link } from 'react-router-dom';
 import { AiOutlineClose } from 'react-icons/ai';
 import { HomeDataContext } from "../contexts/HomeDataContext";
 import HomeData from "./HomeData";
@@ -9,11 +9,12 @@ import { homeDataService } from "../services/HomeDataService";
 import { deleteLocalStorage, authHeader, gettokens } from "../helpers/auth-header";
 
 function LoadingOverlay() {
-	return (
-		<div className="loading-overlay">
-			<div className="loading-spinner"></div>
-		</div>
-	);
+    return (
+        <div className="loading-overlay flex flex-col items-center justify-center">
+            <div className="loading-spinner"></div>
+            <div className="loading-text">Generating video - this may take up to one minute</div>
+        </div>
+    );
 }
 
 function TextBoxes({ selectedImage }) {
@@ -244,10 +245,6 @@ function TextBoxes({ selectedImage }) {
 				<textarea className="textarea-1" onChange={e => setSelectedDescription(e.target.value)} readOnly={!edit} value={selectedDescription}></textarea>
 			</div>
 
-
-
-
-
 			{errorMessage && (
 				<div className="text-sm text-red-500 mb-4">
 					{errorMessage}
@@ -275,30 +272,38 @@ function TextBoxes({ selectedImage }) {
 function SideMenu() {
 	return (
 		<div className="side-menu bg-black text-white w-64 min-h-screen p-4 flex flex-col">
-			<ul className="flex-1 space-y-4">
-				<li className="flex items-center space-x-2 py-2">
+		<ul className="flex-1 space-y-4">
+			<li className="flex items-center space-x-2 py-2">
+				<a href="https://hopguides-web-client-main-j7limbsbmq-oc.a.run.app/#/welcome">
 					<i className="fas fa-video"></i>
 					<span>Create Video</span>
-				</li>
-				<li className="flex items-center space-x-2 py-2 border-t border-white">
+				</a>
+			</li>
+			<li className="flex items-center space-x-2 py-2 border-t border-white">
+				<a href="https://www.hopguides.com/about-us">
 					<i className="fas fa-info-circle"></i>
 					<span>About Us</span>
-				</li>
-				<li className="flex items-center space-x-2 py-2 border-t border-white">
+				</a>
+			</li>
+			<li className="flex items-center space-x-2 py-2 border-t border-white">
+				<a href="https://www.hopguides.com/contact">
 					<i className="fas fa-envelope"></i>
 					<span>Contact</span>
-				</li>
-				<li className="flex items-center space-x-2 py-2 border-t border-white">
+				</a>
+			</li>
+			<li className="flex items-center space-x-2 py-2 border-t border-white">
+				<a href="/">
 					<i className="fas fa-envelope"></i>
 					<span>Pricing</span>
-				</li>
-				{/* Add more menu items here */}
-			</ul>
-			<div className="flex items-center space-x-2 mt-4 py-2 border-t border-white">
-				<i className="fas fa-coins"></i>
-				<span>Available tokens {gettokens()}</span>
-			</div>
+				</a>
+			</li>
+			{/* Add more menu items here */}
+		</ul>
+		<div className="flex items-center space-x-2 mt-4 py-2 border-t border-white">
+			<i className="fas fa-coins"></i>
+			<span>Available tokens {gettokens()}</span>
 		</div>
+	</div>
 	);
 }
 function PhotoGallery({ selectedImage, setSelectedImage, videoMapping }) {
@@ -364,7 +369,7 @@ function WelcomePageForm() {
 	return (
 		<div>
 
-			{homeDataState.loading && <LoadingOverlay />}
+			{ homeDataState.loading && <LoadingOverlay />}
 			<div className="bg-black">
 				<header>
 					<img src="https://hopguides.s3.eu-central-1.amazonaws.com/video-images/character_descriptions/Logo+white.png" alt="Logo" className="logo w-48" />
