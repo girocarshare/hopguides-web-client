@@ -9,12 +9,12 @@ import { homeDataService } from "../services/HomeDataService";
 import { deleteLocalStorage, authHeader, gettokens } from "../helpers/auth-header";
 
 function LoadingOverlay() {
-    return (
-        <div className="loading-overlay flex flex-col items-center justify-center">
-            <div className="loading-spinner"></div>
-            <div className="loading-text">Generating video - this may take up to one minute</div>
-        </div>
-    );
+	return (
+		<div className="loading-overlay flex flex-col items-center justify-center">
+			<div className="loading-spinner"></div>
+			<div className="loading-text">Generating video - this may take up to one minute</div>
+		</div>
+	);
 }
 
 function TextBoxes({ selectedImage }) {
@@ -139,14 +139,20 @@ function TextBoxes({ selectedImage }) {
 	const handleSend = async () => {
 
 		var ofTokens = parseFloat(gettokens()) - parseFloat(tokens)
-
+		var text = ""
+		if (selectedImage == 1) {
+			text = `Hello and welcome to [Property Name]! We're genuinely excited to have you here. Let's quickly touch on a few essentials to make your arrival seamless. Once you're here, our reception desk is where you'll start. They'll guide you through the check-in process. You'll be given access to your room, either through a key card or a digital method. Please remember that check-in starts from ${checkIn}, and please check out by ${checkOut}. Of course, we're always here to help, so if you have any questions or need flexibility, don't hesitate to ask. Welcome to [Property Name], and we hope you have a memorable stay. `
+		} else {
+			text = selectedDescription
+		}
 		var data = {
 			checkIn: checkIn,
 			checkOut: checkOut,
 			character: selectedImage,
 			//language: language,
-			words: selectedDescription,
-			tokens: ofTokens,
+			words: text,
+			tokens: gettokens(),
+			tokensneeded: tokens
 		}
 
 		await homeDataService.getDemoVideo(dispatch, data, ofTokens);
@@ -183,17 +189,19 @@ function TextBoxes({ selectedImage }) {
 										<div class="text-4xl mb-6">
 											{tokens}
 										</div>
-										<p class="text-center text-xl font-bold mb-4">
+										<p class="text-center text-l mb-4">
 											available tokens: {gettokens()}
 										</p>
-
+										{(parseFloat(gettokens()) - parseFloat(tokens) < 0) && <p class="text-center text-red-500 text-m font-bold mb-4">
+											You don't have enough tokens to generate video
+										</p>}
 										<div class="flex space-x-4">
-											<button onClick={e => handleClose(e)} class="px-4 py-2 bg-gray-300 rounded">
+											<button onClick={e => handleClose(e)} class="button button--primary min-w-[8rem]">
 												Cancel
 											</button>
-											<button onClick={e => handleSend(e)} class="px-4 py-2 bg-blue-500 text-white rounded">
+											{(parseFloat(gettokens()) - parseFloat(tokens) > 0) && <div><button onClick={e => handleSend(e)} class="button button--primary min-w-[8rem]">
 												OK
-											</button>
+											</button></div>}
 										</div>
 									</div>
 								</div>
@@ -203,7 +211,7 @@ function TextBoxes({ selectedImage }) {
 			</div>
 			<div className="mb-2">
 				<label className="block text-sm font-medium text-gray-700 mb-2">Choose when your guests check in</label>
-				<select name="checkin" onChange={e => setCheckIn(e.target.value)} className="form__input w-full p-2 text-sm border rounded-md">
+				<select name="checkin" onChange={e => setCheckIn(e.target.value)} className="form__input w-full p-2 h-32 text-sm border rounded-md">
 					{checkInOptions.map((checkin, idx) => (
 						<option key={idx} value={checkin}>{checkin}</option>
 					))}
@@ -239,10 +247,10 @@ function TextBoxes({ selectedImage }) {
 				<option value="17">History and Architecture</option>
 			</select>
 
-			<div className="description">
-				<button className="button-1" onClick={(e) => editText(e)} style={{ marginBottom: "10px" }}>Edit text</button>
+			<div className="description flex flex-col items-end">
+				<button className="button button--primary min-w-[8rem]" onClick={(e) => editText(e)} style={{ marginBottom: "10px" }}>Edit text</button>
 
-				<textarea className="textarea-1" onChange={e => setSelectedDescription(e.target.value)} readOnly={!edit} value={selectedDescription}></textarea>
+				<textarea className="textarea-1 " onChange={e => setSelectedDescription(e.target.value)} readOnly={!edit} value={selectedDescription}></textarea>
 			</div>
 
 			{errorMessage && (
@@ -250,9 +258,10 @@ function TextBoxes({ selectedImage }) {
 					{errorMessage}
 				</div>
 			)}
-
-			<button className="button-1" id="generateVideo" onClick={handleCountTokens}>Generate Video</button>
-
+			<br />
+			<div className=" flex flex-col items-center">
+				<button className="button button--primary min-w-[8rem]" id="generateVideo" onClick={handleCountTokens}>Generate Video</button>
+			</div>
 			{homeDataState.video && <div className="video-section w-2/3 pl-4 h-full">
 				<iframe
 					width="100%"
@@ -271,39 +280,39 @@ function TextBoxes({ selectedImage }) {
 
 function SideMenu() {
 	return (
-		<div className="side-menu bg-black text-white w-64 min-h-screen p-4 flex flex-col">
-		<ul className="flex-1 space-y-4">
-			<li className="flex items-center space-x-2 py-2">
-				<a href="https://hopguides-web-client-main-j7limbsbmq-oc.a.run.app/#/welcome">
-					<i className="fas fa-video"></i>
-					<span>Create Video</span>
-				</a>
-			</li>
-			<li className="flex items-center space-x-2 py-2 border-t border-white">
-				<a href="https://www.hopguides.com/about-us">
-					<i className="fas fa-info-circle"></i>
-					<span>About Us</span>
-				</a>
-			</li>
-			<li className="flex items-center space-x-2 py-2 border-t border-white">
-				<a href="https://www.hopguides.com/contact">
-					<i className="fas fa-envelope"></i>
-					<span>Contact</span>
-				</a>
-			</li>
-			<li className="flex items-center space-x-2 py-2 border-t border-white">
-				<a href="/">
-					<i className="fas fa-envelope"></i>
-					<span>Pricing</span>
-				</a>
-			</li>
-			{/* Add more menu items here */}
-		</ul>
-		<div className="flex items-center space-x-2 mt-4 py-2 border-t border-white">
-			<i className="fas fa-coins"></i>
-			<span>Available tokens {gettokens()}</span>
+		<div className="side-menu bg-black text-white w-64 h-5/6 p-4 flex flex-col">
+			<ul className="flex-1 space-y-4">
+				<li className="flex items-center space-x-2 py-2">
+					<a href="https://hopguides-web-client-main-j7limbsbmq-oc.a.run.app/#/welcome">
+						<i className="fas fa-video"></i>
+						<span>Create Video</span>
+					</a>
+				</li>
+				<li className="flex items-center space-x-2 py-2 border-t border-white">
+					<a href="https://www.hopguides.com/about-us">
+						<i className="fas fa-info-circle"></i>
+						<span>About Us</span>
+					</a>
+				</li>
+				<li className="flex items-center space-x-2 py-2 border-t border-white">
+					<a href="https://www.hopguides.com/contact">
+						<i className="fas fa-envelope"></i>
+						<span>Contact</span>
+					</a>
+				</li>
+				<li className="flex items-center space-x-2 py-2 border-t border-white">
+					<a href="/">
+						<i className="fas fa-envelope"></i>
+						<span>Pricing</span>
+					</a>
+				</li>
+				{/* Add more menu items here */}
+			</ul>
+			<div className="flex items-center space-x-2 mt-4 py-2 border-t border-white">
+				<i className="fas fa-coins"></i>
+				<span>Available tokens {gettokens()}</span>
+			</div>
 		</div>
-	</div>
 	);
 }
 function PhotoGallery({ selectedImage, setSelectedImage, videoMapping }) {
@@ -335,6 +344,9 @@ function PhotoGallery({ selectedImage, setSelectedImage, videoMapping }) {
 function WelcomePageForm() {
 	// Moved state to this parent component
 	const [selectedImage, setSelectedImage] = React.useState(null);
+	const [updateapi, setUpdateapi] = React.useState(false);
+	const [api, setApi] = React.useState("");
+
 
 	const { homeDataState, dispatch } = React.useContext(HomeDataContext);
 	const videoMapping = {
@@ -366,14 +378,59 @@ function WelcomePageForm() {
 
 
 
+	const handleClose = () => {
+
+		setUpdateapi(false)
+	};
+
+	
+	const handleSend = async () => {
+
+		
+
+		await homeDataService.updateApi(dispatch, api);
+
+	};
+
+
 	return (
 		<div>
+			{updateapi &&
 
-			{ homeDataState.loading && <LoadingOverlay />}
-			<div className="bg-black">
-				<header>
-					<img src="https://hopguides.s3.eu-central-1.amazonaws.com/video-images/character_descriptions/Logo+white.png" alt="Logo" className="logo w-48" />
-					<h1 className="text-center text-2xl mb-2 text-white">Welcome to hopguides</h1>
+				<div class="relative z-50" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+					<div class="modal-overlay"></div>
+					<div class="fixed inset-0 z-10 overflow-y-auto">
+						<div class="modal-frame">
+							<div id="myModal" class="modal modal--md">
+								<div class="modal__header">
+									<h2 class="text-leading">
+										Change api
+									</h2>
+									<button class="button button--circle button--clear justify-self-end" type="button"
+										onClick={handleClose}>
+										<AiOutlineClose />
+									</button>
+								</div>
+
+								<div class="modal__body flex flex-col items-center justify-center p-5">
+									<textarea className="textarea-3" onChange={e => setApi(e.target.value)} value={api} />
+								</div>
+								<div><button onClick={e => handleSend(e)} class="button button--primary min-w-[8rem]">
+												OK
+											</button></div>
+							</div>
+						</div>
+					</div>
+				</div>}
+			{homeDataState.loading && <LoadingOverlay />}
+			<div className="fixed bg-black">
+				<header className="flex items-center h-16">
+					<img src="https://hopguides.s3.eu-central-1.amazonaws.com/video-images/character_descriptions/Logo+white.png" alt="Logo" className="logo w-32 ml-32" />
+					<h1 className="flex-grow text-center text-2xl mb-2 text-white">Welcome to hopguides</h1>
+					<div className="w-32"></div>
+					<div><button onClick={e => setUpdateapi(true)} class="button button--primary min-w-[8rem]">
+						Change d-id api
+					</button></div>
 				</header>
 
 				<div className="flex-grow-container">
@@ -382,28 +439,26 @@ function WelcomePageForm() {
 						<SideMenu />
 					</div>
 					<div className="video-section-container">
+
 						{/* Top part of the video section */}
-						<div className="video-section-top bg-gray-200 p-2">
+						<div className="video-section-top bg-gray-200 p-2 " >
 							{/* Display video based on selected character */}
 							{selectedImage && (
-								<video width="300" height="300" controls key={videoMapping[selectedImage]}>
+								<video width="300" height="300" controls key={videoMapping[selectedImage]} className="rounded-video">
 									<source src={videoMapping[selectedImage]} type="video/mp4" />
 									Your browser does not support the video tag.
 								</video>
 							)}
+							{selectedImage && <div className="video-description-container rounded-video ">
+								<textarea className="textarea-2" value={characterDescriptions[selectedImage]} readOnly />
+							</div>}
 						</div>
-
-
 
 						{/* Bottom part of the video section */}
 						<div className="video-section-bottom bg-gray-200 p-2">
 							<PhotoGallery selectedImage={selectedImage} setSelectedImage={setSelectedImage} videoMapping={videoMapping} />
 						</div>
 
-						{/* Middle part of the video section */}
-						<div className="video-section-middle bg-gray-300 p-4">
-							<textarea className="textarea-1" value={characterDescriptions[selectedImage]} readOnly />
-						</div>
 					</div>
 
 					{/* Adjusted the width from w-900 to w-full for maximum width */}

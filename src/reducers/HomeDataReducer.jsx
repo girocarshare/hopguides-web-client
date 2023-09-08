@@ -875,6 +875,7 @@ export const homeDataReducer = (state, action) => {
 			prodCpy.loading = false
 			console.log(action.data)
 			prodCpy.video = action.data.data
+			prodCpy.tokens = action.data.tokens
 			return prodCpy;
 
 			case homeDataConstants.SEND_DEMO_FAILURE:
@@ -883,7 +884,7 @@ export const homeDataReducer = (state, action) => {
 
 			prodCpy.loading = false
 			prodCpy.modalData.failure = true;
-			prodCpy.modalData.text = "There has been an error while sending a request for demo video. Please try again later.";
+			prodCpy.modalData.text = action.error;
 			return prodCpy;
 
 			case homeDataConstants.SEND_DEMO_REQUEST:
@@ -893,9 +894,49 @@ export const homeDataReducer = (state, action) => {
 			//prodCpy.modalData.success = true;
 			//prodCpy.modalData.text = "You have successfully send a request for demo video";
 		
+			console.log("blaaaaaaaaaaaa2222")
 			prodCpy.loading = true
 			return prodCpy;
 
+			case homeDataConstants.CHANGE_API_REQUEST:
+
+			prodCpy = { ...state };
+
+			//prodCpy.modalData.success = true;
+			//prodCpy.modalData.text = "You have successfully send a request for demo video";
+		
+			console.log("blaaaaaaaaaaaa")
+			prodCpy.loading = false
+			return prodCpy;
+			case homeDataConstants.SET_TOKENS:
+
+			prodCpy = { ...state };
+
+			//prodCpy.modalData.success = true;
+			//prodCpy.modalData.text = "You have successfully send a request for demo video";
+		
+			console.log(action)
+			prodCpy.tokens = action.tokens
+			return prodCpy;
+
+			case homeDataConstants.CHANGE_API_SUCCESS:
+
+			prodCpy = { ...state };
+
+			//prodCpy.modalData.success = true;
+			//prodCpy.modalData.text = "You have successfully send a request for demo video";
+			
+			prodCpy.modalData.success = true;
+			prodCpy.modalData.text = "Success";
+			return prodCpy;
+
+			case homeDataConstants.SEND_DEMO_FAILURE:
+
+			prodCpy = { ...state };
+
+			prodCpy.modalData.failure = true;
+			prodCpy.modalData.text = "error";
+			return prodCpy;
 		default:
 			return state;
 	}

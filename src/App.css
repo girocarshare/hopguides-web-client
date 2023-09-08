@@ -2,14 +2,11 @@
   
   .textarea-1 {
     width: 100%;
-    height: 150px;
+    height: 170px;
     padding: 10px;
     border: 1px solid #ccc;
     resize: vertical;}
 
-  
- 
-  
   
   
   .container-1 {
@@ -19,7 +16,20 @@
     padding: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   }
-  
+  .textarea-2 {
+    width: 100%;
+    height: 300px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    resize: vertical;}
+
+    
+  .textarea-3 {
+    width: 100%;
+    height: 100px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    resize: vertical;}
   h1 {
     color: #333;
   }
@@ -171,6 +181,8 @@
 
 /* Allow the main content area to grow and fill the space */
 .flex-grow-container {
+
+  height: 770px;
     flex-grow: 1;
     display: flex;
 }
@@ -182,7 +194,7 @@
 }
 
 .textbox-container {
-    height: 900px;
+    height: 650px;
     overflow-y: auto;
 }
 
@@ -200,22 +212,30 @@
 }
 
 .video-section-top {
-    display: flex;
-    align-items: center; /* vertically centers children */
-    justify-content: center;
-    flex: 1; /* takes up all available space */
-    background-color: #eaeaea; /* or any desired color */
+  height: 200px;
+  display: flex;
+  align-items: flex-start;  /* Aligns children to the top */
+  flex: 1; 
+  background-color: #eaeaea;
+  gap: 2px;
 }
 
 .video-section-container {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
+  height: 650px;
+  display: flex;
+  flex-direction: column;
+}
+
+.video-description-container {
+  display: flex;
+  align-items: flex-start;  /* Aligns textarea to the top */
+  justify-content: center;
+  flex: 1;
 }
 
 .video-section-bottom {
-    height: 300px; /* Adjust this value as needed */
-    overflow: auto; /* To allow scrolling if content overflows */
+  height: 300px;
+  overflow: auto;
 }
 
 .character-image {
@@ -265,4 +285,9 @@
   font-weight: bold;
   margin-top: 10px;
   text-align: center;
+}
+
+.rounded-video {
+  border-radius: 20px;  /* Adjust this value to achieve the desired curvature */
+  overflow: hidden;  /* This ensures that the video content respects the border-radius */
 }

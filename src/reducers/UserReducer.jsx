@@ -15,6 +15,7 @@ export const userReducer = (state, action) => {
 			};
 		case userConstants.LOGIN_SUCCESS:
 			return {
+				tokens: action.tokens,
 				loginError: {
 					showError: false,
 					errorMessage: "",

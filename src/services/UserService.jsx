@@ -1,7 +1,7 @@
 
 import Axios from "axios";
 import { userConstants } from "../constants/UserConstants";
-import { setAuthInLocalStorage } from "../helpers/auth-header";
+import { setAuthInLocalStorage, setTokens } from "../helpers/auth-header";
 var url = process.env.REACT_APP_URL || "http://localhost:8080/";
 export const userService = {
 	login,
@@ -20,6 +20,7 @@ function login(loginRequest, dispatch) {
 		.then((res) => {
 			if (res.status === 200) {
 				setAuthInLocalStorage(res.data);
+				setTokens(res.data.tokens)
 				dispatch(success());
 				window.location.href="/#"
 							
@@ -39,7 +40,7 @@ function login(loginRequest, dispatch) {
 		return { type: userConstants.LOGIN_SUCCESS };
 	}
 	function success() {
-		return { type: userConstants.LOGIN_SUCCESS };
+		return { type: userConstants.LOGIN_SUCCESS,  };
 	}
 	function failure(error) {
 		
