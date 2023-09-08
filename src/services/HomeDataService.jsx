@@ -29,6 +29,7 @@ export const homeDataService = {
 	addTeaserVideo,
 	search,
 	getDemoVideo,
+	updateApi
 	
 
 };
@@ -57,6 +58,46 @@ function addTeaserVideo( tf, dispatch) {
 
 
 
+async function updateApi(dispatch ,api) {
+	
+	dispatch(request());
+	
+	var token = authHeader()
+	Axios.get(`${url}api/pnl/tour/d-id/api/${api}`, {
+		headers: {
+		  Authorization: token 
+		}},{ validateStatus: () => true })
+		.then((res) => {
+			if (res.status === 200) {
+				dispatch(success(res.data));
+			} else if (res.status === 215) {
+				dispatch(failure(res.data.response));}
+				else if (res.status === 402) {
+					dispatch(failure("You do not have eough tokens on d-id. Generate new api."));
+			
+			}else{
+				
+				dispatch(failure("You don't have enough tokens"));
+			}
+		})
+		.catch((err) =>{		
+				dispatch(failure(err));
+			})
+
+	function request() {
+		
+		return { type: homeDataConstants.CHANGE_API_REQUEST };
+	}
+	function success(data) {
+		console.log(data)
+		return { type: homeDataConstants.CHANGE_API_SUCCESS , data};
+	}
+	function failure(error) {
+		console.log(error)
+		return { type: homeDataConstants.CHANGE_API_FAILURE, error };
+	}
+}
+
 async function getDemoVideo(dispatch ,data, tokens) {
 	
 	
@@ -71,13 +112,16 @@ async function getDemoVideo(dispatch ,data, tokens) {
 			if (res.status === 200) {
 				
 	console.log(tokens)
-				setTokens(tokens);
+				setTokens(res.data.tokens);
 				dispatch(success(res.data));
 			} else if (res.status === 215) {
-				dispatch(failure(res.data.response));
+				dispatch(failure(res.data.response));}
+				else if (res.status === 402) {
+					dispatch(failure("You do not have eough tokens on d-id. Generate new api."));
+			
 			}else{
 				
-				dispatch(failure(res.data.error));
+				dispatch(failure("You don't have enough tokens"));
 			}
 		})
 		.catch((err) =>{		

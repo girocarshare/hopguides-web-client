@@ -91,6 +91,7 @@ const HomeDataContextProvider = (props) => {
 		video: null,
 
 		loading: false,
+		tokens: 0,
 		termsAndConditionsModal: {
 			show: false,
 			text: "${title} global terms of service, effective as of 1.3.2023\n"+
