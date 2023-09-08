@@ -117,7 +117,7 @@ async function getDemoVideo(dispatch ,data, tokens) {
 			} else if (res.status === 215) {
 				dispatch(failure(res.data.response));}
 				else if (res.status === 402) {
-					dispatch(failure("You do not have eough tokens on d-id. Generate new api."));
+					dispatch(failure("You do not have enough tokens on d-id. Generate new api."));
 			
 			}else{
 				
@@ -125,6 +125,15 @@ async function getDemoVideo(dispatch ,data, tokens) {
 			}
 		})
 		.catch((err) =>{		
+			if (err.status === 215) {
+				dispatch(failure(err.data.response));}
+				else if (err.status === 402) {
+					dispatch(failure("You do not have enough tokens on d-id. Generate new api."));
+			
+			}else{
+				
+				dispatch(failure("You don't have enough tokens"));
+			}
 				dispatch(failure(err));
 			})
 
@@ -137,8 +146,9 @@ async function getDemoVideo(dispatch ,data, tokens) {
 		return { type: homeDataConstants.SEND_DEMO_SUCCESS , data};
 	}
 	function failure(error) {
-		console.log(error)
-		return { type: homeDataConstants.SEND_DEMO_FAILURE, error };
+		console.log("error")
+		//console.log(error)
+		return { type: homeDataConstants.SEND_DEMO_FAILURE, data:"You don't have enough tokens" };
 	}
 }
 

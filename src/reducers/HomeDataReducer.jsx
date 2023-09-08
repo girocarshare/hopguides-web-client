@@ -882,9 +882,10 @@ export const homeDataReducer = (state, action) => {
 
 			prodCpy = { ...state };
 
+			console.log( action)
 			prodCpy.loading = false
 			prodCpy.modalData.failure = true;
-			prodCpy.modalData.text = action.error;
+			prodCpy.modalData.text = action.data;
 			return prodCpy;
 
 			case homeDataConstants.SEND_DEMO_REQUEST:
@@ -930,7 +931,7 @@ export const homeDataReducer = (state, action) => {
 			prodCpy.modalData.text = "Success";
 			return prodCpy;
 
-			case homeDataConstants.SEND_DEMO_FAILURE:
+			case homeDataConstants.CHANGE_API_SUCCESS:
 
 			prodCpy = { ...state };
 
