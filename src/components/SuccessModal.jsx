@@ -29,7 +29,7 @@ const SuccessModal = () => {
 								<div id="myModal" class="modal modal--md">
 
 									<div class="modal__header">
-										<h2 class="text-leading">
+										<h2 class="text-leading scaled-title-menu">
 											Success
 										</h2>
 										<button class="button button--circle button--clear justify-self-end" type="button"
@@ -38,7 +38,7 @@ const SuccessModal = () => {
 										</button>
 									</div>
 
-									<div class="modal__body">
+									<div class="modal__body scaled-title-menu">
 										{homeDataState.modalData.text}
 									</div>
 								</div>

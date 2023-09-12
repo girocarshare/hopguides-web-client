@@ -3,7 +3,6 @@ import '../App.css'
 import { Link } from 'react-router-dom';
 import { AiOutlineClose } from 'react-icons/ai';
 import { HomeDataContext } from "../contexts/HomeDataContext";
-import HomeData from "./HomeData";
 import { homeDataService } from "../services/HomeDataService";
 
 import { deleteLocalStorage, authHeader, gettokens } from "../helpers/auth-header";
@@ -167,13 +166,13 @@ function TextBoxes({ selectedImage }) {
 			<div>
 				{countTokens &&
 
-					<div class="relative z-50" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+					<div class="relative z-50 " aria-labelledby="modal-title" role="dialog" aria-modal="true">
 						<div class="modal-overlay"></div>
 						<div class="fixed inset-0 z-10 overflow-y-auto">
 							<div class="modal-frame">
 								<div id="myModal" class="modal modal--md">
 									<div class="modal__header">
-										<h2 class="text-leading">
+										<h2 class="text-leading scaled-title-menu">
 											Tokens
 										</h2>
 										<button class="button button--circle button--clear justify-self-end" type="button"
@@ -183,23 +182,23 @@ function TextBoxes({ selectedImage }) {
 									</div>
 
 									<div class="modal__body flex flex-col items-center justify-center p-5">
-										<p class="text-center text-xl font-bold mb-4">
+										<p class="text-center text-xl scaled-side-menu font-bold mb-4">
 											Number of tokens needed for generating this video is:
 										</p>
-										<div class="text-4xl mb-6">
+										<div class="text-4xl scaled-title-menu mb-6">
 											{tokens}
 										</div>
-										<p class="text-center text-l mb-4">
+										<p class="text-center scaled-side-menu text-l mb-4">
 											available tokens: {gettokens()}
 										</p>
-										{(parseFloat(gettokens()) - parseFloat(tokens) < 0) && <p class="text-center text-red-500 text-m font-bold mb-4">
+										{(parseFloat(gettokens()) - parseFloat(tokens) < 0) && <p class="text-center scaled-side-menu text-red-500 text-m font-bold mb-4">
 											You don't have enough tokens to generate video
 										</p>}
 										<div class="flex space-x-4">
-											<button onClick={e => handleClose(e)} class="button button--primary min-w-[8rem]">
+											<button onClick={e => handleClose(e)} class="button button-dimensions button--primary min-w-[8rem]">
 												Cancel
 											</button>
-											{(parseFloat(gettokens()) - parseFloat(tokens) > 0) && <div><button onClick={e => handleSend(e)} class="button button--primary min-w-[8rem]">
+											{(parseFloat(gettokens()) - parseFloat(tokens) > 0) && <div><button onClick={e => handleSend(e)} class="button button-dimensions button--primary min-w-[8rem]">
 												OK
 											</button></div>}
 										</div>
@@ -210,25 +209,25 @@ function TextBoxes({ selectedImage }) {
 					</div>}
 			</div>
 			<div className="mb-2">
-				<label className="block text-sm font-medium text-gray-700 mb-2">Choose when your guests check in</label>
-				<select name="checkin" onChange={e => setCheckIn(e.target.value)} className="form__input w-full p-2 h-32 text-sm border rounded-md">
+				<label className="block text-sm font-medium text-gray-700 mb-2 scaled-side-menu" style= {{marginTop: "2vh"}}>Choose when your guests check in</label>
+				<select name="checkin" onChange={e => setCheckIn(e.target.value)} style= {{marginTop: "2vh"}} className="form__input  scaled-side-menu w-full p-2 h-32 text-sm border rounded-md">
 					{checkInOptions.map((checkin, idx) => (
-						<option key={idx} value={checkin}>{checkin}</option>
+						<option key={idx}  value={checkin}>{checkin}</option>
 					))}
 				</select>
 			</div>
 
 			<div className="mb-2">
-				<label className="block text-sm font-medium text-gray-700 mb-2">Choose when your guests check out</label>
-				<select name="checkout" onChange={e => setCheckOut(e.target.value)} className="form__input w-full p-2 text-sm border rounded-md">
+				<label className="block text-sm font-medium text-gray-700 mb-2 scaled-side-menu" style= {{marginTop: "2vh"}} >Choose when your guests check out</label>
+				<select name="checkout" onChange={e => setCheckOut(e.target.value)} style= {{marginTop: "2vh"}} className="form__input w-full scaled-side-menu p-2 text-sm border rounded-md">
 					{checkOutOptions.map((checkout, idx) => (
 						<option key={idx} value={checkout}>{checkout}</option>
 					))}
 				</select>
 			</div>
 
-			<label htmlFor="useCases">Use Cases:</label>
-			<select id="useCases" defaultValue="0" onChange={handleDescriptionChange}>
+			<label htmlFor="useCases" className=" scaled-side-menu"  >Use Cases:</label>
+			<select id="useCases" className="form__input scaled-side-menu" defaultValue="0" onChange={handleDescriptionChange}>
 				<option value="0">Select a Use Case...</option>
 				<option value="1">Welcome Video (Check-In and Check-Out Procedures)</option>
 				<option value="2">Safety and Security</option>
@@ -248,19 +247,19 @@ function TextBoxes({ selectedImage }) {
 			</select>
 
 			<div className="description flex flex-col items-end">
-				<button className="button button--primary min-w-[8rem]" onClick={(e) => editText(e)} style={{ marginBottom: "10px" }}>Edit text</button>
+				<button className="  button button--primary button-dimensions min-w-[8rem]" onClick={(e) => editText(e)} style={{ marginBottom: "2vh" }}>Edit text</button>
 
-				<textarea className="textarea-1 " onChange={e => setSelectedDescription(e.target.value)} readOnly={!edit} value={selectedDescription}></textarea>
+				<textarea className="textarea-1 "  onChange={e => setSelectedDescription(e.target.value)} readOnly={!edit} value={selectedDescription}></textarea>
 			</div>
 
 			{errorMessage && (
-				<div className="text-sm text-red-500 mb-4">
+				<div className="text-sm text-red-500 mb-4 scaled-side-menu">
 					{errorMessage}
 				</div>
 			)}
 			<br />
 			<div className=" flex flex-col items-center">
-				<button className="button button--primary min-w-[8rem]" id="generateVideo" onClick={handleCountTokens}>Generate Video</button>
+				<button className="button button--primary button-dimensions min-w-[8rem]" id="generateVideo" onClick={handleCountTokens}>Generate Video</button>
 			</div>
 			{homeDataState.video && <div className="video-section w-2/3 pl-4 h-full">
 				<iframe
@@ -280,27 +279,27 @@ function TextBoxes({ selectedImage }) {
 
 function SideMenu() {
 	return (
-		<div className="side-menu bg-black text-white w-64 h-5/6 p-4 flex flex-col">
+		<div className="scaled-side-menu side-menu bg-black text-white w-64 h-5/6 p-4">
 			<ul className="flex-1 space-y-4">
-				<li className="flex items-center space-x-2 py-2">
+				<li className="flex items-center space-x-2 py-2" style={{marginBottom: "2vh"}}>
 					<a href="https://hopguides-web-client-main-j7limbsbmq-oc.a.run.app/#/welcome">
 						<i className="fas fa-video"></i>
 						<span>Create Video</span>
 					</a>
 				</li>
-				<li className="flex items-center space-x-2 py-2 border-t border-white">
+				<li className="flex items-center space-x-2 py-2 border-t border-white" style={{marginBottom: "2vh"}}>
 					<a href="https://www.hopguides.com/about-us">
 						<i className="fas fa-info-circle"></i>
 						<span>About Us</span>
 					</a>
 				</li>
-				<li className="flex items-center space-x-2 py-2 border-t border-white">
+				<li className="flex items-center space-x-2 py-2 border-t border-white" style={{marginBottom: "2vh"}}>
 					<a href="https://www.hopguides.com/contact">
 						<i className="fas fa-envelope"></i>
 						<span>Contact</span>
 					</a>
 				</li>
-				<li className="flex items-center space-x-2 py-2 border-t border-white">
+				<li className="flex items-center space-x-2 py-2 border-t border-white" style={{marginBottom: "2vh"}}>
 					<a href="/">
 						<i className="fas fa-envelope"></i>
 						<span>Pricing</span>
@@ -308,9 +307,9 @@ function SideMenu() {
 				</li>
 				{/* Add more menu items here */}
 			</ul>
-			<div className="flex items-center space-x-2 mt-4 py-2 border-t border-white">
+			<div className="tokens-bottom flex items-center space-x-6 mt-4 py-2 border-t border-white" >
 				<i className="fas fa-coins"></i>
-				<span>Available tokens {gettokens()}</span>
+				<span>Available tokens: {gettokens()}</span>
 			</div>
 		</div>
 	);
@@ -383,10 +382,10 @@ function WelcomePageForm() {
 		setUpdateapi(false)
 	};
 
-	
+
 	const handleSend = async () => {
 
-		
+
 
 		await homeDataService.updateApi(dispatch, api);
 
@@ -394,7 +393,7 @@ function WelcomePageForm() {
 
 
 	return (
-		<div>
+		<div  >
 			{updateapi &&
 
 				<div class="relative z-50" aria-labelledby="modal-title" role="dialog" aria-modal="true">
@@ -403,7 +402,7 @@ function WelcomePageForm() {
 						<div class="modal-frame">
 							<div id="myModal" class="modal modal--md">
 								<div class="modal__header">
-									<h2 class="text-leading">
+									<h2 class="text-leading scaled-side-menu">
 										Change api
 									</h2>
 									<button class="button button--circle button--clear justify-self-end" type="button"
@@ -413,29 +412,29 @@ function WelcomePageForm() {
 								</div>
 
 								<div class="modal__body flex flex-col items-center justify-center p-5">
-									<textarea className="textarea-3" onChange={e => setApi(e.target.value)} value={api} />
+									<textarea className="textarea-3 " onChange={e => setApi(e.target.value)} value={api} />
 								</div>
 								<div><button onClick={e => handleSend(e)} class="button button--primary min-w-[8rem]">
-												OK
-											</button></div>
+									OK
+								</button></div>
 							</div>
 						</div>
 					</div>
 				</div>}
 			{homeDataState.loading && <LoadingOverlay />}
-			<div className="fixed bg-black">
-				<header className="flex items-center h-16">
-					<img src="https://hopguides.s3.eu-central-1.amazonaws.com/video-images/character_descriptions/Logo+white.png" alt="Logo" className="logo w-32 ml-32" />
-					<h1 className="flex-grow text-center text-2xl mb-2 text-white">Welcome to hopguides</h1>
-					<div className="w-32"></div>
-					<div><button onClick={e => setUpdateapi(true)} class="button button--primary min-w-[8rem]">
+			<div className=" bg-black">
+				<header className="flex items-center scaled-height-header">
+					<img src="https://hopguides.s3.eu-central-1.amazonaws.com/video-images/character_descriptions/Logo+white.png" alt="Logo" className="logo logo-width ml-32" />
+					<h1 className="flex-grow text-center scaled-title-menu mb-2 text-white">Welcome to hopguides</h1>
+					
+					<div><button onClick={e => setUpdateapi(true)} class="button button--primary button-dimensions min-w-[8rem] ">
 						Change d-id api
 					</button></div>
 				</header>
 
 				<div className="flex-grow-container">
 					{/* Assuming SideMenu has a class you can target for width adjustment */}
-					<div className="side-menu w-64">
+					<div className="side-menu side-menu-1">
 						<SideMenu />
 					</div>
 					<div className="video-section-container">
@@ -444,13 +443,13 @@ function WelcomePageForm() {
 						<div className="video-section-top bg-gray-200 p-2 " >
 							{/* Display video based on selected character */}
 							{selectedImage && (
-								<video width="300" height="300" controls key={videoMapping[selectedImage]} className="rounded-video">
+								<video  controls key={videoMapping[selectedImage]} className="rounded-video size-video">
 									<source src={videoMapping[selectedImage]} type="video/mp4" />
 									Your browser does not support the video tag.
 								</video>
 							)}
 							{selectedImage && <div className="video-description-container rounded-video ">
-								<textarea className="textarea-2" value={characterDescriptions[selectedImage]} readOnly />
+								<textarea className="textarea-2 scaled-side-menu" value={characterDescriptions[selectedImage]} readOnly />
 							</div>}
 						</div>
 
@@ -462,7 +461,7 @@ function WelcomePageForm() {
 					</div>
 
 					{/* Adjusted the width from w-900 to w-full for maximum width */}
-					<div className="textboxes-section w-3/5 p-4 bg-white textbox-container">
+					<div className="textboxes-section  p-4 bg-white textbox-container">
 						<TextBoxes selectedImage={selectedImage} />
 					</div>
 				</div>

@@ -14,7 +14,6 @@ const WelcomePage = () => {
 			<WelcomePageForm />
 			<FailureModal />
 			<SuccessModal />
-
 		</HomeDataContextProvider>
 	);
 };
