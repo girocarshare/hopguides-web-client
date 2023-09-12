@@ -638,3 +638,11 @@ textarea {
       line-height: 24px; /* This ensures the line height remains consistent on mobile devices */
   }
 }
+
+.modal--md {
+  width: 30vw;  /* 80% of viewport width */
+  max-width: 30vw;  /* a maximum width so it doesn't get too wide on large screens */
+  height: 30vh;  /* 80% of viewport height */
+  max-height: 30vw;  /* a maximum height */
+  overflow-y: auto;  /* for scrolling if the content exceeds the height */
+}

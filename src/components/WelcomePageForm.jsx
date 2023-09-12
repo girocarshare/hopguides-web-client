@@ -166,13 +166,13 @@ function TextBoxes({ selectedImage }) {
 			<div>
 				{countTokens &&
 
-					<div class="relative z-50" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+					<div class="relative z-50 " aria-labelledby="modal-title" role="dialog" aria-modal="true">
 						<div class="modal-overlay"></div>
 						<div class="fixed inset-0 z-10 overflow-y-auto">
 							<div class="modal-frame">
 								<div id="myModal" class="modal modal--md">
 									<div class="modal__header">
-										<h2 class="text-leading">
+										<h2 class="text-leading scaled-title-menu">
 											Tokens
 										</h2>
 										<button class="button button--circle button--clear justify-self-end" type="button"
@@ -182,23 +182,23 @@ function TextBoxes({ selectedImage }) {
 									</div>
 
 									<div class="modal__body flex flex-col items-center justify-center p-5">
-										<p class="text-center text-xl font-bold mb-4">
+										<p class="text-center text-xl scaled-side-menu font-bold mb-4">
 											Number of tokens needed for generating this video is:
 										</p>
-										<div class="text-4xl mb-6">
+										<div class="text-4xl scaled-title-menu mb-6">
 											{tokens}
 										</div>
-										<p class="text-center text-l mb-4">
+										<p class="text-center scaled-side-menu text-l mb-4">
 											available tokens: {gettokens()}
 										</p>
-										{(parseFloat(gettokens()) - parseFloat(tokens) < 0) && <p class="text-center text-red-500 text-m font-bold mb-4">
+										{(parseFloat(gettokens()) - parseFloat(tokens) < 0) && <p class="text-center scaled-side-menu text-red-500 text-m font-bold mb-4">
 											You don't have enough tokens to generate video
 										</p>}
 										<div class="flex space-x-4">
-											<button onClick={e => handleClose(e)} class="button button--primary min-w-[8rem]">
+											<button onClick={e => handleClose(e)} class="button button-dimensions button--primary min-w-[8rem]">
 												Cancel
 											</button>
-											{(parseFloat(gettokens()) - parseFloat(tokens) > 0) && <div><button onClick={e => handleSend(e)} class="button button--primary min-w-[8rem]">
+											{(parseFloat(gettokens()) - parseFloat(tokens) > 0) && <div><button onClick={e => handleSend(e)} class="button button-dimensions button--primary min-w-[8rem]">
 												OK
 											</button></div>}
 										</div>
@@ -212,7 +212,7 @@ function TextBoxes({ selectedImage }) {
 				<label className="block text-sm font-medium text-gray-700 mb-2 scaled-side-menu" style= {{marginTop: "2vh"}}>Choose when your guests check in</label>
 				<select name="checkin" onChange={e => setCheckIn(e.target.value)} style= {{marginTop: "2vh"}} className="form__input  scaled-side-menu w-full p-2 h-32 text-sm border rounded-md">
 					{checkInOptions.map((checkin, idx) => (
-						<option key={idx} value={checkin}>{checkin}</option>
+						<option key={idx}  value={checkin}>{checkin}</option>
 					))}
 				</select>
 			</div>
