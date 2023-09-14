@@ -246,7 +246,7 @@ function TextBoxes({ selectedImage }) {
 				<option value="17">History and Architecture</option>
 			</select>
 
-			<div className="description flex flex-col items-end">
+			<div className="description  flex flex-col items-end p-2 md:p-4 bg-black/[30%] rounded-2xl mb-12">
 				<button className="  button button--primary button-dimensions min-w-[8rem]" onClick={(e) => editText(e)} style={{ marginBottom: "2vh" }}>Edit text</button>
 
 				<textarea className="textarea-1 "  onChange={e => setSelectedDescription(e.target.value)} readOnly={!edit} value={selectedDescription}></textarea>
@@ -279,37 +279,37 @@ function TextBoxes({ selectedImage }) {
 
 function SideMenu() {
 	return (
-		<div className="scaled-side-menu side-menu bg-black text-white w-64 h-5/6 p-4">
+		<div className="scaled-side-menu side-menu bg-white text-white w-64 h-5/6 p-4">
 			<ul className="flex-1 space-y-4">
 				<li className="flex items-center space-x-2 py-2" style={{marginBottom: "2vh"}}>
 					<a href="https://hopguides-web-client-main-j7limbsbmq-oc.a.run.app/#/welcome">
 						<i className="fas fa-video"></i>
-						<span>Create Video</span>
+						<span className=" text-black font-medium text-gray-400">Create Video</span>
 					</a>
 				</li>
-				<li className="flex items-center space-x-2 py-2 border-t border-white" style={{marginBottom: "2vh"}}>
+				<li className="flex items-center space-x-2 py-2 border-t border-black" style={{marginBottom: "2vh"}}>
 					<a href="https://www.hopguides.com/about-us">
 						<i className="fas fa-info-circle"></i>
-						<span>About Us</span>
+						<span className=" text-black font-medium text-gray-400">About Us</span>
 					</a>
 				</li>
-				<li className="flex items-center space-x-2 py-2 border-t border-white" style={{marginBottom: "2vh"}}>
+				<li className="flex items-center space-x-2 py-2 border-t border-black" style={{marginBottom: "2vh"}}>
 					<a href="https://www.hopguides.com/contact">
 						<i className="fas fa-envelope"></i>
-						<span>Contact</span>
+						<span className=" text-black font-medium text-gray-400">Contact</span>
 					</a>
 				</li>
-				<li className="flex items-center space-x-2 py-2 border-t border-white" style={{marginBottom: "2vh"}}>
+				<li className="flex items-center space-x-2 py-2 border-t border-black" style={{marginBottom: "2vh"}}>
 					<a href="/">
 						<i className="fas fa-envelope"></i>
-						<span>Pricing</span>
+						<span className=" text-black font-medium text-gray-400">Pricing</span>
 					</a>
 				</li>
 				{/* Add more menu items here */}
 			</ul>
-			<div className="tokens-bottom flex items-center space-x-6 mt-4 py-2 border-t border-white" >
+			<div className="tokens-bottom flex items-center space-x-6 mt-4 py-2 border-t border-black p-2 md:p-4 bg-black/[30%] rounded-2xl mb-12" >
 				<i className="fas fa-coins"></i>
-				<span>Available tokens: {gettokens()}</span>
+				<span className=" text-black font-medium ">Available tokens: {gettokens()}</span>
 			</div>
 		</div>
 	);
@@ -330,7 +330,7 @@ function PhotoGallery({ selectedImage, setSelectedImage, videoMapping }) {
 
 						onClick={() => {
 							setSelectedImage(`img${name}`);
-							console.log(`Selected image: img${name}`);
+							console.log(`Selected image: https://hopguides.s3.eu-central-1.amazonaws.com/video-images/character_descriptions/${name.toLowerCase()}.png`);
 						}}
 					/>
 				</div>
@@ -349,26 +349,26 @@ function WelcomePageForm() {
 
 	const { homeDataState, dispatch } = React.useContext(HomeDataContext);
 	const videoMapping = {
-		'imgSam': 'https://hopguides.s3.eu-central-1.amazonaws.com/video-images/character_descriptions/6+Sam.mp4',
-		'imgIsabella': 'https://hopguides.s3.eu-central-1.amazonaws.com/video-images/character_descriptions/1+Isabella.mp4',
-		'imgLorenzo': 'https://hopguides.s3.eu-central-1.amazonaws.com/video-images/character_descriptions/2+Lorenzo.mp4',
-		'imgMaria': 'https://hopguides.s3.eu-central-1.amazonaws.com/video-images/character_descriptions/3+Maria.mp4',
-		'imgJohann': 'https://hopguides.s3.eu-central-1.amazonaws.com/video-images/character_descriptions/4+Johann.mp4',
-		'imgNia': 'https://hopguides.s3.eu-central-1.amazonaws.com/video-images/character_descriptions/5+Nia.mp4',
-		'imgEsperanza': 'https://hopguides.s3.eu-central-1.amazonaws.com/video-images/character_descriptions/7+Esperanza.mp4',
-		'imgDiego': 'https://hopguides.s3.eu-central-1.amazonaws.com/video-images/character_descriptions/8+Diego.mp4',
-		'imgSophie': 'https://hopguides.s3.eu-central-1.amazonaws.com/video-images/character_descriptions/9+Sophia.mp4',
-		'imgSamuel': 'https://hopguides.s3.eu-central-1.amazonaws.com/video-images/character_descriptions/10+Samuel.mp4',
+		'imgSam': 'https://hopguides.s3.eu-central-1.amazonaws.com/video-images/Sam_US.mp4',
+		'imgIsabella': 'https://hopguides.s3.eu-central-1.amazonaws.com/video-images/Isabella_It.mp4',
+		'imgLorenzo': 'https://hopguides.s3.eu-central-1.amazonaws.com/video-images/Lorenzo_It.mp4',
+		'imgMaria': 'https://hopguides.s3.eu-central-1.amazonaws.com/video-images/Maria_Ger.mp4',
+		'imgJohann': 'https://hopguides.s3.eu-central-1.amazonaws.com/video-images/Johann_Ger.mp4',
+		'imgNia': 'https://hopguides.s3.eu-central-1.amazonaws.com/video-images/Nia_UK.mp4',
+		'imgEsperanza': 'https://hopguides.s3.eu-central-1.amazonaws.com/video-images/Esperanza_Spa.mp4',
+		'imgDiego': 'https://hopguides.s3.eu-central-1.amazonaws.com/video-images/Diego_Spa.mp4',
+		'imgSophie': 'https://hopguides.s3.eu-central-1.amazonaws.com/video-images/Sophie_Fra.mp4',
+		'imgSamuel': 'https://hopguides.s3.eu-central-1.amazonaws.com/video-images/Samuel_Fra.mp4',
 		// ... add other mappings here
 	};
 
 	const characterDescriptions = {
 		'imgIsabella': "Italian Hotel Receptionist. Isabella is a charismatic woman in her early 30s who works at a boutique hotel in Rome. She's multilingual, fluent in Italian, English, Spanish, and French. Known for her stylish attire and warm personality, she always greets guests with her dazzling smile and helpful recommendations for local attractions.",
-		'imgLorenzo': "Ahistorian from Rome, Italy, hosts guests in his renovated apartment in a historic building, offering insightful guided tours and sharing lesser-known stories about the Eternal City's fascinating past.",
+		'imgLorenzo': "A historian from Rome, Italy, hosts guests in his renovated apartment in a historic building, offering insightful guided tours and sharing lesser-known stories about the Eternal City's fascinating past.",
 		'imgMaria': "German Resort Receptionist. Maria, a charming woman in her late 30s, works at a beach resort in Rio de Janeiro. Her energy is infectious, and her helpful recommendations about the city's best samba clubs and hidden culinary gems are always on point. Maria speaks Portuguese and German.",
 		'imgJohann': " German Hostel Receptionist. Johann is a friendly, laid-back man in his mid-20s. He works at a popular youth hostel in Berlin and is known for his quick wit and extensive knowledge about the city's underground music scene. He loves connecting with guests from around the world and often organizes group outings to local concerts.",
 		'imgNia': "Welsh Bed & Breakfast Receptionist. Nia, a middle-aged woman with a cheery demeanor, works at a cozy B&B in the heart of Cardiff. Known for her infectious laughter and knack for storytelling, she can engage guests in English and Welsh, making their stay extra memorable.",
-		'imgSam': "an outdoor enthusiast from Colorado, USA, offers his rustic mountain cabin, enhancing the stay with guided hiking recommendations and showcasing his love for the Rockies' beauty.",
+		'imgSam': "An outdoor enthusiast from Colorado, USA, offers his rustic mountain cabin, enhancing the stay with guided hiking recommendations and showcasing his love for the Rockies' beauty.",
 		'imgEsperanza': "Spanish Hotel Receptionist. Esperanza is a vibrant woman in her late 20s, working at a beach resort in Ibiza. Known for her sunny disposition and excellent customer service, she always has the best recommendations for beaches, clubs, and restaurants on the island. Esperanza is fluent in Spanish and English, and can also converse in French and Italian.",
 		'imgDiego': "Mexican Hostel Receptionist. Diego, a lively man in his mid-20s, runs the front desk at a popular hostel in Cancun. With his insider tips on local eateries and hidden beaches, he is loved by backpackers. He's fluent in Spanish and English.",
 		'imgSophie': "French Bed & Breakfast Receptionist. Sophie, a charming woman in her early 50s, works at a quaint B&B in Provence. Her warm, maternal demeanor and her delicious homemade croissants make every guest feel like they're home. She speaks French and English fluently and has a basic understanding of German and Italian.",
@@ -422,15 +422,15 @@ function WelcomePageForm() {
 					</div>
 				</div>}
 			{homeDataState.loading && <LoadingOverlay />}
-			<div className=" bg-black">
-				<header className="flex items-center scaled-height-header">
-					<img src="https://hopguides.s3.eu-central-1.amazonaws.com/video-images/character_descriptions/Logo+white.png" alt="Logo" className="logo logo-width ml-32" />
-					<h1 className="flex-grow text-center scaled-title-menu mb-2 text-white">Welcome to hopguides</h1>
-					
-					<div><button onClick={e => setUpdateapi(true)} class="button button--primary button-dimensions min-w-[8rem] ">
-						Change d-id api
-					</button></div>
-				</header>
+			<div className=" bg-white  header-shadow" style={{marginBottom: "1vh"}}>
+			<header className="flex items-center scaled-height-header header-shadow" style={{marginBottom: "1vh"}}>
+    <img src="assets/img/logo.svg" alt="Logo" className="logo logo-width ml-32" />
+    <h1 className="flex-grow text-center scaled-title-menu mb-2 text-black">Welcome to hopguides</h1>
+    
+    <div><button onClick={e => setUpdateapi(true)} class="button button--primary button-dimensions min-w-[8rem] ">
+        Change d-id api
+    </button></div>
+</header>
 
 				<div className="flex-grow-container">
 					{/* Assuming SideMenu has a class you can target for width adjustment */}
