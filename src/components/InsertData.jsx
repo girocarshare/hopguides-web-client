@@ -368,35 +368,11 @@ const InsertData = (props) => {
 				update: false
 			}
 
-
-			var title1 = title.replace(/(\r\n|\n|\r)/gm, " ");
-			var titleTransl1 = titleTransl.replace(/(\r\n|\n|\r)/gm, " ");
-			var agreementTitle1 = agreementTitle.replace(/(\r\n|\n|\r)/gm, " ");
-			var agreementTitleTransl1 = agreementTitleTransl.replace(/(\r\n|\n|\r)/gm, " ");
-			var agreementDesc1 = agreementDesc.replace(/(\r\n|\n|\r)/gm, " ");
-			var agreementDescTransl1 = agreementDescTransl.replace(/(\r\n|\n|\r)/gm, " ");
-			var shortInfo1 = shortInfo.replace(/(\r\n|\n|\r)/gm, " ");
-			var shortInfoTransl1 = shortInfoTransl.replace(/(\r\n|\n|\r)/gm, " ");
-			var longInfo1 = longInfo.replace(/(\r\n|\n|\r)/gm, " ");
-			var longInfoTransl1 = longInfoTransl.replace(/(\r\n|\n|\r)/gm, " ");
-
-
-			title1 = title1.replace(/("|'|}|{)/g, "");
-			titleTransl1 = titleTransl1.replace(/("|'|}|{)/g, "");
-			agreementTitle1 = agreementTitle1.replace(/("|'|}|{)/g, "");
-			agreementTitleTransl1 = agreementTitleTransl1.replace(/("|'|}|{)/g, "");
-			agreementDesc1 = agreementDesc1.replace(/("|'|}|{)/g, "");
-			agreementDescTransl1 = agreementDescTransl1.replace(/("|'|}|{)/g, "");
-			shortInfo1 = shortInfo1.replace(/("|'|}|{)/g, "");
-			shortInfoTransl1 = shortInfoTransl1.replace(/("|'|}|{)/g, "");
-			longInfo1 = longInfo1.replace(/("|'|}|{)/g, "");
-			longInfoTransl1 = longInfoTransl1.replace(/("|'|}|{)/g, "");
-
-			tour.title = JSON.parse(`{"english":" ${title1.trim()} ", "slovenian" : "${titleTransl1.trim()}"}`)
-			tour.agreementTitle = JSON.parse(`{"english":"${agreementTitle1.trim()} ", "slovenian" : " ${agreementTitleTransl1.trim()}"}`)
-			tour.agreementDesc = JSON.parse(`{"english":"${agreementDesc1.trim()}", "slovenian" : "${agreementDescTransl1.trim()} "}`)
-			tour.shortInfo = JSON.parse(`{"english":" ${shortInfo1.trim()} ", "slovenian" : "${shortInfoTransl1.trim()} "}`)
-			tour.longInfo = JSON.parse(`{"english":"${longInfo1.trim()} ", "slovenian" : "${longInfoTransl1.trim()}"}`)
+			tour.title = JSON.parse(`{"english": ${JSON.stringify(title.trim())} , "slovenian" : ${JSON.stringify(titleTransl.trim())}}`)
+			tour.agreementTitle = JSON.parse(`{"english":${JSON.stringify(agreementTitle.trim())} , "slovenian" :  ${JSON.stringify(agreementTitleTransl.trim())}}`)
+			tour.agreementDesc = JSON.parse(`{"english":${JSON.stringify(agreementDesc.trim())}, "slovenian" : ${JSON.stringify(agreementDescTransl.trim())} }`)
+			tour.shortInfo = JSON.parse(`{"english": ${JSON.stringify(shortInfo.trim())} , "slovenian" : ${JSON.stringify(shortInfoTransl.trim())} }`)
+			tour.longInfo = JSON.parse(`{"english":${JSON.stringify(longInfo.trim())} , "slovenian" : ${JSON.stringify(longInfoTransl.trim())}}`)
 
 			const formData = new FormData();
 			formData.append('file', file);
@@ -580,35 +556,18 @@ const InsertData = (props) => {
 
 			if (partner) {
 
-				var voucherDesc1 = voucherDesc.replace(/(\r\n|\n|\r)/gm, " ");
-				var voucherDescTransl1 = voucherDescTransl.replace(/(\r\n|\n|\r)/gm, " ");
+		
 
-
-				voucherDesc1 = voucherDesc1.replace(/("|'|}|{)/g, "");
-				voucherDescTransl1 = voucherDescTransl1.replace(/("|'|}|{)/g, "");
-
-				pointObj.voucherDesc = JSON.parse(`{"english":"${voucherDesc1.trim()} ", "slovenian" : "${voucherDescTransl1.trim()}"}`)
+				pointObj.voucherDesc = JSON.parse(`{"english":${JSON.stringify(voucherDesc.trim())} , "slovenian" : ${JSON.stringify(voucherDescTransl.trim())}}`)
 			}
 
-			var titlePoint1 = titlePoint.replace(/(\r\n|\n|\r)/gm, " ");
-			var titlePointTransl1 = titlePointTransl.replace(/(\r\n|\n|\r)/gm, " ");
-			var shortInfoPoint1 = shortInfoPoint.replace(/(\r\n|\n|\r)/gm, " ");
-			var shortInfoPointTransl1 = shortInfoPointTransl.replace(/(\r\n|\n|\r)/gm, " ");
-			var longInfoPoint1 = longInfoPoint.replace(/(\r\n|\n|\r)/gm, " ");
-			var longInfoPointTransl1 = longInfoPointTransl.replace(/(\r\n|\n|\r)/gm, " ");
 
-			titlePoint1 = titlePoint1.replace(/("|'|}|{)/g, "");
-			titlePointTransl1 = titlePointTransl1.replace(/("|'|}|{)/g, "");
-			shortInfoPoint1 = shortInfoPoint1.replace(/("|'|}|{)/g, "");
-			shortInfoPointTransl1 = shortInfoPointTransl1.replace(/("|'|}|{)/g, "");
-			longInfoPoint1 = longInfoPoint1.replace(/("|'|}|{)/g, "");
-			longInfoPointTransl1 = longInfoPointTransl1.replace(/("|'|}|{)/g, "");
-
-			pointObj.name = JSON.parse(`{"english":" ${titlePoint1.trim()} ", "slovenian" : "${titlePointTransl1.trim()}"}`)
-			pointObj.shortInfo = JSON.parse(`{"english":" ${shortInfoPoint1.trim()} ", "slovenian" : "${shortInfoPointTransl1.trim()} "}`)
-			pointObj.longInfo = JSON.parse(`{"english":"${longInfoPoint1.trim()} ", "slovenian" : "${longInfoPointTransl1.trim()}"}`)
+			pointObj.name = JSON.parse(`{"english":${JSON.stringify(titlePoint.trim())} , "slovenian" : ${JSON.stringify(titlePointTransl.trim())}}`)
+			pointObj.shortInfo = JSON.parse(`{"english": ${JSON.stringify(shortInfoPoint.trim())} , "slovenian" : ${JSON.stringify(shortInfoPointTransl.trim())} }`)
+			pointObj.longInfo = JSON.parse(`{"english":${JSON.stringify(longInfoPoint.trim())} , "slovenian" : ${JSON.stringify(longInfoPointTransl.trim())}}`)
 
 		
+			console.log(pointObj)
 			const newData = [...points, pointObj];
 			setPoints(newData)
 			setTitlePoint("")
