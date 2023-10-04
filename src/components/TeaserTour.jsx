@@ -33,6 +33,9 @@ const TeaserTour = () => {
 
 	const [files, setFiles] = useState([]);
 	const handleSubmitNew = async (e) => {
+
+		
+	
 		var tour = {
 			points: tours,
 			title: tourTitle
@@ -91,6 +94,13 @@ const TeaserTour = () => {
 		window.location = "#/"
 	};
 	const handleAddTour = () => {
+
+		/*var title1 = title.replace(/(\r\n|\n|\r)/gm, " ");
+		title1 = title1.replace(/(')/g, "\'");
+		title1 = title1.replace(/(")/g, "\"");
+		title1 = title1.replace(/(})/g, "\}");
+		title1 = title1.replace(/({)/g, "\{");*/
+
 		var tour = {
 			title: title,
 			longitude: longitude,
