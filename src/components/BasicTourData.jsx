@@ -413,8 +413,8 @@ const BasicTourData = (props) => {
                 <label class="form__label">Background tour image*</label>
 
                 <label class="button button--secondary button--small">
-                    <span>Upload image/video</span>
-                    <input type={"file"} name="file" onChange={props.onFileChange}
+                    <span>Upload image</span>
+                    <input type={"file"} name="file" onChange={props.onFileChange} accept="image/*"
                         class="sr-only" />
                 </label>
             </div>

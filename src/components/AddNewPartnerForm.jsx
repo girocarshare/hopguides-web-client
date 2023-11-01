@@ -14,7 +14,6 @@ var url = process.env.REACT_APP_URL || "http://localhost:8080/";
 const AddNewPartnerForm = (props) => {
 
 	const [loading, setLoading] = useState(false);
-	const [errImageTitle, setErrImageTitle] = useState("");
 	const [errTitlePoint, setErrTitlePoint] = useState("");
 	const [errShortDescriptionPoint, setErrShortDescriptionPoint] = useState("");
 	const [errLongDescriptionPoint, setErrLongDescriptionPoint] = useState("");
@@ -60,7 +59,6 @@ const AddNewPartnerForm = (props) => {
 	const [partner, setPartner] = useState(false);
 	const [point, setPoint] = useState(false);
 	const [videoPreview, setVideoPreview] = useState(null);
-	const [imageTitles, setImageTitles] = useState([]);
 
 	const [mondayclosed, setMondayClosed] = useState(false);
 	const [tuesdayclosed, setTuesdayClosed] = useState(false);
@@ -172,7 +170,6 @@ const AddNewPartnerForm = (props) => {
 	};
 
 	const handleAdd = (e) => {
-		setErrImageTitle("")
 		setErrLongDescriptionPoint("")
 		setErrShortDescriptionPoint("")
 		setErrVoucherDescriptionPoint("")
@@ -187,22 +184,7 @@ const AddNewPartnerForm = (props) => {
 			setAdd(false)
 			setErrMessagePartner("")
 			var jsonTitles = []
-			if (imageTitles.length != 0) {
-				for (var ti of imageTitles) {
-					var help = ti.split("---")
-					if (!isJsonString(help[0])) {
-						setErrImageTitle("Please insert the proper JSON format. Pay attention on enter and quotes(\")")
-						setErrMessagePartner("JSON format invalid. Check the red fields.")
-					}
-					var titlee = JSON.parse(help[0])
-					var titleObj = {
-						number: help[1],
-						name: titlee
-
-					}
-					jsonTitles.push(titleObj)
-				}
-			}
+			
 
 
 
@@ -215,7 +197,6 @@ const AddNewPartnerForm = (props) => {
 				workingHours: { monday: { from: mondayFrom, to: mondayTo }, tuesday: { from: tuesdayFrom, to: tuesdayTo }, wednesday: { from: wednesdayFrom, to: wednesdayTo }, thursday: { from: thursdayFrom, to: thursdayTo }, friday: { from: fridayFrom, to: fridayTo }, saturday: { from: saturdayFrom, to: saturdayTo }, sunday: { from: sundayFrom, to: sundayTo } },
 				category: category,
 				bpartnerId: homeDataState.showAddPartnerModal.bpartnerId,
-				imageTitles: jsonTitles,
 
 			}
 
@@ -254,7 +235,6 @@ const AddNewPartnerForm = (props) => {
 			setLongitude("")
 			setLatitude("")
 			setTitlePointTransl("")
-			setImageTitles([])
 			setAudioName("")
 
 			setShortInfoPointTransl("")
@@ -300,7 +280,7 @@ const AddNewPartnerForm = (props) => {
 
 		}
 
-		setSelectedFiles(selectedFiles.concat(fs))
+		setSelectedFiles(fs)
 		setImagePreviews(images);
 		setProgressInfos({ val: [] });
 		setMessage([]);
@@ -394,45 +374,6 @@ const AddNewPartnerForm = (props) => {
 
 	};
 
-	const changeImageTitle = (e, i) => {
-
-		var tf = false;
-		if (imageTitles.length == 0) {
-			var p = e + "---" + i
-			const newData = [p, ...imageTitles];
-			setImageTitles(newData)
-		} else {
-
-			for (var a of imageTitles) {
-				var h = a.split('---')
-				if (h[1] == i) {
-					tf = true
-				}
-			}
-
-			if (tf) {
-				for (var a of imageTitles) {
-
-					var h = a.split('---')
-					if (h[1] == i) {
-						var arr = imageTitles
-						arr.pop(a)
-						var p = e + "---" + i
-						arr.push(p)
-						setImageTitles(arr)
-					}
-
-				}
-			} else {
-				var p = e + "---" + i
-				var arr = imageTitles
-				arr.push(p)
-				setImageTitles(arr)
-
-			}
-
-		}
-	};
 	return (
 
 
@@ -1062,6 +1003,7 @@ const AddNewPartnerForm = (props) => {
 															<span>Upload image gallery</span>
 															<input type="file"
 																multiple
+																accept="image/*"
 																onChange={selectFiles}
 																class="sr-only" />
 														</label>
@@ -1073,26 +1015,11 @@ const AddNewPartnerForm = (props) => {
 																{imagePreviews.map((img, i) => {
 																	return (
 																		<div>  <br />
-																			<img className="image__preview" src={img}
+																			<img className="image__preview" src={img} 
 																				alt={"image-" + i} key={i} />
 
 																			<br />
-																			<input
-
-																				className={!props.errImageTitle ? "form__input" : "form__input !border !border-red-500"}
-																				placeholder={'JSON FORMAT: { "language": "Text"}'}
-																				aria-describedby="basic-addon1"
-																				id="name"
-																				type="text"
-
-
-																				onChange={(e) => changeImageTitle(e.target.value, i)}
-																			/>
-																			<div className="paragraph-box2 grid dgrid-row place-items-center"
-																				style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }}
-																				hidden={!errImageTitle}>
-																				{errImageTitle}
-																			</div>
+																			
 																		</div>
 																	);
 																})}
@@ -1111,7 +1038,7 @@ const AddNewPartnerForm = (props) => {
 															class="button button--secondary button--small">
 															<span>Upload video</span>
 															<input type="file"
-																multiple
+																
 																accept={".mp4"}
 																onChange={selectVideo}
 																class="sr-only" />

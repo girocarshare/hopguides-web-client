@@ -24,7 +24,6 @@ const InsertData = (props) => {
 	const [errAgreementDescription, setErrAgreementDescription] = useState("");
 
 
-	const [errImageTitle, setErrImageTitle] = useState("");
 	const [errTitlePoint, setErrTitlePoint] = useState("");
 	const [errShortDescriptionPoint, setErrShortDescriptionPoint] = useState("");
 	const [errLongDescriptionPoint, setErrLongDescriptionPoint] = useState("");
@@ -35,7 +34,6 @@ const InsertData = (props) => {
 	const [audioNamePoint, setAudioNamePoint] = useState("");
 	const [place, setPlace] = useState("");
 	const [title, setTitle] = useState("");
-	const [imageTitles, setImageTitles] = useState([]);
 	const [titleTransl, setTitleTransl] = useState("");
 	const [agreementTitle, setAgreementTitle] = useState("");
 	const [agreementTitleTransl, setAgreementTitleTransl] = useState("");
@@ -297,7 +295,7 @@ const InsertData = (props) => {
 
 		}
 
-		setSelectedFiles(selectedFiles.concat(fs))
+		setSelectedFiles(fs)
 		setImagePreviews(images);
 		setProgressInfos({ val: [] });
 		setMessage([]);
@@ -408,45 +406,6 @@ const InsertData = (props) => {
 	};
 
 
-	const changeImageTitle = (e, i) => {
-
-		var tf = false;
-		if (imageTitles.length == 0) {
-			var p = e + "---" + i
-			const newData = [p, ...imageTitles];
-			setImageTitles(newData)
-		} else {
-
-			for (var a of imageTitles) {
-				var h = a.split('---')
-				if (h[1] == i) {
-					tf = true
-				}
-			}
-
-			if (tf) {
-				for (var a of imageTitles) {
-
-					var h = a.split('---')
-					if (h[1] == i) {
-						var arr = imageTitles
-						arr.pop(a)
-						var p = e + "---" + i
-						arr.push(p)
-						setImageTitles(arr)
-					}
-
-				}
-			} else {
-				var p = e + "---" + i
-				var arr = imageTitles
-				arr.push(p)
-				setImageTitles(arr)
-
-			}
-
-		}
-	};
 	useEffect(() => {
 		var token = authHeader()
 		if (token == "null") {
@@ -511,7 +470,6 @@ const InsertData = (props) => {
 
 	const handleAdd = (e) => {
 
-		setErrImageTitle("")
 		setErrLongDescriptionPoint("")
 		setErrShortDescriptionPoint("")
 		setErrVoucherDescriptionPoint("")
@@ -527,21 +485,7 @@ const InsertData = (props) => {
 			setAdd(false)
 			setErrMessagePartner("")
 			var jsonTitles = []
-			for (var ti of imageTitles) {
-				var help = ti.split("---")
-				if (!isJsonString(help[0])) {
-					setErrImageTitle("Please insert the proper JSON format. Pay attention on enter and quotes(\")")
-					setErrMessagePartner("JSON format invalid. Check the red fields.")
-				}
-				var titlee = JSON.parse(help[0])
-
-				var titleObj = {
-					number: help[1],
-					name: titlee
-				}
-				jsonTitles.push(titleObj)
-			}
-
+		
 			var pointObj = {
 				num: num,
 				price: pointPrice.toString(),
@@ -551,7 +495,6 @@ const InsertData = (props) => {
 				workingHours: { monday: { from: mondayFrom, to: mondayTo }, tuesday: { from: tuesdayFrom, to: tuesdayTo }, wednesday: { from: wednesdayFrom, to: wednesdayTo }, thursday: { from: thursdayFrom, to: thursdayTo }, friday: { from: fridayFrom, to: fridayTo }, saturday: { from: saturdayFrom, to: saturdayTo }, sunday: { from: sundayFrom, to: sundayTo } },
 				bpartnerId: hotelId,
 				category: category,
-				imageTitles: jsonTitles,
 			}
 
 			if (partner) {
@@ -594,7 +537,6 @@ const InsertData = (props) => {
 			setShortInfoPointTransl("")
 			setLongInfoPointTransl("")
 			setVoucherDescTransl("")
-			setImageTitles([])
 			setFiles(files.concat(selectedFiles))
 			setAudios(audios.concat(audio2))
 			setSelectedFiles([])
@@ -720,7 +662,6 @@ const InsertData = (props) => {
 		setAgreementTitleTransl("")
 		setImagePreview(null)
 		setImagePreviews([])
-		setImageTitles([])
 		num = 0
 
 	};
@@ -928,7 +869,6 @@ const InsertData = (props) => {
 											selectFiles={selectFiles}
 											selectVideo={selectVideo}
 											imagePreviews={imagePreviews}
-											changeImageTitle={changeImageTitle}
 											errMessagePhoto={errMessagePhoto}
 											setResponsiblePerson={setResponsiblePerson}
 											responsiblePerson={responsiblePerson}
@@ -944,7 +884,6 @@ const InsertData = (props) => {
 											errShortDescriptionPoint={errShortDescriptionPoint}
 											errLongDescriptionPoint={errLongDescriptionPoint}
 											errVoucherDescriptionPoint={errVoucherDescriptionPoint}
-											errImageTitle={errImageTitle}
 											audioNamePoint={audioNamePoint}
 											videoPreview={videoPreview}
 											videoSizeError= {videoSizeError}

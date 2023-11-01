@@ -610,7 +610,7 @@ const AddPartnerOrPointForm = (props) => {
                                             <label
                                                 class="button button--secondary button--small">
                                                 <span>Upload image gallery</span>
-                                                <input type={"file"} multiple
+                                                <input type={"file"} multiple accept="image/*"
                                                     onChange={props.selectFiles}
                                                     class="sr-only" />
                                             </label>
@@ -626,21 +626,8 @@ const AddPartnerOrPointForm = (props) => {
                                                                     alt={"image-" + i}
                                                                     key={i} />
                                                                 <br />
-                                                                <input
-
-                                                                    className={!props.errImageTitle ? "form__input" : "form__input !border !border-red-500"}
-                                                                    placeholder={'JSON FORMAT: { "language": "Text"}'}
-                                                                    aria-describedby="basic-addon1"
-                                                                    id="name"
-                                                                    type="text"
-
-                                                                    onChange={(e) => props.changeImageTitle(e.target.value, i)}
-                                                                />
-                                                                <div className="paragraph-box2 grid dgrid-row place-items-center"
-                                                                    style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }}
-                                                                    hidden={!props.errImageTitle}>
-                                                                    {props.errImageTitle}
-                                                                </div>
+                                                               
+                                                               
                                                             </div>
                                                         );
                                                     })}
@@ -656,7 +643,7 @@ const AddPartnerOrPointForm = (props) => {
                                             <label
                                                 class="button button--secondary button--small">
                                                 <span>Upload video</span>
-                                                <input type={"file"} multiple
+                                                <input type={"file"}  	accept={".mp4"}
                                                     onChange={props.selectVideo}
                                                     class="sr-only" />
                                             </label>

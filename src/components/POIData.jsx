@@ -18,7 +18,6 @@ const POIData = () => {
 
 	const addressInput = React.createRef(null);
 	const [loading, setLoading] = useState(false);
-	const [errImageTitle, setErrImageTitle] = useState("");
 	const [errTitlePoint, setErrTitlePoint] = useState("");
 	const [errShortDescriptionPoint, setErrShortDescriptionPoint] = useState("");
 	const [errLongDescriptionPoint, setErrLongDescriptionPoint] = useState("");
@@ -66,7 +65,6 @@ const POIData = () => {
 	const [audio, setAudio] = useState(null);
 	const [imagePreview, setImagePreview] = useState(null);
 	const [errMessagePhoto, setErrMessagePhoto] = useState("");
-	const [imageTitles, setImageTitles] = useState([]);
 
 	const defaultValue = new Date();
 	const [mondayFrom, setMondayFrom] = useState("");
@@ -154,7 +152,7 @@ const POIData = () => {
 
 		}
 
-		setSelectedFiles(selectedFiles.concat(fs))
+		setSelectedFiles(fs);
 		setImagePreviews(images);
 		setProgressInfos({ val: [] });
 
@@ -197,7 +195,6 @@ const POIData = () => {
 		e.preventDefault();
 
 
-		setErrImageTitle("")
 		setErrLongDescriptionPoint("")
 		setErrShortDescriptionPoint("")
 		setErrVoucherDescriptionPoint("")
@@ -253,7 +250,6 @@ const POIData = () => {
 
 
 		if (homeDataState.updatePointData.point.offerName) {
-			console.log("evo meeee")
 			var voucherDesc1 = ""
 			if (voucherDesc == "") {
 				voucherDesc1 = homeDataState.updatePointData.point.voucherDesc.english
@@ -307,32 +303,11 @@ const POIData = () => {
 		}
 		if (category != "") {
 			point.category = category
-		} if (imageTitles != "") {
-			var jsonTitles = []
-			for (var ti of imageTitles) {
-				var help = ti.split("---")
-				if (!isJsonString(help[0])) {
-					setErrImageTitle("Please insert the proper JSON format. Pay attention on enter and quotes(\")")
-					setErrMessagePartner("JSON format invalid. Check the red fields.")
-				}
-				var titlee = JSON.parse(help[0])
-				var titleObj = {
-					number: help[1],
-					name: titlee
-
-				}
-				jsonTitles.push(titleObj)
-			}
-			point.imageTitles = jsonTitles
-		}
+		} 
 		point.id = homeDataState.updatePointData.point.id
 		point.workingHours = { monday: { from: mondayFrom, to: mondayTo }, tuesday: { from: tuesdayFrom, to: tuesdayTo }, wednesday: { from: wednesdayFrom, to: wednesdayTo }, thursday: { from: thursdayFrom, to: thursdayTo }, friday: { from: fridayFrom, to: fridayTo }, saturday: { from: saturdayFrom, to: saturdayTo }, sunday: { from: sundayFrom, to: sundayTo } }
 		const formData = new FormData();
-		if (file != null) {
-			formData.append('file', file);
-		}else{
-			point.menu = homeDataState.updatePointData.point.menu
-		}
+	
 		if (audio != null) {
 			formData.append('file', audio);
 		}else{
@@ -356,6 +331,10 @@ const POIData = () => {
 			point.video = homeDataState.updatePointData.point.video
 		}
 
+		if(videoPreview != null && imagePreviews.length==0){
+			console.log(homeDataState.updatePointData.point.images)
+			point.images = homeDataState.updatePointData.point.images
+		}
 		console.log(point)
 
 		formData.append('point', JSON.stringify(point));
@@ -469,51 +448,7 @@ const POIData = () => {
 		}
 	};
 
-	const onFileChange = (event) => {
 
-		var new_file = new File([event.target.files[0]], 'menu' + "---" + [event.target.files[0].name]);
-		setFile(new_file);
-		setImagePreview(URL.createObjectURL(event.target.files[0]));
-	}
-	const changeImageTitle = (e, i) => {
-
-		var tf = false;
-		if (imageTitles.length == 0) {
-			var p = e + "---" + i
-			const newData = [p, ...imageTitles];
-			setImageTitles(newData)
-		} else {
-
-			for (var a of imageTitles) {
-				var h = a.split('---')
-				if (h[1] == i) {
-					tf = true
-				}
-			}
-
-			if (tf) {
-				for (var a of imageTitles) {
-
-					var h = a.split('---')
-					if (h[1] == i) {
-						var arr = imageTitles
-						arr.pop(a)
-						var p = e + "---" + i
-						arr.push(p)
-						setImageTitles(arr)
-					}
-
-				}
-			} else {
-				var p = e + "---" + i
-				var arr = imageTitles
-				arr.push(p)
-				setImageTitles(arr)
-
-			}
-
-		}
-	};
 	const fileData = () => {
 		if (file) {
 
@@ -1188,30 +1123,7 @@ const POIData = () => {
 													</div>}
 											</div>}
 
-										<div className="form__group">
-											<label class="form__label">Menu image</label>
-											{edit &&
-
-												<label
-													class="button button--secondary button--small">
-													<span>Upload menu image</span>
-													<input type={"file"} accept="image/*"
-														onChange={onFileChange}
-														class="sr-only" />
-												</label>
-											}
-
-											{fileData()}
-
-											{imagePreview &&
-												<img className="preview" src={imagePreview}
-													alt={"image-"} />}
-											{!imagePreview && homeDataState.updatePointData.point.menu && <img className="preview"
-												src={homeDataState.updatePointData.point.menu}
-												alt={"image-"} />}
-
-
-										</div>
+										
 
 										<div>
 
@@ -1220,7 +1132,7 @@ const POIData = () => {
 												<label
 													class="button button--secondary button--small">
 													<span>Upload image gallery</span>
-													<input type={"file"} multiple
+													<input type={"file"} multiple  accept="image/*"
 														onChange={selectFiles}
 														class="sr-only" />
 												</label>
@@ -1238,16 +1150,7 @@ const POIData = () => {
 																	alt={"image-" + i} key={i} />
 
 																<br />
-																<input
-
-																	className={"form__input"}
-																	placeholder={'JSON FORMAT: { "language": "Text"}'}
-																	aria-describedby="basic-addon1"
-																	id="name"
-																	type="text"
-
-																	onChange={(e) => changeImageTitle(e.target.value, i)}
-																/>
+																
 																<br />
 															</div>
 														);
@@ -1280,7 +1183,7 @@ const POIData = () => {
 												<label
 													class="button button--secondary button--small">
 													<span>Upload video</span>
-													<input type={"file"} multiple
+													<input type={"file"} 
 														accept={".mp4"}
 														onChange={selectVideo}
 														class="sr-only" />
