@@ -86,9 +86,6 @@ const HomeData = forwardRef((props) => {
 							setAdminOnly(true)
 							setAdmin(true)
 						}
-						if("USER" == res.data){
-							window.location.href = "/#/welcome"
-						}
 					}
 				})
 				.catch((err) => {

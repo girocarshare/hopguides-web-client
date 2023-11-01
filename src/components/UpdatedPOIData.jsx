@@ -13,7 +13,6 @@ var url = process.env.REACT_APP_URL || "http://localhost:8080/";
 const UpdatedPOIData = () => {
 
 	const addressInput = React.createRef(null);
-	const [errImageTitle, setErrImageTitle] = useState("");
 	const [errTitlePoint, setErrTitlePoint] = useState("");
 	const [errShortDescriptionPoint, setErrShortDescriptionPoint] = useState("");
 	const [errLongDescriptionPoint, setErrLongDescriptionPoint] = useState("");
@@ -60,7 +59,6 @@ const UpdatedPOIData = () => {
 	const [audio, setAudio] = useState(null);
 	const [imagePreview, setImagePreview] = useState(null);
 	const [errMessagePhoto, setErrMessagePhoto] = useState("");
-	const [imageTitles, setImageTitles] = useState([]);
 
 
 	const [mondayFrom, setMondayFrom] = useState("");
@@ -484,18 +482,7 @@ const UpdatedPOIData = () => {
 											
 											</div>}
 
-										<div className="form__group">
-											<label class="form__label">Menu image</label>
-											
-
-											{imagePreview &&
-												<img className="preview" src={imagePreview}
-													alt={"image-"} />}
-											{!imagePreview && <img className="preview"
-												src={homeDataState.updatePointData.point.menu}
-												alt={"image-"} />}
-										</div>
-
+										
 										<div>
 
 											<label class="form__label">Image gallery</label>

@@ -14,6 +14,8 @@ const mapState = {
 };
 var url = process.env.REACT_APP_URL || "http://localhost:8080/";
 const TourData = () => {
+
+	const { homeDataState, dispatch } = useContext(HomeDataContext);
 	const [loading, setLoading] = useState(false);
 	const [errTitle, setErrTitle] = useState("");
 	const [errLongDescription, setErrLongDescription] = useState("");
@@ -22,17 +24,17 @@ const TourData = () => {
 	const [errAgreementDescription, setErrAgreementDescription] = useState("");
 
 	const [audioName, setAudioName] = useState("");
-	const [title, setTitle] = useState("");
+	const [title, setTitle] = useState(homeDataState?.updateTourData?.tour?.title?.english || "");
+	const [titleTransl, setTitleTransl] = useState(homeDataState?.updateTourData?.tour?.title?.slovenian || "");
 	const [place, setPlace] = useState("");
-	const [shortInfoTransl, setShortInfoTransl] = useState("");
-	const [longInfoTransl, setLongInfoTransl] = useState("");
-	const [titleTransl, setTitleTransl] = useState("");
-	const [agreementTitle, setAgreementTitle] = useState("");
-	const [agreementTitleTransl, setAgreementTitleTransl] = useState("");
-	const [agreementDesc, setAgreementDesc] = useState("");
-	const [agreementDescTransl, setAgreementDescTransl] = useState("");
-	const [shortInfo, setShortInfo] = useState("");
-	const [longInfo, setLongInfo] = useState("");
+	const [shortInfoTransl, setShortInfoTransl] = useState(homeDataState?.updateTourData?.tour?.shortInfo?.slovenian || "");
+	const [longInfoTransl, setLongInfoTransl] = useState(homeDataState?.updateTourData?.tour?.longInfo?.slovenian || "");
+	const [agreementTitle, setAgreementTitle] = useState(homeDataState?.updateTourData?.tour?.agreementTitle?.english || "");
+	const [agreementTitleTransl, setAgreementTitleTransl] = useState(homeDataState?.updateTourData?.tour?.agreementTitle?.slovenian || "");
+	const [agreementDesc, setAgreementDesc] = useState(homeDataState?.updateTourData?.tour?.agreementDesc?.english || "");
+	const [agreementDescTransl, setAgreementDescTransl] = useState(homeDataState?.updateTourData?.tour?.agreementDesc?.slovenian || "");
+	const [shortInfo, setShortInfo] = useState(homeDataState?.updateTourData?.tour?.shortInfo?.english || "");
+	const [longInfo, setLongInfo] = useState(homeDataState?.updateTourData?.tour?.longInfo?.english || "");
 	const [price, setPrice] = useState(0);
 
 	const [edit, setEdit] = useState(false);
@@ -45,13 +47,13 @@ const TourData = () => {
 	const [audio, setAudio] = useState(null);
 	const [imagePreview, setImagePreview] = useState(null);
 	const [videoPreview, setVideoPreview] = useState(null);
-	const [duration, setDuration] = useState("");
-	const [length, setLength] = useState("");
-	const [highestPoint, setHighestPoint] = useState("");
+	const [duration, setDuration] = useState(homeDataState?.updateTourData?.tour?.duration || "");
+	const [length, setLength] = useState(homeDataState?.updateTourData?.tour?.length || "");
+	const [highestPoint, setHighestPoint] = useState(homeDataState?.updateTourData?.tour?.highestPoint || "");
 	const [termsAndConditions, setTermsAndConditions] = useState("");
 	const [showModal, setShowModal] = useState(false);
-	const { homeDataState, dispatch } = useContext(HomeDataContext);
 
+	const [isTitleModified, setIsTitleModified] = useState(false);
 
 	const fetchData = async (input, num) => {
 
@@ -305,14 +307,14 @@ const TourData = () => {
 		const formData = new FormData();
 		if (file != null) {
 			formData.append('file', file);
-		}else{
-			
+		} else {
+
 			tour.image = homeDataState.updateTourData.tour.image
 		}
 		if (audio != null) {
 			formData.append('file', audio);
-		}else{
-			
+		} else {
+
 			tour.audio = homeDataState.updateTourData.tour.audio
 		}
 		console.log(tour)
@@ -345,23 +347,7 @@ const TourData = () => {
 		setLoading(true)
 
 	};
-	const SuccessHandler = (e) => {
 
-
-		homeDataService.updateTour(true, dispatch);
-
-
-	};
-	const ErrorHandler = () => {
-
-		homeDataService.updateTour(false, dispatch);
-	};
-	const AbortHandler = () => {
-
-		//statusRef.current.innerHTML = "Upload aborted";
-
-		homeDataService.insertData(false, dispatch);
-	};
 	const handleModalClose = () => {
 		dispatch({ type: homeDataConstants.UPDATE_TOUR_DATA_MODAL_CLOSE });
 	};
@@ -463,7 +449,6 @@ const TourData = () => {
 													<div class="flex flex-row gap-2 items-center">
 														<label class="form__label" style={{ marginRight: "18px" }}>English:</label>
 														<input
-
 															className={"form__input"}
 															placeholder='Title'
 															aria-describedby="basic-addon1"
@@ -471,7 +456,7 @@ const TourData = () => {
 															type="text"
 															readOnly={!edit}
 															onChange={(e) => setTitle(e.target.value)}
-															value={title === "" ? homeDataState.updateTourData.tour.title.english : title}
+															value={title}
 														/>
 														{edit && <button
 
@@ -486,8 +471,9 @@ const TourData = () => {
 
 													<div class="flex flex-row gap-2 items-center">
 														<label class="form__label">Slovenian:</label>
-														<input
 
+
+														<input
 															className={"form__input"}
 															placeholder='Title in slovenian'
 															aria-describedby="basic-addon1"
@@ -495,9 +481,10 @@ const TourData = () => {
 															type="text"
 															readOnly={!edit}
 															onChange={(e) => setTitleTransl(e.target.value)}
-															value={titleTransl === "" ? homeDataState.updateTourData.tour.title.slovenian : titleTransl}
-
+															value={titleTransl}
 														/>
+
+
 														<div className="paragraph-box2 grid dgrid-row place-items-center"
 															style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }}
 															hidden={!errTitle}>
@@ -516,19 +503,21 @@ const TourData = () => {
 													<div class="flex flex-row gap-2 items-center">
 
 														<label class="form__label" style={{ marginRight: "18px" }}>English:</label>
-														<textarea
 
-															className={!errAgreementTitle ? "form__input text-sm" : "form__input text-sm !border !border-red-500"}
+
+														<textarea
 															style={{ height: 80 }}
-															readOnly={!edit}
+															className={"form__input"}
 															placeholder='Agreement title'
 															aria-describedby="basic-addon1"
 															id="name"
 															type="text"
+															readOnly={!edit}
 															onChange={(e) => setAgreementTitle(e.target.value)}
-															value={agreementTitle === "" ? homeDataState.updateTourData.tour.agreementTitle.english : agreementTitle}
-
+															value={agreementTitle}
 														/>
+
+
 
 														{edit &&
 															<button
@@ -545,18 +534,18 @@ const TourData = () => {
 													<div class="flex flex-row gap-2 items-center">
 
 														<label class="form__label">Slovenian:</label>
-														<textarea
 
-															className={!errAgreementTitle ? "form__input text-sm" : "form__input text-sm !border !border-red-500"}
+
+														<textarea
 															style={{ height: 80 }}
-															readOnly={!edit}
+															className={"form__input"}
 															placeholder='Agreement title in slovenian'
 															aria-describedby="basic-addon1"
 															id="name"
 															type="text"
+															readOnly={!edit}
 															onChange={(e) => setAgreementTitleTransl(e.target.value)}
-															value={agreementTitleTransl === "" ? homeDataState.updateTourData.tour.agreementTitle.slovenian : agreementTitleTransl}
-
+															value={agreementTitleTransl}
 														/>
 														<div className="paragraph-box2 grid dgrid-row place-items-center"
 															style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }}
@@ -576,18 +565,21 @@ const TourData = () => {
 
 													<div class="flex flex-row gap-2 items-center">
 														<label class="form__label" style={{ marginRight: "18px" }}>English:</label>
-														<textarea
 
+
+
+
+														<textarea
 															className={!errAgreementDescription ? "form__input text-sm" : "form__input text-sm !border !border-red-500"}
+
 															style={{ height: 80 }}
-															readOnly={!edit}
 															placeholder='Agreement description'
 															aria-describedby="basic-addon1"
 															id="name"
 															type="text"
+															readOnly={!edit}
 															onChange={(e) => setAgreementDesc(e.target.value)}
-															value={agreementDesc === "" ? homeDataState.updateTourData.tour.agreementDesc.english : agreementDesc}
-
+															value={agreementDesc}
 														/>
 
 														{edit && <button
@@ -604,18 +596,20 @@ const TourData = () => {
 													<div class="flex flex-row gap-2 items-center">
 
 														<label class="form__label">Slovenian:</label>
-														<textarea
 
+
+														<textarea
 															className={!errAgreementDescription ? "form__input text-sm" : "form__input text-sm !border !border-red-500"}
+
+
 															style={{ height: 80 }}
-															readOnly={!edit}
 															placeholder='Agreement description in slovenian'
 															aria-describedby="basic-addon1"
 															id="name"
 															type="text"
+															readOnly={!edit}
 															onChange={(e) => setAgreementDescTransl(e.target.value)}
-															value={agreementDescTransl === "" ? homeDataState.updateTourData.tour.agreementDesc.slovenian : agreementDescTransl}
-
+															value={agreementDescTransl}
 														/>
 														<div className="paragraph-box2 grid dgrid-row place-items-center"
 															style={{ color: "red", fontSize: "0.8em", marginTop: "30px" }}
@@ -661,18 +655,19 @@ const TourData = () => {
 
 														<div class="flex flex-row gap-2 items-center">
 															<label class="form__label" style={{ marginRight: "18px" }}>English:</label>
-															<textarea
 
+
+															<textarea
 																className={!errShortDescription ? "form__input text-sm h-32" : "form__input text-sm h-32 !border !border-red-500"}
+
 																style={{ height: 80 }}
-																readOnly={!edit}
 																placeholder='Short description'
 																aria-describedby="basic-addon1"
 																id="name"
 																type="text"
+																readOnly={!edit}
 																onChange={(e) => setShortInfo(e.target.value)}
-																value={shortInfo === "" ? homeDataState.updateTourData.tour.shortInfo.english : shortInfo}
-
+																value={shortInfo}
 															/>
 
 
@@ -680,19 +675,22 @@ const TourData = () => {
 
 														<div class="flex flex-row gap-2 items-center">
 															<label class="form__label" >Slovenian:</label>
-															<textarea
 
+
+															<textarea
 																className={!errShortDescription ? "form__input text-sm h-32" : "form__input text-sm h-32 !border !border-red-500"}
+
 																style={{ height: 80 }}
-																readOnly={!edit}
 																placeholder='Short description in slovenian'
 																aria-describedby="basic-addon1"
 																id="name"
 																type="text"
+																readOnly={!edit}
 																onChange={(e) => setShortInfoTransl(e.target.value)}
-																value={shortInfoTransl === "" ? homeDataState.updateTourData.tour.shortInfo.slovenian : shortInfoTransl}
-
+																value={shortInfoTransl}
 															/>
+
+
 
 
 														</div>
@@ -713,38 +711,44 @@ const TourData = () => {
 												<div class="flex flex-col gap-2">
 													<div class="flex flex-row gap-2 items-center">
 														<label class="form__label" style={{ marginRight: "18px" }}>English:</label>
-														<textarea
 
+
+
+														<textarea
 															className={!errShortDescription ? "form__input text-sm h-32" : "form__input text-sm h-32 !border !border-red-500"}
+
 															style={{ height: 80 }}
-															readOnly={!edit}
 															placeholder='Long description'
 															aria-describedby="basic-addon1"
 															id="name"
 															type="text"
+															readOnly={!edit}
 															onChange={(e) => setLongInfo(e.target.value)}
-															value={longInfo === "" ? homeDataState.updateTourData.tour.longInfo.english : longInfo}
-
+															value={longInfo}
 														/>
+
 
 
 													</div>
 
 													<div class="flex flex-row gap-2 items-center">
 														<label class="form__label" >Slovenian:</label>
-														<textarea
 
+
+
+														<textarea
 															className={!errShortDescription ? "form__input text-sm h-32" : "form__input text-sm h-32 !border !border-red-500"}
+
 															style={{ height: 80 }}
-															readOnly={!edit}
 															placeholder='Long description in slovenian'
 															aria-describedby="basic-addon1"
 															id="name"
 															type="text"
+															readOnly={!edit}
 															onChange={(e) => setLongInfoTransl(e.target.value)}
-															value={longInfoTransl === "" ? homeDataState.updateTourData.tour.longInfo.slovenian : longInfoTransl}
-
+															value={longInfoTransl}
 														/>
+
 
 
 													</div>
@@ -793,7 +797,7 @@ const TourData = () => {
 												id="name"
 												type="text"
 												onChange={(e) => setDuration(e.target.value)}
-												value={duration === "" ? homeDataState.updateTourData.tour.duration : duration}
+												value={duration}
 											/>
 										</div>
 
@@ -807,7 +811,7 @@ const TourData = () => {
 												id="name"
 												type="text"
 												onChange={(e) => setLength(e.target.value)}
-												value={length === "" ? homeDataState.updateTourData.tour.length : length}
+												value={length}
 											/>
 										</div>
 
@@ -822,7 +826,7 @@ const TourData = () => {
 												id="name"
 												type="text"
 												onChange={(e) => setHighestPoint(e.target.value)}
-												value={highestPoint === "" ? homeDataState.updateTourData.tour.highestPoint : highestPoint}
+												value={highestPoint}
 											/>
 										</div>
 
@@ -831,8 +835,8 @@ const TourData = () => {
 											{edit &&
 												<label
 													class="button button--secondary button--small">
-													<span>Upload image/video</span>
-													<input type={"file"} name={"file"}
+													<span>Upload image</span>
+													<input type={"file"} name={"file"} accept="image/*"
 														onChange={onFileChange}
 														class="sr-only" />
 												</label>
