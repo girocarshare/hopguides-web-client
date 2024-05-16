@@ -17,3 +17,40 @@
 .menu__item-icon {
     @apply w-6 h-6 stroke-[1.5] mr-3;
 }
+
+
+
+.grid-menu-item {
+    @apply bg-white rounded-lg border-[1.5px] border-black/0;
+
+    h3 {
+        @apply font-bold text-black truncate;
+    }
+
+    small {
+        @apply mt-2  text-black opacity-60;
+    }
+}
+
+.grid-menu-item:hover {
+    small {
+        @apply opacity-100;
+    }
+}
+
+.grid-menu-item--active {
+    @apply ring-4 ring-black border-white;
+    @apply text-white bg-black;
+
+    h3 {
+        @apply text-white;
+    }
+
+    small {
+        @apply text-white opacity-80;
+    }
+
+    * {
+        @apply text-white;
+    }
+}

@@ -29,3 +29,20 @@
 .bullet__content {
 	@apply pt-1 text-base font-semibold text-black;
 }
+
+.label-count {
+	@apply bg-black text-white inline-flex items-center justify-center rounded-full  shrink-0 h-8 w-auto p-1 font-bold;
+}
+
+.dark {
+	.label-count {
+		@apply bg-white text-black;
+	}
+}
+
+.separator {
+    width: 100%;         /* Full width of the container */
+    height: 1px;         /* Thickness of the separator */
+    background-color: #acacac;  /* Light gray color */
+    margin: 20px 0;      /* Vertical spacing */
+}

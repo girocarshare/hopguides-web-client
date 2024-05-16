@@ -425,8 +425,9 @@ export const homeDataReducer = (state, action) => {
 			prodCpy = { ...state };
 
 			prodCpy.updateTourData.show = false;
-			prodCpy.modalData.success = true;
-			prodCpy.modalData.text = "You have successfully updated tour.";
+			//prodCpy.modalData.success = true;
+			prodCpy.updateTourData.tour = action.data.updatedTour;
+			//prodCpy.modalData.text = "You have successfully updated tour.";
 			return prodCpy;
 
 
@@ -619,11 +620,20 @@ export const homeDataReducer = (state, action) => {
 				},
 
 			};
+
+			case homeDataConstants.CHANGE_LANGUAGE:
+
+			prodCpy = { ...state };
+
+			prodCpy.language = action.data;
+
+			return prodCpy;
+
 		case homeDataConstants.UPDATE_TOUR_DATA_MODAL_SHOW:
 
 			prodCpy = { ...state };
 
-			prodCpy.updateTourData.show = true;
+			//prodCpy.updateTourData.show = true;
 			prodCpy.updateTourData.tour = action.tour;
 
 			return prodCpy;
@@ -816,6 +826,7 @@ export const homeDataReducer = (state, action) => {
 			prodCpy = { ...state };
 
 
+			console.log(action.data)
 			prodCpy.addGpxModalShow = true;
 			prodCpy.id = action.data
 
@@ -853,16 +864,19 @@ export const homeDataReducer = (state, action) => {
 
 			prodCpy = { ...state };
 
-			prodCpy.modalData.success = true;
-			prodCpy.modalData.text = "You have successfully added new teaser tour.";
+			console.log("kjdnkfjsjdf")
+			prodCpy.teaserAdded = true;
+			//prodCpy.modalData.success = true;
+			//prodCpy.modalData.text = "You have successfully added new teaser tour.";
 			return prodCpy;
 
 			case homeDataConstants.ADD_TEASER_FAILURE:
 
 			prodCpy = { ...state };
 
-			prodCpy.modalData.failure = true;
-			prodCpy.modalData.text = "There has been an error while adding teser tour. Please try again later.";
+			prodCpy.teaserAdded = false;
+			//prodCpy.modalData.failure = true;
+			//prodCpy.modalData.text = "There has been an error while adding teser tour. Please try again later.";
 			return prodCpy;
 
 			case homeDataConstants.SEND_DEMO_SUCCESS:

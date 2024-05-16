@@ -497,7 +497,6 @@ const HomeData = forwardRef((props) => {
 										<th>Options</th>
 									</tr>
 								</thead>
-
 								<tbody>
 									<tr><td>     </td></tr>
 									<tr class="text-sm transition-all hover:bg-gray-100">

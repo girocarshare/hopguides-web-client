@@ -49,3 +49,13 @@
 .text-overline {
 	@apply font-semibold text-[10px] tracking-widest uppercase;
 }
+
+.section-title {
+	@apply flex flex-row items-center gap-3 font-bold text-black text-lg leading-tight;
+}
+
+.dark {
+	.section-title {
+		@apply text-white;
+	}
+}
