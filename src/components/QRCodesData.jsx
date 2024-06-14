@@ -232,7 +232,8 @@ const QRCodesData = () => {
 
                                 <div className="form__group">
 
-                                    <label class="form__label">Insert the number and pick the color of qr codes that needs to be generated </label>
+                                  {/* <label class="form__label">Insert the number and pick the color of qr codes that needs to be generated </label>
+
                                     <div class="flex flex-row items-center gap-2">
                                         <input
 
@@ -266,7 +267,7 @@ const QRCodesData = () => {
                                             Create new QR codes
                                         </button>
                                     </div>
-
+                                        */}
                                     <div class="flex flex-row items-center gap-2">
 
                                         {homeDataState.generatedQrCodes.length != 0 && <button
@@ -306,8 +307,11 @@ const QRCodesData = () => {
                                             <tr>
                                                 <th>Qr Code</th>
                                                 <th className="whitespace-nowrap">Code</th>
-                                                <th className="whitespace-nowrap">Qr code id</th>
-                                                <th>Used</th>
+                                                {//<th className="whitespace-nowrap">Qr code id</th>
+}
+                                                <th className="whitespace-nowrap">Language</th>
+                                              {//  <th>Used</th>
+}
                                             </tr>
                                         </thead>
 
@@ -317,8 +321,11 @@ const QRCodesData = () => {
                                                     <td ><img style={{ height: "200px", width: "200px" }} src={qrcode.qrcode}></img></td>
                                                     <td>{qrcode.code}</td>
 
-                                                    <td>{qrcode.qrCodeId}</td>
-                                                    <td>{qrcode.used.toString()}</td>
+                                                    {//<td>{qrcode.qrCodeId}</td>}
+}
+                                                    <td>{qrcode.language}</td>
+                                                   {// <td>{qrcode.used.toString()}</td>
+}
 
 
                                                 </tr>

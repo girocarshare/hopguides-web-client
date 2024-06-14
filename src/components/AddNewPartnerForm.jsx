@@ -176,10 +176,10 @@ const AddNewPartnerForm = (props) => {
 		setErrTitlePoint("")
 
 		if (partner && (titlePoint == "" || titlePointTransl == "" || shortInfoPoint == "" || shortInfoPointTransl == "" || longInfoPoint == "" || longInfoPointTransl == "" || category == "" || pointPrice == "" || offerName == "" || responsiblePerson == "" || voucherDesc == "" || voucherDescTransl == "" || phone == "" || email == "" || longitude == "" || latitude == "" || audio2 == null || selectedFiles.length == 0 || (!mondayclosed && (mondayFrom == "" || mondayTo == "")) || (!tuesdayclosed && (tuesdayFrom == "" || tuesdayTo == "")) || (!wednesdayclosed && (wednesdayFrom == "" || wednesdayTo == "")) || (!thursdayclosed && (thursdayFrom == "" || thursdayTo == "")) || (!fridayclosed && (fridayFrom == "" || fridayTo == "")) || (!saturdayclosed && (saturdayFrom == "" || saturdayTo == "")) || (!sundayclosed && (sundayFrom == "" || sundayTo == "")))) {
-			setErrMessagePartner("Please insert mandatory fields for partner (marked with *)")
+			setErrMessagePartner("Please insert mandatory fields for partner (marked with )")
 		} else if (point && (titlePoint == "" || titlePointTransl == "" || shortInfoPoint == "" || shortInfoPointTransl == "" || longInfoPoint == "" || longInfoPointTransl == "" || category == "" || longitude == "" || latitude == "" || audio2 == null || selectedFiles.length == 0)) {
 
-			setErrMessagePartner("Please insert mandatory fields for point of interest (marked with *)")
+			setErrMessagePartner("Please insert mandatory fields for point of interest (marked with )")
 		} else {
 			setAdd(false)
 			setErrMessagePartner("")
@@ -436,7 +436,7 @@ const AddNewPartnerForm = (props) => {
 													<div
 														className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
 														<div className="form__group">
-															<label class="form__label">Name *</label>
+															<label class="form__label">Name </label>
 
 
 															<div class="flex flex-col gap-2">
@@ -490,7 +490,7 @@ const AddNewPartnerForm = (props) => {
 														<div className="form__group">
 															<div className="form__group"
 																style={{ opacity: 1 }}>
-																<label class="form__label">Short description* </label>
+																<label class="form__label">Short description </label>
 
 																<div class="flex flex-col gap-2">
 																	<div class="flex flex-row gap-2 items-center">
@@ -540,7 +540,7 @@ const AddNewPartnerForm = (props) => {
 													<div
 														className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
 														<div className="form__group">
-															<label class="form__label">Long description*</label>
+															<label class="form__label">Long description</label>
 															<div class="flex flex-col gap-2">
 																<div class="flex flex-row gap-2 items-center">
 																	<label class="form__label" style={{ marginRight: "18px" }}>English:</label>
@@ -585,7 +585,7 @@ const AddNewPartnerForm = (props) => {
 														<div
 															className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
 															<div className="form__group">
-																<label class="form__label">Voucher description*</label>
+																<label class="form__label">Voucher description</label>
 																<div class="flex flex-col gap-2">
 																	<div class="flex flex-row gap-2 items-center">
 																		<label class="form__label" style={{ marginRight: "18px" }}>English:</label>
@@ -629,7 +629,7 @@ const AddNewPartnerForm = (props) => {
 													}
 
 													<div className="form__group">
-														<label class="form__label">Category*</label>
+														<label class="form__label">Category</label>
 														<select
 															onChange={(e) => setCategory(e.target.value)}
 															name="category"
@@ -645,7 +645,7 @@ const AddNewPartnerForm = (props) => {
 
 													{partner &&
 														<div className="form__group">
-															<label class="form__label">Price*</label>
+															<label class="form__label">Price</label>
 															<div class="flex flex-row items-center gap-2">
 																<input
 
@@ -673,7 +673,7 @@ const AddNewPartnerForm = (props) => {
 														</div>}
 													{partner &&
 														<div className="form__group">
-															<label class="form__label">Offer name*</label>
+															<label class="form__label">Offer name</label>
 															<input
 
 																className={"form__input"}
@@ -692,7 +692,7 @@ const AddNewPartnerForm = (props) => {
 														className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
 														<div class="form__group">
 
-															<label class="form__label">Address *</label>
+															<label class="form__label">Address </label>
 															<div class="flex flex-col items-start gap-2">
 																<input
 
@@ -725,7 +725,7 @@ const AddNewPartnerForm = (props) => {
 															className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
 															<div className="form__group divide-y">
 																<label class="form__label">Working
-																	hours*</label>
+																	hours</label>
 
 																<div class="form pt-6">
 
@@ -981,7 +981,7 @@ const AddNewPartnerForm = (props) => {
 
 													<div>
 
-														<label class="form__label">Text to speach audio*</label>
+														<label class="form__label">Text to speach audio</label>
 														<label
 															class="button button--secondary button--small">
 															<span>Upload audio</span>
@@ -996,14 +996,14 @@ const AddNewPartnerForm = (props) => {
 													</div>
 													<div>
 
-														<label class="form__label">Image gallery*</label>
+														<label class="form__label">Image gallery</label>
 
 														<label
 															class="button button--secondary button--small">
 															<span>Upload image gallery</span>
 															<input type="file"
 																multiple
-																accept="image/*"
+																accept="image/"
 																onChange={selectFiles}
 																class="sr-only" />
 														</label>
@@ -1032,7 +1032,7 @@ const AddNewPartnerForm = (props) => {
 
 													<div>
 
-														<label class="form__label">Video*</label>
+														<label class="form__label">Video</label>
 
 														<label
 															class="button button--secondary button--small">
@@ -1065,11 +1065,11 @@ const AddNewPartnerForm = (props) => {
 																className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
 																<div class="form__group">
 																	<label class="form__label">Contact information about
-																		partner*</label>
+																		partner</label>
 																</div>
 																<div className="form__group">
 																	<label class="form__label">Responsible person
-																		name*</label>
+																		name</label>
 																	<input
 
 																		className={"form__input"}
@@ -1084,7 +1084,7 @@ const AddNewPartnerForm = (props) => {
 																	/>
 																</div>
 																<div className="form__group">
-																	<label class="form__label">Phone*</label>
+																	<label class="form__label">Phone</label>
 																	<input
 
 																		className={"form__input"}
@@ -1099,7 +1099,7 @@ const AddNewPartnerForm = (props) => {
 																</div>
 
 																<div className="form__group">
-																	<label class="form__label">Email*</label>
+																	<label class="form__label">Email</label>
 																	<input
 
 																		className={"form__input"}
@@ -1115,7 +1115,7 @@ const AddNewPartnerForm = (props) => {
 																</div>
 
 																<div className="form__group">
-																	<label class="form__label">Web page*</label><input
+																	<label class="form__label">Web page</label><input
 
 																		className={"form__input"}
 																		placeholder="Web page"

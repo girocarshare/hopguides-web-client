@@ -70,6 +70,10 @@
 	@apply bg-black text-white hover:bg-black/60;
 }
 
+.button--add {
+	@apply bg-black/20 text-black hover:bg-black/20 w-48;
+}
+
 .button--secondary {
 	@apply border border-black/20 hover:border-black text-black;
 }

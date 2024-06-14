@@ -45,7 +45,7 @@ const AddPartnerOrPointForm = (props) => {
                                             className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
                                             <div className="form__group">
                                                 <label class="form__label">Name
-                                                    *</label>
+                                                    </label>
                                                 <div class="flex flex-col gap-2">
                                                     <div class="flex flex-row gap-2 items-center">
                                                         <label class="form__label" style={{ marginRight: "18px" }}>English:</label>
@@ -96,7 +96,7 @@ const AddPartnerOrPointForm = (props) => {
                                             className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
                                             <div className="form__group">
                                                 <label class="form__label">Short
-                                                    description* </label>
+                                                    description </label>
                                                 <div class="flex flex-col gap-2">
                                                     <div class="flex flex-row gap-2 items-center">
                                                         <label class="form__label" style={{ marginRight: "18px" }}>English:</label>
@@ -143,7 +143,7 @@ const AddPartnerOrPointForm = (props) => {
                                             className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
                                             <div className="form__group">
                                                 <label class="form__label">Long
-                                                    description*</label>
+                                                    description</label>
                                                 <div class="flex flex-col gap-2">
                                                     <div class="flex flex-row gap-2 items-center">
                                                         <label class="form__label" style={{ marginRight: "18px" }}>English:</label>
@@ -189,7 +189,7 @@ const AddPartnerOrPointForm = (props) => {
                                                 className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
                                                 <div className="form__group">
                                                     <label class="form__label">Voucher
-                                                        description*</label>
+                                                        description</label>
                                                     <div class="flex flex-col gap-2">
                                                         <div class="flex flex-row gap-2 items-center">
                                                             <label class="form__label" style={{ marginRight: "18px" }}>English:</label>
@@ -237,7 +237,7 @@ const AddPartnerOrPointForm = (props) => {
                                         }
 
                                         <div className="form__group">
-                                            <label class="form__label">Category*</label>
+                                            <label class="form__label">Category</label>
                                             <select
                                                 onChange={(e) => props.setCategory(e.target.value)}
                                                 name="category" class="form__input"
@@ -251,7 +251,7 @@ const AddPartnerOrPointForm = (props) => {
                                         </div>
 
                                         {props.partner && <div className="form__group">
-                                            <label class="form__label">Price*</label>
+                                            <label class="form__label">Price</label>
                                             <div
                                                 class="flex flex-row items-center gap-2">
                                                 <input
@@ -281,7 +281,7 @@ const AddPartnerOrPointForm = (props) => {
                                         {props.partner && <div className="form__group">
 
                                             <label class="form__label">Offer
-                                                name*</label>
+                                                name</label>
                                             <input
 
                                                 className={"form__input"}
@@ -300,7 +300,7 @@ const AddPartnerOrPointForm = (props) => {
                                             <div className="form__group">
 
                                                 <label class="form__label">Address
-                                                    *</label>
+                                                    </label>
                                                 <input
 
                                                     className={"form__input"}
@@ -331,7 +331,7 @@ const AddPartnerOrPointForm = (props) => {
                                                 className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
                                                 <div className="form__group divide-y">
                                                     <label class="form__label">Working
-                                                        hours*</label>
+                                                        hours</label>
 
                                                     <div class="form pt-6">
 
@@ -588,7 +588,7 @@ const AddPartnerOrPointForm = (props) => {
 
                                         <div className="form__group">
                                             <label class="form__label">Text to speach
-                                                audio*</label>
+                                                audio</label>
 
                                             <label
                                                 class="button button--secondary button--small">
@@ -605,12 +605,12 @@ const AddPartnerOrPointForm = (props) => {
 
                                         <div className="form__group">
                                             <label class="form__label">Image
-                                                gallery*</label>
+                                                gallery</label>
 
                                             <label
                                                 class="button button--secondary button--small">
                                                 <span>Upload image gallery</span>
-                                                <input type={"file"} multiple accept="image/*"
+                                                <input type={"file"} multiple accept="image/"
                                                     onChange={props.selectFiles}
                                                     class="sr-only" />
                                             </label>
@@ -638,7 +638,7 @@ const AddPartnerOrPointForm = (props) => {
                                         </div>
 
                                         <div className="form__group">
-                                            <label class="form__label">Video*</label>
+                                            <label class="form__label">Video</label>
 
                                             <label
                                                 class="button button--secondary button--small">
@@ -670,11 +670,11 @@ const AddPartnerOrPointForm = (props) => {
                                                 <div className="form__group">
                                                     <label class="form__label">Contact
                                                         information about
-                                                        partner*</label>
+                                                        partner</label>
                                                     <div className="form__group">
                                                         <label class="form__label">Responsible
                                                             person
-                                                            name*</label>
+                                                            name</label>
                                                         <div>
                                                             <div class="form__group">
                                                                 <input
@@ -696,7 +696,7 @@ const AddPartnerOrPointForm = (props) => {
                                                 </div>
                                                 <div className="form__group">
                                                     <label
-                                                        class="form__label">Phone*</label>
+                                                        class="form__label">Phone</label>
                                                     <input
                                                         className={"form__input"}
                                                         placeholder="Phone"
@@ -711,7 +711,7 @@ const AddPartnerOrPointForm = (props) => {
 
                                                 <div className="form__group">
                                                     <label
-                                                        class="form__label">Email*</label>
+                                                        class="form__label">Email</label>
                                                     <input
 
                                                         className={"form__input"}
@@ -727,7 +727,7 @@ const AddPartnerOrPointForm = (props) => {
 
                                                 <div className="form__group">
                                                     <label class="form__label">Web
-                                                        page*</label>
+                                                        page</label>
                                                     <input
 
                                                         className={"form__input"}

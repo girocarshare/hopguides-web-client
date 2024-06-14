@@ -11,7 +11,6 @@ import ChangeLockCodeModal from "../components/ChangeLockCodeModal";
 import SuccessModal from "../components/SuccessModal";
 import FailureModal from "../components/FailureModal";
 import TourData from "../components/TourData";
-import POIData from "../components/POIData";
 import AddGpxModal from "../components/AddGpxModal";
 import { Widget, addResponseMessage, toggleMsgLoader } from 'react-chat-widget';
 import 'react-chat-widget/lib/styles.css';
@@ -45,7 +44,6 @@ const HomePage = () => {
 		 emojis />
 			<TourData/>
 			<AddGpxModal/>
-			<POIData/>
 			<FailureModal/>
 			<HomePageData/>
 			<SuccessModal/>

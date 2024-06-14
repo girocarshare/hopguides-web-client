@@ -107,6 +107,10 @@
 	@apply block w-full px-3 py-2 font-medium border border-black/20 rounded-lg bg-transparent placeholder-black/30 shadow-sm focus:ring-1 focus:ring-black focus:border-black bg-white;
 }
 
+.form__input_small {
+	@apply block w-[95%] px-3 py-2 font-medium border  h-10 rounded-lg bg-transparent placeholder-black/30 shadow-sm focus:ring-1 focus:ring-black focus:border-black bg-white;
+}
+
 .form__input--color {
 	@apply pl-12;
 }

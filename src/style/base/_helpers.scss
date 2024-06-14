@@ -11,3 +11,13 @@
 	stroke-linecap: round;
 	transition: stroke-dashoffset .25s linear;
 }
+
+
+
+.item-hover {
+	@apply shadow-md cursor-pointer ;
+}
+
+.item-hover:hover {
+	@apply md:shadow-2xl md:-translate-y-1;
+}

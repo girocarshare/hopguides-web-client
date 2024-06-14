@@ -7,7 +7,7 @@ import React, {
     useRef
 } from "react";
 import { HomeDataContext } from "../contexts/HomeDataContext";
-import HomeData from "./HomeData";
+import HomeData2 from "./HomeData2";
 import { homeDataService } from "../services/HomeDataService";
 
 
@@ -18,8 +18,6 @@ const HomePageData = forwardRef((props, ref) => {
 
     const loadPage = async () => {
     
-        console.log("page1")
-        console.log(page)
             await homeDataService.getToursAndPointsData(dispatch, page);
             
     }
@@ -27,8 +25,6 @@ const HomePageData = forwardRef((props, ref) => {
 
     const setPageData = async (data) => {
     
-        console.log("page2")
-        console.log(data)
        await homeDataService.getToursAndPointsData(dispatch, data);
 
 }
@@ -52,7 +48,7 @@ const HomePageData = forwardRef((props, ref) => {
     return (
 
         <div>
-             <HomeData 
+             <HomeData2 
             data = {homeDataState.toursWithPoints.toursWithPoints}
             tours = {homeDataState.toursWithPoints.toursWithPoints}
             setPage = {setPageData}/>

@@ -19,7 +19,8 @@ const HomeDataContextProvider = (props) => {
 		},
 
 		showModal: false,
-		
+		teaserAdded: false,
+		language: "english",
 		showEditMenuModal: false,
 		showEditLogoModal: false,
 		showEditLockCodeModal: false,

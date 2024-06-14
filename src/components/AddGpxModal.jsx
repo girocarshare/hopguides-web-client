@@ -61,6 +61,7 @@ const AddGpxModal = () => {
 				id: homeDataState.id
 			}
 
+			console.log(homeDataState.id)
 			var token = authHeader()
 			var xhr = new XMLHttpRequest();
 			xhr.upload.addEventListener("progress", ProgressHandler, false);
