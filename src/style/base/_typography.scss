@@ -21,7 +21,9 @@
 .text-heading6 {
 	@apply font-bold text-xl leading-none md:text-2xl md:leading-none text-black;
 }
-
+.text-heading7 {
+	@apply  text-lg leading-none md:text-lg md:leading-none text-gray-600;
+}
 .text-leading {
 	@apply text-xl;
 }

@@ -151,6 +151,7 @@ const TeaserTourDataEdit = (props) => {
 
 
 
+		tour.language = homeDataState.language
 		tour.title = title1
 		tour.agreementTitle = agreementTitle1
 		tour.agreementDesc = agreementDesc1
@@ -196,7 +197,6 @@ const TeaserTourDataEdit = (props) => {
 		console.log(tour); // Log the data being sent
 		formData.append('tour', JSON.stringify(tour));
 
-
 		try {
             setLoading(true);
             const response = await Axios.post(`${url}api/pnl/tour/update/tour`, formData, {
@@ -205,8 +205,8 @@ const TeaserTourDataEdit = (props) => {
                 }
             });
 
-            console.log('Response Data:', response.data);
             dispatch({ type: 'TOUR_UPDATE_SUCCESS', data: response.data });
+			localStorage.setItem('teaserAdded', JSON.stringify(response.data.updatedTour));
             setLoading(false);
 			alert("Success")
 			window.location.reload()
@@ -280,6 +280,19 @@ const TeaserTourDataEdit = (props) => {
 			</div>
 		</div>
 	);
+
+	const renderLanguageAudio = (audioObj) => {
+		const src = audioObj[homeDataState.language];
+		return (
+		  src ? (
+			<ReactAudioPlayer src={src} controls />
+		  ) : (
+			<p>No audio available for {homeDataState.language}</p>
+		  )
+		);
+	  };
+
+
 	return (
 		<div>
 			{ (
@@ -392,9 +405,7 @@ const TeaserTourDataEdit = (props) => {
 											</div>
 											<br />
 											<div>
-												{!audio && (
-													<ReactAudioPlayer src={homeDataState.updateTourData?.tour?.audio} controls />
-												)}
+												 {!audio && renderLanguageAudio(homeDataState.updateTourData?.tour?.audio)}
 											</div>
 										</div>
 

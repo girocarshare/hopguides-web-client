@@ -237,9 +237,6 @@ async function getTourData(dispatch ,id) {
 				dispatch(failure(error));
 		});
 
-	/*function request() {
-		return { type: homeDataConstants.APPROVE_REQUEST };
-	}*/
 	function success(data) {
 		
 		console.log(data)
@@ -258,7 +255,7 @@ async function getPoiData(dispatch ,id) {
 	
 
 	//dispatch(request());
-	var token = authHeader()
+	/*var token = authHeader()
 	await Axios.get(`${url}api/pnl/tour/getpoidata/` + id, {
 		headers: {
 		  Authorization: token 
@@ -276,10 +273,21 @@ async function getPoiData(dispatch ,id) {
 			var error = "Unknown error, please try again later."
 				dispatch(failure(error));
 		});
-
+*/
 	/*function request() {
 		return { type: homeDataConstants.APPROVE_REQUEST };
 	}*/
+
+	
+	const storedTeaserAdded = JSON.parse(localStorage.getItem('teaserAdded'));
+	var point = null
+	for(var poi of storedTeaserAdded.points){
+		if(poi.id == id){
+			point = poi
+			dispatch(success(point));
+		}
+	}
+
 	function success(data) {
 		
 		console.log(data)
@@ -749,8 +757,6 @@ async function getPreviousMonthsData(dispatch ,id) {
 
 async function getToursAndPointsData(dispatch, page) {
 
-
-	console.log(page)
 		dispatch(request());
 		var token = authHeader()
 	

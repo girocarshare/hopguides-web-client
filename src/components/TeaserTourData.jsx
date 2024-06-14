@@ -16,6 +16,8 @@ import Axios from "axios";
 import { Fragment, useState } from 'react'
 import TeaserTourDataEdit from './TeaserTourDataEdit';
 import AddNewPartnerForm from './AddNewPartnerForm';
+import NewPartner from './NewPartner';
+import EditPoi from './EditPoi';
 
 var url = process.env.REACT_APP_URL || "http://localhost:8080/";
 
@@ -69,6 +71,13 @@ function TextBoxes1({ languages, tour, selectedLanguage, setSelectedLanguage, ed
 		dispatch({ type: homeDataConstants.ADD_GPX_MODAL_SHOW, data: data });
 	};
 
+	const updatePoi = async (e, point) => {
+
+		await homeDataService.getPoiData(dispatch, point.id);
+		setEditTour(false)
+		setAddPoi(false)
+		setEditPoi(true)
+	};
 
 
 	const update = async (e, tour) => {
@@ -76,6 +85,8 @@ function TextBoxes1({ languages, tour, selectedLanguage, setSelectedLanguage, ed
 		await homeDataService.getTourData(dispatch, tour.id);
 
 		setEditTour(true)
+		setAddPoi(false)
+		setEditPoi(false)
 
 	};
 
@@ -105,85 +116,72 @@ function TextBoxes1({ languages, tour, selectedLanguage, setSelectedLanguage, ed
 	const addNewPartner = (e, id, bpartnerId) => {
 
 
+		setEditTour(false)
+		setEditPoi(false)
 		setAddPoi(true)
-		dispatch({ type: homeDataConstants.SHOW_ADD_PARTNER_MODAL, id: id, bpartnerId: bpartnerId });
+
 	};
 
 
+	const getQrCode = (e, data) => {
 
+		window.location = "#/qrcodes/" + data;
+	};
 	return (
 		<div className="grow flex flex-col items-stretch md:h-screen md:overflow-hidden">
-			
-			<div className="grow h-[50vh] md:h-full bg-neutral-100 pt-16 lg:pt-0 ">
-				<div htmlFor="useCases" className="sticky z-10  top-0 p-5 bg-neutral-100 bg-opacity-90 backdrop-blur">
-				<button className="button button--primary button--small mb-4 w-36" onClick={(e) => saveState(e, false)}>Go back</button>
+			<div className="grow h-[50vh] md:h-full bg-neutral-100 pt-16 lg:pt-0">
+				<div className="sticky z-10 top-0 p-5 bg-neutral-100 bg-opacity-90 backdrop-blur">
+					<button className="button button--primary button--small mb-4 w-36" onClick={(e) => saveState(e, false)}>Go back</button>
 					<div className="section-title">
 						Tour data
 					</div>
 				</div>
-				<label style={{ fontSize: 15, marginLeft: "20px" }} >Select language of the tour</label>
+				<label style={{ fontSize: 15, marginLeft: "20px" }}>Select language of the tour</label>
 				{renderLanguageDropdown()}
 
-
-				<table id="my-table" style={{ width: "100%", tableLayout: "fixed" }} >
-
+				<table id="my-table" style={{ width: "100%", tableLayout: "fixed" }}>
 					<thead>
-
-
 					</thead>
 					<tbody>
-						<tr><td>     </td></tr>
-						<tr class="text-sm transition-all hover:bg-gray-100">
-							<td style={{ width: "20%", overflow: "hidden" }} id={tour.id} >{(tour.title[homeDataState.language])? tour.title[homeDataState.language] : "No title in this language"}</td>
+						<tr><td></td></tr>
+						<tr className="text-sm transition-all hover:bg-gray-100">
+							<td style={{ width: "20%", overflow: "hidden" }} id={tour.id}>{(tour.title[homeDataState.language]) ? tour.title[homeDataState.language] : "No title in this language"}</td>
 							<td style={{ width: "15%", overflow: "hidden" }}>{`${tour.price} ${tour.currency} including tax`}</td>
-
 							<td style={{ width: "10%", overflow: "hidden" }}>{tour.noOfRidesAMonth}</td>
 							<td>
 								<div className="flex flex-row items-center gap-2 justify-end">
-
-
-									<button className="button button--secondary button--small"
-										onClick={(e) => addGpx(e, tour.id)}>Add gpx
-									</button>
-									<button className="button button--secondary button--small"
-										onClick={(e) => update(e, tour)}>Edit general tour data</button>
-
+									<button className="button button--secondary button--small" onClick={(e) => addGpx(e, tour.id)}>Add gpx</button>
+									<button className="button button--secondary button--small" onClick={(e) => getQrCode(e, tour.id)}>Get qr codes</button>
+									<button className="button button--secondary button--small" onClick={(e) => update(e, tour)}>Edit general tour data</button>
 								</div>
 							</td>
-
 						</tr>
-
-
 					</tbody>
 				</table>
 
-
-				<div htmlFor="useCases" className="sticky z-10  top-0 p-5 bg-neutral-100 bg-opacity-90 backdrop-blur">
+				<div className="sticky z-10 top-0 p-5 bg-neutral-100 bg-opacity-90 backdrop-blur">
 					<div className="section-title">
 						Points of interest
 					</div>
 				</div>
-				<div className="grid-menu grid-cols-1 overflow-y-scroll md:grid-cols-2 lg:grid-cols-3 gap-2 p-5 pt-1 pb-20">
-					<div>
 
+				<div className="grid-menu grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 p-5 pt-1 pb-20 overflow-y-scroll" style={{ maxHeight: '60vh' }}>
+					<div>
 						<button className="button button--primary button--small mb-4" variant="contained"
 							onClick={(e) => addNewPartner(e, tour.id, tour.bpartnerId)}>
 							Add partner
 						</button>
-
 					</div>
 
 					{tour.points.map((product) => (
 						<div
-							key={product.title.english}
-							className={`grid-menu-item item-hover ${selectedProductId === product.id ? 'grid-menu-item--active' : 'grid-menu-item'}`}
-							onClick={(e) => {
-								setSelectedProductId(product.id); // Set the selected product ID
-							}}
+							key={product.name.english}
+							className={`grid-menu-item mb-2 item-hover ${selectedProductId === product.id ? 'grid-menu-item--active' : 'grid-menu-item'}`}
+							onClick={(e) => updatePoi(e, product)}
 						>
-							<div className="p-4">
+							<div className="p-4 ">
 								<h3>
-									{product.title[homeDataState.language]}
+									{product.name[homeDataState.language]}
 								</h3>
 								<small>
 									{product.shortInfo[homeDataState.language]}
@@ -193,10 +191,8 @@ function TextBoxes1({ languages, tour, selectedLanguage, setSelectedLanguage, ed
 					))}
 				</div>
 			</div>
-
-
 		</div>
-	);
+	)
 }
 
 function TeaserTourData(props) {
@@ -253,7 +249,8 @@ function TeaserTourData(props) {
 
 								<div className="p-5 pt-1">
 									{editTour && <TeaserTourDataEdit />}
-									{addPoi && <AddNewPartnerForm />}
+									{addPoi && <NewPartner />}
+									{editPoi && <EditPoi />}
 
 								</div>
 

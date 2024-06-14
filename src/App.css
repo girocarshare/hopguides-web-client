@@ -55,7 +55,7 @@ select {
   font-size: 1vw; /* Adjust this value as needed */
 }
 .scaled-title-menu {
-  font-size: 1.5vw; /* Adjust this value as needed */
+  font-size: 1vw; /* Adjust this value as needed */
 }
 .scaled-height-header {
   height: 8vh; /* Adjust this value as needed */
@@ -70,6 +70,10 @@ select {
   }
 }
 
+.scrollable-container {
+  max-height: 80vh;
+  overflow-y: scroll;
+}
 .button-1 {
   border-radius: 25px;
   /* Adjust this value for more or less roundedness */

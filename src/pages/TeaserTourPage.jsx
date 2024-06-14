@@ -5,7 +5,6 @@ import SuccessModal from "../components/SuccessModal";
 import FailureModal from "../components/FailureModal";
 import TeaserTourData from "../components/TeaserTourData";
 import AddGpxModal from "../components/AddGpxModal";
-import TeaserTourDataEdit from "../components/TeaserTourDataEdit";
 
 const TeaserTourPage = () => {
 

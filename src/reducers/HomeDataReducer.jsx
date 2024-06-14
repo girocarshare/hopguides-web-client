@@ -53,10 +53,9 @@ export const homeDataReducer = (state, action) => {
 
 			prodCpy = { ...state };
 
-			console.log(action.data)
 			prodCpy.toursWithPoints.pager = action.data.pager;
 			var array = prodCpy.toursWithPoints.toursWithPoints
-			if (action.data.pager.currentPage != prodCpy.toursWithPoints.page || action.data.pager.currentPage == 0) {
+			if (action.data.pager.currentPage != prodCpy.toursWithPoints.page || action.data.pager.currentPage == 0 ) {
 				for (var tour of action.data.pageOfItems) {
 					array.push(tour)
 				}
@@ -88,9 +87,9 @@ export const homeDataReducer = (state, action) => {
 
 			prodCpy = { ...state };
 
-			prodCpy.toursWithPoints.pager = action.data.pager;
+			//prodCpy.toursWithPoints.pager = action.data.pager;
 			prodCpy.toursWithPoints.toursWithPoints = action.data.pageOfItems;
-			prodCpy.toursWithPoints.page = action.data.pager.currentPage;
+			//prodCpy.toursWithPoints.page = action.data.pager.currentPage;
 
 
 			return prodCpy;
@@ -315,6 +314,7 @@ export const homeDataReducer = (state, action) => {
 
 
 			prodCpy = { ...state };
+			//alert("You have successfully deleted tour.")
 			prodCpy.modalData.success = true;
 			prodCpy.modalData.failure = false;
 			prodCpy.modalData.text = "You have successfully deleted tour.";
@@ -652,7 +652,7 @@ export const homeDataReducer = (state, action) => {
 
 			prodCpy = { ...state };
 			console.log(action.point)
-			prodCpy.updatePointData.show = true;
+			//prodCpy.updatePointData.show = true;
 			prodCpy.updatePointData.point = action.point;
 
 			return prodCpy;

@@ -167,9 +167,10 @@ const TeaserTour = () => {
 
 	return (
 		<div className="page-container">
-			{teaserAdded ? (
-				<TeaserTourData tour={teaserAdded} />
-			) : (
+			{teaserAdded && 
+				<TeaserTourData tour={teaserAdded} />}
+
+				{!teaserAdded && 
 				<form
 					onSubmit={handleSubmitNew}
 					className="min-h-screen flex flex-col items-stretch w-full overflow-hidden"
@@ -336,7 +337,7 @@ const TeaserTour = () => {
 
 					</div>
 				</form>
-			)}
+			}
 		</div>
 	);
 }

@@ -92,14 +92,7 @@ const HomeData = forwardRef((props) => {
 				})
 		}
 		setTours(homeDataState.toursWithPoints.toursWithPoints)
-		var contactUser = {
-			name: "Danijel Omrzel",
-			email: "danijel.omrzel@visitlljubljana.si",
-			number: "0038641386295"
-		}
-		var arr = []
-		arr.push(contactUser)
-		setUsers(arr)
+		
 
 		window.addEventListener("scroll", onScroll);
 		return () => {
@@ -223,7 +216,7 @@ const HomeData = forwardRef((props) => {
 	};
 
 	const insertdata = () => {
-		window.location.href = "#/insertdata"
+		window.location.href = "#/teasertour"
 	};
 
 
@@ -401,31 +394,6 @@ const HomeData = forwardRef((props) => {
 						<h1 className=" text-heading4 text-center">
 							Tours overview
 						</h1>
-					</div>
-
-
-					{/*Contact*/}
-					<div
-						className="fixed z-20 left-0 bottom-0 right-0 col-span-12 lg:col-span-3 lg:relative flex flex-col items-center justify-center bg-white/80 backdrop-blur border-t lg:border-none border-black/10 drop-shadow-[0_-2px_6px_rgba(0,0,0,0.15)] lg:drop-shadow-none">
-						<div
-							className="flex flex-row lg:flex-col items-center lg:items-start gap-0 lg:gap-4 p-3 lg:p-6 lg:rounded-2xl lg:border lg:border-black/
-						10 lg:shadow-2xl lg:shadow-black/10 w-full">
-							<div className="label label--primary -rotate-90 lg:rotate-0 -ml-7 lg:ml-0">
-								Contact
-							</div>
-							{users.map((point) => (
-								<div className="flex flex-col gap-1 lg:gap-2 w-full overflow-hidden -ml-2 lg:ml-0">
-									<div className="text-sm lg:text-xl font-bold text-black">
-										{point.name}
-									</div>
-									<div className="flex flex-col gap-1 lg:gap-2 text-xs lg:text-sm">
-										<a className="link" href="mailto:'{point.email}'">{point.email}</a>
-										<div>{point.number}</div>
-									</div>
-								</div>
-							))
-							}
-						</div>
 					</div>
 
 				</div>
