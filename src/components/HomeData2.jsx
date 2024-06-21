@@ -36,7 +36,7 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 
-const HomeData = forwardRef((props) => {
+const HomeData2 = forwardRef((props) => {
 
 	const { homeDataState, dispatch } = useContext(HomeDataContext);
 	const [users, setUsers] = useState([]);
@@ -424,4 +424,4 @@ return (
 	;
 });
 
-export default HomeData
+export default HomeData2
