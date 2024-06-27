@@ -26,18 +26,18 @@ const EditPoi = () => {
 	const [videoPreview, setVideoPreview] = useState(null);
 
 	const [audioNamePoint, setAudioNamePoint] = useState("");
-	const [name, setName] = useState( "");
+	const [name, setName] = useState(homeDataState?.updatePointData?.point?.name || "");
 	const [nameTransl, setNameTransl] = useState("");
 	const [shortInfoPointTransl, setShortInfoPointTransl] = useState("");
 	const [longInfoPointTransl, setLongInfoPointTransl] = useState("");
 	const [voucherDescTransl, setVoucherDescTransl] = useState("");
 
-	const [voucherDesc, setVoucherDesc] = useState("");
+	const [voucherDesc, setVoucherDesc] = useState( homeDataState?.updatePointData?.point?.voucherDesc || "");
 
 	const [errMessagePartner, setErrMessagePartner] = useState("");
 
-	const [shortInfo, setShortInfo] = useState( "");
-	const [longInfo, setLongInfo] = useState("");
+	const [shortInfo, setShortInfo] = useState( homeDataState?.updatePointData?.point?.shortInfo || "");
+	const [longInfo, setLongInfo] = useState(homeDataState?.updatePointData?.point?.longInfo || "");
 	const [price, setPrice] = useState(0);
 	const [selectedFiles, setSelectedFiles] = useState([]);
 	const [files, setFiles] = useState([]);
@@ -284,6 +284,7 @@ const EditPoi = () => {
 			setFile(null)
 			setSelectedFiles([])
 
+			console.log(response.data.updatedTour)
 			
 			dispatch({ type: 'TOUR_UPDATE_SUCCESS', data: response.data });
 			localStorage.setItem('teaserAdded', JSON.stringify(response.data.updatedTour));
