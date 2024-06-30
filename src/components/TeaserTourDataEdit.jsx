@@ -25,7 +25,7 @@ const TeaserTourDataEdit = (props) => {
 
 	const [audioName, setAudioName] = useState("");
 	//const [title, setTitle] = useState(localStorage.getItem('teaserAdded')?.title || "");
-	const [title, setTitle] = useState(homeDataState?.updateTourData?.tour?.title|| "");
+	const [title, setTitle] = useState(homeDataState?.updateTourData?.tour?.title || "");
 	const [place, setPlace] = useState("");
 	const [agreementTitle, setAgreementTitle] = useState(homeDataState?.updateTourData?.tour?.agreementTitle || "");
 	const [agreementDesc, setAgreementDesc] = useState(homeDataState?.updateTourData?.tour?.agreementDesc || "");
@@ -96,7 +96,7 @@ const TeaserTourDataEdit = (props) => {
 	};
 
 
-	
+
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		var tour = {}
@@ -112,7 +112,7 @@ const TeaserTourDataEdit = (props) => {
 			console.log("evo me")
 			title1 = homeDataState.updateTourData.tour.title
 		} else {
-			
+
 			console.log(title)
 			title1 = title
 		}
@@ -198,27 +198,27 @@ const TeaserTourDataEdit = (props) => {
 		formData.append('tour', JSON.stringify(tour));
 
 		try {
-            setLoading(true);
-            const response = await Axios.post(`${url}api/pnl/tour/update/tour`, formData, {
-                headers: {
-                    'Authorization': authHeader()
-                }
-            });
+			setLoading(true);
+			const response = await Axios.post(`${url}api/pnl/tour/update/tour`, formData, {
+				headers: {
+					'Authorization': authHeader()
+				}
+			});
 
-            dispatch({ type: 'TOUR_UPDATE_SUCCESS', data: response.data });
+			dispatch({ type: 'TOUR_UPDATE_SUCCESS', data: response.data });
 			localStorage.setItem('teaserAdded', JSON.stringify(response.data.updatedTour));
-            setLoading(false);
+			setLoading(false);
 			alert("Success")
 			window.location.reload()
-        } catch (error) {
-            console.error('Error updating tour:', error);
+		} catch (error) {
+			console.error('Error updating tour:', error);
 			alert("Some error occured. Try again.")
-            setLoading(false);
-        }
+			setLoading(false);
+		}
 
 	};
 
-	
+
 
 
 	const updateTitle = (language, newValue) => {
@@ -228,7 +228,7 @@ const TeaserTourDataEdit = (props) => {
 		}));
 	};
 
-	
+
 	const updateAgreementTitle = (language, newValue) => {
 		setAgreementTitle(prevState => ({
 			...prevState,
@@ -237,7 +237,7 @@ const TeaserTourDataEdit = (props) => {
 	};
 
 
-	
+
 	const updateAgreementDesc = (language, newValue) => {
 		setAgreementDesc(prevState => ({
 			...prevState,
@@ -246,7 +246,7 @@ const TeaserTourDataEdit = (props) => {
 	};
 
 
-	
+
 	const updateShortInfo = (language, newValue) => {
 		setShortInfo(prevState => ({
 			...prevState,
@@ -273,7 +273,8 @@ const TeaserTourDataEdit = (props) => {
 					type="text"
 					onChange={(e) => {
 						console.log(title)
-						onChangeFunc(homeDataState.language, e.target.value)}}
+						onChangeFunc(homeDataState.language, e.target.value)
+					}}
 					value={valueObj[homeDataState.language]} // Use value based on the selected language
 					style={{ height: 80 }}
 				/>
@@ -284,163 +285,163 @@ const TeaserTourDataEdit = (props) => {
 	const renderLanguageAudio = (audioObj) => {
 		const src = audioObj[homeDataState.language];
 		return (
-		  src ? (
-			<ReactAudioPlayer src={src} controls />
-		  ) : (
-			<p>No audio available for {homeDataState.language}</p>
-		  )
+			src ? (
+				<ReactAudioPlayer src={src} controls />
+			) : (
+				<p>No audio available for {homeDataState.language}</p>
+			)
 		);
-	  };
+	};
 
 
 	return (
 		<div>
-			{ (
+			{(
 				<div>
-					
-								<div >
-									<form className="form" id="contactForm">
-										<div className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
 
-										
-											{renderLanguageField("Title", title, updateTitle)}
-											{renderLanguageField("Agreement Title", agreementTitle, updateAgreementTitle)}
-											{renderLanguageField("Agreement Description", agreementDesc, updateAgreementDesc)}
-											{renderLanguageField("Short Information", shortInfo, updateShortInfo)}
-											{renderLanguageField("Long Information", longInfo, updateLongInfo)}
-										</div>
+					<div >
+						<form className="form" id="contactForm">
+							<div className="bg-black/[3%] flex flex-col gap-2 p-4 rounded-xl">
 
-										<div className="form__group">
-											<label className="form__label">Price</label>
-											<div className="flex flex-row items-center gap-2">
-												<input
-													placeholder="Price"
-													className="form__input"
-													aria-describedby="basic-addon1"
-													id="name"
-													type="text"
-													onChange={(e) => setPrice(e.target.value)}
-													value={price === 0 ? `${homeDataState.updateTourData?.tour?.price} ${homeDataState.updateTourData?.tour?.currency} incl tax` : price}
-												/>
-												<select onChange={(e) => setCurrency(e.target.value)} name="currency" className="form__input">
-													{currencyList.map((item) => (
-														<option key={item} value={item}>
-															{item}
-														</option>
-													))}
-												</select>
-											</div>
-										</div>
 
-										<div className="form__group">
-											<label className="form__label">Tour duration</label>
-											<input
-												className="form__input"
-												placeholder="Tour duration"
-												aria-describedby="basic-addon1"
-												id="name"
-												type="text"
-												onChange={(e) => setDuration(e.target.value)}
-												value={duration}
-											/>
-										</div>
+								{renderLanguageField("Title", title, updateTitle)}
+								{renderLanguageField("Agreement Title", agreementTitle, updateAgreementTitle)}
+								{renderLanguageField("Agreement Description", agreementDesc, updateAgreementDesc)}
+								{renderLanguageField("Short Information", shortInfo, updateShortInfo)}
+								{renderLanguageField("Long Information", longInfo, updateLongInfo)}
+							</div>
 
-										<div className="form__group">
-											<label className="form__label">Tour length (km)</label>
-											<input
-												className="form__input"
-												placeholder="Tour length (km)"
-												aria-describedby="basic-addon1"
-												id="name"
-												type="text"
-												onChange={(e) => setLength(e.target.value)}
-												value={length}
-											/>
-										</div>
-
-										<div className="form__group">
-											<label className="form__label">Highest point*</label>
-											<input
-												className="form__input"
-												placeholder="Highest point"
-												aria-describedby="basic-addon1"
-												id="name"
-												type="text"
-												onChange={(e) => setHighestPoint(e.target.value)}
-												value={highestPoint}
-											/>
-										</div>
-
-										<div className="form__group">
-											<label className="form__label">Background tour image</label>
-											<label className="button button--secondary button--small">
-												<span>Upload image</span>
-												<input type={"file"} name={"file"} accept="image/*" onChange={onFileChange} className="sr-only" />
-											</label>
-											<div>{fileData()}</div>
-											<div className="mt-2">
-												{imagePreview && !videoPreview && (
-													<img className="image__preview" src={imagePreview} alt={"image-"} />
-												)}
-												{!imagePreview && !videoPreview && homeDataState.updateTourData?.tour?.image.substring(homeDataState.updateTourData.tour?.image?.length - 3) != "mp4" && (
-													<img className="image__preview" src={homeDataState.updateTourData?.tour?.image} alt={"image-"} />
-												)}
-												{videoPreview && !imagePreview && (
-													<video className="image__preview" controls src={videoPreview} alt={"video-"} />
-												)}
-												{!videoPreview && !imagePreview && homeDataState.updateTourData?.tour?.image.substring(homeDataState.updateTourData?.tour?.image.length - 3) == "mp4" && (
-													<video controls className="image__preview" src={homeDataState.updateTourData?.tour?.image} alt={"video-"} />
-												)}
-											</div>
-										</div>
-
-										<div className="form__group">
-											<label className="form__label">Text-to-speech audio</label>
-											<div className="mt-2">
-												<label className="button button--secondary button--small">
-													<span>Upload audio</span>
-													<input type={"file"} accept={".mp3"} onChange={addFile} className="sr-only" />
-												</label>
-												{audioName && <label>{audioName}</label>}
-											</div>
-											<br />
-											<div>
-												 {!audio && renderLanguageAudio(homeDataState.updateTourData?.tour?.audio)}
-											</div>
-										</div>
-
-										{showModal && (
-											<div>
-												<textarea
-													className="form__input"
-													placeholder="Terms and conditions"
-													aria-describedby="basic-addon1"
-													id="name"
-													type="textarea"
-													style={{ height: "500px" }}
-													onChange={(e) => setTermsAndConditions(e.target.value)}
-													value={termsAndConditions === "" ? homeDataState.updateTourData?.tour?.termsAndConditions : termsAndConditions}
-												/>
-											</div>
-										)}
-
-										<div className="paragraph-box2 grid dgrid-row place-items-center" style={{ color: "red", fontSize: "0.8em", marginBottom: "30px" }} hidden={!errMessage}>
-											{errMessage}
-										</div>
-
-										<div className="grid place-items-center form__group">
-											{loading && (
-												<div>
-													<img className="mx-8 my-8 h-20" src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif" />
-												</div>
-											)}
-											<button onClick={(e) => handleSubmit(e)} className="button button--primary" id="sendMessageButton" type="button">
-												Update tour
-											</button>
-										</div>
-									</form>
+							<div className="form__group">
+								<label className="form__label">Price</label>
+								<div className="flex flex-row items-center gap-2">
+									<input
+										placeholder="Price"
+										className="form__input"
+										aria-describedby="basic-addon1"
+										id="name"
+										type="text"
+										onChange={(e) => setPrice(e.target.value)}
+										value={price === 0 ? `${homeDataState.updateTourData?.tour?.price} ${homeDataState.updateTourData?.tour?.currency} incl tax` : price}
+									/>
+									<select onChange={(e) => setCurrency(e.target.value)} name="currency" className="form__input">
+										{currencyList.map((item) => (
+											<option key={item} value={item}>
+												{item}
+											</option>
+										))}
+									</select>
 								</div>
 							</div>
+
+							<div className="form__group">
+								<label className="form__label">Tour duration</label>
+								<input
+									className="form__input"
+									placeholder="Tour duration"
+									aria-describedby="basic-addon1"
+									id="name"
+									type="text"
+									onChange={(e) => setDuration(e.target.value)}
+									value={duration}
+								/>
+							</div>
+
+							<div className="form__group">
+								<label className="form__label">Tour length (km)</label>
+								<input
+									className="form__input"
+									placeholder="Tour length (km)"
+									aria-describedby="basic-addon1"
+									id="name"
+									type="text"
+									onChange={(e) => setLength(e.target.value)}
+									value={length}
+								/>
+							</div>
+
+							<div className="form__group">
+								<label className="form__label">Highest point*</label>
+								<input
+									className="form__input"
+									placeholder="Highest point"
+									aria-describedby="basic-addon1"
+									id="name"
+									type="text"
+									onChange={(e) => setHighestPoint(e.target.value)}
+									value={highestPoint}
+								/>
+							</div>
+
+							<div className="form__group">
+								<label className="form__label">Background tour image</label>
+								<label className="button button--secondary button--small">
+									<span>Upload image</span>
+									<input type={"file"} name={"file"} accept="image/*" onChange={onFileChange} className="sr-only" />
+								</label>
+								<div>{fileData()}</div>
+								<div className="mt-2">
+									{imagePreview && !videoPreview && (
+										<img className="image__preview" src={imagePreview} alt={"image-"} />
+									)}
+									{!imagePreview && !videoPreview && homeDataState.updateTourData?.tour?.image.substring(homeDataState.updateTourData.tour?.image?.length - 3) != "mp4" && (
+										<img className="image__preview" src={homeDataState.updateTourData?.tour?.image} alt={"image-"} />
+									)}
+									{videoPreview && !imagePreview && (
+										<video className="image__preview" controls src={videoPreview} alt={"video-"} />
+									)}
+									{!videoPreview && !imagePreview && homeDataState.updateTourData?.tour?.image.substring(homeDataState.updateTourData?.tour?.image.length - 3) == "mp4" && (
+										<video controls className="image__preview" src={homeDataState.updateTourData?.tour?.image} alt={"video-"} />
+									)}
+								</div>
+							</div>
+
+							<div className="form__group">
+								<label className="form__label">Text-to-speech audio</label>
+								<div className="mt-2">
+									<label className="button button--secondary button--small">
+										<span>Upload audio</span>
+										<input type={"file"} accept={".mp3"} onChange={addFile} className="sr-only" />
+									</label>
+									{audioName && <label>{audioName}</label>}
+								</div>
+								<br />
+								<div>
+									{!audio && renderLanguageAudio(homeDataState.updateTourData?.tour?.audio)}
+								</div>
+							</div>
+
+							{showModal && (
+								<div>
+									<textarea
+										className="form__input"
+										placeholder="Terms and conditions"
+										aria-describedby="basic-addon1"
+										id="name"
+										type="textarea"
+										style={{ height: "500px" }}
+										onChange={(e) => setTermsAndConditions(e.target.value)}
+										value={termsAndConditions === "" ? homeDataState.updateTourData?.tour?.termsAndConditions : termsAndConditions}
+									/>
+								</div>
+							)}
+
+							<div className="paragraph-box2 grid dgrid-row place-items-center" style={{ color: "red", fontSize: "0.8em", marginBottom: "30px" }} hidden={!errMessage}>
+								{errMessage}
+							</div>
+
+							<div className="grid place-items-center form__group">
+								{loading && (
+									<div>
+										<img className="mx-8 my-8 h-20" src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif" />
+									</div>
+								)}
+								<button onClick={(e) => handleSubmit(e)} className="button button--primary" id="sendMessageButton" type="button">
+									Update tour
+								</button>
+							</div>
+						</form>
+					</div>
+				</div>
 			)}
 		</div>
 	);

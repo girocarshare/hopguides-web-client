@@ -234,8 +234,8 @@ function TextBoxes1({ languages, tour, selectedLanguage, setSelectedLanguage, ed
 										 >
 											 <div className="p-4 flex justify-between items-center">
 												 <div>
-													 <h3>{product.name[homeDataState.language]}</h3>
-													 <small>{product.shortInfo[homeDataState.language]}</small>
+													 <h3>{product.name[homeDataState.language]? product.name[homeDataState.language]: "No data in "+homeDataState.language}</h3>
+													 <small>{product.shortInfo[homeDataState.language]?product.shortInfo[homeDataState.language]: "No data in "+homeDataState.language }</small>
 												 </div>
 												 <button
 													 className="button button--secondary button--small"

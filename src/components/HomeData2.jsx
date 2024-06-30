@@ -184,244 +184,244 @@ const HomeData2 = forwardRef((props) => {
 			alert('Failed to add the tour');
 		}
 
-	
-};
+
+	};
 
 
 
-const deleteTour = async (e, tour) => {
+	const deleteTour = async (e, tour) => {
 
 
-	await homeDataService.deleteTour(dispatch, tour.tourId);
+		await homeDataService.deleteTour(dispatch, tour.tourId);
 
 
-};
+	};
 
-const deletePoi = async (e, tour, poiId) => {
+	const deletePoi = async (e, tour, poiId) => {
 
-	await homeDataService.deletePoi(dispatch, tour.tourId, poiId);
+		await homeDataService.deletePoi(dispatch, tour.tourId, poiId);
 
-};
-
-
-const onScroll = (e) => {
-	const el = e.target.documentElement;
-	var bottom = el.scrollHeight - el.scrollTop === el.clientHeight;
-	console.log(el.clientHeight - (el.scrollHeight - el.scrollTop))
-	if (el.clientHeight - (el.scrollHeight - el.scrollTop) > -0.7) {
-		bottom = true
-	}
-
-	if (bottom) {
-		props.setPage(homeDataState.toursWithPoints.page + 1)
-	}
+	};
 
 
-};
+	const onScroll = (e) => {
+		const el = e.target.documentElement;
+		var bottom = el.scrollHeight - el.scrollTop === el.clientHeight;
+		console.log(el.clientHeight - (el.scrollHeight - el.scrollTop))
+		if (el.clientHeight - (el.scrollHeight - el.scrollTop) > -0.7) {
+			bottom = true
+		}
+
+		if (bottom) {
+			props.setPage(homeDataState.toursWithPoints.page + 1)
+		}
 
 
-return (
-
-	<div >
-		{teaserAdded && 
-			<TeaserTourData tour={teaserAdded} />}
-
-{!teaserAdded && 
-		
-			<div>
-				{homeDataState.showModal && <div>
-					<AddNewTourForm />
-				</div>}
-
-				{homeDataState.showEditLogoModal && <div>
-					<UpdateLogoModal />
-				</div>}
-
-				{homeDataState.showEditLockCodeModal && <div>
-					<ChangeLockCodeModal />
-				</div>}
-
-				{homeDataState.updateTourData.show && <div>
-					<TourData />
-				</div>}
+	};
 
 
-				<div onScroll={onScroll} ref={ref} className="container pt-20 lg:pt-40 pb-12">
+	return (
 
-					<div className="navbar">
-						<div className="navbar__content">
-							<div>
-								<img className="h-8 w-auto" src="assets/img/logo.svg" />
-							</div>
+		<div >
+			{teaserAdded &&
+				<TeaserTourData tour={teaserAdded} />}
 
-							<div className="hidden lg:flex flex-row items-center gap-2">
+			{!teaserAdded &&
 
-								{(role || adminOnly) &&
-									<div>
-										<button className="button button--clear button--small" type="button" onClick={seeHomePage}>
-											Home page
-										</button>
-									</div>
-								}
-								{role &&
-									<div>
-										<button className="button button--clear button--small" type="button" onClick={updateLogo}>
-											Edit logo
-										</button>
-									</div>
-								}
+				<div>
+					{homeDataState.showModal && <div>
+						<AddNewTourForm />
+					</div>}
 
-								{role &&
-									<div>
-										<button className="button button--clear button--small" type="button" onClick={editLockCode}>
-											Edit lock code
-										</button>
-									</div>
-								}
+					{homeDataState.showEditLogoModal && <div>
+						<UpdateLogoModal />
+					</div>}
 
-								{adminOnly &&
-									<div>
-										<button className="button button--clear button--small" type="button"
-											onClick={handleRegister}>
-											New user
-										</button>
-									</div>
-								}
+					{homeDataState.showEditLockCodeModal && <div>
+						<ChangeLockCodeModal />
+					</div>}
 
-								{adminOnly &&
-									<div>
-										<button className="button button--clear button--small" type="button"
-											onClick={allBusinessPartners}>
-											Partners
-										</button>
-									</div>
-								}
+					{homeDataState.updateTourData.show && <div>
+						<TourData />
+					</div>}
 
 
-								{adminOnly &&
-									<div>
-										<button className="button button--clear button--small" type="button"
-											onClick={updatedTours}>
-											Updated tours
-										</button>
-									</div>
-								}
+					<div onScroll={onScroll} ref={ref} className="container pt-20 lg:pt-40 pb-12">
 
-								{adminOnly &&
-									<div>
-										<button className="button button--clear button--small" type="button"
-											onClick={teaserTour}>
-											Teaser tour
-										</button>
-									</div>
-								}
-
-								{(!role && !adminOnly) &&
-									<div>
-										<button className="button button--clear button--small" type="button"
-											onClick={handleLogin}>
-											Log in
-										</button>
-									</div>
-								}
-
-								{(role || adminOnly) &&
-									<div>
-										<button className="button button--clear button--small" type="button" onClick={handleLogout}>
-											Log out
-										</button>
-									</div>
-								}
-
-							</div>
-						</div>
-					</div>
-
-					<div className="grid grid-cols-12 mb-12 lg:mb-16 items-start justify-center gap-8">
-						<div className="col-span-12 lg:col-span-3"></div>
-						<div className="flex flex-col items-center justify-center gap-8 col-span-12 lg:col-span-6">
-							<div
-								className="w-48 h-48 rounded-full bg-white border border-black/10 overflow-hidden bg-contain bg-center bg-no-repeat"
-								style={{ backgroundImage: `url(${"assets/img/logo.svg"})` }}
-							></div>
-							<h1 className="text-heading4 text-center">Tours Overview</h1>
-						</div>
-					</div>
-					<div className="flex justify-end mb-12">
-						<div className="flex flex-row justify-end gap-2 w-1/3">
-							<input
-								className="p-2 border rounded-lg shadow-sm w-full"
-								placeholder="Search by tours name"
-								aria-describedby="basic-addon1"
-								id="name"
-								type="text"
-								onChange={(e) => setSearch(e.target.value)}
-								value={search}
-							/>
-							<button
-								onClick={(e) => {
-									handleSearch(e);
-								}}
-								className="button button--primary p-2 rounded-lg shadow-sm"
-								id="sendMessageButton"
-								type="button"
-							>
-								Search
-							</button>
-						</div>
-					</div>
-
-					<div className="p-4 bg-gray-50 rounded-2xl mb-12 shadow-md">
-						<div className="py-3 px-4 flex flex-row items-center justify-between gap-4 mb-4">
-							<h4 className="text-heading6">Tour List</h4>
-							{admin && (
-								<button
-									className="button button--primary button--small p-2 rounded-lg shadow-sm"
-									variant="contained"
-									type="button"
-									onClick={insertdata}
-								>
-									New Tour
-								</button>
-							)}
-						</div>
-
-						<div className="space-y-4">
-							{homeDataState.toursWithPoints.toursWithPoints.map((tour) => (
-								<div key={tour.id} className="bg-white p-3 rounded-lg ">
-									<div className="flex justify-between items-center mb-2">
-										<h4 className="text-heading7">{tour.title.english}</h4>
-										<td>
-											<div className="flex flex-row items-center gap-2 justify-end">
-										<button
-											className="button button--secondary button--small"
-											onClick={(e) => update(e, tour)}
-										>
-											View data
-										</button>
-										<button className="button button--secondary button--small"
-													onClick={(e) => deleteTour(e, tour)}>Delete
-												</button>
-												</div>
-												</td>
-									</div>
-									<table ref={ref} id="my-table" className="w-full table-fixed">
-										{/* Table content can go here if needed */}
-									</table>
+						<div className="navbar">
+							<div className="navbar__content">
+								<div>
+									<img className="h-8 w-auto" src="assets/img/logo.svg" />
 								</div>
-							))}
-						</div>
-					</div>
 
+								<div className="hidden lg:flex flex-row items-center gap-2">
+
+									{(role || adminOnly) &&
+										<div>
+											<button className="button button--clear button--small" type="button" onClick={seeHomePage}>
+												Home page
+											</button>
+										</div>
+									}
+									{role &&
+										<div>
+											<button className="button button--clear button--small" type="button" onClick={updateLogo}>
+												Edit logo
+											</button>
+										</div>
+									}
+
+									{role &&
+										<div>
+											<button className="button button--clear button--small" type="button" onClick={editLockCode}>
+												Edit lock code
+											</button>
+										</div>
+									}
+
+									{adminOnly &&
+										<div>
+											<button className="button button--clear button--small" type="button"
+												onClick={handleRegister}>
+												New user
+											</button>
+										</div>
+									}
+
+									{adminOnly &&
+										<div>
+											<button className="button button--clear button--small" type="button"
+												onClick={allBusinessPartners}>
+												Partners
+											</button>
+										</div>
+									}
+
+
+									{adminOnly &&
+										<div>
+											<button className="button button--clear button--small" type="button"
+												onClick={updatedTours}>
+												Updated tours
+											</button>
+										</div>
+									}
+
+									{adminOnly &&
+										<div>
+											<button className="button button--clear button--small" type="button"
+												onClick={teaserTour}>
+												Teaser tour
+											</button>
+										</div>
+									}
+
+									{(!role && !adminOnly) &&
+										<div>
+											<button className="button button--clear button--small" type="button"
+												onClick={handleLogin}>
+												Log in
+											</button>
+										</div>
+									}
+
+									{(role || adminOnly) &&
+										<div>
+											<button className="button button--clear button--small" type="button" onClick={handleLogout}>
+												Log out
+											</button>
+										</div>
+									}
+
+								</div>
+							</div>
+						</div>
+
+						<div className="grid grid-cols-12 mb-12 lg:mb-16 items-start justify-center gap-8">
+							<div className="col-span-12 lg:col-span-3"></div>
+							<div className="flex flex-col items-center justify-center gap-8 col-span-12 lg:col-span-6">
+								<div
+									className="w-48 h-48 rounded-full bg-white border border-black/10 overflow-hidden bg-contain bg-center bg-no-repeat"
+									style={{ backgroundImage: `url(${"assets/img/logo.svg"})` }}
+								></div>
+								<h1 className="text-heading4 text-center">Tours Overview</h1>
+							</div>
+						</div>
+						<div className="flex justify-end mb-12">
+							<div className="flex flex-row justify-end gap-2 w-1/3">
+								<input
+									className="p-2 border rounded-lg shadow-sm w-full"
+									placeholder="Search by tours name"
+									aria-describedby="basic-addon1"
+									id="name"
+									type="text"
+									onChange={(e) => setSearch(e.target.value)}
+									value={search}
+								/>
+								<button
+									onClick={(e) => {
+										handleSearch(e);
+									}}
+									className="button button--primary p-2 rounded-lg shadow-sm"
+									id="sendMessageButton"
+									type="button"
+								>
+									Search
+								</button>
+							</div>
+						</div>
+
+						<div className="p-4 bg-gray-50 rounded-2xl mb-12 shadow-md">
+							<div className="py-3 px-4 flex flex-row items-center justify-between gap-4 mb-4">
+								<h4 className="text-heading6">Tour List</h4>
+								{admin && (
+									<button
+										className="button button--primary button--small p-2 rounded-lg shadow-sm"
+										variant="contained"
+										type="button"
+										onClick={insertdata}
+									>
+										New Tour
+									</button>
+								)}
+							</div>
+
+							<div className="space-y-4">
+								{homeDataState.toursWithPoints.toursWithPoints.map((tour) => (
+									<div key={tour.id} className="bg-white p-3 rounded-lg ">
+										<div className="flex justify-between items-center mb-2">
+											<h4 className="text-heading7">{tour.title.english}</h4>
+											<td>
+												<div className="flex flex-row items-center gap-2 justify-end">
+													<button
+														className="button button--secondary button--small"
+														onClick={(e) => update(e, tour)}
+													>
+														View data
+													</button>
+													<button className="button button--secondary button--small"
+														onClick={(e) => deleteTour(e, tour)}>Delete
+													</button>
+												</div>
+											</td>
+										</div>
+										<table ref={ref} id="my-table" className="w-full table-fixed">
+											{/* Table content can go here if needed */}
+										</table>
+									</div>
+								))}
+							</div>
+						</div>
+
+
+					</div>
 
 				</div>
+			}
+		</div>
 
-			</div>
-		}
-	</div>
-
-)
-	;
+	)
+		;
 });
 
 export default HomeData2
