@@ -10,9 +10,9 @@ const TeaserTourPage = () => {
 
 	return (
 		<HomeDataContextProvider>
+		<TeaserTour/>
 			<AddGpxModal/>
 			
-			<TeaserTour/>
 			
 		<FailureModal/>
 		<SuccessModal/>
